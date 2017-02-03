@@ -55,13 +55,22 @@ namespace SME.Render.VHDL.ILConvert
 			var asm = AssemblyDefinition.ReadAssembly(t.Assembly.Location);
 			if (asm == null)
 				return null;
-			
-			return
+
+			var names = asm.MainModule.GetTypes().Select(x => x.FullName).ToArray();
+
+			var res =
 				(from td in 
 					from m in asm.Modules
 					select m.GetType(t.FullName)
 					where td != null
 					select td).FirstOrDefault();
+
+			if (res == null && t.IsNested)
+				res = asm.Modules.SelectMany(m => m.GetTypes().Where(x => x.Name == t.Name && x.DeclaringType.FullName == t.DeclaringType.FullName)).FirstOrDefault();
+			if (res == null)
+				return null;
+
+			return res;
 		}
 
 		public Converter(IProcess process, GlobalInformation globalInformation, int indentation = 0)

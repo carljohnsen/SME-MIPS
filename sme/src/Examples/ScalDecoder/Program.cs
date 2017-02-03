@@ -10,7 +10,7 @@ namespace ScalDecoder
 			new Simulation()
 				.BuildCSVFile()
 				.BuildGraph()
-				//.BuildVHDL()
+				.BuildVHDL()
 				.Run(typeof(MainClass).Assembly);
 		}
 	}
