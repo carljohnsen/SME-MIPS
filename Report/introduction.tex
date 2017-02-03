@@ -1,0 +1,96 @@
+\subsection{Software requirements for using SME}
+SME is a library for \tt{C\#}. Therefor we need to setup a development
+environment for \tt{C\#}. We will be using \tt{mono} URL % TODO
+
+Now that we have \tt{mono} installed, we need to download and run \tt{SME}. We
+start by cloning the project from github: URL!. % TODO
+Then, we add the project in
+\tt{monodevelop}. Before building the project, we need to generate a few files
+(\tt{SME.Render.VHDL/Entity.tt} and \tt{SME.Render.VHDL/TopLevel.tt},
+which is done by right clicking the file, and choosing 'Tools > Process T4
+Template'. Finally, we can open one of the example programs, and press f5 to
+build and run.
+
+%install monodevelop
+%clone from github
+%run process T4 template on SME.Render.VHDL/Entity.tt and
+%SME.Render.VHDL/TopLevel.tt
+%Open example project, and press f5 to build and run
+
+\subsection{Logic gates}
+To start with, I am going to implement the 4 basic logic gates: \tt{AND},
+\tt{OR}, \tt{NOT} and \tt{XOR}, as these are the basic building blocks of a
+processor.
+
+I start by describing the busses. I have one input bus, which has two fields:
+\tt{Bit1} and \tt{Bit2}, and an output bus, which has four fields, one for each
+gate. Note that these interfaces has to be public
+%%\lstinputlisting{Buses.cs}
+
+Then I define the processes for each of the logic gates. They are very simple,
+as they just take the two inputs, applies their logic operation, and puts the
+output on the designated lane on the output bus.
+%\lstinputlisting{Gates.cs}
+
+Finally, I wrote a test process, which feeds input to the gate processes,
+stores the output from the gate processes, and finally verifies the collected
+results, which is:
+\begin{tabular}{cc|cccc}
+    \tt{Bit1} & \tt{Bit2} & \tt{AND} & \tt{OR} & \tt{NOT} & \tt{XOR} \\
+    \hline
+    false     & false     & false    & false   & true     & false \\
+    false     & true      & false    & true    & true     & true  \\
+    true      & false     & false    & true    & false    & true  \\
+    true      & true      & true     & true    & false    & false \\
+    \hline
+\end{tabular}
+%\lstinputlisting{GateTester.cs}
+
+\subsection{Decoder}
+A decoder takes an $n$-bit input, and has $2^n$ outputs. Exactly one of the
+outputs are \tt{1} on any given input. If the value of the input is \tt{0}, then
+bit0 of the output is set to \tt{1}, and the rest is set to \tt{0}. If the
+value of the input is 124, then bit124 is set to \tt{1}, and the rest is set to
+\tt{0}.
+
+I have implemented a 2-bit encoder, by having 2 \tt{NOT} gates, and 4 \tt{AND}
+gates:
+% TODO figurer!!!
+
+\subsection{Scalable Decoder}
+The previous decoder was a hardcoded decoder, i.e. that I had manually defined
+all of the busses and the processes. Since SME requires that everything is
+known at compile time, we have to define everything statically. This results in
+an exponential amount of work when making a larger decoder, where the work is
+primarely defining the buses, each has to have an unique name, and defining the
+processes, as each has to read from a different bus, or in another case, read
+from a different wire on the bus.
+
+To solve this, I have used T4 Templates to generate the source code files for
+me, since the network is just a bunch of busses, \tt{NOT} gates and \tt{AND}
+gates.
+
+\subsection{Half adder}
+A half adder is a circuit, which takes 2 inputs, each one bit, and adds them
+together, outputting a sum bit and a carry bit.
+
+\subsection{Full adder}
+A full adder is a circuit, which takes 3 inputs, each one bit, and adds them
+together, outputting a sum bit, and a carry bit. The difference between a half
+adder and a full adder is the extra input, which is designated to be the carry
+from the previous full adder in a chain of adders.
+
+\subsection{32 bit adder}
+Now that I have made scalable \tt{SME} networks, an half adder and a full
+adder, I can make a 32 bit adder. The 32 bit adder starts with an half adder
+connected to the first bit of the first input number and to the first bit of
+the second input number. The output of the half adder is the first bit of the
+output. The remainder of the adder consists of 31 full adders, where we say
+that the $i$th full adder is connected to the $i$th bit of both of the input
+numbers, to the carry from the $i-1$th adder, and outputs the $i$th bit of the
+result, and the $i$th carry. The last carry is the flag indicating whether or
+not the addition produced an overflow.
+
+I have made the implementation using Templates, and as such, we can also use
+this to produce an $n$-bit adder, just by changing the \tt{BitWidth} variable
+of each of the template files.

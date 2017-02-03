@@ -1,0 +1,104 @@
+\title{Implementing a MIPS processor using SME}
+\author{Carl-Johannes Johnsen (grc421)}
+%% Skabelon til LiCS-afleveringer
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Begynd preamble
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper]{article}
+
+%% Til at tegne træer!
+\usepackage{tikz}
+%% Til at kunne have billeder
+\usepackage{graphicx}
+%% Til at kunne have source code
+\usepackage{listings}
+\lstset{
+  breaklines=true,
+  keepspaces=true,
+  frame=ltrb,
+  framesep=1pt,
+  commentstyle=\color{Brown},
+  basicstyle=\ttfamily\footnotesize,
+  numbers=left,
+  title=\lstname,
+  columns=fullflexible,
+  extendedchars=\true,
+  inputencoding=ansinew,
+}
+
+%% Font and input encoding
+%% Tillad æøå
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+%% Babel (language)
+\usepackage[UKenglish]{babel} % If you write in English
+\usepackage[UKenglish]{isodate}
+%\usepackage{parskip}
+\usepackage{booktabs}
+%\usepackage[danish]{babel} % Hvis du skriver på dansk
+
+%% Til links
+\usepackage{hyperref}
+\usepackage{subfig}
+
+%% AMS-Math packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+%% Extra symbols that we almost always need
+\usepackage{stmaryrd}
+\usepackage{color}
+\usepackage{url}
+\usepackage{semantic}
+\usepackage{fancyref}
+\usepackage{enumitem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Skift sidenumrene ud med X/total (lettere at rette :-)
+\usepackage{lastpage}
+\makeatletter
+\renewcommand{\@oddfoot}{\hfil \thepage{}/\pageref{LastPage} \hfil}
+\renewcommand{\@evenfoot}{\hfil \thepage{}/\pageref{LastPage} \hfil}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Til klasse diagrammer
+\usepackage{pgf-umlcd}
+\renewcommand{\umldrawcolor}{black}
+\renewcommand{\umlfillcolor}{white}
+\let\classoperation\operation
+
+% forkortelse af texttt!
+\renewcommand{\bf}{\textbf}
+\renewcommand{\tt}{\texttt}
+\renewcommand{\sf}{\textsf}
+\renewcommand{\it}{\textit}
+\newcommand{\E}{\mathbb{E}}
+
+% Forkortelser som bruger tt!
+\newcommand{\tif}{\tt{ if }}
+\newcommand{\tthen}{\tt{ then }}
+\newcommand{\telse}{\tt{ else }}
+\newcommand{\tfalse}{\tt{ false }}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Slut preamble -- herunder følger selve dokumentet!
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\sloppy
+\begin{document}
+\maketitle
+
+\input{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{todo introduction?}
+\input{introduction}
+
+% Remember! newpage on new chapters
+
+\end{document}
