@@ -1,0 +1,90 @@
+﻿﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<# int BitWidth = 32; #>
+using System;
+using SME;
+
+namespace Adder32 {
+	public class HalfAdder0
+	{
+		public class XOR : SimpleProcess
+		{
+			[InputBus] InputA0 input0;
+			[InputBus] InputB0 input1;
+			[OutputBus] Output0 output;
+
+			protected override void OnTick() { output.Bit = input0.Bit ^ input1.Bit; }
+		}
+
+		public class AND : SimpleProcess
+		{
+			[InputBus] InputA0 input0;
+			[InputBus] InputB0 input1;
+			[OutputBus] Carry0 output;
+
+			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+		}
+	}
+
+<#
+		for (int i = 1; i < BitWidth; i++) 
+		{
+	#>
+	public class FullAdder<#Write("" + i);#>
+
+	{
+		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+
+		public class XOR0 : SimpleProcess
+		{
+			[InputBus] InputA<#Write("" + i);#> input0;
+			[InputBus] InputB<#Write("" + i);#> input1;
+			[OutputBus] Internal0 output;
+
+			protected override void OnTick() { output.Bit = input0.Bit ^ input1.Bit; }
+		}
+
+		public class XOR1 : SimpleProcess
+		{
+			[InputBus] Internal0 input0;
+			[InputBus] Carry<#Write("" + (i-1));#> input1;
+			[OutputBus] Output<#Write("" + i);#> output;
+
+			protected override void OnTick() { output.Bit = input0.Bit ^ input1.Bit; }
+		}
+
+		public class AND0 : SimpleProcess
+		{
+			[InputBus] InputA<#Write("" + i);#> input0;
+			[InputBus] InputB<#Write("" + i);#> input1;
+			[OutputBus] Internal2 output;
+
+			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+		}
+
+		public class AND1 : SimpleProcess
+		{
+			[InputBus] Internal0 input0;
+			[InputBus] Carry<#Write("" + (i-1));#> input1;
+			[OutputBus] Internal1 output;
+
+			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+		}
+
+		public class OR : SimpleProcess
+		{
+			[InputBus] Internal1 input0;
+			[InputBus] Internal2 input1;
+			[OutputBus] Carry<#Write("" + i);#> output;
+
+			protected override void OnTick() { output.Bit = input0.Bit | input1.Bit; }
+		}
+	}
+
+<#}#>
+}

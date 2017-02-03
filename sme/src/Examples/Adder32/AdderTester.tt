@@ -1,0 +1,96 @@
+﻿﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<# int BitWidth = 32; #>
+using System;
+using SME;
+
+namespace Adder32 {
+
+	[ClockedProcess]
+	public class AdderTester : Process
+	{
+		public void InputNumbers(int num1, int num2)
+		{
+<# for (int i = 0; i < BitWidth; i++)
+{
+#>
+			inputa<#Write(""+i);#>.Bit = (num1 >> <#Write(""+i);#>) & 1;
+			inputb<#Write(""+i);#>.Bit = (num2 >> <#Write(""+i);#>) & 1;
+<#
+}
+#>
+		}
+
+		public int GetOutput()
+		{
+			int result = 0;
+<# for (int i = 0; i < BitWidth; i++)
+{
+#>
+			result |= output<#Write(""+i);#>.Bit << <#Write(""+i);#>;
+<#
+}
+#>
+			return result;
+		}
+
+<# for (int i = 0; i < BitWidth; i++)
+{
+#>
+		[InputBus] Output<#Write("" + i);#> output<#Write("" + i);#>;
+<#
+}
+#>
+
+		[InputBus] Carry<#Write("" + (BitWidth-1));#> overflow;
+
+<# for (int i = 0; i < BitWidth; i++)
+{
+#>
+		[OutputBus] InputA<#Write("" + i);#> inputa<#Write("" + i);#>;
+<#
+}
+#>
+
+<# for (int i = 0; i < BitWidth; i++)
+{
+#>
+		[OutputBus] InputB<#Write("" + i);#> inputb<#Write("" + i);#>;
+<#
+}
+#>
+
+		public async override System.Threading.Tasks.Task Run()
+		{
+			await ClockAsync();
+
+			// Test basic addition
+			InputNumbers(2, 2);
+			await ClockAsync();
+			System.Diagnostics.Debug.Assert(GetOutput() == 4, "2+2");
+
+			// Test Overflow
+			InputNumbers(-2147483648, -2147483648);
+			await ClockAsync();
+			System.Diagnostics.Debug.Assert(GetOutput() == 0, "Overflow output");
+			System.Diagnostics.Debug.Assert(overflow.Bit == 1, "Overflow bit");
+
+			// A bunch of random tests
+			Random rnd = new Random();
+			for (int i = 0; i < 1000; i++)
+			{
+				Console.Write("\rAdditions: " + i);
+				int tmp1 = rnd.Next();
+				int tmp2 = rnd.Next();
+				InputNumbers(tmp1, tmp2);
+				await ClockAsync();
+				System.Diagnostics.Debug.Assert(GetOutput() == tmp1 + tmp2, "Random test " + i);
+			}
+
+		}
+	}
+
+}

@@ -1,0 +1,29 @@
+﻿﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<# int BitWidth = 6; #>
+<# int pow = 64; #>
+using System;
+using SME;
+
+namespace ScalDecoder {
+
+<# for (int i = 0; i < BitWidth; i++)
+{
+#>
+	[InitializedBus] public interface Input<#Write(""+i);#> : IBus { int Bit { get; set; } }
+<#
+}
+#>
+
+<# for (int i = 0; i < pow; i++)
+{
+#>
+	[InitializedBus] public interface Output<#Write(""+i);#> : IBus { int Bit { get; set; } }
+<#
+}
+#>
+
+}

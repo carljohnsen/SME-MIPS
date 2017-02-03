@@ -1,0 +1,215 @@
+\title{Thesis description}
+\author{Carl-Johannes Johnsen (grc421)}
+%% Skabelon til LiCS-afleveringer
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Begynd preamble
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper]{article}
+
+%% Til at tegne træer!
+\usepackage{tikz}
+%% Til at kunne have billeder
+\usepackage{graphicx}
+%% Til at kunne have source code
+\usepackage{listings}
+\lstset{
+  breaklines=true,
+  keepspaces=true,
+  frame=ltrb,
+  framesep=1pt,
+  commentstyle=\color{Brown},
+  basicstyle=\ttfamily\footnotesize,
+  numbers=left,
+  title=\lstname,
+  columns=fullflexible,
+  extendedchars=\true,
+  inputencoding=ansinew,
+}
+
+%% Font and input encoding
+%% Tillad æøå
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+%% Babel (language)
+\usepackage[UKenglish]{babel} % If you write in English
+\usepackage[UKenglish]{isodate}
+%\usepackage{parskip}
+\usepackage{booktabs}
+%\usepackage[danish]{babel} % Hvis du skriver på dansk
+
+%% Til links
+\usepackage{hyperref}
+\usepackage{subfig}
+
+%% AMS-Math packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+%% Extra symbols that we almost always need
+\usepackage{stmaryrd}
+\usepackage{color}
+\usepackage{url}
+\usepackage{semantic}
+\usepackage{fancyref}
+\usepackage{enumitem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Skift sidenumrene ud med X/total (lettere at rette :-)
+\usepackage{lastpage}
+\makeatletter
+\renewcommand{\@oddfoot}{\hfil \thepage{}/\pageref{LastPage} \hfil}
+\renewcommand{\@evenfoot}{\hfil \thepage{}/\pageref{LastPage} \hfil}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Til klasse diagrammer
+\usepackage{pgf-umlcd}
+\renewcommand{\umldrawcolor}{black}
+\renewcommand{\umlfillcolor}{white}
+\let\classoperation\operation
+
+% forkortelse af texttt!
+\renewcommand{\bf}{\textbf}
+\renewcommand{\tt}{\texttt}
+\renewcommand{\sf}{\textsf}
+\renewcommand{\it}{\textit}
+\newcommand{\E}{\mathbb{E}}
+
+% Forkortelser som bruger tt!
+\newcommand{\tif}{\tt{ if }}
+\newcommand{\tthen}{\tt{ then }}
+\newcommand{\telse}{\tt{ else }}
+\newcommand{\tfalse}{\tt{ false }}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Slut preamble -- herunder følger selve dokumentet!
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\sloppy
+\begin{document}
+\maketitle
+
+%The field 'Statement of dissertation' is limited to 2000 characters and allows
+%no special characters and no formatting. Instead the student is encouraged to
+%write a separate thesis description (see below) and write "See attached thesis
+%description" into the field.
+%Guidelines for the Thesis Description
+%Normally a master thesis description is 1-3 pages and includes a
+%background/motivation section (which also introduces key concepts and
+%terminology), a concrete problem statement, a list of maybe 4-6
+%project-specific learning objectives.  Optionally it can also include a list
+%of expected major tasks to be performed (with time estimates) and a couple of
+%central literature references. Figures, formulas, diagrams, etc. may be used
+%to clarify the description. It's largely up to the supervisor to determine
+%what makes the best sense for a particular thesis.
+
+%Implementing a MIPS processor using SME
+%Synchronous Message Exchange (SME) is a programming model, which is suitable
+%for developing hardware models. This project aims to develop a MIPS processor
+%using SME, documenting each step. Additionally, the material should be
+%suitable for an introductory approach to generating actual processor hardware.
+
+\section*{Background}
+Synchronous Message Exchange (SME) \cite{sme} is a programming model, which is
+similar to the Communicating Sequential Processes (CSP) model \cite{csp}. The
+key differences are that SME is globally synchronous, has broadcasting channels
+and a hidden clock. As such, SME is more suitable for devoloping hardware
+models than CSP, and is also an easier approach for programmers to generating
+hardware models.
+
+MIPS (Microprocessor without Interlocked Pipeline Stages) is a reduced
+instruction set computer (RISC) instruction set architecture (ISA) \cite{ark}.
+The reason for selecting the MIPS instruction set, is due it being the
+architecture taught in the Machine Architecture class (ARK) at DIKU.
+
+As taught in ARK, the basic MIPS processor consists of 5 stages: Instruction
+Fetch (IF), where the instruction is fetched from memory pointed to by an
+instruction pointer. Instruction Decode (ID), where the instruction is decoded,
+and where the register file is accessed. Execute (EX), where the actual
+computation is made. Memory (MEM), where data is read or written to memory.
+Finally, Write Back (WB), which takes the result, which is either from the EX
+or the MEM stage, and writes it back to the register file, if needed.
+
+In the basic processor, one instruction is executed per clock cycle, and as
+such, the clock speed is determined by the amount of time needed to execute one
+instruction. By introducing a pipeline, the clock speed can be increased, as
+each instruction is divided into chunks.
+
+By introducing a pipeline into the circuit, additional problems arise: Data
+hazards, where instructions depend on the result of a previous instruction,
+whose result is not ready in the registers. Branch prediction, since we need to
+compute the branch condition before branching, branch prediction is needed in
+order to reduce flushing the pipeline too much.
+
+For making a hardware prototype, the circuit is written in VHDL (Very high
+speed integrated circuit Hardware Description Language), which is then written
+onto an FPGA (Field Programmable Gate Array).
+
+\section*{Motivation and problem description}
+The ARK class only looks at the theory of hardware, i.e. how the logic works,
+how the different units are connected, and how the hardware affects the
+software.  Therefore there is a gap in the education on the challenges of
+generating actual hardware.
+
+This project aims to develop teaching material on how to design actual
+processor hardware by using SME. It will follow the same approach as the ARK
+course, and should be suitable for people with a computer science background
+such as myself.
+
+\section*{Learning objectives}
+By the end of this project I expect to have obtained the ability to:
+\begin{enumerate}
+    \item reason about differences in a software and a hardware program
+
+    \item describe an integrated circuit using SME
+
+    \item describe the evaluation of the correctness of an integrated circuit
+
+    \item communicate hardware design to software people
+\end{enumerate}
+
+\section*{Major tasks to be performed along with time scheduling}
+Each step in this schedule will follow the same procedure: Studying the needed
+subject, implementing the feature/unit and finally documenting the
+process/writing report. The time division of the procedure will be 10\%
+reading, 45\% implementation and 45\% documentation.
+
+My plan of subjects are as follows:
+\begin{description}
+    \item[Boolean circuits] - This is meant to be an introduction to SME and
+        hardware design. I will try to implement a few logic gates, implement
+        communication amongst these and finally validate the correctness of the
+        implementation.
+
+    \item[Full adder] - Now that we have some basic circuits, we can combine
+        these to make a full adder. Although this is not needed with SME, it
+        will give an insight on constructing arithmetic circuitry.
+
+    \item[Single cycle MIPS CPU] - With the adder in place, I can begin
+        constructing the basic CPU. As taught in ARK, I start by constructing
+        the single cycle CPU, i.e. in one cycle exactly one instruction is
+        executed. As such, I need to implement more of the processor units,
+        e.g. instruction decoding, the register file, the ALU. When I have each
+        step covered, connecting them into the basic CPU should be
+        straightforward.
+
+    \item[Pipelined MIPS CPU] - As mentioned in background, the single cycle
+        CPU is not very efficient. So finally, I will introduce pipelines in
+        the CPU, in order to increase the performance. Again, as mentioned, I
+        will also need to handle the problems introduced by pipelining.
+\end{description}
+\includegraphics[width=\linewidth]{gantt2.png}
+
+\begin{thebibliography}{9}
+    \bibitem{sme} Brian Vinter \& Kenneth Skovhede. \it{Synchronous Message
+        Exchange for Hardware Designs}. \copyright\ The authors and Open
+        Channel Publishing Ltd. 2014.
+    \bibitem{csp} C.A.R. Hoare. \it{Communicating Sequential Processes}.
+        \copyright\ ACM 1978
+    \bibitem{ark} David A. Patterson \& John L. Hennessy. \it{Computer
+        Organization and Design - The Hardware/Software Interface (Revised 4th
+        edition)}.  \copyright\ Elsevier 2012
+\end{thebibliography}
+
+\end{document}

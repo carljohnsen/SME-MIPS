@@ -1,0 +1,9 @@
+
+
+/Report/*
+!/Report/*.tex
+!/Report/*.pdf
+
+/Thesis\ description/*
+!/Thesis\ description/*.tex
+!/Thesis\ description/*.pdf
