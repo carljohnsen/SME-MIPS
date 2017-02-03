@@ -9,6 +9,26 @@
 
 %% Til at tegne træer!
 \usepackage{tikz}
+\usetikzlibrary{positioning,arrows,calc}
+\tikzset{
+    on grid,
+    node distance=3cm,
+    auto,
+    block/.style = {
+        draw,
+        shape=rectangle,
+        minimum height=3em,
+        minimum width=3em,
+        line width=1pt
+    },
+    empty/.style = {
+        shape=rectangle,
+        minimum height=3em,
+        minimum width=3em
+    },
+    >=latex',
+}
+
 %% Til at kunne have billeder
 \usepackage{graphicx}
 %% Til at kunne have source code
@@ -100,5 +120,8 @@
 \input{introduction}
 
 % Remember! newpage on new chapters
+\newpage
+\section{Basic logic circuits}
+\input{logic-circuits}
 
 \end{document}

@@ -1,0 +1,180 @@
+In this section, I will be looking at some basic combinatorial circuits. I
+start by looking at some logic gates, which implement some boolean functions.
+% TODO: omskriv vil jeg mene!
+All of the considered values in the system are binary, e.g. the logic gates
+works on \texttt{1}s and \texttt{0}s.
+
+\subsection{Basic logic gates}
+Start by defining the basic logic gates, which are common for most circuits. A
+logic gate is a circuit abstraction, which has inputs and outputs. Its output
+values are based upon the input values.
+
+\begin{description}
+    \item[\texttt{AND}] - outputs \texttt{1} iff. all of its inputs are
+        \texttt{1}, otherwise it outputs \texttt{0}.
+
+    \item[\texttt{OR}] - outputs \texttt{1} if one or more of its inputs are
+        \texttt{1}, otherwise it outputs \texttt{0}.
+
+    \item[\texttt{NOT}] -outputs the inverse of its input, i.e. \texttt{1}
+        becomes \texttt{0} and \texttt{0} becomes \texttt{1}.
+
+    \item[\texttt{XOR}] - outputs \texttt{1} iff exactly one of its inputs are
+        \texttt{1}, otherwise it outputs \texttt{0}
+\end{description}
+The full truth table for all of the four logic gates can be seen in Table
+\ref{tab:truth-table}
+
+\begin{table}
+    \centering
+    \begin{tabular}{cc|cccc}
+        \toprule
+        \texttt{Bit1} & \texttt{Bit2} & \texttt{AND} & \texttt{OR} &
+        \texttt{NOT} & \texttt{XOR} \\
+        \midrule
+        false     & false     & false    & false   & true     & false \\
+        false     & true      & false    & true    & true     & true  \\
+        true      & false     & false    & true    & false    & true  \\
+        true      & true      & true     & true    & false    & false \\
+        \bottomrule
+    \end{tabular}
+    \caption{The truth table for the four basic logic gates. Note: \texttt{NOT}
+    is only considering \texttt{Bit1}.}
+    \label{tab:truth-table}
+\end{table}
+
+\subsubsection{Implementation}
+Implementing each of these four logic gates is quite simple: There is an input
+bus with two 1-bit values, a process for each of the gates, and an output bus
+with a 1-bit value for each of the logic gates. % (See Figure
+%\ref{fig:logic-gate}).
+%
+%\begin{figure}
+%    \centering
+%    \begin{tikzpicture}
+%        \coordinate(input);
+%        \node[block, right of=input] (A) {Logic gate};
+%        \path[->] (input) edge node [midway, above] {input} (A);
+%        \node[right of=A] (output) {};
+%        \path[->] (A) edge node [midway, above] {output} (output);
+%    \end{tikzpicture}
+%    \caption{The structure of a Logic gate process}
+%    \label{fig:logic-gate}
+%\end{figure}
+
+\subsubsection{Testing}
+To test the four processes, I have made a process, which sets the bits to all
+of the values in the truth table, and checks whether or not each process
+outputs the expected value from the truth table. How the processes are
+connected can be seen in Figure \ref{fig:logic-test}.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm]
+        \node[block] (and) {\texttt{AND}};
+        \node[block, right of=and] (or) {\texttt{OR}};
+        \node[block, right of=or] (not) {\texttt{NOT}};
+        \node[block, right of=not] (xor) {\texttt{XOR}};
+        \node[above of=and] (input) at ($(or)!0.5!(not)$) {};
+        \node[block, above of=input] (tester) {Tester};
+
+        \path[-] (tester) edge node[midway, right] {input} (input.center);
+        \path[draw, ->] (input.center) -| (and.north);
+        \path[draw, ->] (input.center) -| (or.north);
+        \path[draw, ->] (input.center) -| (not.north);
+        \path[draw, ->] (input.center) -| (xor.north);
+
+        \node[below of=and] (output) at ($(or)!0.5!(not)$) {};
+        \node[right of=xor] (a) {output};
+
+        \path[draw, -] (and.south) |- (output.center);
+        \path[draw, -] (or.south) |- (output.center);
+        \path[draw, -] (not.south) |- (output.center);
+        \path[draw, -] (xor.south) |- (output.center);
+
+        \path[draw, -] (output.center) -| (a.west);
+        \path[draw, ->] (a.west) |- (tester.east);
+    \end{tikzpicture}
+    \caption{The structure of the test of the logic gates}
+    \label{fig:logic-test}
+\end{figure}
+
+\subsection{Decoder}
+% TODO 0-indexed!
+The first combinatorial circuit I make is the decoder. An decoder takes an
+$n$-bit input, and produces an $2^n$-bit output, where the bit corresponding to
+the input numbers value is set to \texttt{1}. E.g. if the input value is the
+binary representation of the number 5, then the 5th output bit will be
+\texttt{1}, and the rest will be \texttt{0}.
+
+A decoder can be made from a set of \texttt{NOT} and \texttt{AND} gates. We
+need to have $n$ \texttt{NOT} gates, and $2^n$ \texttt{AND} gates. For each
+input, we split it into two, and send the copy to a \texttt{NOT} gate. Then for
+each output, we attach an \texttt{AND} gate, and give it inputs corresponding
+to the binary representation of the number %TODO mangler ord.
+E.g. if we get the number 5, the binary representation is 101, i.e. the 5th
+\texttt{AND} gate gets input from Bit0, \texttt{NOT} Bit1 and Bit2. An example
+of a 2-bit decoder can be seen in Figure \ref{fig:2-bit-decoder}.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm]
+        \node[block] (and0) {\texttt{AND}};
+        \node[block, below of=and0] (and1) {\texttt{AND}};
+        \node[block, below of=and1] (and2) {\texttt{AND}};
+        \node[block, below of=and2] (and3) {\texttt{AND}};
+
+        \node[right of=and0] (output0) {output0};
+        \node[right of=and1] (output1) {output1};
+        \node[right of=and2] (output2) {output2};
+        \node[right of=and3] (output3) {output3};
+
+        \path[draw, ->] (and0) -- (output0);
+        \path[draw, ->] (and1) -- (output1);
+        \path[draw, ->] (and2) -- (output2);
+        \path[draw, ->] (and3) -- (output3);
+
+        \node[empty, left of=and0] (andinp0) {};
+        \node[empty, left of=and1] (andinp1) {};
+        \node[empty, left of=and2] (andinp2) {};
+        \node[empty, left of=and3] (andinp3) {};
+
+        \node[block, left of=andinp0] (not0) {\texttt{NOT}};
+        \node[block, left of=andinp3] (not1) {\texttt{NOT}};
+
+        \node[left of=not0] (input0) {input0};
+        \node[left of=not1] (input1) {input1};
+
+        \path[draw, ->] (input0) -- (not0);
+        \path[draw, ->] (input1) -- (not1);
+
+        \path[draw, thick, -] (not0) -| (andinp0.155);
+        \path[draw, thick, ->] (andinp0.155) -- (and0.155);
+        \path[draw, thick, -] (not1.east) -| (andinp0.south);
+        \path[draw, thick, ->] (andinp0.south) |- (and0.200);
+
+        \path[draw, ->] (input0) |- (and1.155);
+        \path[draw, thick, -] (not1.east) -| (andinp1.340);
+        \path[draw, thick, ->] (andinp1.340) -- (and1.200);
+
+        \path[draw, thick, -] (not0.east) -| (andinp2.155);
+        \path[draw, thick, ->] (andinp2.155) -- (and2.155);
+        \path[draw, ->] (input1.north) |- (and2.200);
+
+        \path[draw, -] (input0) |- (andinp1.295);
+        \path[draw, ->] (andinp1.295) |- (and3.155);
+        \path[draw, -] (input1) |- (andinp2.200);
+        \path[draw, ->] (andinp2.200) |- (and3.200);
+
+    \end{tikzpicture}
+    \caption{An 2-bit decoder made by \texttt{AND} and \texttt{NOT} gates.}
+    \label{fig:2-bit-decoder}
+\end{figure}
+
+%\subsubsection{$n$-bit decoder}
+\subsubsection{Testing}
+\subsection{Adder}
+\subsubsection{Half adder}
+\subsubsection{Full adder}
+\subsubsection{$n$-bit adder}
+\subsubsection{Testing}
