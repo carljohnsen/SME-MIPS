@@ -14,11 +14,6 @@ same register as a previous instruction writes to, it should get the written
 value. This is easy to fix in the single cycle processor, as we just need to
 write before reading.
 
-A
-register file writes before reading, as an instruction assumes that the data
-potentially produced by an previous instruction is available for the current
-instruction.
-
 \begin{figure}
     \centering
     \begin{tikzpicture}[node distance=2cm]
