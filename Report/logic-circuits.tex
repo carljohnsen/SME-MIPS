@@ -173,8 +173,157 @@ of a 2-bit decoder can be seen in Figure \ref{fig:2-bit-decoder}.
 
 %\subsubsection{$n$-bit decoder}
 \subsubsection{Testing}
+I have written both a 2-bit decoder, and an $n$-bit decoder. They are tested in
+the same fashion as the logic gates, i.e. a tester process is connected to the
+input and output bus. The test inputs every combination of numbers, i.e. $2^n$,
+and checks after each input, that the correct output is set to \texttt{1} and
+\texttt{0} respectively.
+
 \subsection{Adder}
-\subsubsection{Half adder}
-\subsubsection{Full adder}
-\subsubsection{$n$-bit adder}
+As with the decoder, an adder can be constructed by a combination of
+\texttt{AND}, \texttt{OR} and \texttt{XOR} gates. An $n$-bit adder is a chain
+of two major components: an half adder and a full adder.
+
+The half adder is the initial component in the chain. It takes two binary
+inputs, and outputs the sum and the carry of the addition (See Figure
+\ref{fig:half-adder}.
+
+The rest of the $n$-bit adder consists of a chain of full adders, that take
+three inputs, A, B, and the carry from the previous link in the chain, and
+outputs the sum and the carry of the addition (See Figure
+\ref{fig:full-adder}).
+
+The combination of the components can be seen in Figure \ref{fig:n-bit-adder}.
+
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm]
+        \node[block] (xor) {\texttt{XOR}};
+        \node[block, below of=xor] (and) {\texttt{AND}};
+
+        \node[empty, left of=xor] (xorin) {};
+        \node[empty, left of=and] (andin) {};
+
+        \node[left of=xorin] (inputa) {InputA};
+        \node[left of=andin] (inputb) {InputB};
+
+        \node[empty, right of=xor] (sum) {Sum};
+        \node[empty, right of=and] (carry) {Carry};
+
+        \path[draw, -] (inputa) -| (xorin.155);
+        \path[draw, ->] (xorin.155) -- (xor.155);
+        \path[draw, ->] (xorin.west) |- (and.155);
+
+        \path[draw, thick, -] (inputb.east) -| (xorin.335);
+        \path[draw, thick, ->] (xorin.335) -- (xor.205);
+        \path[draw, thick, ->] (andin.east) |- (and.205);
+
+        \path[draw, ->] (xor) -- (sum);
+        \path[draw, ->] (and) -- (carry);
+    \end{tikzpicture}
+    \caption{An half adder composed of \texttt{XOR} and \texttt{AND} gates}
+    \label{fig:half-adder}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm]
+        \node[block] (or) {\texttt{OR}};
+        \node[empty, left of=or] (orin) {};
+        \node[block, left of=orin] (and1) {\texttt{AND}};
+        \node[block, above of=and1] (and0) {\texttt{AND}};
+        \node[empty, left of=and0] (and0in) {};
+        \node[block, above of=and0] (xor1) {\texttt{XOR}};
+        \node[empty, left of=xor1] (xor1in) {};
+        \node[block, left of=xor1in] (xor0) {\texttt{XOR}};
+        \node[empty, left of=xor0] (xor0in) {};
+        \node[empty, left of=xor0in] (inputa) {InputA};
+        \node[empty, below of=inputa] (inputb) {InputB};
+        \node[empty, below of=inputb] (inputc) {InputC};
+        \node[empty, right of=inputc] (inputcout) {};
+        \node[empty, right of=xor1] (sum) {};
+        \node[empty, right of=sum] (summ) {};
+        \node[empty, right of=summ] (summm) {Sum};
+        \node[empty, right of=or] (carry) {Carry};
+
+        \path[draw, -] (inputa.east) -| (xor0in.155);
+        \path[draw, ->] (xor0in.155) -- (xor0.155);
+        \path[draw, -] (inputb.east) -| (xor0in.335);
+        \path[draw, ->] (xor0in.335) -- (xor0.205);
+
+        \path[draw, -] (inputa.east) -| (inputcout.205);
+        \path[draw, ->] (inputcout.205) -- (and1.205);
+        \path[draw, -] (inputb.east) -| (inputcout.25);
+        \path[draw, ->] (inputcout.25) -- (and1.155);
+
+        \path[draw, thick, -] (inputc.east) -| (and0in.335);
+        \path[draw, thick, ->] (and0in.335) -- (and0.205);
+        \path[draw, thick, ->] (and0in.335) |- (xor1.205);
+
+        \path[draw, -] (xor0.east) -- (xor1in.west);
+        \path[draw, ->] (xor1in.west) |- (xor1.155);
+        \path[draw, ->] (xor1in.west) |- (and0.155);
+
+        \path[draw, -] (and1.east) -| (orin.205);
+        \path[draw, ->] (orin.205) -- (or.205);
+        \path[draw, ->] (xor1) -- (summm);
+        \path[draw, -] (and0.east) -| (orin.25);
+        \path[draw, ->] (orin.25) -- (or.155);
+        \path[draw, ->] (or) -- (carry);
+    \end{tikzpicture}
+    \caption{A full adder composed of \texttt{AND}, \texttt{OR} and
+    \texttt{XOR} gates}
+    \label{fig:full-adder}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm]
+        \node[block] (half) {Half adder};
+        \node[block, below of=half] (full1) {Full adder 1};
+        \node[empty, below of=full1] (dot) {...};
+        \node[block, below of=dot] (fulln) {Full adder $n-1$};
+
+        \node[empty, left of=half] (spacingl) {};
+        \node[empty, right of=half] (spacingr) {};
+
+        \node[empty, left of=spacingl] (in0) {Input 0};
+        \node[empty, below of=in0] (in1) {Input 1};
+        \node[empty, below of=in1] (vertspacel) {};
+        \node[empty, below of=vertspacel] (inn) {Input $n$};
+
+        \node[empty, right of=spacingr] (out0) {Sum 0};
+        \node[empty, below of=out0] (out1) {Sum 1};
+        \node[empty, below of=out1] (vertspacer) {};
+        \node[empty, below of=vertspacer] (outn) {Sum $n-1$};
+        \coordinate[below of=fulln] (carry);
+
+        \path[draw, ->] (in0) -- (half);
+        \path[draw, ->] (in1) -- (full1);
+        \path[draw, ->] (inn) -- (fulln);
+
+        \path[draw, ->] (half) -- (out0);
+        \path[draw, ->] (full1) -- (out1);
+        \path[draw, ->] (fulln) -- (outn);
+
+        \path[draw, ->] (half) -- node [midway, right] {Carry 0} (full1);
+        \path[draw, ->] (full1) -- node [midway, right] {Carry 1} (dot);
+        \path[draw, ->] (dot) -- node [midway, right] {Carry $n-2$} (fulln);
+        \path[draw, ->] (fulln) -- node [midway, right] {Carry $n-1$} (carry);
+    \end{tikzpicture}
+    \caption{An $n$-bit adder composed of a half adder, and $n-1$ full adders.
+    Note: Input A and B are both inside the inputs for simplicity.}
+    \label{fig:n-bit-adder}
+\end{figure}
+
 \subsubsection{Testing}
+I have tested both the half adder and the full adder, by giving each every
+possible input, and for each, compared them to their expected output. For the
+$n$-bit adder, I have made a function, that takes an integer as input, sends it
+along the corresponding input wires. I have also made a similar function, that
+takes the values from the output wires and packs it into an integer. I start by
+testing if it can make one of the simplest additions: 2+2. Then I check if it
+can overflow, i.e. set the Carry $n-1$ to \texttt{1}. Finally, I run a series
+of random numbers through the adder, and check if the output is the expected
+sum of the two numbers.
