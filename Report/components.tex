@@ -6,13 +6,73 @@ into groups based on their usage. This does not matter from a hardware
 perspective, except for register 0, which is immutable and always 0.
 
 A register file has 5 inputs: Read address A, Read address B, Write enabled,
-Write address and Write data. It also has two outputs: Output A and Output B. A
+Write address and Write data. It also has two outputs: Output A and Output B.
+We need to be careful of the order in which we read and write from the register
+file. We need to make sure that when an instruction reads from the register
+file, it always gets the latest data, i.e. if an instruction reads from the
+same register as a previous instruction writes to, it should get the written
+value. This is easy to fix in the single cycle processor, as we just need to
+write before reading.
+
+A
 register file writes before reading, as an instruction assumes that the data
 potentially produced by an previous instruction is available for the current
 instruction.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[node distance=2cm]
+        \node[empty] (inputa) {Input A};
+        \node[empty, below of=inputa] (inputb) {InputB};
+
+        \node[empty, right of=inputa] (spacing) at ($(inputa)!0.5!(inputb)$) {};
+        \node[block, right of=spacing] (register) {Register};
+        \node[empty, below of=register] (writedata) {Write data};
+        \node[empty, left of=writedata] (write) {Write register};
+        \node[empty, right of=writedata] (writeenabled) {Write enabled};
+
+        \node[empty, right of=inputa] (space) {};
+        \node[empty, right of=space] (spacee) {};
+        \node[empty, right of=spacee] (spaceee) {};
+        \node[empty, right of=spaceee] (outputa) {Output A};
+        \node[empty, below of=outputa] (outputb) {Output B};
+        \node[empty, left of=outputb] (bspace) {};
+
+        \path[draw, -] (inputa) -| (spacing.north);
+        \path[draw, ->] (spacing.north) |- (register.155);
+        \path[draw, -] (inputb) -| (spacing.south);
+        \path[draw, ->] (spacing.south) |- (register.205);
+
+        \path[draw, -] (write) |- (writedata.135);
+        \path[draw, ->] (writedata.135) -- (register.225);
+        \path[draw, ->] (writedata) -- (register);
+        \path[draw, -] (writeenabled) |- (writedata.45);
+        \path[draw, ->] (writedata.45) -- (register.315);
+
+        \path[draw, -] (register.335) -| (bspace.north);
+        \path[draw, ->] (bspace.north) |- (outputb);
+        \path[draw, -] (register.25) -| (spaceee.south);
+        \path[draw, ->] (spaceee.south) |- (outputa);
+    \end{tikzpicture}
+    \caption{The register file}
+    \label{fig:register}
+\end{figure}
 
 \bf{Testing} - I start by testing if some of the initial values of the register
 file is correctly set to 0. Then I test if I can write to a register, and
 whether or not I can read the same value from the same address in the register.
 Then, I try to write to all of the registers, except for 0, and check whether
 or not the output that I get, corresponds with the output that I wrote.
+
+\subsection{ALU}
+The ALU (Arithmetic Logic Unit) is the part of the processor, which makes the
+actual computation. It takes three inputs: InputA, InputB and an ALU opcode
+indicating which computation to perform. It has two outputs: The result of the
+computation, and a zero flag indicating whether or not the result of the
+computation was 0.
+
+I follow the approach from the book % TODO ref!
+and have implemented the basic processor operations: \texttt{add}, \texttt{sub},
+\texttt{and}, \texttt{or} and \texttt{slt} (set less than).
+
+I have tested each of the four operations.
