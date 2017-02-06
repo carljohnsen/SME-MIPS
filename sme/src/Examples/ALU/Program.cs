@@ -1,7 +1,7 @@
 ﻿using System;
 using SME;
 
-namespace Register
+namespace ALU
 {
 	class MainClass
 	{
@@ -10,7 +10,7 @@ namespace Register
 			new Simulation()
 				.BuildCSVFile()
 				.BuildGraph()
-				.BuildVHDL()
+				//.BuildVHDL()
 				.Run(typeof(MainClass).Assembly);
 		}
 	}
