@@ -1,0 +1,18 @@
+\subsection{Register file}
+The register file is the component that holds values for the processor. It is
+the first step in a memory hierarchy, and thus the fastest memory available.
+There are 32 registers in a 32-bit MIPS processor. The registers are devided
+into groups based on their usage. This does not matter from a hardware
+perspective, except for register 0, which is immutable and always 0.
+
+A register file has 5 inputs: Read address A, Read address B, Write enabled,
+Write address and Write data. It also has two outputs: Output A and Output B. A
+register file writes before reading, as an instruction assumes that the data
+potentially produced by an previous instruction is available for the current
+instruction.
+
+\bf{Testing} - I start by testing if some of the initial values of the register
+file is correctly set to 0. Then I test if I can write to a register, and
+whether or not I can read the same value from the same address in the register.
+Then, I try to write to all of the registers, except for 0, and check whether
+or not the output that I get, corresponds with the output that I wrote.

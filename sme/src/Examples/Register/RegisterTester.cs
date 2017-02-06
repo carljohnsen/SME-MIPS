@@ -60,15 +60,15 @@ namespace Register
 			for (short i = 1; i < 32; i++)
 			{
 				write.addr = i;
-				write.data = 100;
+				write.data = 100 + i;
 				write.enabled = true;
 				inputA.addr = i;
 				inputB.addr = i;
 
 				await ClockAsync();
 
-				System.Diagnostics.Debug.Assert(outputA.data == 100);
-				System.Diagnostics.Debug.Assert(outputB.data == 100);
+				System.Diagnostics.Debug.Assert(outputA.data == 100 + i);
+				System.Diagnostics.Debug.Assert(outputB.data == 100 + i);
 			}
 		}
 	}

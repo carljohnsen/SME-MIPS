@@ -30,6 +30,18 @@ namespace Register
 			}
 			outputA.data = data[readA.addr];
 			outputB.data = data[readB.addr];
+
+			/* Print the register file
+			Console.Write("[");
+			for (int i = 0; i < 4; i++)
+			{
+				Console.Write("\t");
+				for (int j = 0; j < 7; j++)
+				{
+					Console.Write(data[i * 8 + j] + ",\t");
+				}
+				Console.WriteLine(data[i * 8 + 7] + (i == 3 ? "\t]" : ","));
+			}*/
 		}
 	}
 }
