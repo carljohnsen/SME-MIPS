@@ -45,6 +45,26 @@ namespace SingleCycleMIPS
 		tne=54
 	}
 
+	public enum ALUOps
+	{
+		sl,
+		sr,
+		sra,
+		add,
+		addu,
+		sub,
+		subu,
+		mult,
+		multu,
+		div,
+		divu,
+		and,
+		or,
+		xor,
+		nor,
+		slt
+	}
+
 	[InitializedBus]
 	public interface ALUOp : IBus
 	{
@@ -119,6 +139,7 @@ namespace SingleCycleMIPS
 
 		// Appendix D - Figure D.2.3
 		// https://www.cise.ufl.edu/~mssz/CompOrg/Table4.2-MIPSdatapath-ALUcontrol.gif
+		// Not enough, create new!
 		public class ALUControl : SimpleProcess
 		{
 			[InputBus]
@@ -131,7 +152,8 @@ namespace SingleCycleMIPS
 
 			protected override void OnTick()
 			{
-				short tmp = funct.val;
+				if (!op.op0 && !op.op1)
+				/*short tmp = funct.val;
 				bool funct0 = (tmp & 1) == 1;
 				bool funct1 = ((tmp >> 1) & 1) == 1;
 				bool funct2 = ((tmp >> 2) & 1) == 1;
@@ -144,7 +166,7 @@ namespace SingleCycleMIPS
 				bool op2 = (funct1 && op.op1) || op.op0;
 				//bool op4 = 0;
 
-				output.val = (short) (0 & (op0 ? 1 : 0) | ((op1 ? 1 : 0) << 1) | ((op2 ? 1 : 0) << 2));
+				output.val = (short) (0 & (op0 ? 1 : 0) | ((op1 ? 1 : 0) << 1) | ((op2 ? 1 : 0) << 2));*/
 			}
 		}
 
@@ -166,27 +188,58 @@ namespace SingleCycleMIPS
 			{
 				int tmp = -1;
 				bool z = false;
-				switch ((Funcs) op.val)
+				switch ((ALUOps) op.val)
 				{
-					case Funcs.and:
-						tmp = inA.data & inB.data;
+					case ALUOps.sr:
+						tmp = (int) (unchecked((uint) inA.data) >> inB.data);
 						break;
-					case Funcs.or:
-						tmp = inA.data | inB.data;
+					case ALUOps.sl:
+						tmp = (int) (unchecked((uint) inA.data) << inB.data);
 						break;
-					case Funcs.add:
+					case ALUOps.sra:
+						tmp = inA.data << inB.data;
+						break;
+					case ALUOps.add:
 						tmp = inA.data + inB.data;
 						break;
-					case Funcs.mult:
-						tmp = inA.data * inB.data;
+					case ALUOps.addu:
+						tmp = (int) (((uint)inA.data) + ((uint)inB.data));
 						break;
-					case Funcs.sub:
+					case ALUOps.sub:
 						tmp = inA.data - inB.data;
 						break;
-					case Funcs.slt:
-						tmp = (inA.data < inB.data) ? 1 : 0;
+					case ALUOps.subu:
+						tmp = (int)(((uint)inA.data) - ((uint)inB.data));
+						break;
+					case ALUOps.mult: // TODO HI og LO
+						tmp = inA.data * inB.data;
+						break;
+					case ALUOps.multu:
+						tmp = (int)(((uint)inA.data) * ((uint)inB.data));
+						break;
+					case ALUOps.div:
+						tmp = inA.data / inB.data;
+						break;
+					case ALUOps.divu:
+						tmp = (int)(((uint)inA.data) / ((uint)inB.data));
+						break;
+					case ALUOps.and:
+						tmp = inA.data & inB.data;
+						break;
+					case ALUOps.or:
+						tmp = inA.data | inB.data;
+						break;
+					case ALUOps.xor:
+						tmp = inA.data ^ inB.data;
+						break;
+					case ALUOps.nor:
+						tmp = ~(inA.data | inB.data);
+						break;
+					case ALUOps.slt:
+						tmp = inA.data < inB.data ? 1 : 0;
 						break;
 					default: // Catch unknown
+						Console.WriteLine("Should not be!");
 						tmp = -1;
 						break;
 				}
