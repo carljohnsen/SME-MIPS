@@ -18,8 +18,6 @@ namespace SingleCycleMIPS
 
 	public class ID
 	{
-		// TODO get data from IF
-
 		[InitializedBus]
 		public interface ReadA : IBus
 		{
@@ -143,7 +141,6 @@ namespace SingleCycleMIPS
 			}
 		}
 
-		// TODO register + control + sign extend
 		public class SignExtend : SimpleProcess
 		{
 			[InputBus]
@@ -180,6 +177,9 @@ namespace SingleCycleMIPS
 			[OutputBus]
 			RegWrite regwrite;
 
+			/**
+			 * Appendix D - Figure D.2.5
+			 */
 			protected override void OnTick()
 			{
 				short tmp = input.opcode;

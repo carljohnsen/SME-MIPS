@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALU", "Examples\ALU\ALU.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SingleCycleMIPS", "Examples\SingleCycleMIPS\SingleCycleMIPS.csproj", "{50E31EFB-78A1-406D-9D50-43D005B66375}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testing", "testing\testing.csproj", "{CD17B80B-D921-417B-8FA6-D553EB97B81D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -201,6 +203,14 @@ Global
 		{50E31EFB-78A1-406D-9D50-43D005B66375}.Debug|x86.Build.0 = Debug|Any CPU
 		{50E31EFB-78A1-406D-9D50-43D005B66375}.Release|x86.ActiveCfg = Release|Any CPU
 		{50E31EFB-78A1-406D-9D50-43D005B66375}.Release|x86.Build.0 = Release|Any CPU
+		{CD17B80B-D921-417B-8FA6-D553EB97B81D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD17B80B-D921-417B-8FA6-D553EB97B81D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD17B80B-D921-417B-8FA6-D553EB97B81D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD17B80B-D921-417B-8FA6-D553EB97B81D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD17B80B-D921-417B-8FA6-D553EB97B81D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CD17B80B-D921-417B-8FA6-D553EB97B81D}.Debug|x86.Build.0 = Debug|Any CPU
+		{CD17B80B-D921-417B-8FA6-D553EB97B81D}.Release|x86.ActiveCfg = Release|Any CPU
+		{CD17B80B-D921-417B-8FA6-D553EB97B81D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2BAC28BE-A503-4534-BA59-171FE4313317} = {0F94E837-9D61-47FE-98A0-EDFA671A44FA}

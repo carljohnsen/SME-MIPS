@@ -7,3 +7,5 @@
 /Thesis\ description/*
 !/Thesis\ description/*.tex
 !/Thesis\ description/*.pdf
+
+/sme/src/testing/*
