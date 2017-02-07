@@ -34,6 +34,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ID.cs" />
     <Compile Include="IF.cs" />
+    <Compile Include="MEM.cs" />
+    <Compile Include="EX.cs" />
+    <Compile Include="WB.cs" />
+    <Compile Include="Testers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Render\VHDL\SME.Render.VHDL.csproj">

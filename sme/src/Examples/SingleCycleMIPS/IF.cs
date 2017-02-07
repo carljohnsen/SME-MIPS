@@ -6,7 +6,7 @@ namespace SingleCycleMIPS
 	public class IF
 	{
 		[InitializedBus]
-		public interface Instruction
+		public interface Instruction : IBus
 		{
 			int instruction { get; set; }
 		}
