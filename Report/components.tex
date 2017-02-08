@@ -1,3 +1,5 @@
+The components are mentioned in order of implementation.
+
 \subsection{Register file}
 The register file is the component that holds values for the processor. It is
 the first step in a memory hierarchy, and thus the fastest memory available.
@@ -68,6 +70,53 @@ computation was 0.
 
 I follow the approach from the book % TODO ref!
 and have implemented the basic processor operations: \texttt{add}, \texttt{sub},
-\texttt{and}, \texttt{or} and \texttt{slt} (set less than).
+\texttt{and}, \texttt{or}, \texttt{slt}, \texttt{sw}, \texttt{lw} and
+\texttt{beq}. The encoding of the ALU opcode is described in Section
+\ref{sec:alu-control}
 
 I have tested each of the four operations.
+
+\subsection{Control Unit}
+The control unit is part of the decoding step. It takes the opcode of the
+instruction, and based on the opcode, it sets control flags used throughout the
+processor. It sets the following seven control flags:
+\begin{description}
+    \item[RegDst] Controls which part of the instruction that indicates which
+        B register to read from.
+
+    \item[Branch] Controls whether or not the instruction is a branch
+        instruction.
+
+    \item[MemRead] Controls whether or not there should be read from memory.
+
+    \item[MemtoReg] Controls whether or not the value from memory should be
+        stored in the register file.
+
+    \item[ALUOp] Two bits indicating which operation should be performed in
+        the ALU. It is send to the ALU control for further processing.
+
+    \item[MemWrite] Controls whether or not data should be written to memory.
+
+    \item[ALUSrc] Controls whether the B input for the ALU should be the
+        value read from the register file, or if it should be the value
+        extracted from the instruction.
+
+    \item[RegWrite] Controls whether or not data should be written to the
+        register file.
+\end{description}
+Each of the control flags goes to their respective part of the processor.
+
+\subsection{ALU control}\label{sec:alu-control}
+The ALU control is used for generating the control code, which the ALU uses for
+selecting which operation to perform. It takes two inputs: the \texttt{ALUOp}
+code from the control unit, and the \texttt{funct} code from the instruction,
+and it computes its output based on these. If the \texttt{ALUOp} from the
+control unit indicates that the instruction is an R format instruction, it uses
+the \texttt{funct} code. Otherwise it bases its output purely on the
+\texttt{ALUOp} code.
+
+\subsection{Instruction memory}
+\subsection{Jump control}
+\subsection{Memory unit}
+\subsection{Write back}
+% TODO write buffer i ID steppet!
