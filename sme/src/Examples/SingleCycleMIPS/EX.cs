@@ -47,22 +47,22 @@ namespace SingleCycleMIPS
 
 	public enum ALUOps
 	{
+		and,
+		or,
+		add,
 		sl,
 		sr,
 		sra,
-		add,
-		addu,
 		sub,
+		slt,
+		addu,
 		subu,
 		mult,
 		multu,
+		nor,
 		div,
 		divu,
-		and,
-		or,
 		xor,
-		nor,
-		slt
 	}
 
 	[InitializedBus]
@@ -152,21 +152,21 @@ namespace SingleCycleMIPS
 
 			protected override void OnTick()
 			{
-				if (!op.op0 && !op.op1)
-				/*short tmp = funct.val;
-				bool funct0 = (tmp & 1) == 1;
-				bool funct1 = ((tmp >> 1) & 1) == 1;
-				bool funct2 = ((tmp >> 2) & 1) == 1;
-				bool funct3 = ((tmp >> 3) & 1) == 1;
-				bool funct4 = ((tmp >> 4) & 1) == 1;
-				bool funct5 = ((tmp >> 5) & 1) == 1;
+				// TODO kig på at få lavet en PLA, og derfra få den reduceret. Det tror jeg vil være det nemmeste.
+				short tmp = funct.val;
+				short funct0 = (short) (tmp & 1);
+				short funct1 = (short) ((tmp >> 1) & 1);
+				short funct2 = (short)((tmp >> 2) & 1);
+				short funct3 = (short)((tmp >> 3) & 1);
+				short funct4 = (short)((tmp >> 4) & 1);
+				short funct5 = (short)((tmp >> 5) & 1);
 
-				bool op0 = (funct0 || funct3) && op.op1;
-				bool op1 = !funct2 || !op.op1;
-				bool op2 = (funct1 && op.op1) || op.op0;
+				int op0 = (funct0 | funct3) & (op.op1 ? 1 : 0);
+				int op1 = (~funct2 & 1) | (!op.op1 ? 1 : 0);
+				int op2 = (funct1 & (op.op1 ? 1 : 0)) | (op.op0 ? 1 : 0);
 				//bool op4 = 0;
 
-				output.val = (short) (0 & (op0 ? 1 : 0) | ((op1 ? 1 : 0) << 1) | ((op2 ? 1 : 0) << 2));*/
+				output.val = (short) (op0 | (op1 << 1) | (op2 << 2));
 			}
 		}
 
@@ -182,12 +182,13 @@ namespace SingleCycleMIPS
 			[OutputBus]
 			Zero zero;
 			[OutputBus]
-			ALUResult result;
+			//ALUResult result;
+			ID.BufIn result;
 
 			protected override void OnTick()
 			{
 				int tmp = -1;
-				bool z = false;
+				//bool z = false;
 				switch ((ALUOps) op.val)
 				{
 					case ALUOps.sr:
@@ -243,8 +244,9 @@ namespace SingleCycleMIPS
 						tmp = -1;
 						break;
 				}
+				Console.WriteLine("ALU " + inA.data + " " + ((ALUOps) op.val) + " " + inB.data +  " = " + tmp);
 				result.data = tmp;
-				zero.flg = z;
+				zero.flg = tmp == 0;
 			}
 		}
 	}

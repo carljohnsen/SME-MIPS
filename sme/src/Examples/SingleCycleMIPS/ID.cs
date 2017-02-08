@@ -30,7 +30,7 @@ namespace SingleCycleMIPS
 			short addr { get; set; }
 		}
 
-		[InitializedBus]
+		[InitializedBus, ClockedBus]
 		public interface WriteAddr : IBus
 		{
 			short val { get; set; }
@@ -79,6 +79,18 @@ namespace SingleCycleMIPS
 			short rd { get; set; }
 		}
 
+		[InitializedBus]
+		public interface MuxOutput : IBus
+		{
+			short addr { get; set; }
+		}
+
+		[InitializedBus]
+		public interface BufIn : IBus
+		{
+			int data { get; set; }
+		}
+
 		public class Splitter : SimpleProcess
 		{
 			[InputBus]
@@ -100,13 +112,13 @@ namespace SingleCycleMIPS
 			protected override void OnTick()
 			{
 				int tmp = instr.instruction;
-				short opcode = (short) (tmp >> 26);
+				short opcode = (short) ((tmp >> 26) & 0x3F);
 				short rs = (short) ((tmp >> 21) & 0x1F);
 				short rt = (short) ((tmp >> 16) & 0x1F);
 				short rd = (short) ((tmp >> 11) & 0x1F);
 				short funct = (short) (tmp & 0x3F);
 
-				Console.WriteLine("Splitter : Opcode " + opcode);
+				Console.WriteLine("Splitter : Opcode " + ((uint) opcode));
 				Console.WriteLine("Splitter : rs " + rs);
 				Console.WriteLine("Splitter : rt " + rt);
 				Console.WriteLine("Splitter : rd " + rd);
@@ -130,14 +142,14 @@ namespace SingleCycleMIPS
 			MuxInput input;
 
 			[OutputBus]
-			WriteAddr write;
+			MuxOutput write;
 
 			protected override void OnTick()
 			{
 				if (regdst.flg)
-					write.val = input.rd;
+					write.addr = input.rd;
 				else
-					write.val = input.rt;
+					write.addr = input.rt;
 			}
 		}
 
@@ -207,6 +219,26 @@ namespace SingleCycleMIPS
 			}
 		}
 
+		[ClockedProcess]
+		public class WriteBuffer : SimpleProcess
+		{
+			[InputBus]
+			MuxOutput addrIn;
+			[InputBus]
+			BufIn dataIn;
+
+			[OutputBus]
+			WriteAddr addrOut;
+			[OutputBus]
+			WriteData dataOut;
+
+			protected override void OnTick()
+			{
+				addrOut.val = addrIn.addr;
+				dataOut.data = dataIn.data;
+			}
+		}
+
 		public class Register : SimpleProcess
 		{
 			[InputBus]
@@ -235,11 +267,14 @@ namespace SingleCycleMIPS
 					Console.WriteLine("Writing " + writeData.data + " to " + writeAddr.val);
 					data[writeAddr.val] = writeData.data;
 				}
+				// For debugging!
+				data[1] = 5;
+				data[2] = 2;
 				Console.WriteLine("Reading from " + readA.addr + " " + readB.addr);
 				outputA.data = data[readA.addr];
 				outputB.data = data[readB.addr];
 
-				/* Print the register file
+				/* Print the register file */
 				Console.Write("[");
 				for (int i = 0; i < 4; i++)
 				{
@@ -249,7 +284,7 @@ namespace SingleCycleMIPS
 						Console.Write(data[i * 8 + j] + ",\t");
 					}
 					Console.WriteLine(data[i * 8 + 7] + (i == 3 ? "\t]" : ","));
-				}*/
+				}/**/
 			}
 		}
 	}
