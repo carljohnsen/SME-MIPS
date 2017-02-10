@@ -68,13 +68,43 @@ indicating which computation to perform. It has two outputs: The result of the
 computation, and a zero flag indicating whether or not the result of the
 computation was 0.
 
+\begin{figure}
+    \centering
+    \begin{tikzpicture} [node distance=1.5cm]
+        \node[empty] (ina) {Input A};
+        \node[empty, below of=ina] (inb) {Input B};
+        \node[empty, right of=inputa] (spacing) at ($(ina)!0.5!(inb)$) {};
+        \node[block, right of=spacing] (alu) {ALU};
+        \node[empty, right of=ina] (align0) {};
+        \node[empty, right of=align0] (align1) {};
+        \node[empty, right of=align1] (align2) {};
+        \node[empty, right of=align2] (result) {Result};
+        \node[empty, below of=result] (zero) {Zero};
+        \node[empty, left of=zero] (align3) {};
+        \node[empty, below of=alu] (aluop) {ALUOp};
+
+        \path[draw, -] (ina.east) -| (spacing.155);
+        \path[draw, ->] (spacing.155) -- (alu.155);
+        \path[draw, -] (inb.east) -| (spacing.205);
+        \path[draw, ->] (spacing.205) -- (alu.205);
+        \path[draw, ->] (aluop) -- (alu);
+        \path[draw, -] (alu.25) -| (align2.east);
+        \path[draw, ->] (align2.east) -- (result);
+        \path[draw, -] (alu.335) -| (align3.east);
+        \path[draw, ->] (align3.east) -- (zero);
+    \end{tikzpicture}
+    \caption{The ALU}
+    \label{fig:alu}
+\end{figure}
+
 I follow the approach from the book % TODO ref!
 and have implemented the basic processor operations: \texttt{add}, \texttt{sub},
 \texttt{and}, \texttt{or}, \texttt{slt}, \texttt{sw}, \texttt{lw} and
 \texttt{beq}. The encoding of the ALU opcode is described in Section
 \ref{sec:alu-control}
 
-I have tested each of the four operations.
+I have tested each of the eight operations, and by looking at the results from
+the ALU, the results look sane.
 
 \subsection{Control Unit}
 The control unit is part of the decoding step. It takes the opcode of the
@@ -112,8 +142,8 @@ selecting which operation to perform. It takes two inputs: the \texttt{ALUOp}
 code from the control unit, and the \texttt{funct} code from the instruction,
 and it computes its output based on these. If the \texttt{ALUOp} from the
 control unit indicates that the instruction is an R format instruction, it uses
-the \texttt{funct} code. Otherwise it bases its output purely on the
-\texttt{ALUOp} code.
+the \texttt{funct} code for selecting the operation. Otherwise it bases its
+output purely on the \texttt{ALUOp} code.
 
 \subsection{Instruction memory}
 \subsection{Jump control}
