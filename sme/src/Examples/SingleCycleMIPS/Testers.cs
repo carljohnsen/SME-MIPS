@@ -126,11 +126,12 @@ namespace SingleCycleMIPS
 				Instructions.beq_r1_r2_10,
 			};
 
-			foreach (int instruction in program)
+			//foreach (int instruction in program)
 			{
-				input.instruction = instruction;
+				//input.instruction = instruction;
 				await ClockAsync();
 				Console.WriteLine("\nClock!\n" + result.data + " " + zero.flg);
+				await ClockAsync();
 			}
 		}
 	}
