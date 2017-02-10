@@ -82,6 +82,12 @@ namespace SingleCycleMIPS
 			}
 		}
 
+		public interface DEBUG_SHUTDOWN : IBus
+		{
+			[InitialValue(true)]
+			bool running { get; set; }
+		}
+
 		public class InstructionMemory : SimpleProcess
 		{
 			[InputBus]
@@ -89,18 +95,28 @@ namespace SingleCycleMIPS
 
 			[OutputBus]
 			Instruction instr;
+			[OutputBus]
+			DEBUG_SHUTDOWN shut;
 
-			int[] memory = {
-				0x00221820 // add r3 r1 r2
+			int[] program = { // TODO spørg kenneth (eller læs din dovne skid) hvordan man lavede filer med memory
+				0x00221820, // add r3 r1 r2
+				0x00232020, // add r4 r1 r3
+				0x00842820, // add r5 r4 r4
 			};
 
 			protected override void OnTick()
 			{
 				int i = addr.address;
-				if (i >= 0 && i < memory.Length)
-					instr.instruction = memory[i];
+				if (i >= 0 && i < program.Length)
+				{
+					instr.instruction = program[i];
+					shut.running = true;
+				}
 				else
+				{
 					instr.instruction = 0x0; // nop
+					shut.running = false;
+				}
 			}
 		}
 	}

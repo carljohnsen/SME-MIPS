@@ -93,7 +93,7 @@ namespace SingleCycleMIPS
 		}
 	}*/
 
-	[ClockedProcess]
+	/*[ClockedProcess]
 	public class ALUTester : Process
 	{
 		[InputBus]
@@ -131,6 +131,21 @@ namespace SingleCycleMIPS
 				//input.instruction = instruction;
 				await ClockAsync();
 				Console.WriteLine("\nClock!\n" + result.data + " " + zero.flg);
+				await ClockAsync();
+			}
+		}
+	}*/
+
+	[ClockedProcess]
+	public class Tester : Process
+	{
+		[InputBus]
+		IF.DEBUG_SHUTDOWN cpu;
+
+		public async override System.Threading.Tasks.Task Run()
+		{
+			while (cpu.running)
+			{
 				await ClockAsync();
 			}
 		}
