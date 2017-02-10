@@ -1,8 +1,15 @@
-The components are mentioned in order of implementation.
+In this section, we will be looking at the major components of the MIPS
+processor. For each component, we will go through the theory of the component,
+then we will look at translating theory into an SME implementation, and the
+verification of the implementations. The order in which the components are
+mentioned, is the order of implementation.
+
+By the end of this section, we should have all of the required resources for
+building our single cycle MIPS processor using SME.
 
 \subsection{Register file}
 The register file is the component that holds values for the processor. It is
-the first step in a memory hierarchy, and thus the fastest memory available.
+the first step in a memory hierarchy, and is thus the fastest memory available.
 There are 32 registers in a 32-bit MIPS processor. The registers are devided
 into groups based on their usage. This does not matter from a hardware
 perspective, except for register 0, which is immutable and always 0.
@@ -12,9 +19,10 @@ Write address and Write data. It also has two outputs: Output A and Output B.
 We need to be careful of the order in which we read and write from the register
 file. We need to make sure that when an instruction reads from the register
 file, it always gets the latest data, i.e. if an instruction reads from the
-same register as a previous instruction writes to, it should get the written
-value. This is easy to fix in the single cycle processor, as we just need to
-write before reading.
+same register as a previous instruction writes to, it should get the newly
+written value. This is easy to fix in the single cycle processor, as we just
+need to write before reading. The register file and its inputs and outputs can
+be seen in Figure \ref{fig:register}.
 
 \begin{figure}
     \centering
@@ -55,18 +63,32 @@ write before reading.
     \label{fig:register}
 \end{figure}
 
-\bf{Testing} - I start by testing if some of the initial values of the register
-file is correctly set to 0. Then I test if I can write to a register, and
-whether or not I can read the same value from the same address in the register.
-Then, I try to write to all of the registers, except for 0, and check whether
-or not the output that I get, corresponds with the output that I wrote.
+\subsubsection*{Implementation}
+The implementation of the register file in SME is done by the use of an
+\texttt{int} array. We construct a process, that when all of its inputs are
+ready, it takes the write input, and stores it in the array with the given
+index, which is greater than 0, if the \texttt{RegWrite} flag has been set. We
+will explain the flag in more detail in Section \ref{sec:control-unit}. In case
+we do get a 0, we just ignore the request, as this is usually the pattern of a
+\texttt{nop} instruction.
+
+After the process have written to the register, it then processes the read
+addresses, and outputs the values stored in the array at the given indices.
+
+\subsubsection*{Testing}
+I start by testing if some of the initial values of the register file is
+correctly set to 0. Then I test if I can write to a register, and whether or
+not I can read the same value from the same address in the register.  Then, I
+try to write to all of the registers, except for 0, and check whether or not
+the output that I get, corresponds with the output that I tried to write.
 
 \subsection{ALU}
 The ALU (Arithmetic Logic Unit) is the part of the processor, which makes the
 actual computation. It takes three inputs: InputA, InputB and an ALU opcode
 indicating which computation to perform. It has two outputs: The result of the
 computation, and a zero flag indicating whether or not the result of the
-computation was 0.
+computation was 0. The overview of the component and its inputs and outputs can
+be seen in Figure \ref{fig:alu}.
 
 \begin{figure}
     \centering
@@ -97,16 +119,24 @@ computation was 0.
     \label{fig:alu}
 \end{figure}
 
+\subsubsection*{Implementation}
 I follow the approach from the book % TODO ref!
 and have implemented the basic processor operations: \texttt{add}, \texttt{sub},
 \texttt{and}, \texttt{or}, \texttt{slt}, \texttt{sw}, \texttt{lw} and
 \texttt{beq}. The encoding of the ALU opcode is described in Section
-\ref{sec:alu-control}
+\ref{sec:alu-control}. The book explains which ALUOp inputs should trigger
+which computation. Doing this in SME is straightforward, we read from the ALUOp
+bus, and then we have a \texttt{switch}, and for the instructions that we do
+accept, we take the input from the two input busses, do the computation, and
+output the result on the resulting bus. Finally, output on the zero bus,
+whether or not the computation was 0.
 
-I have tested each of the eight operations, and by looking at the results from
-the ALU, the results look sane.
+\subsubsection*{Testing}
+For each of the operations that the ALU can perform, I have tested if the
+output from the ALU matches the expected value.
 
 \subsection{Control Unit}
+\label{sec:control-unit}
 The control unit is part of the decoding step. It takes the opcode of the
 instruction, and based on the opcode, it sets control flags used throughout the
 processor. It sets the following seven control flags:
@@ -135,6 +165,16 @@ processor. It sets the following seven control flags:
         register file.
 \end{description}
 Each of the control flags goes to their respective part of the processor.
+We will return to this component, when we have to extend it to handle more
+instructions.
+
+\subsubsection*{Implementation}
+The book describes the logic behind generating the logic for this unit, but I
+have just implemented the combinatorial logic from the book, in the same manner
+as in Section \ref{sec:logic-circuits}.
+
+\subsubsection*{Testing}
+meh - det er gjort dog...
 
 \subsection{ALU control}\label{sec:alu-control}
 The ALU control is used for generating the control code, which the ALU uses for
@@ -143,7 +183,44 @@ code from the control unit, and the \texttt{funct} code from the instruction,
 and it computes its output based on these. If the \texttt{ALUOp} from the
 control unit indicates that the instruction is an R format instruction, it uses
 the \texttt{funct} code for selecting the operation. Otherwise it bases its
-output purely on the \texttt{ALUOp} code.
+output purely on the \texttt{ALUOp} code. As before, we will return to this
+component, when we need to extend the instruction set.
+
+\subsubsection*{Implementation}
+As with the main control unit, I have just implemented the combinatorial logic
+from the book.
+
+\subsubsection*{Testing}
+Pretty much det samme som før
+
+\subsection{Splitter}
+This is a very simple component, but it is still used in the decoding step of
+the processor. It takes the instruction, which has been fetched from memory,
+and divides it into chunks for the different parts of the decoding, e.g. the
+control unit only need the 6 most significant bits of the instruction, as this
+makes up the opcode of the instruction.
+
+\subsubsection*{Implementation}
+The implementation is straightforward: We take the instruction comming from the
+instruction fetch part of the processor, and extract the bits at the indices
+specified in the book (eller lav egen tegning!)
+
+\subsubsection*{Testing}
+Meh, der er lavet en smule, da jeg tester både splitter, register og alu
+samtidig.
+
+% Merge alle de små komponenter sammen, så der ikke er så mange små afsnit?
+\subsection{Sign extend}
+This component is used for converting values within the immediate field of an
+instruction, which is 16-bit, to a 32-bit number, maintaining the sign value.
+
+\subsubsection*{Implementation}
+To implement this, I just take the value from an input bus, which contains a
+\texttt{short} value, and send it along the output bus, which contains an
+\texttt{int} value.
+
+\subsubsection*{Testing}
+Jeg har jo ikke testet dem individuelt...
 
 \subsection{Instruction memory}
 \subsection{Jump control}
