@@ -223,6 +223,26 @@ To implement this, I just take the value from an input bus, which contains a
 Jeg har jo ikke testet dem individuelt...
 
 \subsection{Instruction memory}
+The instruction memory consists of three parts: the \texttt{PC} register, which
+is the address of the current program line. The program memory, which is just
+like the memory unit, a chunk of memory. And an \texttt{PC} incrementer, which
+adds word length to the \texttt{PC} after every instruction.
+
+\subsubsection*{Implementation}
+The PC is just a clocked process, that forwards its input. The program memory,
+is like the register file, but with less connections. It only has a single
+input and a single output bus. It takes the address given on the input bus,
+extracts the instruction from the instruction memory, and sends the instruction
+on its output bus.
+
+The incrementer just adds 1 to its input. In the book, it states that it should
+be 4 added to the program counter. However, since we are working in C\#, we can
+just use an \texttt{int} array, and instead of adding 4, we just add 1, as this
+will increment where in memory we are pointing.
+
+\subsubsection*{Testing}
+It has been tested! IF has a program that it pushes through the processor.
+
 \subsection{Jump control}
 \subsection{Memory unit}
 \subsection{Write back}
