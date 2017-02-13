@@ -4,6 +4,50 @@ using SME;
 
 namespace SingleCycleMIPS
 {
+	public enum Opcodes
+	{
+		Rformat,
+		j = 2,
+		jal, 
+		beq,
+		bne,
+		blez,
+		bgtz,
+		addi,
+		addiu,
+		slti,
+		sltiu,
+		andi,
+		ori,
+		xori,
+		lui,
+		floating=17,
+		lb=32,
+		lh,
+		lwl,
+		lw,
+		lbu,
+		lhu,
+		lwr,
+		sb=40,
+		sh,
+		swl,
+		sw,
+		swr=46,
+		cache,
+		ll,
+		lwc1,
+		lwc2,
+		pref,
+		ldc1=53,
+		ldc2,
+		sc=56,
+		swc1,
+		swc2,
+		sdc1=61,
+		sdc2=62,
+	}
+
 	[InitializedBus]
 	public interface RegDst : IBus
 	{
@@ -86,9 +130,9 @@ namespace SingleCycleMIPS
 		}
 
 		[InitializedBus]
-		public interface BufIn : IBus
+		public interface WriteEnabled : IBus
 		{
-			int data { get; set; }
+			bool flg { get; set; }
 		}
 
 		public class Splitter : SimpleProcess
@@ -194,6 +238,7 @@ namespace SingleCycleMIPS
 			 */
 			protected override void OnTick()
 			{
+				/*
 				short tmp = input.opcode;
 				bool op0 = (tmp & 1) == 1;
 				bool op1 = ((tmp >> 1) & 1) == 1;
@@ -216,28 +261,30 @@ namespace SingleCycleMIPS
 				branch.flg = beq;
 				aluop.op0 = beq;
 				aluop.op1 = rFormat;
+				*/
+				// format = [RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch, ALUOp]
+				short flags = 0; // nop
+				switch (input.opcode)
+				{
+					case (short)Opcodes.Rformat: flags = 0x122; break; // 1 0010 0010
+					case (short)Opcodes.lw:      flags = 0x0F0; break; // 0 1111 0000
+					case (short)Opcodes.sw: 	 flags = 0x088; break; // 0 1X00 1000
+					case (short)Opcodes.beq:     flags = 0x005; break; // X 0X00 0101
+						// default: flags = 0; break;
+				}
+				regdst.flg   = ((flags >> 8) & 1) == 1;
+				alusrc.flg   = ((flags >> 7) & 1) == 1;
+				memtoreg.flg = ((flags >> 6) & 1) == 1;
+				regwrite.flg = ((flags >> 5) & 1) == 1;
+				memread.flg  = ((flags >> 4) & 1) == 1;
+				memwrite.flg = ((flags >> 3) & 1) == 1;
+				branch.flg   = ((flags >> 2) & 1) == 1;
+				aluop.op1    = ((flags >> 1) & 1) == 1;
+				aluop.op0    = ( flags       & 1) == 1;
 			}
 		}
 
-		[ClockedProcess]
-		public class WriteBuffer : SimpleProcess
-		{
-			[InputBus]
-			MuxOutput addrIn;
-			[InputBus]
-			BufIn dataIn;
 
-			[OutputBus]
-			WriteAddr addrOut;
-			[OutputBus]
-			WriteData dataOut;
-
-			protected override void OnTick()
-			{
-				addrOut.val = addrIn.addr;
-				dataOut.data = dataIn.data;
-			}
-		}
 
 		public class Register : SimpleProcess
 		{
@@ -246,7 +293,7 @@ namespace SingleCycleMIPS
 			[InputBus]
 			ReadB readB;
 			[InputBus]
-			RegWrite regWrite;
+			WriteEnabled regWrite;
 			[InputBus]
 			WriteAddr writeAddr;
 			[InputBus]
@@ -284,7 +331,7 @@ namespace SingleCycleMIPS
 						Console.Write(data[i * 8 + j] + ",\t");
 					}
 					Console.WriteLine(data[i * 8 + 7] + (i == 3 ? "\t]" : ","));
-				}/**/
+				}
 			}
 		}
 	}

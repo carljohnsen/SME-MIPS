@@ -98,10 +98,19 @@ namespace SingleCycleMIPS
 			[OutputBus]
 			DEBUG_SHUTDOWN shut;
 
+			// https://www.eg.bucknell.edu/~csci320/mips_web/
 			int[] program = { // TODO spørg kenneth (eller læs din dovne skid) hvordan man lavede filer med memory
-				0x00221820, // add r3 r1 r2
-				0x00232020, // add r4 r1 r3
-				0x00842820, // add r5 r4 r4
+				0x00221820, // add r3 r1 r2 - 7
+				0x00232020, // add r4 r1 r3 - 12
+				0x00842820, // add r5 r4 r4 - 24
+				0x00A13022, // sub r6 r5 r1 - 19
+				0x00233824, // and r7 r1 r3 - 5
+				0x00234025, // or  r8 r1 r3 - 7
+				0x0023482A, // slt r9 r1 r3 - 1
+				0x0061502A, // slt r10 r3 r1 - 0
+				unchecked((int)0xAD2B0008), // sw r11 0x8 r9 - 9 -- should not write to register
+				unchecked((int)0x8D2B0008), // lw r11 0x8 r9 - 9 -- should write to register
+				0x10270010, // beq r1 r7 0x10 - 0
 			};
 
 			protected override void OnTick()
