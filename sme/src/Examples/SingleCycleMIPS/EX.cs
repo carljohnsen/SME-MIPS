@@ -45,38 +45,16 @@ namespace SingleCycleMIPS
 		tne=54
 	}
 
-	public enum ALUOps
-	{
-		and,
-		or,
-		add,
-		sl,
-		sr,
-		sra,
-		sub,
-		slt,
-		addu,
-		subu,
-		mult,
-		multu,
-		nor,
-		div,
-		divu,
-		xor,
-	}
-
 	[InitializedBus]
 	public interface ALUOp : IBus
 	{
-		short code { get; set; }
-		/*bool op0 { get; set; }
-		bool op1 { get; set; }*/
+		byte code { get; set; }
 	}
 
 	[InitializedBus]
 	public interface ALUFunct : IBus
 	{
-		short val { get; set; }
+		byte val { get; set; }
 	}
 
 	[InitializedBus]
@@ -93,10 +71,30 @@ namespace SingleCycleMIPS
 
 	public class EX
 	{
+		public enum ALUOps
+		{
+			and,
+			or,
+			add,
+			sl,
+			sr,
+			sra,
+			sub,
+			slt,
+			addu,
+			subu,
+			mult,
+			multu,
+			nor,
+			div,
+			divu,
+			xor,
+		}
+
 		[InitializedBus]
 		public interface ALUOperation : IBus
 		{
-			short val { get; set; }
+			byte val { get; set; }
 		}
 
 		[InitializedBus]
@@ -140,7 +138,6 @@ namespace SingleCycleMIPS
 
 		// Appendix D - Figure D.2.3
 		// https://www.cise.ufl.edu/~mssz/CompOrg/Table4.2-MIPSdatapath-ALUcontrol.gif
-		// Not enough, create new!
 		public class ALUControl : SimpleProcess
 		{
 			[InputBus]
@@ -153,41 +150,27 @@ namespace SingleCycleMIPS
 
 			protected override void OnTick()
 			{
-				if (op.code == 0) // R format
+				if (op.code == (byte)ALUOpcodes.RFormat) // R format
 				{
 					switch (funct.val)
 					{
-						case (short)Funcs.add: output.val = (short)ALUOps.add; break;
-						case (short)Funcs.sub: output.val = (short)ALUOps.sub; break;
-						case (short)Funcs.and: output.val = (short)ALUOps.and; break;
-						case (short)Funcs.or : output.val = (short)ALUOps.or;  break;
-						case (short)Funcs.slt: output.val = (short)ALUOps.slt; break;
+						case (byte)Funcs.add: output.val = (byte)ALUOps.add; break;
+						case (byte)Funcs.sub: output.val = (byte)ALUOps.sub; break;
+						case (byte)Funcs.and: output.val = (byte)ALUOps.and; break;
+						case (byte)Funcs.or : output.val = (byte)ALUOps.or;  break;
+						case (byte)Funcs.slt: output.val = (byte)ALUOps.slt; break;
+						default: output.val = 0; break; // nop
 					}
 				}
 				else
 				{
-					switch (op.code) // hacked solution...
+					switch (op.code)
 					{
-						case 2: output.val = (short)ALUOps.add; break;
-						case 1: output.val = (short)ALUOps.sub; break;
+						case (byte)ALUOpcodes.add: output.val = (byte)ALUOps.add; break;
+						case (byte)ALUOpcodes.sub: output.val = (byte)ALUOps.sub; break;
+						default: output.val = 0; break; // nop
 					}
 				}
-				/*
-				// TODO kig på at få lavet en PLA, og derfra få den reduceret. Det tror jeg vil være det nemmeste.
-				short tmp = funct.val;
-				short funct0 = (short) (tmp & 1);
-				short funct1 = (short) ((tmp >> 1) & 1);
-				short funct2 = (short)((tmp >> 2) & 1);
-				short funct3 = (short)((tmp >> 3) & 1);
-				short funct4 = (short)((tmp >> 4) & 1);
-				short funct5 = (short)((tmp >> 5) & 1);
-
-				int op0 = (funct0 | funct3) & (op.op1 ? 1 : 0);
-				int op1 = (~funct2 & 1) | (!op.op1 ? 1 : 0);
-				int op2 = (funct1 & (op.op1 ? 1 : 0)) | (op.op0 ? 1 : 0);
-				//bool op4 = 0;
-
-				output.val = (short) (op0 | (op1 << 1) | (op2 << 2));*/
 			}
 		}
 

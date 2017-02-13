@@ -48,6 +48,13 @@ namespace SingleCycleMIPS
 		sdc2=62,
 	}
 
+	public enum ALUOpcodes
+	{
+		RFormat,
+		sub,
+		add,
+	}
+
 	[InitializedBus]
 	public interface RegDst : IBus
 	{
@@ -65,19 +72,19 @@ namespace SingleCycleMIPS
 		[InitializedBus]
 		public interface ReadA : IBus
 		{
-			short addr { get; set; }
+			byte addr { get; set; }
 		}
 
 		[InitializedBus]
 		public interface ReadB : IBus
 		{
-			short addr { get; set; }
+			byte addr { get; set; }
 		}
 
 		[InitializedBus, ClockedBus]
 		public interface WriteAddr : IBus
 		{
-			short val { get; set; }
+			byte val { get; set; }
 		}
 
 		[InitializedBus]
@@ -113,20 +120,20 @@ namespace SingleCycleMIPS
 		[InitializedBus]
 		public interface ControlIn : IBus
 		{
-			short opcode { get; set; }
+			byte opcode { get; set; }
 		}
 
 		[InitializedBus]
 		public interface MuxInput : IBus
 		{
-			short rt { get; set; }
-			short rd { get; set; }
+			byte rt { get; set; }
+			byte rd { get; set; }
 		}
 
 		[InitializedBus]
 		public interface MuxOutput : IBus
 		{
-			short addr { get; set; }
+			byte addr { get; set; }
 		}
 
 		[InitializedBus]
@@ -156,17 +163,17 @@ namespace SingleCycleMIPS
 			protected override void OnTick()
 			{
 				int tmp = instr.instruction;
-				short opcode = (short) ((tmp >> 26) & 0x3F);
-				short rs = (short) ((tmp >> 21) & 0x1F);
-				short rt = (short) ((tmp >> 16) & 0x1F);
-				short rd = (short) ((tmp >> 11) & 0x1F);
-				short funct = (short) (tmp & 0x3F);
+				byte opcode = (byte) ((tmp >> 26) & 0x3F);
+				byte rs = (byte) ((tmp >> 21) & 0x1F);
+				byte rt = (byte) ((tmp >> 16) & 0x1F);
+				byte rd = (byte) ((tmp >> 11) & 0x1F);
+				byte funct = (byte) (tmp & 0x3F);
 
-				Console.WriteLine("Splitter : Opcode " + ((uint) opcode));
+				/*Console.WriteLine("Splitter : Opcode " + ((uint) opcode));
 				Console.WriteLine("Splitter : rs " + rs);
 				Console.WriteLine("Splitter : rt " + rt);
 				Console.WriteLine("Splitter : rd " + rd);
-				Console.WriteLine("Splitter : funct " + funct);
+				Console.WriteLine("Splitter : funct " + funct);*/
 
 				readA.addr = rs;
 				readB.addr = rt;
@@ -238,48 +245,25 @@ namespace SingleCycleMIPS
 			 */
 			protected override void OnTick()
 			{
-				/*
-				short tmp = input.opcode;
-				bool op0 = (tmp & 1) == 1;
-				bool op1 = ((tmp >> 1) & 1) == 1;
-				bool op2 = ((tmp >> 2) & 1) == 1;
-				bool op3 = ((tmp >> 3) & 1) == 1;
-				bool op4 = ((tmp >> 4) & 1) == 1;
-				bool op5 = ((tmp >> 5) & 1) == 1;
-
-				bool rFormat = !op0 && !op1 && !op2 && !op3 && !op4 && !op5;
-				bool lw = op0 && op1 && !op2 && !op3 && !op4 && op5;
-				bool sw = op0 && op1 && !op2 && op3 && !op4 && op5;
-				bool beq = !op0 && !op1 && op2 && !op3 && !op4 && !op5;
-
-				regdst.flg = rFormat;
-				alusrc.flg = lw || sw;
-				memtoreg.flg = lw;
-				regwrite.flg = rFormat || lw;
-				memread.flg = lw;
-				memwrite.flg = sw;
-				branch.flg = beq;
-				aluop.op0 = beq;
-				aluop.op1 = rFormat;
-				*/
 				// format = [RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch, ALUOp]
 				short flags = 0; // nop
 				switch (input.opcode)
 				{
-					case (short)Opcodes.Rformat: flags = 0x120; break; // 1 0010 0000
-					case (short)Opcodes.lw:      flags = 0x0F2; break; // 0 1111 0010
-					case (short)Opcodes.sw: 	 flags = 0x088; break; // 0 1X00 1010
-					case (short)Opcodes.beq:     flags = 0x005; break; // X 0X00 0101
+					case (byte)Opcodes.Rformat: flags = 0x240; break; // 10 0100 0000
+					case (byte)Opcodes.lw:      flags = 0x1E2; break; // 01 1110 0010
+					case (byte)Opcodes.sw: 	    flags = 0x112; break; // 01 X001 0010
+					case (byte)Opcodes.beq:     flags = 0x009; break; // X0 X000 1001
+					case (byte)Opcodes.addi:    flags = 0x142; break; // 01 0100 0010
 						// default: flags = 0; break;
 				}
-				regdst.flg   = ((flags >> 8) & 1) == 1;
-				alusrc.flg   = ((flags >> 7) & 1) == 1;
-				memtoreg.flg = ((flags >> 6) & 1) == 1;
-				regwrite.flg = ((flags >> 5) & 1) == 1;
-				memread.flg  = ((flags >> 4) & 1) == 1;
-				memwrite.flg = ((flags >> 3) & 1) == 1;
-				branch.flg   = ((flags >> 2) & 1) == 1;
-				aluop.code   = (short)(flags & 3); // 3 = 0011
+				regdst.flg   = ((flags >> 9) & 1) == 1;
+				alusrc.flg   = ((flags >> 8) & 1) == 1;
+				memtoreg.flg = ((flags >> 7) & 1) == 1;
+				regwrite.flg = ((flags >> 6) & 1) == 1;
+				memread.flg  = ((flags >> 5) & 1) == 1;
+				memwrite.flg = ((flags >> 4) & 1) == 1;
+				branch.flg   = ((flags >> 3) & 1) == 1;
+				aluop.code   = (byte)(flags & 7); // 7 = 0111
 			}
 		}
 
@@ -314,8 +298,8 @@ namespace SingleCycleMIPS
 					data[writeAddr.val] = writeData.data;
 				}
 				// For debugging!
-				data[1] = 5;
-				data[2] = 2;
+				/*data[1] = 5;
+				data[2] = 2;*/
 				Console.WriteLine("Reading from " + readA.addr + " " + readB.addr);
 				outputA.data = data[readA.addr];
 				outputB.data = data[readB.addr];

@@ -5,36 +5,6 @@ namespace SingleCycleMIPS
 {
 	public class IF
 	{
-		// Assumes all are > 0
-		public int makeRFormatInstruction(int rs, int rt, int rd, int shamt, int funct)
-		{
-			int result = 0;
-			result |= rs << 21;
-			result |= rt << 16;
-			result |= rd << 11;
-			result |= shamt << 6;
-			result |= funct;
-			return result;
-		}
-
-		public int makeIFormatInstruction(int opcode, int rs, int rt, int immediate)
-		{
-			int result = 0;
-			result |= opcode << 26;
-			result |= rs << 21;
-			result |= rt << 16;
-			result |= immediate;
-			return result;
-		}
-
-		public int makeJFormatInstruction(int opcode, int address)
-		{
-			int result = 0;
-			result |= opcode << 26;
-			result |= address;
-			return result;
-		}
-
 		[InitializedBus]
 		public interface Instruction : IBus
 		{
@@ -100,6 +70,8 @@ namespace SingleCycleMIPS
 
 			// https://www.eg.bucknell.edu/~csci320/mips_web/
 			int[] program = { // TODO spørg kenneth (eller læs din dovne skid) hvordan man lavede filer med memory
+				0x20010005, // addi r1 r0 0x5 - 5
+				0x20020002, // addi r2 r0 0x2 - 2
 				0x00221820, // add r3 r1 r2 - 7
 				0x00232020, // add r4 r1 r3 - 12
 				0x00842820, // add r5 r4 r4 - 24
@@ -109,8 +81,9 @@ namespace SingleCycleMIPS
 				0x0023482A, // slt r9 r1 r3 - 1
 				0x0061502A, // slt r10 r3 r1 - 0
 				unchecked((int)0xAD2B0008), // sw r11 0x8 r9 - 9 -- should not write to register
-				unchecked((int)0x8D2B0008), // lw r11 0x8 r9 - 9 -- should write to register
-				0x10270010, // beq r1 r7 0x10 - 0
+				unchecked((int)0x8D2B0008), // lw r11 0x8 r9 - 9
+				0x10270010, // beq r1 r7 0x10 - 0 -- should not write to register
+				0x200C0003, // addi r12 r0 0x3 - 3
 			};
 
 			protected override void OnTick()
