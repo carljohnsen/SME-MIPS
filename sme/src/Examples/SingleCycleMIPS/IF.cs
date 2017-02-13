@@ -48,7 +48,7 @@ namespace SingleCycleMIPS
 
 			protected override void OnTick()
 			{
-				output.newAddress = input.address + 1;// + 4; traditionally, however, we are working in C#
+				output.newAddress = input.address + 1;// + 4; traditionally, however, we are working with an int array
 			}
 		}
 
@@ -69,7 +69,7 @@ namespace SingleCycleMIPS
 			DEBUG_SHUTDOWN shut;
 
 			// https://www.eg.bucknell.edu/~csci320/mips_web/
-			int[] program = { // TODO spørg kenneth (eller læs din dovne skid) hvordan man lavede filer med memory
+			int[] program = { 
 				0x20010005, // addi r1 r0 0x5 - 5
 				0x20020002, // addi r2 r0 0x2 - 2
 				0x00221820, // add r3 r1 r2 - 7

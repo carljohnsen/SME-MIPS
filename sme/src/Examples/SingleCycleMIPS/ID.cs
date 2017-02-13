@@ -240,21 +240,18 @@ namespace SingleCycleMIPS
 			[OutputBus]
 			RegWrite regwrite;
 
-			/**
-			 * Appendix D - Figure D.2.5
-			 */
 			protected override void OnTick()
 			{
 				// format = [RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch, ALUOp]
 				short flags = 0; // nop
 				switch (input.opcode)
-				{
-					case (byte)Opcodes.Rformat: flags = 0x240; break; // 10 0100 0000
-					case (byte)Opcodes.lw:      flags = 0x1E2; break; // 01 1110 0010
-					case (byte)Opcodes.sw: 	    flags = 0x112; break; // 01 X001 0010
-					case (byte)Opcodes.beq:     flags = 0x009; break; // X0 X000 1001
-					case (byte)Opcodes.addi:    flags = 0x142; break; // 01 0100 0010
-						// default: flags = 0; break;
+				{ // The comments are the flags, A is the ALUOpcode, X is dont care
+					case (byte)Opcodes.Rformat: flags = 0x240;                        break; // 10 0100 0000
+					case (byte)Opcodes.lw:      flags = 0x1E0 | (byte)ALUOpcodes.add; break; // 01 1110 0AAA
+					case (byte)Opcodes.sw: 	    flags = 0x110 | (byte)ALUOpcodes.add; break; // 01 X001 0AAA
+					case (byte)Opcodes.beq:     flags = 0x008 | (byte)ALUOpcodes.sub; break; // X0 X000 1AAA
+					case (byte)Opcodes.addi:    flags = 0x140 | (byte)ALUOpcodes.add; break; // 01 0100 0AAA
+					// default: flags = 0; break;
 				}
 				regdst.flg   = ((flags >> 9) & 1) == 1;
 				alusrc.flg   = ((flags >> 8) & 1) == 1;
@@ -297,9 +294,6 @@ namespace SingleCycleMIPS
 					Console.WriteLine("Writing " + writeData.data + " to " + writeAddr.val);
 					data[writeAddr.val] = writeData.data;
 				}
-				// For debugging!
-				/*data[1] = 5;
-				data[2] = 2;*/
 				Console.WriteLine("Reading from " + readA.addr + " " + readB.addr);
 				outputA.data = data[readA.addr];
 				outputB.data = data[readB.addr];
