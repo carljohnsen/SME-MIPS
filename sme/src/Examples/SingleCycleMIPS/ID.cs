@@ -266,9 +266,9 @@ namespace SingleCycleMIPS
 				short flags = 0; // nop
 				switch (input.opcode)
 				{
-					case (short)Opcodes.Rformat: flags = 0x122; break; // 1 0010 0010
-					case (short)Opcodes.lw:      flags = 0x0F0; break; // 0 1111 0000
-					case (short)Opcodes.sw: 	 flags = 0x088; break; // 0 1X00 1000
+					case (short)Opcodes.Rformat: flags = 0x120; break; // 1 0010 0000
+					case (short)Opcodes.lw:      flags = 0x0F2; break; // 0 1111 0010
+					case (short)Opcodes.sw: 	 flags = 0x088; break; // 0 1X00 1010
 					case (short)Opcodes.beq:     flags = 0x005; break; // X 0X00 0101
 						// default: flags = 0; break;
 				}
@@ -279,8 +279,7 @@ namespace SingleCycleMIPS
 				memread.flg  = ((flags >> 4) & 1) == 1;
 				memwrite.flg = ((flags >> 3) & 1) == 1;
 				branch.flg   = ((flags >> 2) & 1) == 1;
-				aluop.op1    = ((flags >> 1) & 1) == 1;
-				aluop.op0    = ( flags       & 1) == 1;
+				aluop.code   = (short)(flags & 3); // 3 = 0011
 			}
 		}
 

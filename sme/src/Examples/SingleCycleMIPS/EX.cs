@@ -68,8 +68,9 @@ namespace SingleCycleMIPS
 	[InitializedBus]
 	public interface ALUOp : IBus
 	{
-		bool op0 { get; set; }
-		bool op1 { get; set; }
+		short code { get; set; }
+		/*bool op0 { get; set; }
+		bool op1 { get; set; }*/
 	}
 
 	[InitializedBus]
@@ -152,6 +153,26 @@ namespace SingleCycleMIPS
 
 			protected override void OnTick()
 			{
+				if (op.code == 0) // R format
+				{
+					switch (funct.val)
+					{
+						case (short)Funcs.add: output.val = (short)ALUOps.add; break;
+						case (short)Funcs.sub: output.val = (short)ALUOps.sub; break;
+						case (short)Funcs.and: output.val = (short)ALUOps.and; break;
+						case (short)Funcs.or : output.val = (short)ALUOps.or;  break;
+						case (short)Funcs.slt: output.val = (short)ALUOps.slt; break;
+					}
+				}
+				else
+				{
+					switch (op.code) // hacked solution...
+					{
+						case 2: output.val = (short)ALUOps.add; break;
+						case 1: output.val = (short)ALUOps.sub; break;
+					}
+				}
+				/*
 				// TODO kig på at få lavet en PLA, og derfra få den reduceret. Det tror jeg vil være det nemmeste.
 				short tmp = funct.val;
 				short funct0 = (short) (tmp & 1);
@@ -166,7 +187,7 @@ namespace SingleCycleMIPS
 				int op2 = (funct1 & (op.op1 ? 1 : 0)) | (op.op0 ? 1 : 0);
 				//bool op4 = 0;
 
-				output.val = (short) (op0 | (op1 << 1) | (op2 << 2));
+				output.val = (short) (op0 | (op1 << 1) | (op2 << 2));*/
 			}
 		}
 
