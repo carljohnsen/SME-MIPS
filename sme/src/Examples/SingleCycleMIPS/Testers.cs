@@ -144,10 +144,13 @@ namespace SingleCycleMIPS
 
 		public async override System.Threading.Tasks.Task Run()
 		{
+			var begin = DateTime.Now;
 			while (cpu.running)
 			{
 				await ClockAsync();
 			}
+			var end = DateTime.Now;
+			Console.WriteLine("Took " + (end - begin).TotalMilliseconds + " ms");
 		}
 	}
 }

@@ -69,6 +69,18 @@ namespace SingleCycleMIPS
 		bool flg { get; set; }
 	}
 
+	[InitializedBus]
+	public interface Jump : IBus
+	{
+		bool flg { get; set; }
+	}
+
+	[InitializedBus]
+	public interface JAL : IBus
+	{
+		bool flg { get; set; }
+	}
+
 	public class EX
 	{
 		public enum ALUOps

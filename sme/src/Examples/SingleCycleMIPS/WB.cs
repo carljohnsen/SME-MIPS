@@ -31,7 +31,7 @@ namespace SingleCycleMIPS
 			[InputBus]
 			BufIn dataIn;
 			[InputBus]
-			RegWrite regwrite;
+			RegWrite regwriteIn;
 
 			[OutputBus]
 			ID.WriteAddr addrOut;
@@ -44,7 +44,7 @@ namespace SingleCycleMIPS
 			{
 				addrOut.val = addrIn.addr;
 				dataOut.data = dataIn.data;
-				regwriteOut.flg = regwrite.flg;
+				regwriteOut.flg = regwriteIn.flg;
 			}
 		}
 	}

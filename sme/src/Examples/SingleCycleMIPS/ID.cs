@@ -239,28 +239,35 @@ namespace SingleCycleMIPS
 			ALUSrc alusrc;
 			[OutputBus]
 			RegWrite regwrite;
+			[OutputBus]
+			Jump jump;
+			[OutputBus]
+			JAL jal;
 
 			protected override void OnTick()
 			{
-				// format = [RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch, ALUOp]
+				// flag format = [JAL, Jump, RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch]
 				short flags = 0; // nop
+				byte alu = 0; // nop
 				switch (input.opcode)
-				{ // The comments are the flags, A is the ALUOpcode, X is dont care
-					case (byte)Opcodes.Rformat: flags = 0x240;                        break; // 10 0100 0000
-					case (byte)Opcodes.lw:      flags = 0x1E0 | (byte)ALUOpcodes.add; break; // 01 1110 0AAA
-					case (byte)Opcodes.sw: 	    flags = 0x110 | (byte)ALUOpcodes.add; break; // 01 X001 0AAA
-					case (byte)Opcodes.beq:     flags = 0x008 | (byte)ALUOpcodes.sub; break; // X0 X000 1AAA
-					case (byte)Opcodes.addi:    flags = 0x140 | (byte)ALUOpcodes.add; break; // 01 0100 0AAA
-					// default: flags = 0; break;
+				{ // The comments are the flags, X is dont care
+					case (byte)Opcodes.Rformat: flags = 0x048;                             break; // 0 0100 1000
+					case (byte)Opcodes.lw:      flags = 0x03B; alu = (byte)ALUOpcodes.add; break; // 0 0011 1100
+					case (byte)Opcodes.sw: 	    flags = 0x022; alu = (byte)ALUOpcodes.add; break; // 0 001X 0010
+					case (byte)Opcodes.beq:     flags = 0x001; alu = (byte)ALUOpcodes.sub; break; // 0 0X0X 0001
+					case (byte)Opcodes.addi:    flags = 0x028; alu = (byte)ALUOpcodes.add; break; // 0 0010 1000
+					// default: flags = 0; alu = 0; break;
 				}
-				regdst.flg   = ((flags >> 9) & 1) == 1;
-				alusrc.flg   = ((flags >> 8) & 1) == 1;
-				memtoreg.flg = ((flags >> 7) & 1) == 1;
-				regwrite.flg = ((flags >> 6) & 1) == 1;
-				memread.flg  = ((flags >> 5) & 1) == 1;
-				memwrite.flg = ((flags >> 4) & 1) == 1;
-				branch.flg   = ((flags >> 3) & 1) == 1;
-				aluop.code   = (byte)(flags & 7); // 7 = 0111
+				jal.flg      = ((flags >> 8) & 1) == 1;
+				jump.flg     = ((flags >> 7) & 1) == 1;
+				regdst.flg   = ((flags >> 6) & 1) == 1;
+				alusrc.flg   = ((flags >> 5) & 1) == 1;
+				memtoreg.flg = ((flags >> 4) & 1) == 1;
+				regwrite.flg = ((flags >> 3) & 1) == 1;
+				memread.flg  = ((flags >> 2) & 1) == 1;
+				memwrite.flg = ((flags >> 1) & 1) == 1;
+				branch.flg   = ( flags       & 1) == 1;
+				aluop.code   = alu;
 			}
 		}
 
