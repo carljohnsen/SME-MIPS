@@ -23,6 +23,12 @@ namespace SingleCycleMIPS
             int newAddress { get; set; }
         }
 
+        [InitializedBus]
+        public interface IncrementerOut : IBus
+        {
+            int address { get; set; }
+        }
+
         [ClockedProcess]
         public class PC : SimpleProcess
         {
@@ -44,11 +50,11 @@ namespace SingleCycleMIPS
             Address input;
 
             [OutputBus] // TODO should feed into jump unit, not PC
-            PCIn output;
+            IncrementerOut output;
 
             protected override void OnTick()
             {
-                output.newAddress = input.address + 1;// + 4; traditionally, however, we are working with an int array
+                output.address = input.address + 1;// + 4; traditionally, however, we are working with an int array
             }
         }
 
@@ -82,8 +88,10 @@ namespace SingleCycleMIPS
                 0x0061502A, // slt r10 r3 r1 - 0
                 unchecked((int)0xAD2B0008), // sw r11 0x8 r9 - 9 -- should not write to register
                 unchecked((int)0x8D2B0008), // lw r11 0x8 r9 - 9
-                0x10270010, // beq r1 r7 0x10 - 0 -- should not write to register
-                0x200C0003, // addi r12 r0 0x3 - 3
+                0x10270002, // beq r1 r7 0x1 - 0 -- should not write to register, but should jump the next
+                0x200C0003, // addi r12 r0 0x3 - 3 -- should not be executeds
+                0x200C0003, // addi r12 r0 0x3 - 3 -- should not be executed
+                0x200C000F, // addi r12 r0 0xF - 16
             };
 
             protected override void OnTick()

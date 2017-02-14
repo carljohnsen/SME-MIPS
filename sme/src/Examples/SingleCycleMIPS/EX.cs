@@ -266,4 +266,69 @@ namespace SingleCycleMIPS
             }
         }
     }
+
+    public class JumpUnit
+    {
+        [InitializedBus]
+        public interface AdderOut : IBus
+        {
+            int address { get; set; }
+        }
+
+        [InitializedBus]
+        public interface AndOut : IBus
+        {
+            bool flg { get; set; }
+        }
+
+        public class Adder : SimpleProcess
+        {
+            [InputBus]
+            ID.SignExtOut immediate;
+            [InputBus]
+            IF.IncrementerOut pc;
+
+            [OutputBus]
+            AdderOut output;
+
+            protected override void OnTick()
+            {
+                output.address = immediate.data + pc.address;
+            }
+        }
+
+        public class Mux : SimpleProcess
+        {
+            [InputBus]
+            AdderOut adder;
+            [InputBus]
+            IF.IncrementerOut oldPc;
+            [InputBus]
+            AndOut control;
+
+            [OutputBus]
+            IF.PCIn pc;
+
+            protected override void OnTick()
+            {
+                pc.newAddress = control.flg ? adder.address : oldPc.address;
+            }
+        }
+
+        public class And : SimpleProcess
+        {
+            [InputBus]
+            Branch branch;
+            [InputBus]
+            EX.Zero zero;
+
+            [OutputBus]
+            AndOut output;
+
+            protected override void OnTick()
+            {
+                output.flg = zero.flg && branch.flg;
+            }
+        }
+    }
 }
