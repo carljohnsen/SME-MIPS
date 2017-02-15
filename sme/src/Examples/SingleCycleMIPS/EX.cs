@@ -148,8 +148,6 @@ namespace SingleCycleMIPS
             }
         }
 
-        // Appendix D - Figure D.2.3
-        // https://www.cise.ufl.edu/~mssz/CompOrg/Table4.2-MIPSdatapath-ALUcontrol.gif
         public class ALUControl : SimpleProcess
         {
             [InputBus]
@@ -164,22 +162,22 @@ namespace SingleCycleMIPS
             {
                 if (op.code == (byte)ALUOpcodes.RFormat) // R format
                 {
-                    switch (funct.val)
+                    switch ((Funcs)funct.val)
                     {
-                        case (byte)Funcs.add: output.val = (byte)ALUOps.add; break;
-                        case (byte)Funcs.sub: output.val = (byte)ALUOps.sub; break;
-                        case (byte)Funcs.and: output.val = (byte)ALUOps.and; break;
-                        case (byte)Funcs.or : output.val = (byte)ALUOps.or;  break;
-                        case (byte)Funcs.slt: output.val = (byte)ALUOps.slt; break;
+                        case Funcs.add: output.val = (byte)ALUOps.add; break;
+                        case Funcs.sub: output.val = (byte)ALUOps.sub; break;
+                        case Funcs.and: output.val = (byte)ALUOps.and; break;
+                        case Funcs.or : output.val = (byte)ALUOps.or;  break;
+                        case Funcs.slt: output.val = (byte)ALUOps.slt; break;
                         default: output.val = 0; break; // nop
                     }
                 }
                 else
                 {
-                    switch (op.code)
+                    switch ((ALUOpcodes)op.code)
                     {
-                        case (byte)ALUOpcodes.add: output.val = (byte)ALUOps.add; break;
-                        case (byte)ALUOpcodes.sub: output.val = (byte)ALUOps.sub; break;
+                        case ALUOpcodes.add: output.val = (byte)ALUOps.add; break;
+                        case ALUOpcodes.sub: output.val = (byte)ALUOps.sub; break;
                         default: output.val = 0; break; // nop
                     }
                 }
@@ -204,7 +202,6 @@ namespace SingleCycleMIPS
             protected override void OnTick()
             {
                 int tmp = -1;
-                //bool z = false;
                 switch ((ALUOps) op.val)
                 {
                     case ALUOps.sr:
@@ -231,13 +228,13 @@ namespace SingleCycleMIPS
                     case ALUOps.mult: // TODO HI og LO
                         tmp = inA.data * inB.data;
                         break;
-                    case ALUOps.multu:
+                    case ALUOps.multu: // TODO HI og LO
                         tmp = (int)(((uint)inA.data) * ((uint)inB.data));
                         break;
-                    case ALUOps.div:
+                    case ALUOps.div: // TODO HI og LO
                         tmp = inA.data / inB.data;
                         break;
-                    case ALUOps.divu:
+                    case ALUOps.divu: // TODO HI og LO
                         tmp = (int)(((uint)inA.data) / ((uint)inB.data));
                         break;
                     case ALUOps.and:

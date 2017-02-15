@@ -8,7 +8,7 @@ namespace SingleCycleMIPS
         [InitializedBus]
         public interface Instruction : IBus
         {
-            int instruction { get; set; }
+            uint instruction { get; set; }
         }
 
         [InitializedBus]
@@ -49,7 +49,7 @@ namespace SingleCycleMIPS
             [InputBus]
             Address input;
 
-            [OutputBus] // TODO should feed into jump unit, not PC
+            [OutputBus]
             IncrementerOut output;
 
             protected override void OnTick()
@@ -75,7 +75,8 @@ namespace SingleCycleMIPS
             DEBUG_SHUTDOWN shut;
 
             // https://www.eg.bucknell.edu/~csci320/mips_web/
-            int[] program = {
+            uint[] program = 
+            {
                 0x20010005, // addi r1 r0 0x5 - 5
                 0x20020002, // addi r2 r0 0x2 - 2
                 0x00221820, // add r3 r1 r2 - 7
@@ -86,12 +87,13 @@ namespace SingleCycleMIPS
                 0x00234025, // or  r8 r1 r3 - 7
                 0x0023482A, // slt r9 r1 r3 - 1
                 0x0061502A, // slt r10 r3 r1 - 0
-                unchecked((int)0xAD2B0008), // sw r11 0x8 r9 - 9 -- should not write to register
-                unchecked((int)0x8D2B0008), // lw r11 0x8 r9 - 9
-                0x10270002, // beq r1 r7 0x1 - 0 -- should not write to register, but should jump the next
-                0x200C0003, // addi r12 r0 0x3 - 3 -- should not be executeds
+                0xAD2B0008, // sw r11 0x8 r9 - 9 -- should not write to register
+                0x8D2B0008, // lw r11 0x8 r9 - 9
+                0x10270002, // beq r1 r7 0x2 - 0 -- should not write to register, but should jump the next
                 0x200C0003, // addi r12 r0 0x3 - 3 -- should not be executed
-                0x200C000F, // addi r12 r0 0xF - 16
+                0x200C0003, // addi r12 r0 0x3 - 3 -- should not be executed
+                0x200C000F, // addi r12 r0 0xF - 15
+                0x200DFFFF, // addi r13 r3 0xFFFF - -1
             };
 
             protected override void OnTick()

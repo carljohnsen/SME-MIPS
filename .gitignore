@@ -8,4 +8,8 @@
 !/Thesis\ description/*.tex
 !/Thesis\ description/*.pdf
 
+/Presentation/*
+!/Presentation/*.tex
+!/Presentation/*.pdf
+
 /sme/src/testing/*

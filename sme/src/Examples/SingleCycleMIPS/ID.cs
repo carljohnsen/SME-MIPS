@@ -67,6 +67,12 @@ namespace SingleCycleMIPS
         bool flg { get; set; }
     }
 
+    [InitializedBus]
+    public interface LogicalImmediate : IBus
+    {
+        bool flg { get; set; }
+    }
+
     public class ID
     {
         [InitializedBus]
@@ -162,18 +168,12 @@ namespace SingleCycleMIPS
 
             protected override void OnTick()
             {
-                int tmp = instr.instruction;
+                uint tmp = instr.instruction;
                 byte opcode = (byte) ((tmp >> 26) & 0x3F);
                 byte rs =     (byte) ((tmp >> 21) & 0x1F);
                 byte rt =     (byte) ((tmp >> 16) & 0x1F);
                 byte rd =     (byte) ((tmp >> 11) & 0x1F);
                 byte funct =  (byte) ( tmp        & 0x3F);
-
-                /*Console.WriteLine("Splitter : Opcode " + ((uint) opcode));
-                Console.WriteLine("Splitter : rs " + rs);
-                Console.WriteLine("Splitter : rt " + rt);
-                Console.WriteLine("Splitter : rd " + rd);
-                Console.WriteLine("Splitter : funct " + funct);*/
 
                 readA.addr = rs;
                 readB.addr = rt;
@@ -197,10 +197,7 @@ namespace SingleCycleMIPS
 
             protected override void OnTick()
             {
-                if (regdst.flg)
-                    write.addr = input.rd;
-                else
-                    write.addr = input.rt;
+                write.addr = regdst.flg ? input.rd : input.rt;
             }
         }
 
@@ -208,13 +205,18 @@ namespace SingleCycleMIPS
         {
             [InputBus]
             SignExtIn input;
+            [InputBus]
+            LogicalImmediate logIm;
 
             [OutputBus]
             SignExtOut output;
 
             protected override void OnTick()
             {
-                output.data = input.data;
+                if (logIm.flg)
+                    output.data = 0 | input.data;
+                else
+                    output.data = input.data;
             }
         }
 
@@ -246,18 +248,19 @@ namespace SingleCycleMIPS
 
             protected override void OnTick()
             {
-                // flag format = [JAL, Jump, RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch]
+                // flag format = [Logical immediate, JAL, Jump, RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch]
                 short flags = 0; // nop
-                byte alu = 0; // nop
-                switch (input.opcode)
+                ALUOpcodes alu = 0; // nop
+                switch ((Opcodes)input.opcode)
                 { // The comments are the flags, X is dont care
-                    case (byte)Opcodes.Rformat: flags = 0x048;                             break; // 0 0100 1000
-                    case (byte)Opcodes.lw:      flags = 0x03B; alu = (byte)ALUOpcodes.add; break; // 0 0011 1100
-                    case (byte)Opcodes.sw:      flags = 0x022; alu = (byte)ALUOpcodes.add; break; // 0 001X 0010
-                    case (byte)Opcodes.beq:     flags = 0x001; alu = (byte)ALUOpcodes.sub; break; // 0 0X0X 0001
-                    case (byte)Opcodes.addi:    flags = 0x028; alu = (byte)ALUOpcodes.add; break; // 0 0010 1000
+                    case Opcodes.Rformat: flags = 0x048;                       break; // 00 0100 1000
+                    case Opcodes.lw:      flags = 0x03B; alu = ALUOpcodes.add; break; // 00 0011 1100
+                    case Opcodes.sw:      flags = 0x022; alu = ALUOpcodes.add; break; // 00 001X 0010
+                    case Opcodes.beq:     flags = 0x001; alu = ALUOpcodes.sub; break; // 00 0X0X 0001
+                    case Opcodes.addi:    flags = 0x028; alu = ALUOpcodes.add; break; // 00 0010 1000
                     // default: flags = 0; alu = 0; break;
                 }
+
                 jal.flg      = ((flags >> 8) & 1) == 1;
                 jump.flg     = ((flags >> 7) & 1) == 1;
                 regdst.flg   = ((flags >> 6) & 1) == 1;
@@ -267,7 +270,7 @@ namespace SingleCycleMIPS
                 memread.flg  = ((flags >> 2) & 1) == 1;
                 memwrite.flg = ((flags >> 1) & 1) == 1;
                 branch.flg   = ( flags       & 1) == 1;
-                aluop.code   = alu;
+                aluop.code   = (byte)alu;
             }
         }
 
@@ -298,15 +301,10 @@ namespace SingleCycleMIPS
             {
                 if (regWrite.flg && writeAddr.val > 0)
                 {
-                    Console.WriteLine("Writing " + writeData.data +
-                                      " to " + writeAddr.val);
                     data[writeAddr.val] = writeData.data;
                 }
-                Console.WriteLine("Reading from " + readA.addr +
-                                  " " + readB.addr);
                 outputA.data = data[readA.addr];
                 outputB.data = data[readB.addr];
-
                 /* Print the register file */
                 Console.Write("[");
                 for (int i = 0; i < 4; i++)
