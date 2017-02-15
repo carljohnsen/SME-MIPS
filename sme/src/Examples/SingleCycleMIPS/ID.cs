@@ -245,6 +245,8 @@ namespace SingleCycleMIPS
             Jump jump;
             [OutputBus]
             JAL jal;
+            [OutputBus]
+            LogicalImmediate logIm;
 
             protected override void OnTick()
             {
@@ -260,7 +262,7 @@ namespace SingleCycleMIPS
                     case Opcodes.addi:    flags = 0x028; alu = ALUOpcodes.add; break; // 00 0010 1000
                     // default: flags = 0; alu = 0; break;
                 }
-
+                logIm.flg    = ((flags >> 9) & 1) == 1;
                 jal.flg      = ((flags >> 8) & 1) == 1;
                 jump.flg     = ((flags >> 7) & 1) == 1;
                 regdst.flg   = ((flags >> 6) & 1) == 1;
