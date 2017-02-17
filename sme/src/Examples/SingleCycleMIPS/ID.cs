@@ -265,6 +265,7 @@ namespace SingleCycleMIPS
                     case Opcodes.sw:      flags = 0x022; alu = ALUOpcodes.add; break; // 00 001X 0010
                     case Opcodes.beq:     flags = 0x001; alu = ALUOpcodes.sub; break; // 00 0X0X 0001
                     case Opcodes.addi:    flags = 0x028; alu = ALUOpcodes.add; break; // 00 0010 1000
+                    case Opcodes.j:       flags = 0x080;                       break; // X0 1XXX 000X
                     // default: flags = 0; alu = 0; break;
                 }
                 logIm.flg    = ((flags >> 9) & 1) == 1;

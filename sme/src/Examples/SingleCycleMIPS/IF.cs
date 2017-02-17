@@ -104,6 +104,16 @@ namespace SingleCycleMIPS
                 0x21EF0001, // addi r15 r15 0x1 - i++
                 0x01EE802A, // slt r16 r15 r14 - i < 10
                 0x1211FFFD, // beq r16 r17 0xFFFD - if r16 == true: branch -3
+
+                // line 24:
+                0x0800001E, // j 0x1E - jump to 30
+                0x20010055, // addi r1 r0 0x55 -- should not be executed
+                0x20010055, // addi r1 r0 0x55 -- should not be executed
+                0x20010055, // addi r1 r0 0x55 -- should not be executed
+                0x20010055, // addi r1 r0 0x55 -- should not be executed
+                0x20010055, // addi r1 r0 0x55 -- should not be executed
+                0x20010055, // addi r1 r0 0x55 -- should not be executed
+                0x20125555, // addi r18 r0 0x5555
             };
 
             protected override void OnTick()
