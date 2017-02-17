@@ -278,6 +278,24 @@ namespace SingleCycleMIPS
             bool flg { get; set; }
         }
 
+        [InitializedBus]
+        public interface Instruction : IBus
+        {
+            int addr { get; set; }
+        }
+
+        [InitializedBus]
+        public interface JumpAddr : IBus
+        {
+            int addr { get; set; }
+        }
+
+        [InitializedBus]
+        public interface Mux0Out : IBus
+        {
+            int addr { get; set; }
+        }
+
         public class Adder : SimpleProcess
         {
             [InputBus]
@@ -294,7 +312,7 @@ namespace SingleCycleMIPS
             }
         }
 
-        public class Mux : SimpleProcess
+        public class Mux0 : SimpleProcess
         {
             [InputBus]
             AdderOut adder;
@@ -304,11 +322,47 @@ namespace SingleCycleMIPS
             AndOut control;
 
             [OutputBus]
+            //IF.PCIn pc;
+            Mux0Out output;
+
+            protected override void OnTick()
+            {
+                output.addr = control.flg ? adder.address : oldPc.address;
+            }
+        }
+
+        public class Mux1 : SimpleProcess
+        {
+            [InputBus]
+            JumpAddr jumpAddr;
+            [InputBus]
+            Mux0Out branch;
+            [InputBus]
+            Jump jump;
+
+            [OutputBus]
             IF.PCIn pc;
 
             protected override void OnTick()
             {
-                pc.newAddress = control.flg ? adder.address : oldPc.address;
+                pc.newAddress = jump.flg ? jumpAddr.addr : branch.addr;
+            }
+        }
+
+        // Packs the 4 most significant bits of the PC into the instr addr
+        public class Packer : SimpleProcess
+        {
+            [InputBus]
+            Instruction inst;
+            [InputBus]
+            IF.IncrementerOut pc;
+
+            [OutputBus]
+            JumpAddr output;
+
+            protected override void OnTick()
+            {
+                output.addr = (pc.address & 0x3C000000) | inst.addr;
             }
         }
 

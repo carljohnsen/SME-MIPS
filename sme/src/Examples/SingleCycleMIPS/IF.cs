@@ -100,6 +100,7 @@ namespace SingleCycleMIPS
                 0x200E000A, // addi r14 r0 0xA - 10
                 0x200F0000, // addi r15 r0 0x0 - i = 0
                 0x20110001, // addi r17 r0 0x1 - 1 (true)
+                // {}
                 0x21EF0001, // addi r15 r15 0x1 - i++
                 0x01EE802A, // slt r16 r15 r14 - i < 10
                 0x1211FFFD, // beq r16 r17 0xFFFD - if r16 == true: branch -3

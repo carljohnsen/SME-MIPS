@@ -165,23 +165,28 @@ namespace SingleCycleMIPS
             MuxInput mux;
             [OutputBus]
             ALUFunct aluFunct;
+            [OutputBus]
+            JumpUnit.Instruction jump;
 
             protected override void OnTick()
             {
-                uint tmp = instr.instruction;
-                byte opcode = (byte) ((tmp >> 26) & 0x3F);
-                byte rs =     (byte) ((tmp >> 21) & 0x1F);
-                byte rt =     (byte) ((tmp >> 16) & 0x1F);
-                byte rd =     (byte) ((tmp >> 11) & 0x1F);
-                byte funct =  (byte) ( tmp        & 0x3F);
+                uint  tmp    = instr.instruction;
+                byte  opcode = (byte) ((tmp >> 26) & 0x3F);
+                byte  rs     = (byte) ((tmp >> 21) & 0x1F);
+                byte  rt     = (byte) ((tmp >> 16) & 0x1F);
+                byte  rd     = (byte) ((tmp >> 11) & 0x1F);
+                byte  funct  = (byte) ( tmp        & 0x3F);
+                int   addr   = (int)  ( tmp        & 0x03FFFFFF); // Last 25 bit
+                short ext    = (short)( tmp        & 0xFFFF); // Last 16 bit
 
                 readA.addr = rs;
                 readB.addr = rt;
                 mux.rd = rd;
                 mux.rt = rt;
                 control.opcode = opcode;
-                signExt.data = (short) (tmp & 0xFFFF); // Last 16 bit
+                signExt.data = ext; 
                 aluFunct.val = funct;
+                jump.addr = addr;
             }
         }
 
