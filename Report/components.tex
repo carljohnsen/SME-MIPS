@@ -139,7 +139,7 @@ output from the ALU matches the expected value.
 \label{sec:control-unit}
 The control unit is part of the decoding step. It takes the opcode of the
 instruction, and based on the opcode, it sets control flags used throughout the
-processor. It sets the following seven control flags:
+processor. It sets the following control flags:
 \begin{description}
     \item[RegDst] Controls which part of the instruction that indicates which
         B register to read from.
@@ -163,28 +163,43 @@ processor. It sets the following seven control flags:
 
     \item[RegWrite] Controls whether or not data should be written to the
         register file.
+
+    \item[Jump] Controls whether or not the instruction is a jump instruction,
+        i.e. if the \texttt{PC} register should be changed.
+
+    \item[JAL] Contrals whether or not the instruction is a \texttt{jal}
+        instruction, i.e. that the \texttt{PC+4} address should be stored.
+
+    \item[LogicalImmediate] Controls whether or not the sign extender should
+        be a sign extender, in the case of a numeral immediate, or if it
+        should be a zero extender, in the case of a logical I-format
+        instruction.
 \end{description}
 Each of the control flags goes to their respective part of the processor.
-We will return to this component, when we have to extend it to handle more
-instructions.
+%We will return to this component, when we have to extend it to handle more
+%instructions.
 
 \subsubsection*{Implementation}
-The book describes the logic behind generating the logic for this unit, but I
-have just implemented the combinatorial logic from the book, in the same manner
-as in Section \ref{sec:logic-circuits}.
+%The book describes the logic behind generating the logic for this unit, but I
+%have just implemented the combinatorial logic from the book, in the same manner
+%as in Section \ref{sec:logic-circuits}.
+To implement this, I have simply made a \texttt{switch} statement on the
+opcode. Then, for each type of opcode, I set the appropiate flags and the
+\texttt{ALUOpcode}.
 
 \subsubsection*{Testing}
 meh - det er gjort dog...
 
 \subsection{ALU control}\label{sec:alu-control}
-The ALU control is used for generating the control code, which the ALU uses for
-selecting which operation to perform. It takes two inputs: the \texttt{ALUOp}
-code from the control unit, and the \texttt{funct} code from the instruction,
-and it computes its output based on these. If the \texttt{ALUOp} from the
-control unit indicates that the instruction is an R format instruction, it uses
-the \texttt{funct} code for selecting the operation. Otherwise it bases its
-output purely on the \texttt{ALUOp} code. As before, we will return to this
-component, when we need to extend the instruction set.
+%The ALU control is used for generating the control code, which the ALU uses for
+%selecting which operation to perform. It takes two inputs: the \texttt{ALUOp}
+%code from the control unit, and the \texttt{funct} code from the instruction,
+%and it computes its output based on these. If the \texttt{ALUOp} from the
+%control unit indicates that the instruction is an R format instruction, it %uses
+%the \texttt{funct} code for selecting the operation. Otherwise it bases its
+%output purely on the \texttt{ALUOp} code. As before, we will return to this
+%component, when we need to extend the instruction set.
+As with the normal Control Unit, we need to produce a signal, based on some input. We start by checking whether or not the opcode from the instruction indicates that the instruction is an R-format. If this is the case, we need to \texttt{switch} on the \texttt{funct} field of the instuction.
 
 \subsubsection*{Implementation}
 As with the main control unit, I have just implemented the combinatorial logic

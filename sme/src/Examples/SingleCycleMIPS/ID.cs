@@ -256,7 +256,7 @@ namespace SingleCycleMIPS
                 switch ((Opcodes)input.opcode)
                 { // The comments are the flags, X is dont care
                     case Opcodes.Rformat: flags = 0x048;                       break; // 00 0100 1000
-                    case Opcodes.lw:      flags = 0x03B; alu = ALUOpcodes.add; break; // 00 0011 1100
+                    case Opcodes.lw:      flags = 0x03C; alu = ALUOpcodes.add; break; // 00 0011 1100
                     case Opcodes.sw:      flags = 0x022; alu = ALUOpcodes.add; break; // 00 001X 0010
                     case Opcodes.beq:     flags = 0x001; alu = ALUOpcodes.sub; break; // 00 0X0X 0001
                     case Opcodes.addi:    flags = 0x028; alu = ALUOpcodes.add; break; // 00 0010 1000

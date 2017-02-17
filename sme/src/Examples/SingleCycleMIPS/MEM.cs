@@ -14,9 +14,9 @@ namespace SingleCycleMIPS
     {
         bool flg { get; set; }
     }
-    /*
+
     public class MEM
-    {
+    {/*
         [InitializedBus]
         public interface Address : IBus
         {
@@ -27,7 +27,7 @@ namespace SingleCycleMIPS
         public interface Data : IBus
         {
             int data { get; set; }
-        }
+        }*/
 
         [InitializedBus]
         public interface ReadData : IBus
@@ -48,9 +48,9 @@ namespace SingleCycleMIPS
             [InputBus]
             MemRead memread;
             [InputBus]
-            Address addr;
+            EX.ALUResult addr;
             [InputBus]
-            Data write;
+            ID.OutputB write;
 
             [OutputBus]
             ReadData output;
@@ -60,10 +60,14 @@ namespace SingleCycleMIPS
             protected override void OnTick()
             {
                 if (memread.flg)
-                    output.data = mem[addr.addr];
+                {
+                    output.data = mem[addr.data];
+                    //Console.WriteLine("Reading " + tmp + " from " + addr.data);
+                }
                 else if (memwrite.flg)
                 {
-                    mem[addr.addr] = write.data;
+                    //Console.WriteLine("Writing " + write.data + " to " + addr.data);
+                    mem[addr.data] = write.data;
                     output.data = 0; // Escape latch warning!
                 }
                 else // Escape latch warning!
@@ -89,5 +93,4 @@ namespace SingleCycleMIPS
             }
         }
     }
-    */
 }

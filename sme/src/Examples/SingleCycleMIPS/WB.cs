@@ -29,7 +29,8 @@ namespace SingleCycleMIPS
             [InputBus]
             ID.MuxOutput addrIn;
             [InputBus]
-            BufIn dataIn;
+            //BufIn dataIn;
+            MEM.MemOut dataIn;
             [InputBus]
             RegWrite regwriteIn;
 

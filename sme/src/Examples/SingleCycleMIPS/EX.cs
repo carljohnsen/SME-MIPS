@@ -196,8 +196,8 @@ namespace SingleCycleMIPS
             [OutputBus]
             Zero zero;
             [OutputBus]
-            //ALUResult result;
-            WB.BufIn result;
+            ALUResult result;
+            //WB.BufIn result;
 
             protected override void OnTick()
             {
