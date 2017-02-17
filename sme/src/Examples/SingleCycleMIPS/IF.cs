@@ -88,14 +88,21 @@ namespace SingleCycleMIPS
                 0x0023482A, // slt r9 r1 r3 - 1
                 0x0061502A, // slt r10 r3 r1 - 0
                 //0xAD2B0008, // sw r11 0x8 r9 - 9 -- should not write to register
-                0xAC060008, // sw r06 0x8 r0 - 8
-                //0x8D2B0008, // lw r11 0x8 r9 - 9
-                0x8C0B0008, // lw r11 0x8 r0 - 8
+                0xAC060008, // sw r6 0x8 r0 - address 8, M[8] = 19 
+                0x8C0B0008, // lw r11 0x8 r0 - address 8, r11 = M[8] = 19
                 0x10270002, // beq r1 r7 0x2 - 0 -- should not write to register, but should jump the next
                 0x200C0003, // addi r12 r0 0x3 - 3 -- should not be executed
                 0x200C0003, // addi r12 r0 0x3 - 3 -- should not be executed
                 0x200C000F, // addi r12 r0 0xF - 15
                 0x200DFFFF, // addi r13 r3 0xFFFF - -1
+
+                // for (int i = 0; i < 10; i++) {}
+                0x200E000A, // addi r14 r0 0xA - 10
+                0x200F0000, // addi r15 r0 0x0 - i = 0
+                0x20110001, // addi r17 r0 0x1 - 1 (true)
+                0x21EF0001, // addi r15 r15 0x1 - i++
+                0x01EE802A, // slt r16 r15 r14 - i < 10
+                0x1211FFFD, // beq r16 r17 0xFFFD - if r16 == true: branch -3
             };
 
             protected override void OnTick()
