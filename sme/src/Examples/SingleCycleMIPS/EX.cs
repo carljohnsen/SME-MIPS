@@ -178,6 +178,7 @@ namespace SingleCycleMIPS
                     {
                         case ALUOpcodes.add: output.val = (byte)ALUOps.add; break;
                         case ALUOpcodes.sub: output.val = (byte)ALUOps.sub; break;
+                        case ALUOpcodes.or:  output.val = (byte)ALUOps.or; break;
                         default: output.val = 0; break; // nop
                     }
                 }

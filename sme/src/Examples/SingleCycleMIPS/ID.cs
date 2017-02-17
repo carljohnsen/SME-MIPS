@@ -53,6 +53,7 @@ namespace SingleCycleMIPS
         RFormat,
         sub,
         add,
+        or,
     }
 
     [InitializedBus]
@@ -266,6 +267,7 @@ namespace SingleCycleMIPS
                     case Opcodes.beq:     flags = 0x001; alu = ALUOpcodes.sub; break; // 00 0X0X 0001
                     case Opcodes.addi:    flags = 0x028; alu = ALUOpcodes.add; break; // 00 0010 1000
                     case Opcodes.j:       flags = 0x080;                       break; // X0 1XXX 000X
+                    case Opcodes.ori:     flags = 0x228; alu = ALUOpcodes.or;  break;// 10 0010 1000
                     // default: flags = 0; alu = 0; break;
                 }
                 logIm.flg    = ((flags >> 9) & 1) == 1;

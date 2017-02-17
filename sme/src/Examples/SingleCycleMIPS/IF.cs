@@ -114,6 +114,7 @@ namespace SingleCycleMIPS
                 0x20010055, // addi r1 r0 0x55 -- should not be executed
                 0x20010055, // addi r1 r0 0x55 -- should not be executed
                 0x20125555, // addi r18 r0 0x5555
+                0x34135555, // ori r19 r0 0x5555
             };
 
             protected override void OnTick()
