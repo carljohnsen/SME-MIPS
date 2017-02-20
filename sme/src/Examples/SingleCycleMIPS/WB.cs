@@ -27,7 +27,8 @@ namespace SingleCycleMIPS
         public class WriteBuffer : SimpleProcess
         {
             [InputBus]
-            ID.MuxOutput addrIn;
+            //ID.MuxOutput addrIn;
+            EX.RegWriteAddr addrIn;
             [InputBus]
             //BufIn dataIn;
             MEM.MemOut dataIn;

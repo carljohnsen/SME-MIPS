@@ -81,6 +81,12 @@ namespace SingleCycleMIPS
         bool flg { get; set; }
     }
 
+    [InitializedBus]
+    public interface JumpReg : IBus
+    {
+        bool flg { get; set; }
+    }
+
     public class EX
     {
         public enum ALUOps
@@ -157,6 +163,8 @@ namespace SingleCycleMIPS
 
             [OutputBus]
             ALUOperation output;
+            [OutputBus]
+            JumpReg jr;
 
             protected override void OnTick()
             {
@@ -164,12 +172,13 @@ namespace SingleCycleMIPS
                 {
                     switch ((Funcs)funct.val)
                     {
-                        case Funcs.add: output.val = (byte)ALUOps.add; break;
-                        case Funcs.sub: output.val = (byte)ALUOps.sub; break;
-                        case Funcs.and: output.val = (byte)ALUOps.and; break;
-                        case Funcs.or : output.val = (byte)ALUOps.or;  break;
-                        case Funcs.slt: output.val = (byte)ALUOps.slt; break;
-                        default: output.val = 0; break; // nop
+                        case Funcs.add: output.val = (byte)ALUOps.add; jr.flg = false; break;
+                        case Funcs.sub: output.val = (byte)ALUOps.sub; jr.flg = false; break;
+                        case Funcs.and: output.val = (byte)ALUOps.and; jr.flg = false; break;
+                        case Funcs.or : output.val = (byte)ALUOps.or;  jr.flg = false; break;
+                        case Funcs.slt: output.val = (byte)ALUOps.slt; jr.flg = false; break;
+                        case Funcs.jr:  output.val = (byte)ALUOps.or;  jr.flg = true;  break;
+                        default:        output.val = 0;                jr.flg = false; break; // nop
                     }
                 }
                 else
@@ -178,9 +187,10 @@ namespace SingleCycleMIPS
                     {
                         case ALUOpcodes.add: output.val = (byte)ALUOps.add; break;
                         case ALUOpcodes.sub: output.val = (byte)ALUOps.sub; break;
-                        case ALUOpcodes.or:  output.val = (byte)ALUOps.or; break;
-                        default: output.val = 0; break; // nop
+                        case ALUOpcodes.or:  output.val = (byte)ALUOps.or;  break;
+                        default:             output.val = 0;                break; // nop
                     }
+                    jr.flg = false;
                 }
             }
         }
@@ -263,6 +273,52 @@ namespace SingleCycleMIPS
                 zero.flg = tmp == 0;
             }
         }
+
+        [InitializedBus]
+        public interface RegWriteAddr : IBus
+        {
+            byte addr { get; set; }
+        }
+
+        public class JalMux : SimpleProcess
+        {
+            [InputBus]
+            ID.MuxOutput writeAddr;
+            [InputBus]
+            JAL jal;
+
+            [OutputBus]
+            RegWriteAddr output;
+
+            protected override void OnTick()
+            {
+                output.addr = jal.flg ? (byte)31 : writeAddr.addr;
+            }
+        }
+
+        [InitializedBus]
+        public interface JALOut : IBus
+        {
+            int val { get; set; }
+        }
+
+        public class JalUnit : SimpleProcess
+        {
+            [InputBus]
+            JAL jal;
+            [InputBus]
+            IF.IncrementerOut pc;
+            [InputBus]
+            ALUResult alu;
+
+            [OutputBus]
+            JALOut output;
+
+            protected override void OnTick()
+            {
+                output.val = jal.flg ? pc.address : alu.data;
+            }
+        }
     }
 
     public class JumpUnit
@@ -293,6 +349,12 @@ namespace SingleCycleMIPS
 
         [InitializedBus]
         public interface Mux0Out : IBus
+        {
+            int addr { get; set; }
+        }
+
+        [InitializedBus]
+        public interface Mux2Out : IBus
         {
             int addr { get; set; }
         }
@@ -340,13 +402,33 @@ namespace SingleCycleMIPS
             Mux0Out branch;
             [InputBus]
             Jump jump;
+            [InputBus]
+            JumpReg jr;
 
             [OutputBus]
             IF.PCIn pc;
 
             protected override void OnTick()
             {
-                pc.newAddress = jump.flg ? jumpAddr.addr : branch.addr;
+                pc.newAddress = jump.flg || jr.flg ? jumpAddr.addr : branch.addr;
+            }
+        }
+
+        public class Mux2 : SimpleProcess
+        {
+            [InputBus]
+            ID.OutputA outa;
+            [InputBus]
+            Instruction inst;
+            [InputBus]
+            JumpReg jr;
+
+            [OutputBus]
+            Mux2Out output;
+
+            protected override void OnTick()
+            {
+                output.addr = jr.flg ? outa.data : inst.addr;
             }
         }
 
@@ -354,7 +436,7 @@ namespace SingleCycleMIPS
         public class Packer : SimpleProcess
         {
             [InputBus]
-            Instruction inst;
+            Mux2Out mux;
             [InputBus]
             IF.IncrementerOut pc;
 
@@ -363,7 +445,7 @@ namespace SingleCycleMIPS
 
             protected override void OnTick()
             {
-                output.addr = (pc.address & 0x3C000000) | inst.addr;
+                output.addr = (pc.address & 0x3C000000) | mux.addr;
             }
         }
 

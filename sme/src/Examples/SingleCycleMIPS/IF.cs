@@ -115,6 +115,13 @@ namespace SingleCycleMIPS
                 0x20010055, // addi r1 r0 0x55 -- should not be executed
                 0x20125555, // addi r18 r0 0x5555
                 0x34135555, // ori r19 r0 0x5555
+
+                // Line 33:
+                0x0C000023, // jal 0x23 (35)
+                0x2014000F, // addi r20 r0 0xF
+                0x08000024, // j 0x24 (36)
+                0x03E00008, // jr r31
+                0x2015000A, // addi r21 r0 0xA
             };
 
             protected override void OnTick()
@@ -123,6 +130,7 @@ namespace SingleCycleMIPS
                 if (i >= 0 && i < program.Length)
                 {
                     instr.instruction = program[i];
+                    Console.WriteLine("{0:X}",program[i]);
                     shut.running = true;
                 }
                 else

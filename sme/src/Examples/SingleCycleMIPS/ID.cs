@@ -253,33 +253,38 @@ namespace SingleCycleMIPS
             JAL jal;
             [OutputBus]
             LogicalImmediate logIm;
+            [OutputBus]
+            JumpReg jr;
 
             protected override void OnTick()
             {
-                // flag format = [Logical immediate, JAL, Jump, RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch]
+                // flag format = [Jump reg, Logical immediate, JAL, Jump, RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch]
                 short flags = 0; // nop
                 ALUOpcodes alu = 0; // nop
                 switch ((Opcodes)input.opcode)
                 { // The comments are the flags, X is dont care
-                    case Opcodes.Rformat: flags = 0x048;                       break; // 00 0100 1000
-                    case Opcodes.lw:      flags = 0x03C; alu = ALUOpcodes.add; break; // 00 0011 1100
-                    case Opcodes.sw:      flags = 0x022; alu = ALUOpcodes.add; break; // 00 001X 0010
-                    case Opcodes.beq:     flags = 0x001; alu = ALUOpcodes.sub; break; // 00 0X0X 0001
-                    case Opcodes.addi:    flags = 0x028; alu = ALUOpcodes.add; break; // 00 0010 1000
-                    case Opcodes.j:       flags = 0x080;                       break; // X0 1XXX 000X
-                    case Opcodes.ori:     flags = 0x228; alu = ALUOpcodes.or;  break;// 10 0010 1000
+                    case Opcodes.Rformat: flags = 0x048;                       break; // 000 0100 1000
+                    case Opcodes.lw:      flags = 0x03C; alu = ALUOpcodes.add; break; // 000 0011 1100
+                    case Opcodes.sw:      flags = 0x022; alu = ALUOpcodes.add; break; // 000 001X 0010
+                    case Opcodes.beq:     flags = 0x001; alu = ALUOpcodes.sub; break; // 000 0X0X 0001
+                    case Opcodes.addi:    flags = 0x028; alu = ALUOpcodes.add; break; // 000 0010 1000
+                    case Opcodes.j:       flags = 0x080;                       break; // 0X0 1XXX 000X
+                    case Opcodes.ori:     flags = 0x228; alu = ALUOpcodes.or;  break; // 010 0010 1000
+                    case Opcodes.jal:     flags = 0x188;                       break; // 0X1 1XXX 100X
+                        // TODO jal og jr
                     // default: flags = 0; alu = 0; break;
                 }
-                logIm.flg    = ((flags >> 9) & 1) == 1;
-                jal.flg      = ((flags >> 8) & 1) == 1;
-                jump.flg     = ((flags >> 7) & 1) == 1;
-                regdst.flg   = ((flags >> 6) & 1) == 1;
-                alusrc.flg   = ((flags >> 5) & 1) == 1;
-                memtoreg.flg = ((flags >> 4) & 1) == 1;
-                regwrite.flg = ((flags >> 3) & 1) == 1;
-                memread.flg  = ((flags >> 2) & 1) == 1;
-                memwrite.flg = ((flags >> 1) & 1) == 1;
-                branch.flg   = ( flags       & 1) == 1;
+                jr.flg       = ((flags >> 10) & 1) == 1;
+                logIm.flg    = ((flags >>  9) & 1) == 1;
+                jal.flg      = ((flags >>  8) & 1) == 1;
+                jump.flg     = ((flags >>  7) & 1) == 1;
+                regdst.flg   = ((flags >>  6) & 1) == 1;
+                alusrc.flg   = ((flags >>  5) & 1) == 1;
+                memtoreg.flg = ((flags >>  4) & 1) == 1;
+                regwrite.flg = ((flags >>  3) & 1) == 1;
+                memread.flg  = ((flags >>  2) & 1) == 1;
+                memwrite.flg = ((flags >>  1) & 1) == 1;
+                branch.flg   = ( flags        & 1) == 1;
                 aluop.code   = (byte)alu;
             }
         }

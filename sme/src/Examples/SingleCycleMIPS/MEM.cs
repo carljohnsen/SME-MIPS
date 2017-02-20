@@ -80,7 +80,8 @@ namespace SingleCycleMIPS
             [InputBus]
             ReadData mem;
             [InputBus]
-            EX.ALUResult alu;
+            //EX.ALUResult alu;
+            EX.JALOut jal;
             [InputBus]
             MemToReg memtoreg;
 
@@ -89,7 +90,7 @@ namespace SingleCycleMIPS
 
             protected override void OnTick()
             {
-                output.data = memtoreg.flg ? mem.data : alu.data;
+                output.data = memtoreg.flg ? mem.data : jal.val;
             }
         }
     }
