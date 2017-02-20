@@ -87,6 +87,12 @@ namespace SingleCycleMIPS
         bool flg { get; set; }
     }
 
+    [InitializedBus]
+    public interface Shift : IBus
+    {
+        bool flg { get; set; }
+    }
+
     public class EX
     {
         public enum ALUOps
@@ -116,7 +122,13 @@ namespace SingleCycleMIPS
         }
 
         [InitializedBus]
-        public interface MuxOut : IBus
+        public interface ImmMuxOut : IBus
+        {
+            int data { get; set; }
+        }
+
+        [InitializedBus]
+        public interface ShmtMuxOut : IBus
         {
             int data { get; set; }
         }
@@ -133,7 +145,7 @@ namespace SingleCycleMIPS
             int data { get; set; }
         }
 
-        public class Mux : SimpleProcess
+        public class ImmMux : SimpleProcess
         {
             [InputBus]
             ALUSrc src;
@@ -143,7 +155,7 @@ namespace SingleCycleMIPS
             ID.SignExtOut immediate;
 
             [OutputBus]
-            MuxOut output;
+            ImmMuxOut output;
 
             protected override void OnTick()
             {
@@ -151,6 +163,25 @@ namespace SingleCycleMIPS
                     output.data = immediate.data;
                 else
                     output.data = register.data;
+            }
+        }
+
+        public class ShmtMux : SimpleProcess
+        {
+            [InputBus]
+            ID.Shamt shmt;
+            [InputBus]
+            ID.OutputA reada;
+            //ImmMuxOut immreg;
+            [InputBus]
+            Shift shift;
+
+            [OutputBus]
+            ShmtMuxOut output;
+
+            protected override void OnTick()
+            {
+                output.data = shift.flg ? shmt.amount : reada.data;
             }
         }
 
@@ -165,6 +196,8 @@ namespace SingleCycleMIPS
             ALUOperation output;
             [OutputBus]
             JumpReg jr;
+            [OutputBus]
+            Shift shift;
 
             protected override void OnTick()
             {
@@ -172,13 +205,15 @@ namespace SingleCycleMIPS
                 {
                     switch ((Funcs)funct.val)
                     {
-                        case Funcs.add: output.val = (byte)ALUOps.add; jr.flg = false; break;
-                        case Funcs.sub: output.val = (byte)ALUOps.sub; jr.flg = false; break;
-                        case Funcs.and: output.val = (byte)ALUOps.and; jr.flg = false; break;
-                        case Funcs.or : output.val = (byte)ALUOps.or;  jr.flg = false; break;
-                        case Funcs.slt: output.val = (byte)ALUOps.slt; jr.flg = false; break;
-                        case Funcs.jr:  output.val = (byte)ALUOps.or;  jr.flg = true;  break;
-                        default:        output.val = 0;                jr.flg = false; break; // nop
+                        case Funcs.add: output.val = (byte)ALUOps.add; jr.flg = false; shift.flg = false; break;
+                        case Funcs.sub: output.val = (byte)ALUOps.sub; jr.flg = false; shift.flg = false; break;
+                        case Funcs.and: output.val = (byte)ALUOps.and; jr.flg = false; shift.flg = false; break;
+                        case Funcs.or : output.val = (byte)ALUOps.or;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.slt: output.val = (byte)ALUOps.slt; jr.flg = false; shift.flg = false; break;
+                        case Funcs.jr:  output.val = (byte)ALUOps.or;  jr.flg = true;  shift.flg = false; break;
+                        case Funcs.srl: output.val = (byte)ALUOps.sr;  jr.flg = false; shift.flg = true;  break;
+                        case Funcs.sll: output.val = (byte)ALUOps.sl;  jr.flg = false; shift.flg = true;  break;
+                        default:        output.val = 0;                jr.flg = false; shift.flg = false; break; // nop
                     }
                 }
                 else
@@ -191,6 +226,7 @@ namespace SingleCycleMIPS
                         default:             output.val = 0;                break; // nop
                     }
                     jr.flg = false;
+                    shift.flg = false;
                 }
             }
         }
@@ -198,9 +234,11 @@ namespace SingleCycleMIPS
         public class ALU : SimpleProcess
         {
             [InputBus]
-            ID.OutputA inA;
+            //ID.OutputA inA;
+            ShmtMuxOut inA;
             [InputBus]
-            MuxOut inB;
+            ImmMuxOut inB;
+            //ShmtMuxOut inB;
             [InputBus]
             ALUOperation op;
 
@@ -216,10 +254,10 @@ namespace SingleCycleMIPS
                 switch ((ALUOps) op.val)
                 {
                     case ALUOps.sr:
-                        tmp = (int) (unchecked((uint) inA.data) >> inB.data);
+                        tmp = (int) (unchecked((uint) inB.data) >> inA.data);
                         break;
                     case ALUOps.sl:
-                        tmp = (int) (unchecked((uint) inA.data) << inB.data);
+                        tmp = (int) (unchecked((uint) inB.data) << inA.data);
                         break;
                     case ALUOps.sra:
                         tmp = inA.data << inB.data;
@@ -268,7 +306,7 @@ namespace SingleCycleMIPS
                         tmp = -1;
                         break;
                 }
-                Console.WriteLine("ALU " + inA.data + " " + ((ALUOps) op.val) + " " + inB.data +  " = " + tmp);
+                //Console.WriteLine("ALU " + inA.data + " " + ((ALUOps) op.val) + " " + inB.data +  " = " + tmp);
                 result.data = tmp;
                 zero.flg = tmp == 0;
             }

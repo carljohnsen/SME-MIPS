@@ -149,6 +149,12 @@ namespace SingleCycleMIPS
             bool flg { get; set; }
         }
 
+        [InitializedBus]
+        public interface Shamt : IBus
+        {
+            byte amount { get; set; }
+        }
+
         public class Splitter : SimpleProcess
         {
             [InputBus]
@@ -168,6 +174,8 @@ namespace SingleCycleMIPS
             ALUFunct aluFunct;
             [OutputBus]
             JumpUnit.Instruction jump;
+            [OutputBus]
+            Shamt shmt;
 
             protected override void OnTick()
             {
@@ -176,10 +184,12 @@ namespace SingleCycleMIPS
                 byte  rs     = (byte) ((tmp >> 21) & 0x1F);
                 byte  rt     = (byte) ((tmp >> 16) & 0x1F);
                 byte  rd     = (byte) ((tmp >> 11) & 0x1F);
+                byte  shamt  = (byte) ((tmp >> 6)  & 0x1F);
                 byte  funct  = (byte) ( tmp        & 0x3F);
                 int   addr   = (int)  ( tmp        & 0x03FFFFFF); // Last 25 bit
                 short ext    = (short)( tmp        & 0xFFFF); // Last 16 bit
 
+                shmt.amount = shamt;
                 readA.addr = rs;
                 readB.addr = rt;
                 mux.rd = rd;
@@ -321,7 +331,7 @@ namespace SingleCycleMIPS
                 outputA.data = data[readA.addr];
                 outputB.data = data[readB.addr];
                 /* Print the register file */
-                Console.Write("[");
+                /*Console.Write("[");
                 for (int i = 0; i < 4; i++)
                 {
                     Console.Write("\t");
@@ -330,7 +340,7 @@ namespace SingleCycleMIPS
                         Console.Write(data[i * 8 + j] + ",\t");
                     }
                     Console.WriteLine(data[i * 8 + 7] + (i == 3 ? "\t]" : ","));
-                }
+                }*/
             }
         }
     }

@@ -51,11 +51,13 @@ namespace SingleCycleMIPS
             EX.ALUResult addr;
             [InputBus]
             ID.OutputB write;
+            //[InputBus]
+            //IF.DEBUG_SHUTDOWN dbg;
 
             [OutputBus]
             ReadData output;
 
-            int[] mem = new int[1024];
+            /*int[] mem = new int[1024];
 
             protected override void OnTick()
             {
@@ -72,6 +74,54 @@ namespace SingleCycleMIPS
                 }
                 else // Escape latch warning!
                     output.data = 0;
+                if (true)//!dbg.running)
+                {
+                    Console.Write("MEM [");
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Console.Write(mem[i] + ",");
+                    }
+                    Console.WriteLine("]");
+                }
+            }*/
+            byte[] mem = new byte[1024];
+
+            protected override void OnTick()
+            {
+                int add = addr.data;
+                if (memread.flg)
+                {
+                    byte b0 = mem[add];
+                    byte b1 = mem[add + 1];
+                    byte b2 = mem[add + 2];
+                    byte b3 = mem[add + 3];
+                    output.data = 0 | (b3 << 24) | (b2 << 16) | (b1 << 8) | b0;
+                }
+                else if (memwrite.flg)
+                {
+                    int data = write.data;
+                    mem[add] = (byte)(data & 0xFF);
+                    mem[add + 1] = (byte)((data >> 8) & 0xFF);
+                    mem[add + 2] = (byte)((data >> 16) & 0xFF);
+                    mem[add + 3] = (byte)((data >> 24) & 0xFF);
+                    output.data = 0;
+                }
+                else
+                {
+                    output.data = 0;
+                }
+
+                Console.Write("MEM [");
+                for (int i = 0; i < 10; i++)
+                {
+                    int a = 0;
+                    a |= mem[i * 4];
+                    a |= mem[i * 4 + 1] << 8;
+                    a |= mem[i * 4 + 2] << 16;
+                    a |= mem[i * 4 + 3] << 24;
+                    Console.Write(a + ",");
+                }
+                Console.WriteLine("]");
             }
         }
 
