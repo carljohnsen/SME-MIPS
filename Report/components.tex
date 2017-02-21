@@ -199,7 +199,11 @@ meh - det er gjort dog...
 %the \texttt{funct} code for selecting the operation. Otherwise it bases its
 %output purely on the \texttt{ALUOp} code. As before, we will return to this
 %component, when we need to extend the instruction set.
-As with the normal Control Unit, we need to produce a signal, based on some input. We start by checking whether or not the opcode from the instruction indicates that the instruction is an R-format. If this is the case, we need to \texttt{switch} on the \texttt{funct} field of the instuction.
+As with the normal Control Unit, we need to produce a signal, based on some
+input. We start by checking whether or not the opcode from the instruction
+indicates that the instruction is an R-format. If this is the case, we need to
+\texttt{switch} on the \texttt{funct} field of the instuction.
+% TODO ALU har HI og LO
 
 \subsubsection*{Implementation}
 As with the main control unit, I have just implemented the combinatorial logic
@@ -259,6 +263,60 @@ will increment where in memory we are pointing.
 It has been tested! IF has a program that it pushes through the processor.
 
 \subsection{Jump control}
+The jump control is the part of the processor, that based on the instruction
+changes the value of the PC register. There are two ways to jump: by branching
+and by jumping.
+
+\subsubsection*{Implementation}
+We start by implementing the control for the branching logic. We need to
+support 2 branch instructions in our basic processor: branch equal and branch
+not equal. Therefore we will need two signals: \texttt{Branch} and
+\texttt{BranchNot}. The \texttt{Branch} is used to indicate that the
+instruction should change the PC register. The \texttt{BranchNot} is used to
+choose whether or not the \texttt{Zero} flag from the ALU should be
+\texttt{1} or \texttt{0} for the instruction to branch. In both instructions,
+we compute the subtraction of the two input registers, and if the result is
+\texttt{1} they are equal, otherwise they are not equal. The \texttt{Zero}
+signal is then send to an \texttt{AND} gate along with the \texttt{Branch}
+signal. bla bla decoder......
+
+Then we need to implement the jump unit. This is a little bit easier, as we do
+not depend on anything from the ALU. The problem is that we need to change the
+decoder to accept a new format: the J-format. The J-format consists of an
+opcode, and a 26-bit address. The address is left shifted by 2, to ensure word
+alignment, and the upper 4 bits of the PC is added to the final address. We
+also need another control signal: \texttt{Jump}. We use this to multiplex
+between the newly computed address and the output from the previous mux (branch
+or pc+4).
+
+\subsubsection*{Testing}
+\texttt{nop}
+
 \subsection{Memory unit}
+The memory unit is the main memory. The CPU can either read or write to the
+memory unit. The addresses for the memory are word sized, i.e. in our case 32
+bit.
+
+\subsubsection*{Implementation}
+We are going to need two signals: \texttt{MemRead} and \texttt{MemWrite}.
+Furthermore, we need an address input, an data input and an data output. On
+each clock, we first check if we should read, in which case we output the word
+at the given adress, if we should write, in which case we store the word from
+the data bus at the given address.
+
+\subsubsection*{Testing}
+aoeuaoeuaoeuaoeuoaeuaoeue
+
 \subsection{Write back}
-% TODO write buffer i ID steppet!
+The final stage is the writeback, where we take the computed result, and store
+it in the appropriate registers.
+
+\subsubsection*{Implementation}
+(Måske som førnævnt??) Since there is a cycle from the register file, through
+the alu and memory, back to the register file, we need to have a clocked
+buffer. As such, after each instruction, the result is stored in this buffer,
+and on a clock tick, the value in hold is put on its output bus to the
+registers.
+
+\subsection*{Testing}
+meh
