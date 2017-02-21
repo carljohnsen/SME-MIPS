@@ -9,7 +9,7 @@ namespace SingleCycleMIPS
         {
             new Simulation()
                 //.BuildCSVFile()
-                //.BuildGraph()
+                .BuildGraph()
                 //.BuildVHDL()
                 .Run(typeof(MainClass).Assembly);
         }

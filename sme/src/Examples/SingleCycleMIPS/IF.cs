@@ -147,9 +147,15 @@ namespace SingleCycleMIPS
                 0xac010018,
                 0x34010010,
                 0xac01001c,
+                0x3c01ffff,
+                0x3421ffff,
+                0x00010825,
+                0xac010020,
+                0x34010007,
+                0xac010024,
                 0x00002025,
                 0x20050000,
-                0x20060007,
+                0x20060009,
                 0x00a6082a,
                 0x10200034,
                 0x00054080,
@@ -165,7 +171,7 @@ namespace SingleCycleMIPS
                 0xad680000,
                 0x00a06820,
                 0x20ac0000,
-                0x0800002f,
+                0x08000035,
                 0x000c5880,
                 0x008b5820,
                 0x8d6e0000,
@@ -193,7 +199,7 @@ namespace SingleCycleMIPS
                 0x23bdfffc,
                 0xafbf0000,
                 0x21a6ffff,
-                0x0c000014,
+                0x0c00001a,
                 0x8fbf0000,
                 0x23bd0004,
                 0x8fa60000,
@@ -201,7 +207,7 @@ namespace SingleCycleMIPS
                 0x8fa50000,
                 0x20a50001,
                 0xafbf0000,
-                0x0c000014,
+                0x0c00001a,
                 0x8fbf0000,
                 0x23bd0004,
                 0x13e00001,
@@ -220,6 +226,7 @@ namespace SingleCycleMIPS
                     instr.instruction = program[i];
                     //Console.WriteLine("0x{0:X8}",program[i]);
                     shut.running = true;
+                    //System.Threading.Thread.Sleep(33); // Control the clock rate!!
                 }
                 else
                 {

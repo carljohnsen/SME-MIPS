@@ -93,6 +93,12 @@ namespace SingleCycleMIPS
         bool flg { get; set; }
     }
 
+    [InitializedBus]
+    public interface BranchNot : IBus
+    {
+        bool flg { get; set; }
+    }
+
     public class EX
     {
         public enum ALUOps
@@ -493,13 +499,15 @@ namespace SingleCycleMIPS
             Branch branch;
             [InputBus]
             EX.Zero zero;
+            [InputBus]
+            BranchNot bne;
 
             [OutputBus]
             AndOut output;
 
             protected override void OnTick()
             {
-                output.flg = zero.flg && branch.flg;
+                output.flg = (bne.flg ? !zero.flg : zero.flg) && branch.flg;
             }
         }
     }
