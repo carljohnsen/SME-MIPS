@@ -119,12 +119,16 @@ namespace SingleCycleMIPS
             div,
             divu,
             xor,
+            mtlo,
+            mthi,
+            mflo,
+            mfhi,
         }
 
         [InitializedBus]
         public interface ALUOperation : IBus
         {
-            byte val { get; set; }
+            short val { get; set; }
         }
 
         [InitializedBus]
@@ -211,25 +215,33 @@ namespace SingleCycleMIPS
                 {
                     switch ((Funcs)funct.val)
                     {
-                        case Funcs.add: output.val = (byte)ALUOps.add; jr.flg = false; shift.flg = false; break;
-                        case Funcs.sub: output.val = (byte)ALUOps.sub; jr.flg = false; shift.flg = false; break;
-                        case Funcs.and: output.val = (byte)ALUOps.and; jr.flg = false; shift.flg = false; break;
-                        case Funcs.or : output.val = (byte)ALUOps.or;  jr.flg = false; shift.flg = false; break;
-                        case Funcs.slt: output.val = (byte)ALUOps.slt; jr.flg = false; shift.flg = false; break;
-                        case Funcs.jr:  output.val = (byte)ALUOps.or;  jr.flg = true;  shift.flg = false; break;
-                        case Funcs.srl: output.val = (byte)ALUOps.sr;  jr.flg = false; shift.flg = true;  break;
-                        case Funcs.sll: output.val = (byte)ALUOps.sl;  jr.flg = false; shift.flg = true;  break;
-                        default:        output.val = 0;                jr.flg = false; shift.flg = false; break; // nop
+                        case Funcs.add:   output.val = (short)ALUOps.add;   jr.flg = false; shift.flg = false; break;
+                        case Funcs.sub:   output.val = (short)ALUOps.sub;   jr.flg = false; shift.flg = false; break;
+                        case Funcs.and:   output.val = (short)ALUOps.and;   jr.flg = false; shift.flg = false; break;
+                        case Funcs.or :   output.val = (short)ALUOps.or;    jr.flg = false; shift.flg = false; break;
+                        case Funcs.slt:   output.val = (short)ALUOps.slt;   jr.flg = false; shift.flg = false; break;
+                        case Funcs.jr:    output.val = (short)ALUOps.or;    jr.flg = true;  shift.flg = false; break;
+                        case Funcs.srl:   output.val = (short)ALUOps.sr;    jr.flg = false; shift.flg = true;  break;
+                        case Funcs.sll:   output.val = (short)ALUOps.sl;    jr.flg = false; shift.flg = true;  break;
+                        case Funcs.mtlo:  output.val = (short)ALUOps.mtlo;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.mthi:  output.val = (short)ALUOps.mthi;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.mflo:  output.val = (short)ALUOps.mflo;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.mfhi:  output.val = (short)ALUOps.mfhi;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.mult:  output.val = (short)ALUOps.mult;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.multu: output.val = (short)ALUOps.multu; jr.flg = false; shift.flg = false; break;
+                        case Funcs.div:   output.val = (short)ALUOps.div;   jr.flg = false; shift.flg = false; break;
+                        case Funcs.divu:  output.val = (short)ALUOps.divu;  jr.flg = false; shift.flg = false; break;
+                        default:          output.val = 0;                   jr.flg = false; shift.flg = false; break; // nop
                     }
                 }
                 else
                 {
                     switch ((ALUOpcodes)op.code)
                     {
-                        case ALUOpcodes.add: output.val = (byte)ALUOps.add; break;
-                        case ALUOpcodes.sub: output.val = (byte)ALUOps.sub; break;
-                        case ALUOpcodes.or:  output.val = (byte)ALUOps.or;  break;
-                        default:             output.val = 0;                break; // nop
+                        case ALUOpcodes.add: output.val = (short)ALUOps.add; break;
+                        case ALUOpcodes.sub: output.val = (short)ALUOps.sub; break;
+                        case ALUOpcodes.or:  output.val = (short)ALUOps.or;  break;
+                        default:             output.val = 0;                 break; // nop
                     }
                     jr.flg = false;
                     shift.flg = false;
@@ -254,9 +266,13 @@ namespace SingleCycleMIPS
             ALUResult result;
             //WB.BufIn result;
 
+            int HI = 0;
+            int LO = 0;
+
             protected override void OnTick()
             {
                 int tmp = -1;
+                long tmp2 = -1L;
                 switch ((ALUOps) op.val)
                 {
                     case ALUOps.sr:
@@ -280,17 +296,23 @@ namespace SingleCycleMIPS
                     case ALUOps.subu:
                         tmp = (int)(((uint)inA.data) - ((uint)inB.data));
                         break;
-                    case ALUOps.mult: // TODO HI og LO
-                        tmp = inA.data * inB.data;
+                    case ALUOps.mult:
+                        tmp2 = inA.data * inB.data;
+                        HI = (int)(tmp2 >> 32);
+                        LO = (int)(tmp2 & 0xFFFFFFFF);
                         break;
-                    case ALUOps.multu: // TODO HI og LO
-                        tmp = (int)(((uint)inA.data) * ((uint)inB.data));
+                    case ALUOps.multu: 
+                        tmp2 = ((uint)inA.data) * ((uint)inB.data);
+                        HI = (int)(tmp2 >> 32);
+                        LO = (int)(tmp2 & 0xFFFFFFFF);
                         break;
-                    case ALUOps.div: // TODO HI og LO
-                        tmp = inA.data / inB.data;
+                    case ALUOps.div: // Remember divide by 0...
+                        HI = inA.data % inB.data;
+                        LO = inA.data / inB.data;
                         break;
-                    case ALUOps.divu: // TODO HI og LO
-                        tmp = (int)(((uint)inA.data) / ((uint)inB.data));
+                    case ALUOps.divu: // Remember divide by 0...
+                        HI = (int)(((uint)inA.data) % ((uint)inB.data));
+                        LO = (int)(((uint)inA.data) / ((uint)inB.data));
                         break;
                     case ALUOps.and:
                         tmp = inA.data & inB.data;
@@ -306,6 +328,18 @@ namespace SingleCycleMIPS
                         break;
                     case ALUOps.slt:
                         tmp = inA.data < inB.data ? 1 : 0;
+                        break;
+                    case ALUOps.mtlo:
+                        LO = inA.data;
+                        break;
+                    case ALUOps.mthi:
+                        HI = inA.data;
+                        break;
+                    case ALUOps.mflo:
+                        tmp = LO;
+                        break;
+                    case ALUOps.mfhi:
+                        tmp = HI;
                         break;
                     default: // Catch unknown
                         Console.WriteLine("Should not be!");

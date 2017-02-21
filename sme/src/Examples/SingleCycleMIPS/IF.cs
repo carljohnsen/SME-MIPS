@@ -75,7 +75,7 @@ namespace SingleCycleMIPS
             DEBUG_SHUTDOWN shut;
 
             // https://www.eg.bucknell.edu/~csci320/mips_web/
-            /*uint[] program =
+            uint[] program =
             {
                 0x20010005, // addi r1 r0 0x5 - 5
                 0x20020002, // addi r2 r0 0x2 - 2
@@ -124,10 +124,16 @@ namespace SingleCycleMIPS
                 0x2015000A, // addi r21 r0 0xA
 
                 0x0015B042, // srl r22 r21 0x1
-                0x02B50020, // add r0 r21 r21
-            };*/
+                0x16b60001, // bne r21 r22 0x1
+                0x201715b3, // addi r23 r0 5555 -- should not be executed
+                0x02b60018, // mult r21 r22 - 50
+                0x0000c012, // mflo r24 - 50
+                0x02b6001a, // div r21 r22 - 2
+                0x0000c812, // mflo r25 - 2
+            };
 
             // qsort!
+            /*
             uint[] program =
             {
                 0x37bd0064,
@@ -212,7 +218,7 @@ namespace SingleCycleMIPS
                 0x23bd0004,
                 0x13e00001,
                 0x03e00008,
-            };
+            };*/
 
 
             int c = 0;

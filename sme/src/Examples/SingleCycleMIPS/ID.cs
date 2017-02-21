@@ -280,9 +280,9 @@ namespace SingleCycleMIPS
                     case Opcodes.sw:      flags = 0x022; alu = ALUOpcodes.add; break; // 0000 001X 0010
                     case Opcodes.beq:     flags = 0x001; alu = ALUOpcodes.sub; break; // 0000 0X0X 0001
                     case Opcodes.addi:    flags = 0x028; alu = ALUOpcodes.add; break; // 0000 0010 1000
-                    case Opcodes.j:       flags = 0x080;                       break; // 00X0 1XXX 000X
+                    case Opcodes.j:       flags = 0x080; alu = ALUOpcodes.or;  break; // 00X0 1XXX 000X
                     case Opcodes.ori:     flags = 0x228; alu = ALUOpcodes.or;  break; // 0010 0010 1000
-                    case Opcodes.jal:     flags = 0x188;                       break; // 00X1 1XXX 100X
+                    case Opcodes.jal:     flags = 0x188; alu = ALUOpcodes.or;  break; // 00X1 1XXX 100X
                     case Opcodes.bne:     flags = 0x801; alu = ALUOpcodes.sub; break; // 1000 0X0X 0001
                         // TODO jal og jr
                     // default: flags = 0; alu = 0; break;
@@ -335,7 +335,7 @@ namespace SingleCycleMIPS
                 outputA.data = data[readA.addr];
                 outputB.data = data[readB.addr];
                 /* Print the register file */
-                /*Console.Write("[");
+                Console.Write("[");
                 for (int i = 0; i < 4; i++)
                 {
                     Console.Write("\t");
@@ -344,7 +344,7 @@ namespace SingleCycleMIPS
                         Console.Write(data[i * 8 + j] + ",\t");
                     }
                     Console.WriteLine(data[i * 8 + 7] + (i == 3 ? "\t]" : ","));
-                }*/
+                }
             }
         }
     }
