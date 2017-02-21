@@ -130,6 +130,14 @@ namespace SingleCycleMIPS
                 0x0000c012, // mflo r24 - 50
                 0x02b6001a, // div r21 r22 - 2
                 0x0000c812, // mflo r25 - 2
+                0x241a007b, // addiu r26 r0 123 - 123
+                0x333b0002, // andi r27 r25 2 - 2
+                0x2b7c0005, // slti r28 r27 5 - 1
+                0x2f7dffff, // sltiu r29 r27 -1 - 1
+                0x037bf021, // addu r30 r27 r27 - 4
+                0x01adf827, // nor r31 r13 r13 - 0 ( eller 1?)
+                0x036d082b, // sltu r1 r27 r13 - 1
+                0x00621023, // subu r2 r3 r2 - 5
             };
 
             // qsort!

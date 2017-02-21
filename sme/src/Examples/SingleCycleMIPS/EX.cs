@@ -123,6 +123,7 @@ namespace SingleCycleMIPS
             mthi,
             mflo,
             mfhi,
+            sltu,
         }
 
         [InitializedBus]
@@ -216,10 +217,14 @@ namespace SingleCycleMIPS
                     switch ((Funcs)funct.val)
                     {
                         case Funcs.add:   output.val = (short)ALUOps.add;   jr.flg = false; shift.flg = false; break;
+                        case Funcs.addu:  output.val = (short)ALUOps.addu;  jr.flg = false; shift.flg = false; break;
                         case Funcs.sub:   output.val = (short)ALUOps.sub;   jr.flg = false; shift.flg = false; break;
+                        case Funcs.subu:  output.val = (short)ALUOps.subu;  jr.flg = false; shift.flg = false; break;    
                         case Funcs.and:   output.val = (short)ALUOps.and;   jr.flg = false; shift.flg = false; break;
                         case Funcs.or :   output.val = (short)ALUOps.or;    jr.flg = false; shift.flg = false; break;
+                        case Funcs.nor:   output.val = (short)ALUOps.nor;   jr.flg = false; shift.flg = false; break;    
                         case Funcs.slt:   output.val = (short)ALUOps.slt;   jr.flg = false; shift.flg = false; break;
+                        case Funcs.sltu:  output.val = (short)ALUOps.sltu;  jr.flg = false; shift.flg = false; break;    
                         case Funcs.jr:    output.val = (short)ALUOps.or;    jr.flg = true;  shift.flg = false; break;
                         case Funcs.srl:   output.val = (short)ALUOps.sr;    jr.flg = false; shift.flg = true;  break;
                         case Funcs.sll:   output.val = (short)ALUOps.sl;    jr.flg = false; shift.flg = true;  break;
@@ -241,6 +246,9 @@ namespace SingleCycleMIPS
                         case ALUOpcodes.add: output.val = (short)ALUOps.add; break;
                         case ALUOpcodes.sub: output.val = (short)ALUOps.sub; break;
                         case ALUOpcodes.or:  output.val = (short)ALUOps.or;  break;
+                        case ALUOpcodes.addu: output.val = (short)ALUOps.addu; break;    
+                        case ALUOpcodes.slt: output.val = (short)ALUOps.slt; break;
+                        case ALUOpcodes.sltu: output.val = (short)ALUOps.sltu; break;    
                         default:             output.val = 0;                 break; // nop
                     }
                     jr.flg = false;
@@ -328,6 +336,9 @@ namespace SingleCycleMIPS
                         break;
                     case ALUOps.slt:
                         tmp = inA.data < inB.data ? 1 : 0;
+                        break;
+                    case ALUOps.sltu:
+                        tmp = ((uint)inA.data) < ((uint)inB.data) ? 1 : 0;
                         break;
                     case ALUOps.mtlo:
                         LO = inA.data;

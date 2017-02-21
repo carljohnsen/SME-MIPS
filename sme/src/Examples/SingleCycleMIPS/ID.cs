@@ -53,7 +53,11 @@ namespace SingleCycleMIPS
         RFormat,
         sub,
         add,
+        addu,
+        and,
         or,
+        slt,
+        sltu,
     }
 
     [InitializedBus]
@@ -275,15 +279,19 @@ namespace SingleCycleMIPS
                 ALUOpcodes alu = 0; // nop
                 switch ((Opcodes)input.opcode)
                 { // The comments are the flags, X is dont care
-                    case Opcodes.Rformat: flags = 0x048;                       break; // 0000 0100 1000
-                    case Opcodes.lw:      flags = 0x03C; alu = ALUOpcodes.add; break; // 0000 0011 1100
-                    case Opcodes.sw:      flags = 0x022; alu = ALUOpcodes.add; break; // 0000 001X 0010
-                    case Opcodes.beq:     flags = 0x001; alu = ALUOpcodes.sub; break; // 0000 0X0X 0001
-                    case Opcodes.addi:    flags = 0x028; alu = ALUOpcodes.add; break; // 0000 0010 1000
-                    case Opcodes.j:       flags = 0x080; alu = ALUOpcodes.or;  break; // 00X0 1XXX 000X
-                    case Opcodes.ori:     flags = 0x228; alu = ALUOpcodes.or;  break; // 0010 0010 1000
-                    case Opcodes.jal:     flags = 0x188; alu = ALUOpcodes.or;  break; // 00X1 1XXX 100X
-                    case Opcodes.bne:     flags = 0x801; alu = ALUOpcodes.sub; break; // 1000 0X0X 0001
+                    case Opcodes.Rformat: flags = 0x048;                        break; // 0000 0100 1000
+                    case Opcodes.lw:      flags = 0x03C; alu = ALUOpcodes.add;  break; // 0000 0011 1100
+                    case Opcodes.sw:      flags = 0x022; alu = ALUOpcodes.add;  break; // 0000 001X 0010
+                    case Opcodes.beq:     flags = 0x001; alu = ALUOpcodes.sub;  break; // 0000 0X0X 0001
+                    case Opcodes.addi:    flags = 0x028; alu = ALUOpcodes.add;  break; // 0000 0010 1000
+                    case Opcodes.addiu:   flags = 0x028; alu = ALUOpcodes.addu; break; // 0000 0010 1000    
+                    case Opcodes.j:       flags = 0x080; alu = ALUOpcodes.or;   break; // 00X0 1XXX 000X
+                    case Opcodes.andi:    flags = 0x228; alu = ALUOpcodes.and;  break; // 0010 0010 1000    
+                    case Opcodes.ori:     flags = 0x228; alu = ALUOpcodes.or;   break; // 0010 0010 1000
+                    case Opcodes.slti:    flags = 0x228; alu = ALUOpcodes.slt;  break; // 0010 0010 1000    
+                    case Opcodes.sltiu:   flags = 0x228; alu = ALUOpcodes.sltu; break; // 0010 0010 1000
+                    case Opcodes.jal:     flags = 0x188; alu = ALUOpcodes.or;   break; // 00X1 1XXX 100X
+                    case Opcodes.bne:     flags = 0x801; alu = ALUOpcodes.sub;  break; // 1000 0X0X 0001
                         // TODO jal og jr
                     // default: flags = 0; alu = 0; break;
                 }
