@@ -48,7 +48,8 @@ namespace SingleCycleMIPS
             [InputBus]
             MemRead memread;
             [InputBus]
-            EX.ALUResult addr;
+            //EX.ALUResult addr;
+            EX.JALOut addr;
             [InputBus]
             ID.OutputB write;
             //[InputBus]
@@ -88,7 +89,7 @@ namespace SingleCycleMIPS
 
             protected override void OnTick()
             {
-                int add = addr.data;
+                int add = addr.val;
                 if (memread.flg)
                 {
                     byte b0 = mem[add];

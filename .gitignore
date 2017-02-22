@@ -3,6 +3,8 @@
 /Report/*
 !/Report/*.tex
 !/Report/*.pdf
+!/Report/Slides/*.tex
+!/Report/Slides/*.pdf
 
 /Thesis\ description/*
 !/Thesis\ description/*.tex
