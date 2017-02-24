@@ -3,19 +3,19 @@ using SME;
 
 namespace LogicGates
 {
-	[TopLevelInputBus, InitializedBus]
-	public interface Input : IBus
-	{
-		int Bit1 { get; set; }
-		int Bit2 { get; set; }
-	}
+    [TopLevelInputBus, InitializedBus]
+    public interface Input : IBus
+    {
+        bool bit1 { get; set; }
+        bool bit2 { get; set; }
+    }
 
-	[TopLevelOutputBus, InitializedBus]
-	public interface Output : IBus
-	{
-		int And { get; set; }
-		int Or { get; set; }
-		int Not { get; set; }
-		int Xor { get; set; }
-	}
+    [TopLevelOutputBus, InitializedBus]
+    public interface Output : IBus
+    {
+        bool And { get; set; }
+        bool Or  { get; set; }
+        bool Not { get; set; }
+        bool Xor { get; set; }
+    }
 }

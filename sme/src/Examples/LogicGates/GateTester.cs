@@ -3,60 +3,60 @@ using SME;
 
 namespace LogicGates
 {
-	// Tests the logic circuits
-	[ClockedProcess]
-	public class GateTester : Process
-	{
-		// Names are kind of reversed, as it is input for the gate, and not the producer
-		[OutputBus]
-		Input input;
+    // Tests the logic circuits
+    [ClockedProcess]
+    public class GateTester : Process
+    {
+        // Names are kind of reversed, as it is input for the gate, and not the producer
+        [OutputBus]
+        Input input;
 
-		[InputBus]
-		Output output;
+        [InputBus]
+        Output output;
 
-		public async override System.Threading.Tasks.Task Run()
-		{
-			Console.WriteLine("Starting test!");
-			await ClockAsync();
+        public async override System.Threading.Tasks.Task Run()
+        {
+            Console.WriteLine("Starting test!");
+            await ClockAsync();
 
-			input.Bit1 = 0;
-			input.Bit2 = 0;
-			await ClockAsync();
+            input.bit1 = false;
+            input.bit2 = false;
+            await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(output.And == 0, "26");
-			System.Diagnostics.Debug.Assert(output.Or  == 0, "27");
-			System.Diagnostics.Debug.Assert(output.Not == 1, "28");
-			System.Diagnostics.Debug.Assert(output.Xor == 0, "29");
+            System.Diagnostics.Debug.Assert(!output.And);
+            System.Diagnostics.Debug.Assert(!output.Or);
+            System.Diagnostics.Debug.Assert(output.Not);
+            System.Diagnostics.Debug.Assert(!output.Xor);
 
-			input.Bit1 = 0;
-			input.Bit2 = 1;
-			await ClockAsync();
+            input.bit1 = false;
+            input.bit2 = true;
+            await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(output.And == 0);
-			System.Diagnostics.Debug.Assert(output.Or == 1);
-			System.Diagnostics.Debug.Assert(output.Not == 1);
-			System.Diagnostics.Debug.Assert(output.Xor == 1);
+            System.Diagnostics.Debug.Assert(!output.And);
+            System.Diagnostics.Debug.Assert(output.Or);
+            System.Diagnostics.Debug.Assert(output.Not);
+            System.Diagnostics.Debug.Assert(output.Xor);
 
-			input.Bit1 = 1;
-			input.Bit2 = 0;
-			await ClockAsync();
+            input.bit1 = true;
+            input.bit2 = false;
+            await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(output.And == 0);
-			System.Diagnostics.Debug.Assert(output.Or == 1);
-			System.Diagnostics.Debug.Assert(output.Not == 0);
-			System.Diagnostics.Debug.Assert(output.Xor == 1);
+            System.Diagnostics.Debug.Assert(!output.And);
+            System.Diagnostics.Debug.Assert(output.Or);
+            System.Diagnostics.Debug.Assert(!output.Not);
+            System.Diagnostics.Debug.Assert(output.Xor);
 
-			input.Bit1 = 1;
-			input.Bit2 = 1;
-			await ClockAsync();
+            input.bit1 = true;
+            input.bit2 = true;
+            await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(output.And == 1);
-			System.Diagnostics.Debug.Assert(output.Or == 1);
-			System.Diagnostics.Debug.Assert(output.Not == 0);
-			System.Diagnostics.Debug.Assert(output.Xor == 0);
+            System.Diagnostics.Debug.Assert(output.And);
+            System.Diagnostics.Debug.Assert(output.Or);
+            System.Diagnostics.Debug.Assert(!output.Not);
+            System.Diagnostics.Debug.Assert(!output.Xor);
 
-			await ClockAsync();
-			Console.WriteLine("Done testing!");
-		}
-	}
+            await ClockAsync();
+            Console.WriteLine("Done testing!");
+        }
+    }
 }

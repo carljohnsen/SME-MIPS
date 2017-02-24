@@ -3,64 +3,64 @@ using SME;
 
 namespace LogicGates
 {
-	
-	//[ClockedProcess]
-	public class AND : SimpleProcess
-	{
-		[InputBus]
-		Input input;
 
-		[OutputBus]
-		Output output;
+    //[ClockedProcess]
+    public class AND : SimpleProcess
+    {
+        [InputBus]
+        Input input;
 
-		protected override void OnTick()
-		{
-			output.And = input.Bit1 & input.Bit2;
-		}
-	}
+        [OutputBus]
+        Output output;
 
-	//[ClockedProcess]
-	public class OR : SimpleProcess
-	{
-		[InputBus]
-		Input input;
+        protected override void OnTick()
+        {
+            output.And = input.bit1 && input.bit2;
+        }
+    }
 
-		[OutputBus]
-		Output output;
+    //[ClockedProcess]
+    public class OR : SimpleProcess
+    {
+        [InputBus]
+        Input input;
 
-		protected override void OnTick()
-		{
-			output.Or = input.Bit1 | input.Bit2;
-		}
-	}
+        [OutputBus]
+        Output output;
 
-	//[ClockedProcess]
-	public class NOT : SimpleProcess
-	{
-		[InputBus]
-		Input input;
+        protected override void OnTick()
+        {
+            output.Or = input.bit1 || input.bit2;
+        }
+    }
 
-		[OutputBus]
-		Output output;
+    //[ClockedProcess]
+    public class NOT : SimpleProcess
+    {
+        [InputBus]
+        Input input;
 
-		protected override void OnTick()
-		{
-			output.Not = ~input.Bit1 & 1;
-		}
-	}
+        [OutputBus]
+        Output output;
 
-	//[ClockedProcess]
-	public class XOR : SimpleProcess
-	{
-		[InputBus]
-		Input input;
+        protected override void OnTick()
+        {
+            output.Not = !input.bit1;
+        }
+    }
 
-		[OutputBus]
-		Output output;
+    //[ClockedProcess]
+    public class XOR : SimpleProcess
+    {
+        [InputBus]
+        Input input;
 
-		protected override void OnTick()
-		{
-			output.Xor = input.Bit1 ^ input.Bit2;
-		}
-	}
+        [OutputBus]
+        Output output;
+
+        protected override void OnTick()
+        {
+            output.Xor = input.bit1 ^ input.bit2;
+        }
+    }
 }
