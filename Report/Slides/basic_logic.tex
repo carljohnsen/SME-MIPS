@@ -1,0 +1,304 @@
+% {{{ Preamble ----------------------------------------------------------------
+\documentclass{beamer}
+
+% encodings, fonts etc.
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+% math packages
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+% beamer configuration
+\usetheme{Copenhagen}
+%\usetheme{metropolis}
+\beamertemplatenavigationsymbolsempty
+%\setbeamertemplate{theorems}[numbered]
+\setbeamersize{description width=2.0em}
+
+%\usepackage{pgfpages}
+%\setbeameroption{show notes}
+%\setbeameroption{show notes on second screen=right}
+
+% algorithms
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+% misc. packages
+\usepackage{float}
+\usepackage{varwidth}
+\usepackage{listings}
+\lstset{
+  %breaklines=true,
+  keepspaces=true,
+  %frame=ltrb,
+  %framesep=1pt,
+  %commentstyle=\color{grey},
+  basicstyle=\ttfamily\tiny,
+  %numbers=left,
+  title=\lstname,
+  %columns=fullflexible,
+  inputencoding=utf8,
+  extendedchars=true,
+}
+
+% graphics and tikz
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows,calc}
+\tikzset{
+    on grid,
+    node distance=3cm,
+    auto,
+    block/.style = {
+        draw,
+        shape=rectangle,
+        minimum height=3em,
+        minimum width=3em,
+        line width=1pt
+    },
+    empty/.style = {
+        shape=rectangle,
+        minimum height=3em,
+        minimum width=3em
+    },
+    >=latex',
+}
+
+
+% mathematics
+\newtheorem{proposition}{Proposition}
+
+\renewcommand{\tt}{\texttt}
+
+% title page
+\title{Basic logic circuits}
+\author[Carl-Johannes Johnsen]{
+  \mbox{Carl-Johannes Johnsen}}
+\institute{Department of Computer Science\\
+           University of Copenhagen}
+%\date{December 22, 2016}
+% }}} -------------------------------------------------------------------------
+
+\begin{document}
+
+% {{{ Title page --------------------------------------------------------------
+\frame{\titlepage}
+% }}} -------------------------------------------------------------------------
+
+% {{{ Table of contents -------------------------------------------------------
+%\begin{frame}
+%  \frametitle{Outline}
+%  \tableofcontents
+%\end{frame}
+% }}} -------------------------------------------------------------------------
+
+\section{Introduction}
+\begin{frame}
+    In this lecture, we will be looking at some basic combinatorial circuits,
+    and how to implement them using SME.
+
+    \vspace{\baselineskip}
+    We will try to construct the following circuits:
+    \begin{itemize}
+        \item Basic logical gates
+        \item Decoder
+        \item Half adder
+        \item Full adder
+        \item $n$-bit adder
+    \end{itemize}
+\end{frame}
+
+\section{Basic logic gates}
+\subsection{Theory}
+\begin{frame}
+    A logic gate is a circuit abstraction with one or more inputs, and an
+    output. It computes its output value based on the logic function it is
+    mimicing. We look at the four basic logic gates:
+    \begin{description}
+        \item[\tt{AND}] - outputs \tt{1} iff. all of its inputs are \tt{1},
+            otherwise \tt{0}
+        \item[\tt{OR}] - outputs \tt{1} if one or more of its inputs are
+            \tt{1}, otherwise \tt{0}
+        \item[\tt{NOT}] - outputs the inverse of its input, e.g. \tt{1} becomes
+            \tt{0}
+        \item[\tt{XOR}] - outputs \tt{1} iff. exactly one of its inputs are
+            \tt{1}, otherwise \tt{0}
+    \end{description}
+\end{frame}
+\begin{frame}
+    \begin{center}
+        \begin{tabular}{cc|cccc}
+            \hline
+            \tt{Bit1} & \tt{Bit2} & \tt{AND} & \tt{OR} & \tt{NOT} & \tt{XOR} \\
+            \hline
+            \tt{0} & \tt{0} & \tt{0} & \tt{0} & \tt{1} & \tt{0} \\
+            \tt{0} & \tt{1} & \tt{0} & \tt{1} & \tt{1} & \tt{1} \\
+            \tt{1} & \tt{0} & \tt{0} & \tt{1} & \tt{0} & \tt{1} \\
+            \tt{1} & \tt{1} & \tt{1} & \tt{1} & \tt{0} & \tt{0} \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{frame}
+
+\subsection{Implementation}
+\begin{frame}
+    Implementing each of the gates in SME is very simple. As with CSP, we
+    create a process for each gate. Each gate has two input busses, except for
+    \tt{NOT}, which only has one, and one output bus. Each bus contains one
+    \tt{bool} value. We choose \tt{bool}, to ensure that the later VHDL
+    generation will construct wires, and not full-blown 32-bit busses.
+
+    \vspace{\baselineskip}
+    Each of the processes will take its inputs, and put the result of its logic
+    function on its output bus.
+\end{frame}
+\begin{frame}[fragile]
+    \lstinputlisting[firstline=2]{../../sme/src/Examples/LogicGates/Buses.cs}
+    Note: for compactability, the inputs and outputs have been gathered on a
+    single bus.
+\end{frame}
+\begin{frame}[fragile]
+    \lstinputlisting[firstline=8,lastline=20]{../../sme/src/Examples/LogicGates/Gates.cs}
+\end{frame}
+
+\subsection{Testing}
+\begin{frame}
+    To test our implementation, we are going to need a process, which is going
+    to send data on the input bus for each of the components, and is going to
+    verify that each component outputs the expected value. Since we are only
+    working with two bits, we can try all the possible combination of inputs.
+\end{frame}
+\begin{frame}
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}[node distance=1.5cm]
+            \node[block] (and) {\texttt{AND}};
+            \node[block, right of=and] (or) {\texttt{OR}};
+            \node[block, right of=or] (not) {\texttt{NOT}};
+            \node[block, right of=not] (xor) {\texttt{XOR}};
+            \node[above of=and] (input) at ($(or)!0.5!(not)$) {};
+            \node[block, above of=input] (tester) {Tester};
+
+            \path[-] (tester) edge node[midway, right] {input} (input.center);
+            \path[draw, ->] (input.center) -| (and.north);
+            \path[draw, ->] (input.center) -| (or.north);
+            \path[draw, ->] (input.center) -| (not.north);
+            \path[draw, ->] (input.center) -| (xor.north);
+
+            \node[below of=and] (output) at ($(or)!0.5!(not)$) {};
+            \node[right of=xor] (a) {output};
+
+            \path[draw, -] (and.south) |- (output.center);
+            \path[draw, -] (or.south) |- (output.center);
+            \path[draw, -] (not.south) |- (output.center);
+            \path[draw, -] (xor.south) |- (output.center);
+
+            \path[draw, -] (output.center) -| (a.west);
+            \path[draw, ->] (a.west) |- (tester.east);
+        \end{tikzpicture}
+        \label{fig:logic-test}
+    \end{figure}
+\end{frame}
+
+\section{Decoder}
+\subsection{Theory}
+\begin{frame}
+    Now that we have made some basic gates, we are going to construct our first
+    combinatorial circuit: The decoder.
+
+    \vspace{\baselineskip}
+    A decoder takes an $n$-bit input, and produces an $2^n$-bit output, where
+    the $n$th output bit is set to \tt{1}, if the input is the binary
+    representation of $n$. All the other output bits are set to \tt{0}.
+\end{frame}
+
+\subsection{Implementation}
+\begin{frame}
+    We will start by looking at a 2-bit decoder for simplicity. To implement
+    the decoder, we will combine the basic logic gates as follows:
+
+    \vspace{\baselineskip}
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}[node distance=1.5cm]
+            \node[block] (and0) {\texttt{AND}};
+            \node[block, below of=and0] (and1) {\texttt{AND}};
+            \node[block, below of=and1] (and2) {\texttt{AND}};
+            \node[block, below of=and2] (and3) {\texttt{AND}};
+
+            \node[right of=and0] (output0) {output0};
+            \node[right of=and1] (output1) {output1};
+            \node[right of=and2] (output2) {output2};
+            \node[right of=and3] (output3) {output3};
+
+            \path[draw, ->] (and0) -- (output0);
+            \path[draw, ->] (and1) -- (output1);
+            \path[draw, ->] (and2) -- (output2);
+            \path[draw, ->] (and3) -- (output3);
+
+            \node[empty, left of=and0] (andinp0) {};
+            \node[empty, left of=and1] (andinp1) {};
+            \node[empty, left of=and2] (andinp2) {};
+            \node[empty, left of=and3] (andinp3) {};
+
+            \node[block, left of=andinp0] (not0) {\texttt{NOT}};
+            \node[block, left of=andinp3] (not1) {\texttt{NOT}};
+
+            \node[left of=not0] (input0) {input0};
+            \node[left of=not1] (input1) {input1};
+
+            \path[draw, ->] (input0) -- (not0);
+            \path[draw, ->] (input1) -- (not1);
+
+            \path[draw, thick, -] (not0) -| (andinp0.155);
+            \path[draw, thick, ->] (andinp0.155) -- (and0.155);
+            \path[draw, thick, -] (not1.east) -| (andinp0.south);
+            \path[draw, thick, ->] (andinp0.south) |- (and0.200);
+
+            \path[draw, ->] (input0) |- (and1.155);
+            \path[draw, thick, -] (not1.east) -| (andinp1.340);
+            \path[draw, thick, ->] (andinp1.340) -- (and1.200);
+
+            \path[draw, thick, -] (not0.east) -| (andinp2.155);
+            \path[draw, thick, ->] (andinp2.155) -- (and2.155);
+            \path[draw, ->] (input1.north) |- (and2.200);
+
+            \path[draw, -] (input0) |- (andinp1.295);
+            \path[draw, ->] (andinp1.295) |- (and3.155);
+            \path[draw, -] (input1) |- (andinp2.200);
+            \path[draw, ->] (andinp2.200) |- (and3.200);
+
+        \end{tikzpicture}
+        \label{fig:2-bit-decoder}
+    \end{figure}
+\end{frame}
+\begin{frame}[fragile]
+    \lstinputlisting[firstline=2]{../../sme/src/Examples/Decoder/Buses.cs}
+\end{frame}
+\begin{frame}
+    \lstinputlisting[firstline=20,lastline=32]{../../sme/src/Examples/Decoder/Decoder.cs}
+\end{frame}
+
+\subsection{Testing}
+\begin{frame}
+    As with the basic logic gates, we need to construct a test process, which
+    sends input to the circuit, and verifies that the output is as expected. In
+    the case of our 2-bit decoder, we can also try all possible ($2^2=4$)
+    values.
+\end{frame}
+
+
+% exit section
+\AtBeginSection{}
+\section*{}
+
+% {{{ Bibliography ------------------------------------------------------------
+%\begin{frame}{Bibliography}
+%  \tiny
+%  \bibliographystyle{plain}
+%  \bibliography{pl}
+%\end{frame}
+% }}} -------------------------------------------------------------------------
+
+\end{document}
