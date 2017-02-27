@@ -5,6 +5,18 @@
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 
+% Hold kæft utf
+\makeatletter
+\def\UTFviii@defined#1{%
+  \ifx#1\relax
+      ?%
+  \else\expandafter
+    #1%
+  \fi
+}
+
+\makeatother
+
 % math packages
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{mathtools}
@@ -154,12 +166,12 @@
     function on its output bus.
 \end{frame}
 \begin{frame}[fragile]
-    \lstinputlisting[firstline=2]{../../sme/src/Examples/LogicGates/Buses.cs}
+    \lstinputlisting[firstline=2,title=Buses]{../../sme/src/Examples/LogicGates/Buses.cs}
     Note: for compactability, the inputs and outputs have been gathered on a
     single bus.
 \end{frame}
 \begin{frame}[fragile]
-    \lstinputlisting[firstline=8,lastline=20]{../../sme/src/Examples/LogicGates/Gates.cs}
+    \lstinputlisting[firstline=8,lastline=20,title=AND gate]{../../sme/src/Examples/LogicGates/Gates.cs}
 \end{frame}
 
 \subsection{Testing}
@@ -274,10 +286,33 @@
     \end{figure}
 \end{frame}
 \begin{frame}[fragile]
-    \lstinputlisting[firstline=2]{../../sme/src/Examples/Decoder/Buses.cs}
+    \lstinputlisting[firstline=2,title=Buses.cs]{../../sme/src/Examples/Decoder/Buses.cs}
 \end{frame}
 \begin{frame}
-    \lstinputlisting[firstline=20,lastline=32]{../../sme/src/Examples/Decoder/Decoder.cs}
+    \lstinputlisting[firstline=20,lastline=32,title=Decoder.cs]{../../sme/src/Examples/Decoder/Decoder.cs}
+\end{frame}
+\begin{frame}
+    Now, we also want to construct an $n$-bit decoder, however, this is not
+    trivial, as SME requires everything to be known at compile time, and we
+    cannot make a generic process, as these depend on the names of the buses.
+
+    \vspace{\baselineskip}
+    To solve this problem, we can use C\# templates:
+    \begin{itemize}
+        \item For each input bit, create a bus
+        \item For each bus, create a \tt{NOT} gate
+        \item Create $2^n$ output busses
+        \item For each output bus, attach an \tt{AND} gate
+        \item Connect the input busses and the output from the \tt{NOT} gates,
+            so that the binary representation of $n$ will produce a \tt{1} at
+            the $n$th \tt{AND} gate
+    \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+    \lstinputlisting[firstline=2,title=Buses.tt]{../../sme/src/Examples/ScalDecoder/Buses.tt}
+\end{frame}
+\begin{frame}[fragile]
+    \lstinputlisting[firstline=23,title=Decoder.tt]{../../sme/src/Examples/ScalDecoder/Decoder.tt}
 \end{frame}
 
 \subsection{Testing}
@@ -286,6 +321,158 @@
     sends input to the circuit, and verifies that the output is as expected. In
     the case of our 2-bit decoder, we can also try all possible ($2^2=4$)
     values.
+
+    \vspace{\baselineskip}
+    To test our $n$-bit decoder we need to construct another template, which
+    will try all possible combinations.
+\end{frame}
+
+\section{Adder}
+\subsection{Theory}
+\begin{frame}
+    The final circuit we will be looking at is the adder. To construct a full
+    $n$-bit adder, we are going to need two subcomponents: An half-adder and an
+    full-adder, both of which can be implemented using the basic logic gates.
+
+    \vspace{\baselineskip}
+    The half-adder takes two input bits, and produces two output bits. The
+    first output bit is the \tt{sum} bit, and the second is the \tt{carry} bit.
+
+    \vspace{\baselineskip}
+    The full-adder is similar to the half-adder, with the only difference
+    being an additional input.
+\end{frame}
+\begin{frame}
+    The combinatorial circuit for the half-adder.
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}[node distance=1.5cm]
+            \node[block] (xor) {\texttt{XOR}};
+            \node[block, below of=xor] (and) {\texttt{AND}};
+
+            \node[empty, left of=xor] (xorin) {};
+            \node[empty, left of=and] (andin) {};
+
+            \node[left of=xorin] (inputa) {InputA};
+            \node[left of=andin] (inputb) {InputB};
+
+            \node[empty, right of=xor] (sum) {Sum};
+            \node[empty, right of=and] (carry) {Carry};
+
+            \path[draw, -] (inputa) -| (xorin.155);
+            \path[draw, ->] (xorin.155) -- (xor.155);
+            \path[draw, ->] (xorin.west) |- (and.155);
+
+            \path[draw, thick, -] (inputb.east) -| (xorin.335);
+            \path[draw, thick, ->] (xorin.335) -- (xor.205);
+            \path[draw, thick, ->] (andin.east) |- (and.205);
+
+            \path[draw, ->] (xor) -- (sum);
+            \path[draw, ->] (and) -- (carry);
+        \end{tikzpicture}
+        \label{fig:half-adder}
+    \end{figure}
+\end{frame}
+\begin{frame}
+    The combinatorial circuit for the full-adder.
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}[node distance=1.5cm]
+            \node[block] (or) {\texttt{OR}};
+            \node[empty, left of=or] (orin) {};
+            \node[block, left of=orin] (and1) {\texttt{AND}};
+            \node[block, above of=and1] (and0) {\texttt{AND}};
+            \node[empty, left of=and0] (and0in) {};
+            \node[block, above of=and0] (xor1) {\texttt{XOR}};
+            \node[empty, left of=xor1] (xor1in) {};
+            \node[block, left of=xor1in] (xor0) {\texttt{XOR}};
+            \node[empty, left of=xor0] (xor0in) {};
+            \node[empty, left of=xor0in] (inputa) {InputA};
+            \node[empty, below of=inputa] (inputb) {InputB};
+            \node[empty, below of=inputb] (inputc) {InputC};
+            \node[empty, right of=inputc] (inputcout) {};
+            \node[empty, right of=xor1] (sum) {};
+            \node[empty, right of=sum] (summ) {};
+            \node[empty, right of=summ] (summm) {Sum};
+            \node[empty, right of=or] (carry) {Carry};
+
+            \path[draw, -] (inputa.east) -| (xor0in.155);
+            \path[draw, ->] (xor0in.155) -- (xor0.155);
+            \path[draw, -] (inputb.east) -| (xor0in.335);
+            \path[draw, ->] (xor0in.335) -- (xor0.205);
+
+            \path[draw, -] (inputa.east) -| (inputcout.205);
+            \path[draw, ->] (inputcout.205) -- (and1.205);
+            \path[draw, -] (inputb.east) -| (inputcout.25);
+            \path[draw, ->] (inputcout.25) -- (and1.155);
+
+            \path[draw, thick, -] (inputc.east) -| (and0in.335);
+            \path[draw, thick, ->] (and0in.335) -- (and0.205);
+            \path[draw, thick, ->] (and0in.335) |- (xor1.205);
+
+            \path[draw, -] (xor0.east) -- (xor1in.west);
+            \path[draw, ->] (xor1in.west) |- (xor1.155);
+            \path[draw, ->] (xor1in.west) |- (and0.155);
+
+            \path[draw, -] (and1.east) -| (orin.205);
+            \path[draw, ->] (orin.205) -- (or.205);
+            \path[draw, ->] (xor1) -- (summm);
+            \path[draw, -] (and0.east) -| (orin.25);
+            \path[draw, ->] (orin.25) -- (or.155);
+            \path[draw, ->] (or) -- (carry);
+        \end{tikzpicture}
+        \label{fig:full-adder}
+    \end{figure}
+\end{frame}
+\begin{frame}
+    How to wire up the sub circuits into a full $n$-bit adder
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}[node distance=1.5cm]
+            \node[block] (half) {Half adder};
+            \node[block, below of=half] (full1) {Full adder 1};
+            \node[empty, below of=full1] (dot) {...};
+            \node[block, below of=dot] (fulln) {Full adder $n-1$};
+
+            \node[empty, left of=half] (spacingl) {};
+            \node[empty, right of=half] (spacingr) {};
+
+            \node[empty, left of=spacingl] (in0) {Input 0};
+            \node[empty, below of=in0] (in1) {Input 1};
+            \node[empty, below of=in1] (vertspacel) {};
+            \node[empty, below of=vertspacel] (inn) {Input $n$};
+
+            \node[empty, right of=spacingr] (out0) {Sum 0};
+            \node[empty, below of=out0] (out1) {Sum 1};
+            \node[empty, below of=out1] (vertspacer) {};
+            \node[empty, below of=vertspacer] (outn) {Sum $n-1$};
+            \coordinate[below of=fulln] (carry);
+
+            \path[draw, ->] (in0) -- (half);
+            \path[draw, ->] (in1) -- (full1);
+            \path[draw, ->] (inn) -- (fulln);
+
+            \path[draw, ->] (half) -- (out0);
+            \path[draw, ->] (full1) -- (out1);
+            \path[draw, ->] (fulln) -- (outn);
+
+            \path[draw, ->] (half) -- node [midway, right] {Carry 0} (full1);
+            \path[draw, ->] (full1) -- node [midway, right] {Carry 1} (dot);
+            \path[draw, ->] (dot) -- node [midway, right] {Carry $n-2$} (fulln);
+            \path[draw, ->] (fulln) -- node [midway, right] {Carry $n-1$} (carry);
+        \end{tikzpicture}
+        \label{fig:n-bit-adder}
+    \end{figure}
+\end{frame}
+
+\subsection{Implementation and testing}
+\begin{frame}
+    To implement this, we start by combining each of the sub circuits by using
+    our basic logic gates, and by combining them into an $n$-bit adder.
+
+    \vspace{\baselineskip}
+    Then we test our circuit in the same manner as before, with a tester
+    process.
 \end{frame}
 
 
