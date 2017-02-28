@@ -120,16 +120,21 @@ be seen in Figure \ref{fig:alu}.
 \end{figure}
 
 \subsubsection*{Implementation}
-I follow the approach from the book % TODO ref!
-and have implemented the basic processor operations: \texttt{add}, \texttt{sub},
-\texttt{and}, \texttt{or}, \texttt{slt}, \texttt{sw}, \texttt{lw} and
-\texttt{beq}. The encoding of the ALU opcode is described in Section
-\ref{sec:alu-control}. The book explains which ALUOp inputs should trigger
-which computation. Doing this in SME is straightforward, we read from the ALUOp
-bus, and then we have a \texttt{switch}, and for the instructions that we do
-accept, we take the input from the two input busses, do the computation, and
-output the result on the resulting bus. Finally, output on the zero bus,
-whether or not the computation was 0.
+To implement this, we start by making an \tt{enum}, so that the code becomes
+more readable. Each entry in the \tt{enum} corresponds to a computation that
+the ALU should perform. We start by implementing the same instructions as the
+book proposes:  % TODO ref!
+\texttt{add}, \texttt{sub}, \texttt{and}, \texttt{or}, \texttt{slt},
+\texttt{sw}, \texttt{lw} and \texttt{beq}. The ALU takes the ALU opcode, and
+based on that it performs its computation. For the needed instructions, the ALU
+should be able to perform addition, subtraction, logical \tt{AND}, logical
+\tt{OR} and the comparison less than. How the ALU opcode is encoded is
+described in section \ref{sec:alu-control}.  Doing this in SME is
+straightforward, we read from the ALUOp bus, and then we have a
+\texttt{switch}, and for the instructions that we do accept, we take the input
+from the two input busses, do the computation, and output the result on the
+resulting bus. Finally, output on the zero bus, whether or not the computation
+was 0.
 
 \subsubsection*{Testing}
 For each of the operations that the ALU can perform, I have tested if the
@@ -318,5 +323,30 @@ buffer. As such, after each instruction, the result is stored in this buffer,
 and on a clock tick, the value in hold is put on its output bus to the
 registers.
 
-\subsection*{Testing}
+\subsubsection*{Testing}
 meh
+
+\subsection{Adding additional instructions}
+To add additional instructions, we need to add additional circuitry and entries
+in the \tt{enum}s. We will go through implementing the MIPS core instruction set.
+
+We start with the remaining R format instructions (Except for shifting, multiplication and division). This is straightforward, as we only need to add additional entries to the \tt{enum}s, add the additional cases in the \tt{switch} in the ALU control and in the \tt{switch} in the ALU.
+
+For shifting, we need to extract extra information from the instruction in the Splitter: the \tt{shamt} field. Following this, we add an additional control signal, and multiplex on whether it should be the value read from the registers or the \tt{shamt}, which should be the B input for the ALU.
+
+Then we have the remaining arithmetic I format instructions. This is also straightforward, as we only need to extend the \tt{enum}s, and add additional entries to the \tt{switch} in the ALU control.
+
+Next we need the \tt{jal} instruction. Here we need circuitry to store the contents of the \tt{PC} register. To do this, we send the \tt{PC} to the \tt{EX} stage, and multiplex on the output from the ALU and the \tt{PC}, with the \tt{JAL} control signal.
+
+Next we need the \tt{jr} instruction. We add an additional signal, and multiplex on the value read from register, and the normal \tt{PC+4}.
+
+Then we have the \tt{mult}, \tt{multu}, \tt{div} and \tt{divu} instructions. These are all R format, so we follow the same procedure. However, instead of sending the result on the ALU result bus, we store it in two additional registers, which we keep in the ALU: \tt{HI} and \tt{LO}. Following this, we can also easily add the instructions \tt{mfhi}, \tt{mflo}, \tt{mthi} and \tt{mtlo}, which moves data to and from the two new registers.
+
+Finally, we have the \tt{bne} instruction. We add an additional signal, and multiplex the \tt{NOT}ed \tt{zero} signal from the ALU as the signal for the branching \tt{AND} gate.
+
+\subsection{Test programs}
+Snak om at bruge MARS!
+
+Now that we have our single cycle MIPS processor, we are ready to throw actual instructions at it. We start by collecting all of the smaller test instructions into a full test program. SE APPENDIX! (og lav det for den sags skyld)
+
+Then we have a Quicksort written in MIPS assembly.
