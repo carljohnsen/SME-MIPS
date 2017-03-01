@@ -85,7 +85,7 @@ namespace SingleCycleMIPS
                     Console.WriteLine("]");
                 }
             }*/
-            byte[] mem = new byte[1024];
+            byte[] mem = new byte[16384];
 
             protected override void OnTick()
             {
@@ -111,7 +111,7 @@ namespace SingleCycleMIPS
                 {
                     output.data = 0;
                 }
-
+                /*
                 Console.Write("MEM [");
                 for (int i = 0; i < 10; i++)
                 {
@@ -122,7 +122,7 @@ namespace SingleCycleMIPS
                     a |= mem[i * 4 + 3] << 24;
                     Console.Write(a + ",");
                 }
-                Console.WriteLine("]");
+                Console.WriteLine("]");*/
             }
         }
 

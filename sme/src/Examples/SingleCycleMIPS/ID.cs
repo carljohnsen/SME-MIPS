@@ -340,7 +340,7 @@ namespace SingleCycleMIPS
                 outputA.data = data[readA.addr];
                 outputB.data = data[readB.addr];
                 /* Print the register file */
-
+                /*
                 Console.Write("[");
                 for (int i = 0; i < 4; i++)
                 {
@@ -351,7 +351,7 @@ namespace SingleCycleMIPS
                     }
                     Console.WriteLine(data[i * 8 + 7] + (i == 3 ? "\t]" : ","));
                 }
-
+                */
             }
         }
     }

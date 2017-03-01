@@ -142,7 +142,7 @@ namespace SingleCycleMIPS
             };*/
 
             // qsort!
-            uint[] program =
+            /*uint[] program =
             {
                 0x37bd0064,
                 0x34010004,
@@ -226,6 +226,73 @@ namespace SingleCycleMIPS
                 0x23bd0004,
                 0x13e00001,
                 0x03e00008,
+            };*/
+
+            // Towers of hanoi!
+            uint[] program =
+            {
+                0x3404000A,
+                0x341d1000,
+                0x34100001,
+                0x201f00f8,
+                0x00885022,
+                0x00084880,
+                0xad2a0000,
+                0x21080001,
+                0x11040001,
+                0x08000004,
+                0x00044080,
+                0xafa80000,
+                0xafa80004,
+                0x00084040,
+                0xafa80008,
+                0x23a50000,
+                0x23a60008,
+                0x23a70004,
+                0x23bd000c,
+                0x10900020,
+                0xafbf0000,
+                0xafa40004,
+                0x23bd0008,
+                0x34e80000,
+                0x00063825,
+                0x00083025,
+                0x2084ffff,
+                0x0c000013,
+                0x34e80000,
+                0x00063825,
+                0x00083025,
+                0x8cc80000,
+                0x8ca90000,
+                0x2129fffc,
+                0x8d2a0000,
+                0xad0a0000,
+                0x21080004,
+                0xad200000,
+                0xacc80000,
+                0xaca90000,
+                0x8fa4fffc,
+                0x2084ffff,
+                0x00054025,
+                0x00072825,
+                0x00083825,
+                0x0c000013,
+                0x00054025,
+                0x00072825,
+                0x00083825,
+                0x23bdfff8,
+                0x8fbf0000,
+                0x03e00008,
+                0x8cc80000,
+                0x8ca90000,
+                0x2129fffc,
+                0x8d2a0000,
+                0xad0a0000,
+                0x21080004,
+                0xad200000,
+                0xacc80000,
+                0xaca90000,
+                0x03e00008,
             };
 
             int c = 0;
@@ -233,7 +300,7 @@ namespace SingleCycleMIPS
             protected override void OnTick()
             {
                 int i = addr.address;
-                if (i >= 0 && i < program.Length && c < 2000)
+                if (i >= 0 && i < program.Length)
                 {
                     c++;
                     instr.instruction = program[i];
