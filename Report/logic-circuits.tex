@@ -1,4 +1,4 @@
-In this section, we will be looking at some basic combinatorial circuits. we
+In this section, we will be looking at some basic combinatorial circuits. We
 start by looking at some logic gates, which implement some basic boolean
 functions. Then we will combine these basic gates into more complex networks: A
 decoder, which expands an $n$-bit input into $2^n$ outputs. A half adder, which
@@ -7,15 +7,15 @@ adder, which does the same operation as the half adder, but with an additional
 third binary input. Finally, an $n$-bit adder, by combining a chain of a half
 adder followed by $n-1$ full adders.
 
-For each of these combinatorial circuits, I state the theory behind it,
+For each of these combinatorial circuits, we go through the theory behind it,
 describe the procedure of translating the theory into an SME network and
 finally how to test and verify the SME networks.
 
 \subsection{Basic logic gates}
-We start by defining some of the common basic logic gates.  A logic gate is a
-circuit abstraction, which has inputs and outputs, and computes the logic
-function that corresponds to the gates name, i.e. its output values are based
-upon the input values.
+A logic gate is a circuit abstraction, which has inputs and outputs, and
+computes the logic function that corresponds to the gates name, i.e. its output
+values are based upon the input values. We are going to implement the following
+logic gates:
 
 \begin{description}
     \item[\texttt{AND}] - outputs \texttt{1} iff. all of its inputs are
@@ -31,7 +31,8 @@ upon the input values.
         \texttt{1}, otherwise it outputs \texttt{0}
 \end{description}
 The full truth table for all of the four logic gates with 2-bit input (except
-for \texttt{NOT} can be seen in Table \ref{tab:truth-table}
+for \texttt{NOT}, which only uses 1 bit) can be seen in Table
+\ref{tab:truth-table}.
 
 \begin{table}
     \centering
@@ -77,7 +78,7 @@ the result out on the output bus.
 %\end{figure}
 
 \subsubsection*{Testing}
-To test the four processes, I have made a process, which sets the bits on the
+To test the four processes, we construct a process, which sets the bits on the
 input bus to all of the values in the truth table, and checks whether or not
 each process puts the expected value from the truth table on their output bus.
 How the processes are connected can be seen in Figure \ref{fig:logic-test}.
@@ -115,11 +116,10 @@ How the processes are connected can be seen in Figure \ref{fig:logic-test}.
 
 \subsection{Decoder}
 % TODO 0-indexed!
-The first combinatorial circuit we make is the decoder. An decoder takes an
-$n$-bit input, and produces an $2^n$-bit output, where the bit corresponding to
-the input numbers value is set to \texttt{1}. E.g. if the input value is the
-binary representation of the number 5, then the 5th output bit will be
-\texttt{1}, and the rest will be \texttt{0}.
+A decoder takes an $n$-bit input, and produces an $2^n$-bit output, where the
+bit corresponding to the input numbers binary representation is set to
+\texttt{1}. E.g. if the input value is the binary representation of the number
+5, then the 5th output bit will be \texttt{1}, and the rest will be \texttt{0}.
 
 A decoder can be made from a set of \texttt{NOT} and \texttt{AND} gates. We
 need to have $n$ \texttt{NOT} gates, and $2^n$ \texttt{AND} gates. For each
@@ -186,8 +186,8 @@ of a 2-bit decoder can be seen in Figure \ref{fig:2-bit-decoder}.
 \end{figure}
 
 \subsubsection*{Implementation}
-We have previosly made the logic gates that we need, and as such we only need
-to wire up these logic gate processes as specified by Figure
+To implement a 2-bit decoder, we just need to connect logic gate processes,
+which we already have. How to connect a 2-bit decoder can be seen in Figure
 \ref{fig:2-bit-decoder}.
 
 However, making a scalable decoder is not trivial, as SME requires everything
@@ -204,11 +204,11 @@ connect all the busses from all of the \texttt{NOT} gates, for
 from the first \texttt{NOT} gate, as this should be the first input bus.
 
 \subsubsection*{Testing}
-I have written both a 2-bit decoder, and an $n$-bit decoder. They are tested in
-the same fashion as the logic gates, i.e. a tester process is connected to the
-input and output busses. The test process inputs every combination of binary
-values, i.e. $2^n$, and checks after each input, that the correct output is set
-to \texttt{1} and \texttt{0} respectively.
+To test the 2-bit decoder, we follow the same procedure as before, with a
+tester process, which sends input to the logic gates, and verifies the output
+from the gates. This is also what we need to do with the $n$-bit decoder.
+However as with the actual $n$-bit decoder, we are going to need C\# templates.
+Each of the two tester processes should send all possible inputs as input.
 
 \subsection{Adder}
 As with the decoder, an adder can be constructed by a combination of
@@ -225,7 +225,6 @@ outputs the sum and the carry of the addition (See Figure
 \ref{fig:full-adder}).
 
 The combination of the components can be seen in Figure \ref{fig:n-bit-adder}.
-
 
 \begin{figure}
     \centering
@@ -363,12 +362,11 @@ adder $i$ (1-indexed) has the inputs: input A bit $i$, input B bit $i$ and
 carry $i-1$. Each full adder also has output $i$ and carry $i$ as output.
 
 \subsubsection*{Testing}
-I have tested both the half adder and the full adder, by giving each every
-possible input, and for each, compared them to their expected output. For the
-$n$-bit adder, I have made a function, that takes an integer as input, sends it
-along the corresponding input wires. I have also made a similar function, that
-takes the values from the output wires and packs it into an integer. I start by
-testing if it can make one of the simplest additions: 2+2. Then I check if it
-can overflow, i.e. set the Carry $n-1$ to \texttt{1}. Finally, I run a series
-of random numbers through the adder, and check if the output is the expected
-sum of the two numbers.
+To test the adder, we construct a tester process as before. We start by testing
+the two subcomponents, the half and the full adder, by giving each every
+possible input, and verifying the output. For the
+$n$-bit adder, we make a function that takes an integer as input, and sends it
+along the corresponding input wires. We also make a similar function that
+takes the values from the output wires and packs it into an integer. There are
+two tests: the simplest addition (2+2), overflow, and finally a series of
+random numbers.
