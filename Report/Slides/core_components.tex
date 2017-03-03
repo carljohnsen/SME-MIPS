@@ -183,23 +183,25 @@
                 \path[draw, ->] (pc) -| (-4, 4) |- (jump);
                 \path[draw, ->] (jump.160) -| (pc);
                 \path[draw, ->] (jal) -- (writebuf);
-                \path[draw, ->] (memread) -| (11, -1) |- (writebuf);
+                \path[draw, ->] (memread) -| (11, -1) |- (writebuf.15);
                 \path[draw, dashed, ->] (writebuf.170) -| (reg.300);
                 \path[draw, dashed, ->] (writebuf) -| (reg);
-                \path[draw, dashed, ->] (writebuf.190) -| (reg.240);
+                \path[draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
 
                 \path[draw, ->, color=blue] (cont.55) -| (jump.220);
                 \path[draw, ->, color=blue] (cont.45) -| (jump.230);
                 \path[draw, ->, color=blue] (cont.35) -| (jump.245);
-                \path[draw, ->, color=blue] (cont.25) -| (memread);
-                \path[draw, ->, color=blue] (cont.15) -| (mem.55);
-                \path[draw, ->, color=blue] (cont.5) -| (mem.125);
-                \path[draw, ->, color=blue] (cont.355) -| (jal);
-                \path[draw, ->, color=blue] (cont.345) -| (imm);
-                \path[draw, ->, color=blue] (cont.335) -| (shmt);
-                \path[draw, ->, color=blue] (cont.325) -| (1.5, 0.5) |-
+                \path[draw, ->, color=blue] (cont.25) -| (11.5,0) |-
+                (writebuf.345);
+                \path[draw, ->, color=blue] (cont.15) -| (memread);
+                \path[draw, ->, color=blue] (cont.5) -| (mem.55);
+                \path[draw, ->, color=blue] (cont.355) -| (mem.125);
+                \path[draw, ->, color=blue] (cont.345) -| (jal);
+                \path[draw, ->, color=blue] (cont.335) -| (imm);
+                \path[draw, ->, color=blue] (cont.325) -| (shmt);
+                \path[draw, ->, color=blue] (cont.315) -| (1.5, 0.5) |-
                 (alucont.160);
-                \path[draw, ->, color=blue] (cont.315) -- (reg.95);
+                %\path[draw, ->, color=blue] (cont.315) -- (reg.95);
                 \path[draw, ->, color=blue] (cont.305) -- (reg.110);
                 \path[draw, ->, color=blue] (cont.250) -- (sign.128);
 
