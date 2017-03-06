@@ -10,7 +10,7 @@ building our single cycle MIPS processor using SME.
 \subsection{Register file}
 The register file is the component that holds values for the processor. It is
 the first step in a memory hierarchy, and is thus the fastest memory available.
-There are 32 registers in a 32-bit MIPS processor. The registers are devided
+There are 32 registers in a 32-bit MIPS processor. The registers are divided
 into groups based on their usage. This does not matter from a hardware
 perspective, except for register 0, which is immutable and always 0.
 
@@ -72,12 +72,17 @@ will explain the flag in more detail in Section \ref{sec:control-unit}. In case
 we do get a 0, we just ignore the request, as this is usually the pattern of a
 \texttt{nop} instruction.
 
-After the process have written to the register, it then processes the read
-addresses, and outputs the values stored in the array at the given indices.
+After the process have written to the register, it processes the read
+addresses, and outputs the values stored in the array at the given addresses.
 
 \subsubsection*{Testing}
-To test the register file, we simply try to read and write some values to and
-from the register file. It is also important to verify the behaviour of
+Testing the register file is very trivial. We start by sending some values
+on the write data bus, along with some addresses and the \texttt{RegWrite}
+flag set.
+
+Then we just try to send some addresses on the Read address A and Read
+address B buses, and verify that the register file outputs the values
+stored at these addresses. It is also important to verify the behaviour of
 register zero.
 
 \subsection{ALU}
@@ -98,8 +103,8 @@ be seen in Figure \ref{fig:alu}.
         \node[empty, right of=ina] (align0) {};
         \node[empty, right of=align0] (align1) {};
         \node[empty, right of=align1] (align2) {};
-        \node[empty, right of=align2] (result) {Result};
-        \node[empty, below of=result] (zero) {Zero};
+        \node[empty, right of=align2] (result) {Zero};
+        \node[empty, below of=result] (zero) {Result};
         \node[empty, left of=zero] (align3) {};
         \node[empty, below of=alu] (aluop) {ALUOp};
 
