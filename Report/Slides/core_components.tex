@@ -133,6 +133,9 @@
     \begin{figure}
         \centering
         \scalebox{0.5}{
+        % IDE! lav 32 bit solid, 16bit dashed og 8 er dotted alt under er
+            % sparse dotted
+            % efter at have prøvet: meh
             \begin{tikzpicture}
                 \node[block] (reg) at (0,0) {Register file};
                 \node[control] (cont) at (-1,3.5) {Control unit};
@@ -143,7 +146,7 @@
                 \node[block] (sign) at (-1,-3) {Sign extend};
                 \node[block] (alu) at (4,0) {ALU};
                 \node[block] (alucont) at (4,-4) {ALU control};
-                \node[block] (mem) at (8,0) {Memory};
+                \node[block] (mem) at (8.2,0) {Memory};
                 \node[block] (jal) at (6,-0.22) {JAL};
                 \node[mux] (memread) at (10,0) {|};
                 \node[mux] (shmt) at (2,1) {|};
@@ -156,10 +159,10 @@
                 \path[draw, -] (split) -- (splitspace.center);
                 \path[draw, ->] (splitspace.center) |- (sign);
                 \path[draw, ->] (splitspace.center) |- (cont);
-                \path[draw, ->] (splitspace.center) |- (reg.160);
+                \path[draw, ->, dotted] (splitspace.center) |- (reg.160);
                 \path[draw, ->] (splitspace.center) |- (reg.200);
                 \path[draw, ->] (splitspace.center) |- (jump.200);
-                \path[draw, ->] (splitspace.center) |- (alucont.200);
+                \path[draw, ->, densely dotted] (splitspace.center) |- (alucont.200);
                 \path[draw, ->] (splitspace.center) |- (regdst.215);
                 \path[draw, ->] (splitspace.center) |- (shmt.145);
                 \path[draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
@@ -204,6 +207,7 @@
                 %\path[draw, ->, color=blue] (cont.315) -- (reg.95);
                 \path[draw, ->, color=blue] (cont.305) -- (reg.110);
                 \path[draw, ->, color=blue] (cont.250) -- (sign.128);
+                \path[draw, ->, color=blue] (cont.240) -| (regdst);
 
                 \node[block] (clock) at (-7, -5) {Clock};
                 \path[draw, ->, thick, color=green] (clock) -- (if);
