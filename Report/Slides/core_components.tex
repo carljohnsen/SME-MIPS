@@ -294,7 +294,7 @@
         }
     \end{figure}
 \end{frame}
-\section{Register file}
+\section{Register File}
 \begin{frame}
     \begin{figure}
         \centering
@@ -388,7 +388,7 @@
     is immutable and always 0.
 \end{frame}
 \begin{frame}
-    A register file has 5 inputs:
+    The register file has 5 inputs:
     \begin{itemize}
         \item Read address A
         \item Read address B
@@ -643,10 +643,13 @@
 \end{frame}
 \subsection{Testing}
 \begin{frame}
-    Testing the ALU is again, very trivial. We should construct a tester
-    process, which sends values on the Input A, Input B and ALU opcode busses,
-    and verifies that the value on the Result bus and the Zero flag is as
-    expected.
+    Testing the ALU is like the Register File, very trivial. Construct a tester
+    process, which:
+    \begin{itemize}
+        \item Sends values on the Input A, Input B and ALU Opcode busses
+        \item Reads the values from the Result and Zero Busses
+        \item Verifies that the read values are as expected
+    \end{itemize}
 \end{frame}
 
 \section{Control Unit}
@@ -777,8 +780,10 @@
 \end{frame}
 \subsection{Implementation \& Testing}
 \begin{frame}
-    To implement the Control Unit, we have a \texttt{switch} statement on the
-    opcode. For each case, we set the flags accordingly.
+    The book describes the needed logic, but it is not very extensible. To
+    solve this, we construct our own Control Unit. The process should have a
+    \texttt{switch} statement on the opcode. For each case, we set the flags
+    accordingly.
 
     \vspace{\baselineskip}
     Note: as with the ALU, the source code becomes more readably with a
@@ -872,8 +877,8 @@
 \end{frame}
 \subsection{Background}
 \begin{frame}
-    The ALU Control is used for generating the ALUOp for the ALU. It takes two
-    inputs:
+    The ALU Control is used for generating the ALU Operation for the ALU. It
+    takes two inputs:
     \begin{itemize}
         \item ALUOp
         \item Funct
