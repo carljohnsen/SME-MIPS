@@ -183,21 +183,38 @@ processor. It sets the following control flags:
 
     \item[RegWrite] Controls whether or not data should be written to the
         register file.
-
-%    \item[Jump] Controls whether or not the instruction is a jump instruction,
-%        i.e. if the \texttt{PC} register should be changed.
-
-%    \item[JAL] Contrals whether or not the instruction is a \texttt{jal}
-%        instruction, i.e. that the \texttt{PC+4} address should be stored.
-
-%    \item[LogicalImmediate] Controls whether or not the sign extender should
-%        be a sign extender, in the case of a numeral immediate, or if it
-%        should be a zero extender, in the case of a logical I-format
-%        instruction.
 \end{description}
 Each of the control flags goes to their respective part of the processor.
 We will return to this component, when we have to extend it to handle more
-instructions.
+instructions. The control unit can be seen in Figure \ref{fig:cont-unit}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \node[control] (cont)   at (0,  0)   {Control Unit};
+        \node[empty] (opcode)   at (-3, 0)   {Opcode};
+        \node[empty] (branch)   at (4,  1.75) {\texttt{Branch}};
+        \node[empty] (regwrite) at (4,  1.25) {\texttt{RegWrite}};
+        \node[empty] (memtoreg) at (4,  0.75) {\texttt{MemToReg}};
+        \node[empty] (memwrite) at (4,  0.25) {\texttt{MemWrite}};
+        \node[empty] (memread)  at (4, -0.25) {\texttt{MemRead}};
+        \node[empty] (alusrc)   at (4, -0.75) {\texttt{ALUSrc}};
+        \node[empty] (aluop)    at (4, -1.25) {\texttt{ALUOp}};
+        \node[empty] (regdst)   at (4, -1.75) {\texttt{RegDst}};
+
+        \path[draw, ->] (opcode) -- (cont);
+
+        \path[draw, ->, color=blue] (cont.35)  -| (2,1.5) |- (branch);
+        \path[draw, ->, color=blue] (cont.25)  -| (2.25,1) |- (regwrite);
+        \path[draw, ->, color=blue] (cont.15)  -| (2.5,0.5) |- (memtoreg);
+        \path[draw, ->, color=blue] (cont.5)   -| (2.75,0.125) |- (memwrite);
+        \path[draw, ->, color=blue] (cont.355) -| (2.75,-0.125) |- (memread);
+        \path[draw, ->, color=blue] (cont.345) -| (2.5,-0.5) |- (alusrc);
+        \path[draw, ->, color=blue] (cont.335) -| (2.25,-1) |- (aluop);
+        \path[draw, ->, color=blue] (cont.325) -| (2,-1.5) |- (regdst);
+    \end{tikzpicture}
+    \caption{The Control Unit}
+    \label{fig:cont-unit}
+\end{figure}
 
 \subsubsection*{Implementation \& Testing}
 The book describes the logic needed to implement this unit. However, it only
@@ -217,7 +234,23 @@ tester process, which sends input, and verifies the output values.
 The ALU control is used for generating the ALU Operation control code, which
 the ALU uses for selecting which operation to perform. It takes two inputs: the
 \texttt{ALUOp} code from the control unit, and the \texttt{funct} code from the
-instruction, and it computes its output based on these.
+instruction, and it computes its output based on these. The ALU Control can be
+seen in Figure \ref{fig:alu-cont}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \node[block] (alucont) at (0,0) {ALU Control};
+        \node[empty] (aluop) at (-3, 0.4) {ALUOp};
+        \node[empty] (funct) at (-3, -0.4) {Funct};
+        \node[empty] (aluope) at (0, 2) {ALU Operation};
+
+        \path[draw, ->] (aluop) -- (alucont.161);
+        \path[draw, ->] (funct) -- (alucont.199);
+        \path[draw, ->] (alucont) -- (aluope);
+    \end{tikzpicture}
+    \caption{The ALU Control}
+    \label{fig:alu-cont}
+\end{figure}
 
 If the \texttt{ALUOp} from the control unit indicates that the instruction is
 an R format instruction, it uses the \texttt{funct} code for selecting the
@@ -249,6 +282,30 @@ instruction is partitioned as followed (the bits are inclusive):
     \item Immediate - bits 0-15
     \item Funct - bits 0-5
 \end{itemize}
+The Splitter can be seen in Figure \ref{fig:split}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \node[block] (split) at (0,0) {Splitter};
+        \node[empty] (inst) at (-3,0) {Instruction};
+        \node[empty] (op) at (4,1.25) {Opcode};
+        \node[empty] (ra) at (4,0.75) {Read Address A};
+        \node[empty] (rb) at (4,0.25) {Read Address B};
+        \node[empty] (wa) at (4,-0.25) {Write Address};
+        \node[empty] (imm) at (4,-0.75) {Immediate};
+        \node[empty] (fun) at (4,-1.25) {Funct};
+
+        \path[draw, ->] (inst) -- (split);
+        \path[draw, ->] (split.25) -| (1.5, 1) |- (op);
+        \path[draw, ->] (split.15) -| (1.75,0.5) |- (ra);
+        \path[draw, ->] (split.5) -| (2,0.125) |- (rb);
+        \path[draw, ->] (split.355) -| (2,-0.125) |- (wa);
+        \path[draw, ->] (split.345) -| (1.75,-0.5) |- (imm);
+        \path[draw, ->] (split.335) -| (1.5, -1) |- (fun);
+    \end{tikzpicture}
+    \caption{The Splitter}
+    \label{fig:split}
+\end{figure}
 
 \subsubsection*{Implementation \& Testing}
 The implementation is straightforward: We take the instruction comming from the
@@ -262,7 +319,20 @@ input, and verifies the output.
 \subsection{Sign Extend}
 The Sign Extend is used for extracting values from the instruction. It takes
 its input, which is 16-bit, and converts it into a 32-bit value, extending the
-sign if present.
+sign if present. The Sign Extend can be seen in Figure \ref{fig:sign}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \node[block] (sign) at (0,0) {Sign Extend};
+        \node[empty] (imm) at (-3,0) {Immediate};
+        \node[empty] (immout) at (4,0) {Sign extended immediate};
+
+        \path[draw, ->] (imm) -- (sign);
+        \path[draw, ->] (sign) -- (immout);
+    \end{tikzpicture}
+    \caption{The Sign Extend}
+    \label{fig:sign}
+\end{figure}
 
 \subsubsection*{Implementation \& Testing}
 The SME proces takes the 16-bit immediate, and outputs it on its 32-bit output
@@ -274,7 +344,20 @@ It is tested in the same manner as the previous components.
 The Instruction Memory is the part of the processor, which holds the program.
 It has a chunk of memory, and for each clock, it outputs the value at the given
 address. It has one input, the program counter, and one output, the read
-instruction.
+instruction. The Instruction Memory can be seen in Figure \ref{fig:inst}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \node[block] (inmem) at (0,0) {Instruction Memory};
+        \node[empty] (pc) at (-2, 2) {Program Counter};
+        \node[empty] (inst) at (4,0) {Instruction};
+
+        \path[draw, ->] (pc) -| (inmem);
+        \path[draw, ->] (inmem) -- (inst);
+    \end{tikzpicture}
+    \caption{The Instruction Memory}
+    \label{fig:inst}
+\end{figure}
 
 \subsubsection*{Implementation \& Testing}
 Upon receiving all of its inputs, the SME process should read the address from
@@ -287,43 +370,32 @@ not have to worry about word alignment.
 
 The Instruction Memory is tested in the same manner as the previous components.
 
-%\subsection{Jump control}
-%The jump control is the part of the processor, that based on the instruction
-%changes the value of the PC register. There are two ways to jump: by branching
-%and by jumping.
-%
-%\subsubsection*{Implementation}
-%We start by implementing the control for the branching logic. We need to
-%support 2 branch instructions in our basic processor: branch equal and branch
-%not equal. Therefore we will need two signals: \texttt{Branch} and
-%\texttt{BranchNot}. The \texttt{Branch} is used to indicate that the
-%instruction should change the PC register. The \texttt{BranchNot} is used to
-%choose whether or not the \texttt{Zero} flag from the ALU should be
-%\texttt{1} or \texttt{0} for the instruction to branch. In both instructions,
-%we compute the subtraction of the two input registers, and if the result is
-%\texttt{1} they are equal, otherwise they are not equal. The \texttt{Zero}
-%signal is then send to an \texttt{AND} gate along with the \texttt{Branch}
-%signal.
-%
-%Then we need to implement the jump unit. This is a little bit easier, as we do
-%not depend on anything from the ALU. The problem is that we need to change the
-%decoder to accept a new format: the J-format. The J-format consists of an
-%opcode, and a 26-bit address. The address is left shifted by 2, to ensure word
-%alignment, and the upper 4 bits of the PC is added to the final address. We
-%also need another control signal: \texttt{Jump}. We use this to multiplex
-%between the newly computed address and the output from the previous mux (branch
-%or pc+4).
-%
-%\subsubsection*{Testing}
-%We test the jump unit by adding jump instructions in the program within the
-%Instruction Memory.
-
 \subsection{Memory unit}
 The memory unit is the main memory. The CPU can either read or write to the
 memory unit. The addresses for the memory are word sized, i.e. in the 32-bit
 processor, the word size is 32 bit. The Memory Unit has four inputs: Address,
 Data, \texttt{MemRead} and \texttt{MemWrite}. It has a single output: Read
-Data. In one clock, the Memory Unit either reads or writes.
+Data. In one clock, the Memory Unit either reads or writes. The Memory Unit can
+be seen in Figure \ref{fig:mem}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \node[block] (mem) at (0,0) {Memory};
+        \node[empty] (addr) at (-3,0.4) {Address};
+        \node[empty] (data) at (-3,-0.4) {Data};
+        \node[empty] (memread) at (-1.5, 1) {\texttt{MemRead}};
+        \node[empty] (memwrite) at (1.5, 1) {\texttt{MemWrite}};
+        \node[empty] (readdata) at (3, 0) {Read Data};
+
+        \path[draw, ->] (addr) -- (mem.154);
+        \path[draw, ->] (data) -- (mem.206);
+        \path[draw, ->] (memread) -| (mem.110);
+        \path[draw, ->] (memwrite) -| (mem.70);
+        \path[draw, ->] (mem) -- (readdata);
+    \end{tikzpicture}
+    \caption{The Memory Unit}
+    \label{fig:mem}
+\end{figure}
 
 \subsubsection*{Implementation \& Testing}
 As with the Instruction Memory, we are going to need a chunk of memory.
@@ -353,53 +425,27 @@ and back to the Register File.
 To solve this, we introduce a Write Buffer. The write buffer takes the Write
 Data, Write Register and \texttt{WriteEnabled} as input, and produces the same
 output. On each clock, it should output its stored values, and store its input
-values.
+values. The Write Buffer can be seen in Figure \ref{fig:wb}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \node[block] (wb) at (0,0) {Write Buffer};
+        \node[empty] (wr) at (0,2) {Write Register};
+        \node[empty] (wd) at (3,0.5) {Write Data};
+        \node[empty] (rw) at (3,-0.5) {\texttt{RegWrite}};
+        \node[empty] (wr2) at (-3, 0.5) {Write Register};
+        \node[empty] (wd2) at (-3, 0) {Write Data};
+        \node[empty] (rw2) at (-3, -0.5) {\texttt{RegWrite}};
+
+        \path[draw, ->] (wr) -- (wb);
+        \path[draw, ->] (wd) -| (1.35, 0.45) |- (wb.20);
+        \path[draw, ->] (rw) -| (1.35, -0.45) |- (wb.340);
+        \path[draw, ->] (wb) -- (wd2);
+        \path[draw, ->] (wb.160) -| (-1.35,0.45) |- (wr2);
+        \path[draw, ->] (wb.200) -| (-1.35,-0.45) |- (rw2);
+    \end{tikzpicture}
+    \caption{The Write Buffer}
+    \label{fig:wb}
+\end{figure}
 
 Testing is performed in the same manner as the previous components.
-
-%\subsection{Adding additional instructions}
-%To add additional instructions, we need to add additional circuitry and entries
-%in the \tt{enum}s. We will go through implementing the MIPS core instruction
-%set.
-%
-%We start with the remaining R format instructions (Except for shifting,
-%multiplication and division). This is straightforward, as we only need to add
-%additional entries to the \tt{enum}s, add the additional cases in the
-%\tt{switch} in the ALU control and in the \tt{switch} in the ALU.
-%
-%For shifting, we need to extract extra information from the instruction in the
-%Splitter: the \tt{shamt} field. Following this, we add an additional control
-%signal, and multiplex on whether it should be the value read from the registers
-%or the \tt{shamt}, which should be the B input for the ALU.
-%
-%Then we have the remaining arithmetic I format instructions. This is also
-%straightforward, as we only need to extend the \tt{enum}s, and add additional
-%entries to the \tt{switch} in the ALU control.
-%
-%Next we need the \tt{jal} instruction. Here we need circuitry to store the
-%contents of the \tt{PC} register. To do this, we send the \tt{PC} to the
-%\tt{EX} stage, and multiplex on the output from the ALU and the \tt{PC}, with
-%the \tt{JAL} control signal.
-%
-%Next we need the \tt{jr} instruction. We add an additional signal, and
-%multiplex on the value read from register, and the normal \tt{PC+4}.
-%
-%Then we have the \tt{mult}, \tt{multu}, \tt{div} and \tt{divu} instructions.
-%These are all R format, so we follow the same procedure. However, instead of
-%sending the result on the ALU result bus, we store it in two additional
-%registers, which we keep in the ALU: \tt{HI} and \tt{LO}. Following this, we
-%can also easily add the instructions \tt{mfhi}, \tt{mflo}, \tt{mthi} and
-%\tt{mtlo}, which moves data to and from the two new registers.
-%
-%Finally, we have the \tt{bne} instruction. We add an additional signal, and
-%multiplex the \tt{NOT}ed \tt{zero} signal from the ALU as the signal for the
-%branching \tt{AND} gate.
-%
-%\subsection{Test programs}
-%Snak om at bruge MARS!
-%
-%Now that we have our single cycle MIPS processor, we are ready to throw actual
-%instructions at it. We start by collecting all of the smaller test instructions
-%into a full test program. SE APPENDIX! (og lav det for den sags skyld)
-%
-%Then we have a Quicksort written in MIPS assembly.

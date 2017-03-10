@@ -21,6 +21,20 @@
         minimum width=3em,
         line width=1pt
     },
+    control/.style = {
+        draw,
+        shape=circle,
+        minimum height=7em,
+        minimum width=3em,
+        line width=1pt
+    },
+    mux/.style = {
+        draw,
+        shape=rectangle,
+        minimum height=1.5em,
+        minimum width=1em,
+        line width=1pt
+    },
     empty/.style = {
         shape=rectangle,
         minimum height=3em,
@@ -133,6 +147,7 @@
 \section{Core components}
 \input{components}
 
+% TODO ! husk at man kan bruge ghostscript (gs) til compression!
 \newpage
 \section{Single cycle MIPS processor}
 \input{single-cycle}
