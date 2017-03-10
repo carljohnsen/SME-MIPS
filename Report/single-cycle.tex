@@ -8,8 +8,9 @@ the processor so that it can handle more instructions. Along each added
 instruction, we will be extending our first program, in order to verify that
 the instruction works.
 
-Finally, we will be writing two programs, and look into compiling them into a
-series of hex values, that we can copy straight into the Instruction Memory.
+Finally, we will be writing two larger programs, and look into compiling them
+into a series of hex values, that we can copy straight into the Instruction
+Memory.
 
 \subsection{Wiring up the processor}
 \begin{figure}
@@ -41,7 +42,7 @@ series of hex values, that we can copy straight into the Instruction Memory.
             \path[draw, ->] (splitspace.center) |- (alucont.200);
             \path[draw, ->] (splitspace.center) |- (regdst.215);
             \path[draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
-            \path[draw, ->] (alucont) -| (12.5, 0) |- (jump);
+            %\path[draw, ->] (alucont) -| (12.5, 0) |- (jump);
             \path[draw, thick, ->] (reg.340) -| (2,-0.25) |- (imm.145);
             \path[draw, thick, ->] (2,-0.25) |- (3,0.75) -- (7,0.75) |-
             (mem.164);
@@ -85,9 +86,171 @@ series of hex values, that we can copy straight into the Instruction Memory.
         \end{tikzpicture}
     }
     \caption{Simple single cycle MIPS processor. The units with | indicate
-    multiplexors}
+    multiplexors. The PC Unit is just a simple register.}
     \label{fig:simple-full}
 \end{figure}
+With all the components in place, wiring up the single cycle MIPS processor is
+straightforward. We just need to declare the busses with the corresponding
+names, and then SME handles the wiring process. Note that the Write Buffer and
+the PC register should be clocked processes. The wiring og the single cycle
+MIPS processor can be seen in Figure \ref{fig:simple-full}.
+
+\subsection{Writing the first program}
+As mentioned before, the first single cycle MIPS processor should be able to
+handle \texttt{add}, \texttt{sub}, \texttt{and}, \texttt{or}, \texttt{slt},
+\texttt{sw}, \texttt{lw} and \texttt{beq}. As such, the first program should be
+testing these. The program and the different parts of the instructions can be
+seen in Table \ref{tab:first-program}.
+\begin{table}
+    \centering
+    \begin{tabular}{rllllllll}
+        \toprule
+        Address & Instruction & opcode & rs & rt & rd/imm & shmt & funct & hex \\
+        \midrule
+        \texttt{0x00} & \texttt{add \$3 \$1 \$2} & \texttt{0x00} &
+        \texttt{0x01} & \texttt{0x02} & \texttt{0x03} & \texttt{0x00} &
+        \texttt{0x20} & \texttt{0x00221820} \\ % 5 + 2 = 7
+
+        \texttt{0x04} & \texttt{sub \$4 \$3 \$2} & \texttt{0x00} &
+        \texttt{0x03} & \texttt{0x02} & \texttt{0x04} & \texttt{0x00} &
+        \texttt{0x22} & \texttt{0x00622022} \\ %  7 - 2 = 5
+
+        \texttt{0x08} & \texttt{and \$5 \$3 \$1} & \texttt{0x00} &
+        \texttt{0x03} & \texttt{0x03} & \texttt{0x05} & \texttt{0x00} &
+        \texttt{0x24} & \texttt{0x00612824} \\ % 7 and 5 = 5
+
+        \texttt{0x0C} & \texttt{and \$6 \$3 \$1} & \texttt{0x00} &
+        \texttt{0x03} & \texttt{0x03} & \texttt{0x06} & \texttt{0x00} &
+        \texttt{0x25} & \texttt{0x00613025} \\ % 7 or 5 = 7
+
+        \texttt{0x10} & \texttt{slt \$7 \$6 \$5} & \texttt{0x00} &
+        \texttt{0x06} & \texttt{0x05} & \texttt{0x07} & \texttt{0x00} &
+        \texttt{0x2A} & \texttt{0x00C5382A} \\ % 7 < 5 = 1
+
+        \texttt{0x14} & \texttt{sw \$6  0x0(\$0)} & \texttt{0x2B} &
+        \texttt{0x00} & \texttt{0x06} & \texttt{0x0000} & - &
+        - & \texttt{0xAC060000} \\ % M[0] = 7
+
+        \texttt{0x18} & \texttt{lw \$8  0x0(\$0)} & \texttt{0x23} &
+        \texttt{0x00} & \texttt{0x07} & \texttt{0x0000} & - &
+        - & \texttt{0x8C070000} \\ % $8 = M[0] (= 7)
+
+        \texttt{0x1C} & \texttt{beq \$5 \$4 0x4} & \texttt{0x04} &
+        \texttt{0x05} & \texttt{0x04} & \texttt{0x0004} & - &
+        - & \texttt{0x10A40004} \\ % if 5 == 5 then skip next
+
+        \texttt{0x20} & \texttt{add \$9 \$8 \$6} & \texttt{0x00} &
+        \texttt{0x08} & \texttt{0x06} & \texttt{0x09} & \texttt{0x00} &
+        \texttt{0x20} & \texttt{0x01064820} \\ % 7 + 7 = 14 // should not run!
+
+        \texttt{0x24} & \texttt{add \$10 \$8 \$6} & \texttt{0x00} &
+        \texttt{0x08} & \texttt{0x06} & \texttt{0x0A} & \texttt{0x00} &
+        \texttt{0x20} & \texttt{0x01065020} \\ % 7 + 7 = 14
+        \bottomrule
+    \end{tabular}
+    \caption{The first MIPS program. Note that the instruction at \texttt{0x20}
+    should be skipped.}
+    \label{tab:first-program}
+\end{table}
+
+Inserting this program into the Instruction Memory is straightforward: just
+create an \texttt{uint} array, which is initialized to the hex values from
+Table \ref{tab:first-program}. Since we do not have any way of feeding values
+into the Register File at this moment, we are going to hardcode registers 1 and
+2 with the values 5 and 2 respectively. When the program has finished, the
+contents of the register file should be as in Table \ref{tab:first-result}.
+\begin{table}
+    \centering
+    \begin{tabular}{rrrrrrrrrrrrrrrrrrrr}
+        \toprule
+        Address & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+        \midrule
+        Value & 0 & 5 & 2 & 7 & 5 & 5 & 7 & 1 & 7 & 0 & 14 \\
+        \bottomrule
+    \end{tabular}
+    \caption{The register file after the first program has finished.}
+    \label{tab:first-result}
+\end{table}
+
+\subsection{Extending the accepted instruction set}
+\subsubsection*{Additional simple R format instructions}
+The simplest instructions to add, are the remaining simple R format
+instructions. These are \texttt{addu}, \texttt{subu}, \texttt{xor},
+\texttt{nor} and \texttt{sltu}. The only modifications are in the ALU Control
+and the ALU. For the unsigned instructions, it is important to remember to cast
+before making the computation.
+
+Testing these new instructions is straightforward: just append them to the
+simple program.
+
+\subsubsection*{Immediate instructions}
+The next instruction we want to add is the \texttt{addi} instruction, as this
+would allow us to feed values into the processor without hardcoding it. While
+we are doing this, we should also add \texttt{addiu}, \texttt{slti},
+\texttt{sltiu}, \texttt{andi}, \texttt{ori} and \texttt{xori}, as these
+requires the same amount of work.
+
+For the logical immediates, it is important, that the Sign Extend does not
+sign extend. As such, we add another signal to the Control Unit:
+\texttt{LogicalImmediate}, which goes to the Sign Extend. The Sign Extend
+should then, in the case the \texttt{LogicalImmediate} flag is \texttt{1}, cast
+its input as \texttt{unsigned}, such that any potential sign bits are not
+extended. Then, all we need to do, is extend the \texttt{enum}s and the
+\texttt{switch}es. The affected units are: The Control Unit, the ALU Control
+and the ALU.
+
+Once the processor have been extended, we can prepend instructions at the
+beginning of the program, in order to insert initial values into the Register
+File, and then it is just adding each instruction, and verifying the output in
+the Register File.
+
+\subsubsection*{Jump instruction}
+We are going to introduce another format: the J format. This format is used for
+executing the \texttt{j} instruction. The first step is to extend the Splitter,
+as it should now send the first 26 bits to the Jump Unit. Then the Control Unit
+should be extended, both in its \texttt{enum}, and it should have another
+control signal output: \texttt{jump}, which should be connected to the Jump
+Unit.
+
+Finally, the Jump Unit should be extended. It should take the 26 bits from the
+Splitter, and left shift it by 2, such that it becomes a 28 bit number. Then,
+it should take the 4 most significant bits from the PC+4, and prepend them to
+the extended number.  Finally, we are going to add a multiplexor, which takes
+this newly computed address, the previous output address, and the \texttt{jump}
+control signal. If the control signal is \texttt{0}, then the original output
+should be output, otherwise the newly computed jump address.
+
+Then the program can be extended with a \texttt{j} instruction, in the same
+manner as the \texttt{beq} instruction was tested before.
+
+\subsubsection*{Branching instructions}
+Then we are going to add the \texttt{bne}, \texttt{blez} and \texttt{bgtz}
+instructions.
+
+To implement the \texttt{bne} instruction, we are going to add another signal
+from the Control Unit to the Jump Unit. Then we should split the Zero signal
+into two, where one of the signals goes to a newly added \texttt{NOT} gate.
+Then, we should add a multiplexor, which has the \texttt{bne} signal from the
+Control Unit as the control signal, and the Zero and the \texttt{NOT} Zero as
+inputs. If the control signal is \texttt{0}, then the original Zero should be
+put on the output, otherwise the \texttt{NOT} Zero.  The output from the
+multiplexor should go into the \texttt{AND} gate, where the Zero signal
+originally went.
+
+TODO \texttt{blez}
+
+TODO \texttt{bgtz}
+
+\subsubsection*{Remaining jump instructions}
+\texttt{jr}, \texttt{jal} and \texttt{jalr}
+
+\subsubsection*{Shift instructions}
+\texttt{sll}, \texttt{slr}, \texttt{sra}, \texttt{sllv}, \texttt{srlv} and
+\texttt{srav}
+
+\subsubsection*{Multiplication and Division instructions}
+\texttt{mult}, \texttt{multu}, \texttt{div}, \texttt{divu}, \texttt{mfhi},
+\texttt{mthi}, \texttt{mflo} and \texttt{mtlo}.
 
 \begin{figure}
     \centering
@@ -176,6 +339,8 @@ series of hex values, that we can copy straight into the Instruction Memory.
     wires. Green wires indicate clock}
     \label{fig:full}
 \end{figure}
+
+\subsection{Larger MIPS programs}
 
 
 %    \item[Jump] Controls whether or not the instruction is a jump instruction,

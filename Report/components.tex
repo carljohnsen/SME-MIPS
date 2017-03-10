@@ -343,13 +343,13 @@ It is tested in the same manner as the previous components.
 \subsection{Instruction Memory}
 The Instruction Memory is the part of the processor, which holds the program.
 It has a chunk of memory, and for each clock, it outputs the value at the given
-address. It has one input, the program counter, and one output, the read
+address. It has one input, the program counter (PC), and one output, the read
 instruction. The Instruction Memory can be seen in Figure \ref{fig:inst}
 \begin{figure}
     \centering
     \begin{tikzpicture}
         \node[block] (inmem) at (0,0) {Instruction Memory};
-        \node[empty] (pc) at (-2, 2) {Program Counter};
+        \node[empty] (pc) at (-2, 2) {PC};
         \node[empty] (inst) at (4,0) {Instruction};
 
         \path[draw, ->] (pc) -| (inmem);
@@ -361,7 +361,7 @@ instruction. The Instruction Memory can be seen in Figure \ref{fig:inst}
 
 \subsubsection*{Implementation \& Testing}
 Upon receiving all of its inputs, the SME process should read the address from
-the Program Counter bus, and output the value stored in the memory at the read
+the PC bus, and output the value stored in the memory at the read
 address.
 
 Usually the memory should be a \texttt{byte} array. However, since we are
@@ -411,6 +411,59 @@ Address bus and the Data bus, store the read data in memory at the read
 address.
 
 The Memory Unit is tested in the same manner as the Register File.
+
+\subsection{Jump Unit}
+The Jump Unit is the one controlling which instruction to load next. It takes
+four inputs: sign extend, Zero, \texttt{beq} and the PC. It
+produces one output: the new PC. The Jump Unit and its connections
+can be seen in Figure \ref{fig:jump}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \node[block] (and) at (0,0) {\texttt{AND}};
+        \node[block] (inc) at (-2,1) {+4};
+        \node[block] (add) at (2,1) {+};
+        \node[empty] (pc) at (-4,1) {PC};
+        \node[empty] (beq) at (-0.5,-1.5) {\texttt{beq}};
+        \node[empty] (zero) at (0.5,-1.5) {Zero};
+        \node[empty] (imm) at (4,1) {Immediate};
+        \node[empty] (out) at (-4,2) {New PC};
+        \node[mux] (mux) at (0,2) {|};
+
+        \path[draw, ->, color=blue] (beq.65) -- (and.245);
+        \path[draw, ->, color=blue] (zero.115) -- (and.295);
+        \path[draw, ->, color=blue] (and) -- (mux);
+        \path[draw, ->] (pc) -- (inc);
+        \path[draw, ->] (inc) -- (add);
+        \path[draw, ->] (imm) -- (add);
+        \path[draw, ->] (add.north) |- (mux.45);
+        \path[draw, ->] (1, 1) |- (mux.315);
+        \path[draw, ->] (mux) -- (out);
+
+        \draw (-2.8,-0.8) rectangle (2.8,2.8);
+    \end{tikzpicture}
+    \caption{The Jump Unit}
+    \label{fig:jump}
+\end{figure}
+
+For the simple single cycle MIPS processor, it should only have support for
+normal program traversal (i.e. execute the instructions in order) and the
+\texttt{beq} instruction. We will be adding support for more branch and jump
+instructions later.
+
+\subsubsection*{Implementation \& Testing}
+The book describes the logic for both of the initial requirements. To add the
+normal program traversel, the Jump Unit should take the input PC, and increment
+it by 4, such that it points to the next instruction. To add support for
+branching, it should take the incremented PC, and add it with the sign extended
+immediate. The \texttt{beq} signal and the Zero signal should go to an
+\texttt{AND} gate, which should be a control signal for a multiplexor. The
+incremented PC, and the PC with the added immediate should go into inputs for
+the mux. If the control signal into the multiplexor is \texttt{0}, then the
+incremented PC should be the output, otherwise the PC with the added immediate.
+The output from the multiplexor should also be the output for the Jump Unit.
+
+The testing is performed in the same manner as with the other components.
 
 \subsection{Write back}
 The final stage of the processor is the Write Back. Here, the values are sent
