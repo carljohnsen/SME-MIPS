@@ -54,11 +54,11 @@ be seen in Figure \ref{fig:register}.
         \path[draw, -] (inputb) -| (spacing.south);
         \path[draw, ->] (spacing.south) |- (register.205);
 
-        \path[draw, -] (write) |- (writedata.135);
-        \path[draw, ->] (writedata.135) -- (register.225);
-        \path[draw, ->] (writedata) -- (register);
-        \path[draw, -] (writeenabled) |- (writedata.45);
-        \path[draw, ->] (writedata.45) -- (register.315);
+        \path[draw, color=blue, -] (write) |- (writedata.135);
+        \path[draw, color=blue, ->] (writedata.135) -- (register.225);
+        \path[draw, color=blue, ->] (writedata) -- (register);
+        \path[draw, color=blue, -] (writeenabled) |- (writedata.45);
+        \path[draw, color=blue, ->] (writedata.45) -- (register.315);
 
         \path[draw, -] (register.335) -| (bspace.north);
         \path[draw, ->] (bspace.north) |- (outputb);
@@ -122,7 +122,7 @@ result, and a flag indicating whether the result was 0.
         \path[draw, ->] (spacing.155) -- (alu.155);
         \path[draw, -] (inb.east) -| (spacing.205);
         \path[draw, ->] (spacing.205) -- (alu.205);
-        \path[draw, ->] (aluop) -- (alu);
+        \path[draw, color=blue, ->] (aluop) -- (alu);
         \path[draw, -] (alu.25) -| (align2.east);
         \path[draw, ->] (align2.east) -- (result);
         \path[draw, -] (alu.335) -| (align3.east);
@@ -240,13 +240,13 @@ seen in Figure \ref{fig:alu-cont}
     \centering
     \begin{tikzpicture}
         \node[block] (alucont) at (0,0) {ALU Control};
-        \node[empty] (aluop) at (-3, 0.4) {ALUOp};
-        \node[empty] (funct) at (-3, -0.4) {Funct};
+        \node[empty] (aluop) at (-3, -1) {ALUOp};
+        \node[empty] (funct) at (-3, -1.5) {Funct};
         \node[empty] (aluope) at (0, 2) {ALU Operation};
 
-        \path[draw, ->] (aluop) -- (alucont.161);
-        \path[draw, ->] (funct) -- (alucont.199);
-        \path[draw, ->] (alucont) -- (aluope);
+        \path[draw, ->, color=blue] (aluop) -| (alucont.250);
+        \path[draw, ->] (funct) -| (alucont.290);
+        \path[draw, ->, color=blue] (alucont) -- (aluope);
     \end{tikzpicture}
     \caption{The ALU Control}
     \label{fig:alu-cont}
@@ -389,8 +389,8 @@ be seen in Figure \ref{fig:mem}
 
         \path[draw, ->] (addr) -- (mem.154);
         \path[draw, ->] (data) -- (mem.206);
-        \path[draw, ->] (memread) -| (mem.110);
-        \path[draw, ->] (memwrite) -| (mem.70);
+        \path[draw, color=blue, ->] (memread) -| (mem.110);
+        \path[draw, color=blue, ->] (memwrite) -| (mem.70);
         \path[draw, ->] (mem) -- (readdata);
     \end{tikzpicture}
     \caption{The Memory Unit}
@@ -492,10 +492,10 @@ values. The Write Buffer can be seen in Figure \ref{fig:wb}
 
         \path[draw, ->] (wr) -- (wb);
         \path[draw, ->] (wd) -| (1.35, 0.45) |- (wb.20);
-        \path[draw, ->] (rw) -| (1.35, -0.45) |- (wb.340);
+        \path[draw, color=blue, ->] (rw) -| (1.35, -0.45) |- (wb.340);
         \path[draw, ->] (wb) -- (wd2);
         \path[draw, ->] (wb.160) -| (-1.35,0.45) |- (wr2);
-        \path[draw, ->] (wb.200) -| (-1.35,-0.45) |- (rw2);
+        \path[draw, color=blue, ->] (wb.200) -| (-1.35,-0.45) |- (rw2);
     \end{tikzpicture}
     \caption{The Write Buffer}
     \label{fig:wb}

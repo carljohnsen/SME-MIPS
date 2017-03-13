@@ -133,11 +133,11 @@
 \begin{frame}
     \begin{figure}
         \centering
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{tikzpicture}
                 \node[block] (reg) at (0,0) {Register file};
-                \node[control] (cont) at (-1,3.5) {Control unit};
-                \node[block] (jump) at (5,5.5) {Jump unit};
+                \node[control] (cont) at (-1,4.5) {Control unit};
+                \node[block] (jump) at (5,6.5) {Jump unit};
                 \node[empty] (splitspace) at (-3,0) {};
                 \node[block] (split) at (-4,0) {Splitter};
                 \node[block] (if) at (-7,0) {Instruction Memory};
@@ -147,7 +147,7 @@
                 \node[block] (mem) at (8.2,0) {Memory};
                 \node[block] (jal) at (6,-0.22) {JAL};
                 \node[mux] (memread) at (10,0) {|};
-                \node[mux] (shmt) at (2,1) {|};
+                \node[mux] (shmt) at (2,1.25) {|};
                 \node[mux] (imm) at (3, -0.25) {|};
                 \node[mux] (regdst) at (-2,-1) {|};
                 \node[block] (pc) at (-8, 2) {PC};
@@ -160,18 +160,20 @@
                 \path[draw, ->] (splitspace.center) |- (reg.160);
                 \path[draw, ->] (splitspace.center) |- (reg.200);
                 \path[draw, ->] (splitspace.center) |- (jump.200);
-                \path[draw, ->] (splitspace.center) |- (alucont.200);
+                \path[draw, ->] (splitspace.center) |- (2,-5.5) -| (alucont.290);
                 \path[draw, ->] (splitspace.center) |- (regdst.215);
                 \path[draw, ->] (splitspace.center) |- (shmt.145);
                 \path[draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
-                \path[draw, ->] (alucont) -- (alu);
-                \path[draw, ->] (alucont) -| (12, 0) |- (jump);
-                \path[draw, ->] (reg.340) -| (2,-0.25) |- (imm.145);
+                \path[draw, ->, color=blue] (alucont) -| (12.5, 0) |- (jump);
+                \path[draw, ->, color=blue] (alucont) -| (shmt);
+                \path[draw, thick, ->] (reg.340) -| (2.25,-0.25) |- (imm.145);
+                \path[draw, thick, ->] (2.25,-0.25) |- (3,0.75) -- (7,0.75) |-
+                (mem.164);
                 \path[draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
-                \path[draw, thick, ->] (1.25, 0.5) |- (4, 2) -| (7,1) |- (mem.164);
+                \path[draw, thick, -] (1.25,0.5) |- (4,2);
                 \path[draw, thick, ->] (4,2) -| (jump.295);
                 \path[draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
-                \path[draw, dashed, ->] (alu.20) -| (jump);
+                \path[draw, ->, dashed, color=blue] (alu.20) -| (jump);
                 \path[draw, ->] (alu.340) -- (jal);
                 \path[draw, ->] (jal) -- (mem.196);
                 \path[draw, ->] (imm) -- (alu.202);
@@ -179,6 +181,7 @@
                 (memread.215);
                 \path[draw, ->] (mem.10) -- (memread.145);
                 \path[draw, ->] (sign) -| (2.5, -1) |- (imm.215);
+                \path[draw, ->] (2.5,-3) -| (12, 0) |- (jump.340);
                 \path[draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
                 \path[draw, ->] (pc) -| (if);
                 \path[draw, ->] (pc) -| (-4, 4) |- (jump);
@@ -189,6 +192,7 @@
                 \path[draw, dashed, ->] (writebuf) -| (reg);
                 \path[draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
 
+                \path[draw, ->, color=blue] (alucont) -- (alu);
                 \path[draw, ->, color=blue] (cont.55) -| (jump.220);
                 \path[draw, ->, color=blue] (cont.45) -| (jump.230);
                 \path[draw, ->, color=blue] (cont.35) -| (jump.245);
@@ -199,16 +203,14 @@
                 \path[draw, ->, color=blue] (cont.355) -| (mem.125);
                 \path[draw, ->, color=blue] (cont.345) -| (jal);
                 \path[draw, ->, color=blue] (cont.335) -| (imm);
-                \path[draw, ->, color=blue] (cont.325) -| (shmt);
-                \path[draw, ->, color=blue] (cont.315) -| (1.5, 0.5) |-
-                (alucont.160);
-                %\path[draw, ->, color=blue] (cont.315) -- (reg.95);
-                %\path[draw, ->, color=blue] (cont.305) -- (reg.110);
+                %\path[draw, ->, color=blue] (cont.325) -| (shmt);
+                \path[draw, ->, color=blue] (cont.325) -| (1.5, -4) |-
+                (2, -5) -| (alucont.250);
                 \path[draw, ->, color=blue] (cont.250) -- (sign.128);
                 \path[draw, ->, color=blue] (cont.240) -| (regdst);
 
-                \node[block] (clock) at (-7, -5) {Clock};
-                \path[draw, ->, thick, color=green] (clock) -- (if);
+                \node[block] (clock) at (-7, -5.25) {Clock};
+                \path[draw, ->, thick, color=green] (clock) -| (-9.5,0) |- (pc);
                 \path[draw, ->, thick, color=green] (clock) -| (writebuf);
             \end{tikzpicture}
         }
@@ -217,79 +219,85 @@
 \begin{frame}
     \begin{figure}
         \centering
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{tikzpicture}
                 \node[block] (reg) at (0,0) {Register file};
-                \node[control] (cont) at (-1,3.5) {Control unit};
-                \node[opacity=0.2,block] (jump) at (5,5.5) {Jump unit};
-                \node[opacity=0.2,empty] (splitspace) at (-3,0) {};
+                \node[control] (cont) at (-1,4.5) {Control unit};
+                \node[block] (jump) at (5,6.5) {Jump unit};
+                \node[opacity=0.2, empty] (splitspace) at (-3,0) {};
                 \node[block] (split) at (-4,0) {Splitter};
                 \node[block] (if) at (-7,0) {Instruction Memory};
                 \node[block] (sign) at (-1,-3) {Sign extend};
                 \node[block] (alu) at (4,0) {ALU};
                 \node[block] (alucont) at (4,-4) {ALU control};
                 \node[block] (mem) at (8.2,0) {Memory};
-                \node[opacity=0.2,block] (jal) at (6,-0.22) {JAL};
-                \node[opacity=0.2,mux] (memread) at (10,0) {|};
-                \node[opacity=0.2,mux] (shmt) at (2,1) {|};
-                \node[opacity=0.2,mux] (imm) at (3, -0.25) {|};
-                \node[opacity=0.2,mux] (regdst) at (-2,-1) {|};
-                \node[opacity=0.2,block] (pc) at (-8, 2) {PC};
+                \node[opacity=0.2, block] (jal) at (6,-0.22) {JAL};
+                \node[opacity=0.2, mux] (memread) at (10,0) {|};
+                \node[opacity=0.2, mux] (shmt) at (2,1.25) {|};
+                \node[opacity=0.2, mux] (imm) at (3, -0.25) {|};
+                \node[opacity=0.2, mux] (regdst) at (-2,-1) {|};
+                \node[opacity=0.2, block] (pc) at (-8, 2) {PC};
                 \node[block] (writebuf) at (6, -2) {Write buffer};
 
-                \path[opacity=0.2,draw, ->] (if) -- (split);
-                \path[opacity=0.2,draw, -] (split) -- (splitspace.center);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (sign);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (cont);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.160);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (jump.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (alucont.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (regdst.215);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (shmt.145);
-                \path[opacity=0.2,draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
-                \path[opacity=0.2,draw, ->] (alucont) -- (alu);
-                \path[opacity=0.2,draw, ->] (alucont) -| (12, 0) |- (jump);
-                \path[opacity=0.2,draw, ->] (reg.340) -| (2,-0.25) |- (imm.145);
-                \path[opacity=0.2,draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
-                \path[opacity=0.2,draw, thick, ->] (1.25, 0.5) |- (4, 2) -| (7,1) |- (mem.164);
-                \path[opacity=0.2,draw, thick, ->] (4,2) -| (jump.295);
-                \path[opacity=0.2,draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
-                \path[opacity=0.2,draw, dashed, ->] (alu.20) -| (jump);
-                \path[opacity=0.2,draw, ->] (alu.340) -- (jal);
-                \path[opacity=0.2,draw, ->] (jal) -- (mem.196);
-                \path[opacity=0.2,draw, ->] (imm) -- (alu.202);
-                \path[opacity=0.2,draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |- (memread.215);
-                \path[opacity=0.2,draw, ->] (mem.10) -- (memread.145);
-                \path[opacity=0.2,draw, ->] (sign) -| (2.5, -1) |- (imm.215);
-                \path[opacity=0.2,draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
-                \path[opacity=0.2,draw, ->] (pc) -| (if);
-                \path[opacity=0.2,draw, ->] (pc) -| (-4, 4) |- (jump);
-                \path[opacity=0.2,draw, ->] (jump.160) -| (pc);
-                \path[opacity=0.2,draw, ->] (jal) -- (writebuf);
-                \path[opacity=0.2,draw, ->] (memread) -| (11, -1) |- (writebuf.15);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf.170) -| (reg.300);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf) -| (reg);
-                \path[opacity=0.2,draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
+                \path[opacity=0.2, draw, ->] (if) -- (split);
+                \path[opacity=0.2, draw, -] (split) -- (splitspace.center);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (sign);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (cont);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.160);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (jump.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (2,-5.5) -| (alucont.290);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (regdst.215);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (shmt.145);
+                \path[opacity=0.2, draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (12.5, 0) |- (jump);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (shmt);
+                \path[opacity=0.2, draw, thick, ->] (reg.340) -| (2.25,-0.25) |- (imm.145);
+                \path[opacity=0.2, draw, thick, ->] (2.25,-0.25) |- (3,0.75) -- (7,0.75) |-
+                (mem.164);
+                \path[opacity=0.2, draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
+                \path[opacity=0.2, draw, thick, -] (1.25,0.5) |- (4,2);
+                \path[opacity=0.2, draw, thick, ->] (4,2) -| (jump.295);
+                \path[opacity=0.2, draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
+                \path[opacity=0.2, draw, ->, dashed, color=blue] (alu.20) -| (jump);
+                \path[opacity=0.2, draw, ->] (alu.340) -- (jal);
+                \path[opacity=0.2, draw, ->] (jal) -- (mem.196);
+                \path[opacity=0.2, draw, ->] (imm) -- (alu.202);
+                \path[opacity=0.2, draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |-
+                (memread.215);
+                \path[opacity=0.2, draw, ->] (mem.10) -- (memread.145);
+                \path[opacity=0.2, draw, ->] (sign) -| (2.5, -1) |- (imm.215);
+                \path[opacity=0.2, draw, ->] (2.5,-3) -| (12, 0) |- (jump.340);
+                \path[opacity=0.2, draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
+                \path[opacity=0.2, draw, ->] (pc) -| (if);
+                \path[opacity=0.2, draw, ->] (pc) -| (-4, 4) |- (jump);
+                \path[opacity=0.2, draw, ->] (jump.160) -| (pc);
+                \path[opacity=0.2, draw, ->] (jal) -- (writebuf);
+                \path[opacity=0.2, draw, ->] (memread) -| (11, -1) |- (writebuf.15);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf.170) -| (reg.300);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf) -| (reg);
+                \path[opacity=0.2, draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
 
-                \path[opacity=0.2,draw, ->, color=blue] (cont.55) -| (jump.220);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.45) -| (jump.230);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.35) -| (jump.245);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.25) -| (11.5,0) |-(writebuf.345);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.15) -| (memread);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.5) -| (mem.55);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.355) -| (mem.125);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.345) -| (jal);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.335) -| (imm);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.325) -| (shmt);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.315) -| (1.5, 0.5) |- (alucont.160);
-                %\path[opacity=0.2,draw, ->, color=blue] (cont.305) -- (reg.110);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.250) -- (sign.128);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.240) -| (regdst);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -- (alu);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.55) -| (jump.220);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.45) -| (jump.230);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.35) -| (jump.245);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.25) -| (11.5,0) |-
+                (writebuf.345);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.15) -| (memread);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.5) -| (mem.55);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.355) -| (mem.125);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.345) -| (jal);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.335) -| (imm);
+                %\path[draw, ->, color=blue] (cont.325) -| (shmt);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.325) -| (1.5, -4) |-
+                (2, -5) -| (alucont.250);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.250) -- (sign.128);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.240) -| (regdst);
 
-                \node[opacity=0.2,block] (clock) at (-7, -5) {Clock};
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -- (if);
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -| (writebuf);
+                \node[opacity=0.2, block] (clock) at (-7, -5.25) {Clock};
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (-9.5,0) |- (pc);
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (writebuf);
             \end{tikzpicture}
         }
     \end{figure}
@@ -298,79 +306,85 @@
 \begin{frame}
     \begin{figure}
         \centering
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{tikzpicture}
                 \node[block] (reg) at (0,0) {Register file};
-                \node[opacity=0.2,control] (cont) at (-1,3.5) {Control unit};
-                \node[opacity=0.2,block] (jump) at (5,5.5) {Jump unit};
-                \node[opacity=0.2,empty] (splitspace) at (-3,0) {};
-                \node[opacity=0.2,block] (split) at (-4,0) {Splitter};
-                \node[opacity=0.2,block] (if) at (-7,0) {Instruction Memory};
-                \node[opacity=0.2,block] (sign) at (-1,-3) {Sign extend};
-                \node[opacity=0.2,block] (alu) at (4,0) {ALU};
-                \node[opacity=0.2,block] (alucont) at (4,-4) {ALU control};
-                \node[opacity=0.2,block] (mem) at (8.2,0) {Memory};
-                \node[opacity=0.2,block] (jal) at (6,-0.22) {JAL};
-                \node[opacity=0.2,mux] (memread) at (10,0) {|};
-                \node[opacity=0.2,mux] (shmt) at (2,1) {|};
-                \node[opacity=0.2,mux] (imm) at (3, -0.25) {|};
-                \node[opacity=0.2,mux] (regdst) at (-2,-1) {|};
-                \node[opacity=0.2,block] (pc) at (-8, 2) {PC};
-                \node[opacity=0.2,block] (writebuf) at (6, -2) {Write buffer};
+                \node[opacity=0.2, control] (cont) at (-1,4.5) {Control unit};
+                \node[opacity=0.2, block] (jump) at (5,6.5) {Jump unit};
+                \node[opacity=0.2, empty] (splitspace) at (-3,0) {};
+                \node[opacity=0.2, block] (split) at (-4,0) {Splitter};
+                \node[opacity=0.2, block] (if) at (-7,0) {Instruction Memory};
+                \node[opacity=0.2, block] (sign) at (-1,-3) {Sign extend};
+                \node[opacity=0.2, block] (alu) at (4,0) {ALU};
+                \node[opacity=0.2, block] (alucont) at (4,-4) {ALU control};
+                \node[opacity=0.2, block] (mem) at (8.2,0) {Memory};
+                \node[opacity=0.2, block] (jal) at (6,-0.22) {JAL};
+                \node[opacity=0.2, mux] (memread) at (10,0) {|};
+                \node[opacity=0.2, mux] (shmt) at (2,1.25) {|};
+                \node[opacity=0.2, mux] (imm) at (3, -0.25) {|};
+                \node[opacity=0.2, mux] (regdst) at (-2,-1) {|};
+                \node[opacity=0.2, block] (pc) at (-8, 2) {PC};
+                \node[opacity=0.2, block] (writebuf) at (6, -2) {Write buffer};
 
-                \path[opacity=0.2,draw, ->] (if) -- (split);
-                \path[opacity=0.2,draw, -] (split) -- (splitspace.center);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (sign);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (cont);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.160);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (jump.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (alucont.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (regdst.215);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (shmt.145);
-                \path[opacity=0.2,draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
-                \path[opacity=0.2,draw, ->] (alucont) -- (alu);
-                \path[opacity=0.2,draw, ->] (alucont) -| (12, 0) |- (jump);
-                \path[opacity=0.2,draw, ->] (reg.340) -| (2,-0.25) |- (imm.145);
-                \path[opacity=0.2,draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
-                \path[opacity=0.2,draw, thick, ->] (1.25, 0.5) |- (4, 2) -| (7,1) |- (mem.164);
-                \path[opacity=0.2,draw, thick, ->] (4,2) -| (jump.295);
-                \path[opacity=0.2,draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
-                \path[opacity=0.2,draw, dashed, ->] (alu.20) -| (jump);
-                \path[opacity=0.2,draw, ->] (alu.340) -- (jal);
-                \path[opacity=0.2,draw, ->] (jal) -- (mem.196);
-                \path[opacity=0.2,draw, ->] (imm) -- (alu.202);
-                \path[opacity=0.2,draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |- (memread.215);
-                \path[opacity=0.2,draw, ->] (mem.10) -- (memread.145);
-                \path[opacity=0.2,draw, ->] (sign) -| (2.5, -1) |- (imm.215);
-                \path[opacity=0.2,draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
-                \path[opacity=0.2,draw, ->] (pc) -| (if);
-                \path[opacity=0.2,draw, ->] (pc) -| (-4, 4) |- (jump);
-                \path[opacity=0.2,draw, ->] (jump.160) -| (pc);
-                \path[opacity=0.2,draw, ->] (jal) -- (writebuf);
-                \path[opacity=0.2,draw, ->] (memread) -| (11, -1) |- (writebuf.15);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf.170) -| (reg.300);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf) -| (reg);
-                \path[opacity=0.2,draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
+                \path[opacity=0.2, draw, ->] (if) -- (split);
+                \path[opacity=0.2, draw, -] (split) -- (splitspace.center);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (sign);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (cont);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.160);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (jump.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (2,-5.5) -| (alucont.290);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (regdst.215);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (shmt.145);
+                \path[opacity=0.2, draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (12.5, 0) |- (jump);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (shmt);
+                \path[opacity=0.2, draw, thick, ->] (reg.340) -| (2.25,-0.25) |- (imm.145);
+                \path[opacity=0.2, draw, thick, ->] (2.25,-0.25) |- (3,0.75) -- (7,0.75) |-
+                (mem.164);
+                \path[opacity=0.2, draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
+                \path[opacity=0.2, draw, thick, -] (1.25,0.5) |- (4,2);
+                \path[opacity=0.2, draw, thick, ->] (4,2) -| (jump.295);
+                \path[opacity=0.2, draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
+                \path[opacity=0.2, draw, ->, dashed, color=blue] (alu.20) -| (jump);
+                \path[opacity=0.2, draw, ->] (alu.340) -- (jal);
+                \path[opacity=0.2, draw, ->] (jal) -- (mem.196);
+                \path[opacity=0.2, draw, ->] (imm) -- (alu.202);
+                \path[opacity=0.2, draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |-
+                (memread.215);
+                \path[opacity=0.2, draw, ->] (mem.10) -- (memread.145);
+                \path[opacity=0.2, draw, ->] (sign) -| (2.5, -1) |- (imm.215);
+                \path[opacity=0.2, draw, ->] (2.5,-3) -| (12, 0) |- (jump.340);
+                \path[opacity=0.2, draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
+                \path[opacity=0.2, draw, ->] (pc) -| (if);
+                \path[opacity=0.2, draw, ->] (pc) -| (-4, 4) |- (jump);
+                \path[opacity=0.2, draw, ->] (jump.160) -| (pc);
+                \path[opacity=0.2, draw, ->] (jal) -- (writebuf);
+                \path[opacity=0.2, draw, ->] (memread) -| (11, -1) |- (writebuf.15);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf.170) -| (reg.300);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf) -| (reg);
+                \path[opacity=0.2, draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
 
-                \path[opacity=0.2,draw, ->, color=blue] (cont.55) -| (jump.220);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.45) -| (jump.230);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.35) -| (jump.245);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.25) -| (11.5,0) |-(writebuf.345);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.15) -| (memread);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.5) -| (mem.55);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.355) -| (mem.125);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.345) -| (jal);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.335) -| (imm);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.325) -| (shmt);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.315) -| (1.5, 0.5) |- (alucont.160);
-                %\path[opacity=0.2,draw, ->, color=blue] (cont.305) -- (reg.110);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.250) -- (sign.128);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.240) -| (regdst);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -- (alu);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.55) -| (jump.220);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.45) -| (jump.230);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.35) -| (jump.245);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.25) -| (11.5,0) |-
+                (writebuf.345);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.15) -| (memread);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.5) -| (mem.55);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.355) -| (mem.125);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.345) -| (jal);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.335) -| (imm);
+                %\path[draw, ->, color=blue] (cont.325) -| (shmt);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.325) -| (1.5, -4) |-
+                (2, -5) -| (alucont.250);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.250) -- (sign.128);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.240) -| (regdst);
 
-                \node[opacity=0.2,block] (clock) at (-7, -5) {Clock};
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -- (if);
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -| (writebuf);
+                \node[opacity=0.2, block] (clock) at (-7, -5.25) {Clock};
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (-9.5,0) |- (pc);
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (writebuf);
             \end{tikzpicture}
         }
     \end{figure}
@@ -484,79 +498,85 @@
 \begin{frame}
     \begin{figure}
         \centering
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{tikzpicture}
-                \node[opacity=0.2,block] (reg) at (0,0) {Register file};
-                \node[opacity=0.2,control] (cont) at (-1,3.5) {Control unit};
-                \node[opacity=0.2,block] (jump) at (5,5.5) {Jump unit};
-                \node[opacity=0.2,empty] (splitspace) at (-3,0) {};
-                \node[opacity=0.2,block] (split) at (-4,0) {Splitter};
-                \node[opacity=0.2,block] (if) at (-7,0) {Instruction Memory};
-                \node[opacity=0.2,block] (sign) at (-1,-3) {Sign extend};
+                \node[opacity=0.2, block] (reg) at (0,0) {Register file};
+                \node[opacity=0.2, control] (cont) at (-1,4.5) {Control unit};
+                \node[opacity=0.2, block] (jump) at (5,6.5) {Jump unit};
+                \node[opacity=0.2, empty] (splitspace) at (-3,0) {};
+                \node[opacity=0.2, block] (split) at (-4,0) {Splitter};
+                \node[opacity=0.2, block] (if) at (-7,0) {Instruction Memory};
+                \node[opacity=0.2, block] (sign) at (-1,-3) {Sign extend};
                 \node[block] (alu) at (4,0) {ALU};
-                \node[opacity=0.2,block] (alucont) at (4,-4) {ALU control};
-                \node[opacity=0.2,block] (mem) at (8.2,0) {Memory};
-                \node[opacity=0.2,block] (jal) at (6,-0.22) {JAL};
-                \node[opacity=0.2,mux] (memread) at (10,0) {|};
-                \node[opacity=0.2,mux] (shmt) at (2,1) {|};
-                \node[opacity=0.2,mux] (imm) at (3, -0.25) {|};
-                \node[opacity=0.2,mux] (regdst) at (-2,-1) {|};
-                \node[opacity=0.2,block] (pc) at (-8, 2) {PC};
-                \node[opacity=0.2,block] (writebuf) at (6, -2) {Write buffer};
+                \node[opacity=0.2, block] (alucont) at (4,-4) {ALU control};
+                \node[opacity=0.2, block] (mem) at (8.2,0) {Memory};
+                \node[opacity=0.2, block] (jal) at (6,-0.22) {JAL};
+                \node[opacity=0.2, mux] (memread) at (10,0) {|};
+                \node[opacity=0.2, mux] (shmt) at (2,1.25) {|};
+                \node[opacity=0.2, mux] (imm) at (3, -0.25) {|};
+                \node[opacity=0.2, mux] (regdst) at (-2,-1) {|};
+                \node[opacity=0.2, block] (pc) at (-8, 2) {PC};
+                \node[opacity=0.2, block] (writebuf) at (6, -2) {Write buffer};
 
-                \path[opacity=0.2,draw, ->] (if) -- (split);
-                \path[opacity=0.2,draw, -] (split) -- (splitspace.center);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (sign);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (cont);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.160);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (jump.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (alucont.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (regdst.215);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (shmt.145);
-                \path[opacity=0.2,draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
-                \path[opacity=0.2,draw, ->] (alucont) -- (alu);
-                \path[opacity=0.2,draw, ->] (alucont) -| (12, 0) |- (jump);
-                \path[opacity=0.2,draw, ->] (reg.340) -| (2,-0.25) |- (imm.145);
-                \path[opacity=0.2,draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
-                \path[opacity=0.2,draw, thick, ->] (1.25, 0.5) |- (4, 2) -| (7,1) |- (mem.164);
-                \path[opacity=0.2,draw, thick, ->] (4,2) -| (jump.295);
-                \path[opacity=0.2,draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
-                \path[opacity=0.2,draw, dashed, ->] (alu.20) -| (jump);
-                \path[opacity=0.2,draw, ->] (alu.340) -- (jal);
-                \path[opacity=0.2,draw, ->] (jal) -- (mem.196);
-                \path[opacity=0.2,draw, ->] (imm) -- (alu.202);
-                \path[opacity=0.2,draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |- (memread.215);
-                \path[opacity=0.2,draw, ->] (mem.10) -- (memread.145);
-                \path[opacity=0.2,draw, ->] (sign) -| (2.5, -1) |- (imm.215);
-                \path[opacity=0.2,draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
-                \path[opacity=0.2,draw, ->] (pc) -| (if);
-                \path[opacity=0.2,draw, ->] (pc) -| (-4, 4) |- (jump);
-                \path[opacity=0.2,draw, ->] (jump.160) -| (pc);
-                \path[opacity=0.2,draw, ->] (jal) -- (writebuf);
-                \path[opacity=0.2,draw, ->] (memread) -| (11, -1) |- (writebuf.15);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf.170) -| (reg.300);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf) -| (reg);
-                \path[opacity=0.2,draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
+                \path[opacity=0.2, draw, ->] (if) -- (split);
+                \path[opacity=0.2, draw, -] (split) -- (splitspace.center);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (sign);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (cont);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.160);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (jump.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (2,-5.5) -| (alucont.290);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (regdst.215);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (shmt.145);
+                \path[opacity=0.2, draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (12.5, 0) |- (jump);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (shmt);
+                \path[opacity=0.2, draw, thick, ->] (reg.340) -| (2.25,-0.25) |- (imm.145);
+                \path[opacity=0.2, draw, thick, ->] (2.25,-0.25) |- (3,0.75) -- (7,0.75) |-
+                (mem.164);
+                \path[opacity=0.2, draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
+                \path[opacity=0.2, draw, thick, -] (1.25,0.5) |- (4,2);
+                \path[opacity=0.2, draw, thick, ->] (4,2) -| (jump.295);
+                \path[opacity=0.2, draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
+                \path[opacity=0.2, draw, ->, dashed, color=blue] (alu.20) -| (jump);
+                \path[opacity=0.2, draw, ->] (alu.340) -- (jal);
+                \path[opacity=0.2, draw, ->] (jal) -- (mem.196);
+                \path[opacity=0.2, draw, ->] (imm) -- (alu.202);
+                \path[opacity=0.2, draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |-
+                (memread.215);
+                \path[opacity=0.2, draw, ->] (mem.10) -- (memread.145);
+                \path[opacity=0.2, draw, ->] (sign) -| (2.5, -1) |- (imm.215);
+                \path[opacity=0.2, draw, ->] (2.5,-3) -| (12, 0) |- (jump.340);
+                \path[opacity=0.2, draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
+                \path[opacity=0.2, draw, ->] (pc) -| (if);
+                \path[opacity=0.2, draw, ->] (pc) -| (-4, 4) |- (jump);
+                \path[opacity=0.2, draw, ->] (jump.160) -| (pc);
+                \path[opacity=0.2, draw, ->] (jal) -- (writebuf);
+                \path[opacity=0.2, draw, ->] (memread) -| (11, -1) |- (writebuf.15);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf.170) -| (reg.300);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf) -| (reg);
+                \path[opacity=0.2, draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
 
-                \path[opacity=0.2,draw, ->, color=blue] (cont.55) -| (jump.220);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.45) -| (jump.230);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.35) -| (jump.245);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.25) -| (11.5,0) |-(writebuf.345);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.15) -| (memread);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.5) -| (mem.55);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.355) -| (mem.125);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.345) -| (jal);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.335) -| (imm);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.325) -| (shmt);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.315) -| (1.5, 0.5) |- (alucont.160);
-                %\path[opacity=0.2,draw, ->, color=blue] (cont.305) -- (reg.110);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.250) -- (sign.128);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.240) -| (regdst);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -- (alu);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.55) -| (jump.220);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.45) -| (jump.230);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.35) -| (jump.245);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.25) -| (11.5,0) |-
+                (writebuf.345);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.15) -| (memread);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.5) -| (mem.55);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.355) -| (mem.125);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.345) -| (jal);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.335) -| (imm);
+                %\path[draw, ->, color=blue] (cont.325) -| (shmt);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.325) -| (1.5, -4) |-
+                (2, -5) -| (alucont.250);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.250) -- (sign.128);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.240) -| (regdst);
 
-                \node[opacity=0.2,block] (clock) at (-7, -5) {Clock};
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -- (if);
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -| (writebuf);
+                \node[opacity=0.2, block] (clock) at (-7, -5.25) {Clock};
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (-9.5,0) |- (pc);
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (writebuf);
             \end{tikzpicture}
         }
     \end{figure}
@@ -656,79 +676,85 @@
 \begin{frame}
     \begin{figure}
         \centering
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{tikzpicture}
-                \node[opacity=0.2,block] (reg) at (0,0) {Register file};
-                \node[control] (cont) at (-1,3.5) {Control unit};
-                \node[opacity=0.2,block] (jump) at (5,5.5) {Jump unit};
-                \node[opacity=0.2,empty] (splitspace) at (-3,0) {};
-                \node[opacity=0.2,block] (split) at (-4,0) {Splitter};
-                \node[opacity=0.2,block] (if) at (-7,0) {Instruction Memory};
-                \node[opacity=0.2,block] (sign) at (-1,-3) {Sign extend};
-                \node[opacity=0.2,block] (alu) at (4,0) {ALU};
-                \node[opacity=0.2,block] (alucont) at (4,-4) {ALU control};
-                \node[opacity=0.2,block] (mem) at (8.2,0) {Memory};
-                \node[opacity=0.2,block] (jal) at (6,-0.22) {JAL};
-                \node[opacity=0.2,mux] (memread) at (10,0) {|};
-                \node[opacity=0.2,mux] (shmt) at (2,1) {|};
-                \node[opacity=0.2,mux] (imm) at (3, -0.25) {|};
-                \node[opacity=0.2,mux] (regdst) at (-2,-1) {|};
-                \node[opacity=0.2,block] (pc) at (-8, 2) {PC};
-                \node[opacity=0.2,block] (writebuf) at (6, -2) {Write buffer};
+                \node[opacity=0.2, block] (reg) at (0,0) {Register file};
+                \node[control] (cont) at (-1,4.5) {Control unit};
+                \node[opacity=0.2, block] (jump) at (5,6.5) {Jump unit};
+                \node[opacity=0.2, empty] (splitspace) at (-3,0) {};
+                \node[opacity=0.2, block] (split) at (-4,0) {Splitter};
+                \node[opacity=0.2, block] (if) at (-7,0) {Instruction Memory};
+                \node[opacity=0.2, block] (sign) at (-1,-3) {Sign extend};
+                \node[opacity=0.2, block] (alu) at (4,0) {ALU};
+                \node[opacity=0.2, block] (alucont) at (4,-4) {ALU control};
+                \node[opacity=0.2, block] (mem) at (8.2,0) {Memory};
+                \node[opacity=0.2, block] (jal) at (6,-0.22) {JAL};
+                \node[opacity=0.2, mux] (memread) at (10,0) {|};
+                \node[opacity=0.2, mux] (shmt) at (2,1.25) {|};
+                \node[opacity=0.2, mux] (imm) at (3, -0.25) {|};
+                \node[opacity=0.2, mux] (regdst) at (-2,-1) {|};
+                \node[opacity=0.2, block] (pc) at (-8, 2) {PC};
+                \node[opacity=0.2, block] (writebuf) at (6, -2) {Write buffer};
 
-                \path[opacity=0.2,draw, ->] (if) -- (split);
-                \path[opacity=0.2,draw, -] (split) -- (splitspace.center);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (sign);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (cont);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.160);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (jump.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (alucont.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (regdst.215);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (shmt.145);
-                \path[opacity=0.2,draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
-                \path[opacity=0.2,draw, ->] (alucont) -- (alu);
-                \path[opacity=0.2,draw, ->] (alucont) -| (12, 0) |- (jump);
-                \path[opacity=0.2,draw, ->] (reg.340) -| (2,-0.25) |- (imm.145);
-                \path[opacity=0.2,draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
-                \path[opacity=0.2,draw, thick, ->] (1.25, 0.5) |- (4, 2) -| (7,1) |- (mem.164);
-                \path[opacity=0.2,draw, thick, ->] (4,2) -| (jump.295);
-                \path[opacity=0.2,draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
-                \path[opacity=0.2,draw, dashed, ->] (alu.20) -| (jump);
-                \path[opacity=0.2,draw, ->] (alu.340) -- (jal);
-                \path[opacity=0.2,draw, ->] (jal) -- (mem.196);
-                \path[opacity=0.2,draw, ->] (imm) -- (alu.202);
-                \path[opacity=0.2,draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |- (memread.215);
-                \path[opacity=0.2,draw, ->] (mem.10) -- (memread.145);
-                \path[opacity=0.2,draw, ->] (sign) -| (2.5, -1) |- (imm.215);
-                \path[opacity=0.2,draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
-                \path[opacity=0.2,draw, ->] (pc) -| (if);
-                \path[opacity=0.2,draw, ->] (pc) -| (-4, 4) |- (jump);
-                \path[opacity=0.2,draw, ->] (jump.160) -| (pc);
-                \path[opacity=0.2,draw, ->] (jal) -- (writebuf);
-                \path[opacity=0.2,draw, ->] (memread) -| (11, -1) |- (writebuf.15);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf.170) -| (reg.300);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf) -| (reg);
-                \path[opacity=0.2,draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
+                \path[opacity=0.2, draw, ->] (if) -- (split);
+                \path[opacity=0.2, draw, -] (split) -- (splitspace.center);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (sign);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (cont);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.160);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (jump.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (2,-5.5) -| (alucont.290);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (regdst.215);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (shmt.145);
+                \path[opacity=0.2, draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (12.5, 0) |- (jump);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (shmt);
+                \path[opacity=0.2, draw, thick, ->] (reg.340) -| (2.25,-0.25) |- (imm.145);
+                \path[opacity=0.2, draw, thick, ->] (2.25,-0.25) |- (3,0.75) -- (7,0.75) |-
+                (mem.164);
+                \path[opacity=0.2, draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
+                \path[opacity=0.2, draw, thick, -] (1.25,0.5) |- (4,2);
+                \path[opacity=0.2, draw, thick, ->] (4,2) -| (jump.295);
+                \path[opacity=0.2, draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
+                \path[opacity=0.2, draw, ->, dashed, color=blue] (alu.20) -| (jump);
+                \path[opacity=0.2, draw, ->] (alu.340) -- (jal);
+                \path[opacity=0.2, draw, ->] (jal) -- (mem.196);
+                \path[opacity=0.2, draw, ->] (imm) -- (alu.202);
+                \path[opacity=0.2, draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |-
+                (memread.215);
+                \path[opacity=0.2, draw, ->] (mem.10) -- (memread.145);
+                \path[opacity=0.2, draw, ->] (sign) -| (2.5, -1) |- (imm.215);
+                \path[opacity=0.2, draw, ->] (2.5,-3) -| (12, 0) |- (jump.340);
+                \path[opacity=0.2, draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
+                \path[opacity=0.2, draw, ->] (pc) -| (if);
+                \path[opacity=0.2, draw, ->] (pc) -| (-4, 4) |- (jump);
+                \path[opacity=0.2, draw, ->] (jump.160) -| (pc);
+                \path[opacity=0.2, draw, ->] (jal) -- (writebuf);
+                \path[opacity=0.2, draw, ->] (memread) -| (11, -1) |- (writebuf.15);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf.170) -| (reg.300);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf) -| (reg);
+                \path[opacity=0.2, draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
 
-                \path[opacity=0.2,draw, ->, color=blue] (cont.55) -| (jump.220);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.45) -| (jump.230);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.35) -| (jump.245);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.25) -| (11.5,0) |-(writebuf.345);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.15) -| (memread);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.5) -| (mem.55);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.355) -| (mem.125);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.345) -| (jal);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.335) -| (imm);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.325) -| (shmt);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.315) -| (1.5, 0.5) |- (alucont.160);
-                %\path[opacity=0.2,draw, ->, color=blue] (cont.305) -- (reg.110);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.250) -- (sign.128);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.240) -| (regdst);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -- (alu);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.55) -| (jump.220);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.45) -| (jump.230);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.35) -| (jump.245);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.25) -| (11.5,0) |-
+                (writebuf.345);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.15) -| (memread);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.5) -| (mem.55);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.355) -| (mem.125);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.345) -| (jal);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.335) -| (imm);
+                %\path[draw, ->, color=blue] (cont.325) -| (shmt);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.325) -| (1.5, -4) |-
+                (2, -5) -| (alucont.250);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.250) -- (sign.128);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.240) -| (regdst);
 
-                \node[opacity=0.2,block] (clock) at (-7, -5) {Clock};
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -- (if);
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -| (writebuf);
+                \node[opacity=0.2, block] (clock) at (-7, -5.25) {Clock};
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (-9.5,0) |- (pc);
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (writebuf);
             \end{tikzpicture}
         }
     \end{figure}
@@ -798,79 +824,85 @@
 \begin{frame}
     \begin{figure}
         \centering
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{tikzpicture}
-                \node[opacity=0.2,block] (reg) at (0,0) {Register file};
-                \node[opacity=0.2,control] (cont) at (-1,3.5) {Control unit};
-                \node[opacity=0.2,block] (jump) at (5,5.5) {Jump unit};
-                \node[opacity=0.2,empty] (splitspace) at (-3,0) {};
-                \node[opacity=0.2,block] (split) at (-4,0) {Splitter};
-                \node[opacity=0.2,block] (if) at (-7,0) {Instruction Memory};
-                \node[opacity=0.2,block] (sign) at (-1,-3) {Sign extend};
-                \node[opacity=0.2,block] (alu) at (4,0) {ALU};
+                \node[opacity=0.2, block] (reg) at (0,0) {Register file};
+                \node[opacity=0.2, control] (cont) at (-1,4.5) {Control unit};
+                \node[opacity=0.2, block] (jump) at (5,6.5) {Jump unit};
+                \node[opacity=0.2, empty] (splitspace) at (-3,0) {};
+                \node[opacity=0.2, block] (split) at (-4,0) {Splitter};
+                \node[opacity=0.2, block] (if) at (-7,0) {Instruction Memory};
+                \node[opacity=0.2, block] (sign) at (-1,-3) {Sign extend};
+                \node[opacity=0.2, block] (alu) at (4,0) {ALU};
                 \node[block] (alucont) at (4,-4) {ALU control};
-                \node[opacity=0.2,block] (mem) at (8.2,0) {Memory};
-                \node[opacity=0.2,block] (jal) at (6,-0.22) {JAL};
-                \node[opacity=0.2,mux] (memread) at (10,0) {|};
-                \node[opacity=0.2,mux] (shmt) at (2,1) {|};
-                \node[opacity=0.2,mux] (imm) at (3, -0.25) {|};
-                \node[opacity=0.2,mux] (regdst) at (-2,-1) {|};
-                \node[opacity=0.2,block] (pc) at (-8, 2) {PC};
-                \node[opacity=0.2,block] (writebuf) at (6, -2) {Write buffer};
+                \node[opacity=0.2, block] (mem) at (8.2,0) {Memory};
+                \node[opacity=0.2, block] (jal) at (6,-0.22) {JAL};
+                \node[opacity=0.2, mux] (memread) at (10,0) {|};
+                \node[opacity=0.2, mux] (shmt) at (2,1.25) {|};
+                \node[opacity=0.2, mux] (imm) at (3, -0.25) {|};
+                \node[opacity=0.2, mux] (regdst) at (-2,-1) {|};
+                \node[opacity=0.2, block] (pc) at (-8, 2) {PC};
+                \node[opacity=0.2, block] (writebuf) at (6, -2) {Write buffer};
 
-                \path[opacity=0.2,draw, ->] (if) -- (split);
-                \path[opacity=0.2,draw, -] (split) -- (splitspace.center);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (sign);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (cont);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.160);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (jump.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (alucont.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (regdst.215);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (shmt.145);
-                \path[opacity=0.2,draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
-                \path[opacity=0.2,draw, ->] (alucont) -- (alu);
-                \path[opacity=0.2,draw, ->] (alucont) -| (12, 0) |- (jump);
-                \path[opacity=0.2,draw, ->] (reg.340) -| (2,-0.25) |- (imm.145);
-                \path[opacity=0.2,draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
-                \path[opacity=0.2,draw, thick, ->] (1.25, 0.5) |- (4, 2) -| (7,1) |- (mem.164);
-                \path[opacity=0.2,draw, thick, ->] (4,2) -| (jump.295);
-                \path[opacity=0.2,draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
-                \path[opacity=0.2,draw, dashed, ->] (alu.20) -| (jump);
-                \path[opacity=0.2,draw, ->] (alu.340) -- (jal);
-                \path[opacity=0.2,draw, ->] (jal) -- (mem.196);
-                \path[opacity=0.2,draw, ->] (imm) -- (alu.202);
-                \path[opacity=0.2,draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |- (memread.215);
-                \path[opacity=0.2,draw, ->] (mem.10) -- (memread.145);
-                \path[opacity=0.2,draw, ->] (sign) -| (2.5, -1) |- (imm.215);
-                \path[opacity=0.2,draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
-                \path[opacity=0.2,draw, ->] (pc) -| (if);
-                \path[opacity=0.2,draw, ->] (pc) -| (-4, 4) |- (jump);
-                \path[opacity=0.2,draw, ->] (jump.160) -| (pc);
-                \path[opacity=0.2,draw, ->] (jal) -- (writebuf);
-                \path[opacity=0.2,draw, ->] (memread) -| (11, -1) |- (writebuf.15);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf.170) -| (reg.300);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf) -| (reg);
-                \path[opacity=0.2,draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
+                \path[opacity=0.2, draw, ->] (if) -- (split);
+                \path[opacity=0.2, draw, -] (split) -- (splitspace.center);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (sign);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (cont);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.160);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (jump.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (2,-5.5) -| (alucont.290);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (regdst.215);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (shmt.145);
+                \path[opacity=0.2, draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (12.5, 0) |- (jump);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (shmt);
+                \path[opacity=0.2, draw, thick, ->] (reg.340) -| (2.25,-0.25) |- (imm.145);
+                \path[opacity=0.2, draw, thick, ->] (2.25,-0.25) |- (3,0.75) -- (7,0.75) |-
+                (mem.164);
+                \path[opacity=0.2, draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
+                \path[opacity=0.2, draw, thick, -] (1.25,0.5) |- (4,2);
+                \path[opacity=0.2, draw, thick, ->] (4,2) -| (jump.295);
+                \path[opacity=0.2, draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
+                \path[opacity=0.2, draw, ->, dashed, color=blue] (alu.20) -| (jump);
+                \path[opacity=0.2, draw, ->] (alu.340) -- (jal);
+                \path[opacity=0.2, draw, ->] (jal) -- (mem.196);
+                \path[opacity=0.2, draw, ->] (imm) -- (alu.202);
+                \path[opacity=0.2, draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |-
+                (memread.215);
+                \path[opacity=0.2, draw, ->] (mem.10) -- (memread.145);
+                \path[opacity=0.2, draw, ->] (sign) -| (2.5, -1) |- (imm.215);
+                \path[opacity=0.2, draw, ->] (2.5,-3) -| (12, 0) |- (jump.340);
+                \path[opacity=0.2, draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
+                \path[opacity=0.2, draw, ->] (pc) -| (if);
+                \path[opacity=0.2, draw, ->] (pc) -| (-4, 4) |- (jump);
+                \path[opacity=0.2, draw, ->] (jump.160) -| (pc);
+                \path[opacity=0.2, draw, ->] (jal) -- (writebuf);
+                \path[opacity=0.2, draw, ->] (memread) -| (11, -1) |- (writebuf.15);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf.170) -| (reg.300);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf) -| (reg);
+                \path[opacity=0.2, draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
 
-                \path[opacity=0.2,draw, ->, color=blue] (cont.55) -| (jump.220);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.45) -| (jump.230);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.35) -| (jump.245);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.25) -| (11.5,0) |-(writebuf.345);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.15) -| (memread);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.5) -| (mem.55);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.355) -| (mem.125);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.345) -| (jal);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.335) -| (imm);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.325) -| (shmt);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.315) -| (1.5, 0.5) |- (alucont.160);
-                %\path[opacity=0.2,draw, ->, color=blue] (cont.305) -- (reg.110);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.250) -- (sign.128);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.240) -| (regdst);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -- (alu);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.55) -| (jump.220);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.45) -| (jump.230);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.35) -| (jump.245);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.25) -| (11.5,0) |-
+                (writebuf.345);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.15) -| (memread);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.5) -| (mem.55);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.355) -| (mem.125);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.345) -| (jal);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.335) -| (imm);
+                %\path[draw, ->, color=blue] (cont.325) -| (shmt);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.325) -| (1.5, -4) |-
+                (2, -5) -| (alucont.250);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.250) -- (sign.128);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.240) -| (regdst);
 
-                \node[opacity=0.2,block] (clock) at (-7, -5) {Clock};
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -- (if);
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -| (writebuf);
+                \node[opacity=0.2, block] (clock) at (-7, -5.25) {Clock};
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (-9.5,0) |- (pc);
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (writebuf);
             \end{tikzpicture}
         }
     \end{figure}
@@ -933,79 +965,85 @@
 \begin{frame}
     \begin{figure}
         \centering
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{tikzpicture}
-                \node[opacity=0.2,block] (reg) at (0,0) {Register file};
-                \node[opacity=0.2,control] (cont) at (-1,3.5) {Control unit};
-                \node[opacity=0.2,block] (jump) at (5,5.5) {Jump unit};
-                \node[opacity=0.2,empty] (splitspace) at (-3,0) {};
+                \node[opacity=0.2, block] (reg) at (0,0) {Register file};
+                \node[opacity=0.2, control] (cont) at (-1,4.5) {Control unit};
+                \node[opacity=0.2, block] (jump) at (5,6.5) {Jump unit};
+                \node[opacity=0.2, empty] (splitspace) at (-3,0) {};
                 \node[block] (split) at (-4,0) {Splitter};
-                \node[opacity=0.2,block] (if) at (-7,0) {Instruction Memory};
-                \node[opacity=0.2,block] (sign) at (-1,-3) {Sign extend};
-                \node[opacity=0.2,block] (alu) at (4,0) {ALU};
-                \node[opacity=0.2,block] (alucont) at (4,-4) {ALU control};
-                \node[opacity=0.2,block] (mem) at (8.2,0) {Memory};
-                \node[opacity=0.2,block] (jal) at (6,-0.22) {JAL};
-                \node[opacity=0.2,mux] (memread) at (10,0) {|};
-                \node[opacity=0.2,mux] (shmt) at (2,1) {|};
-                \node[opacity=0.2,mux] (imm) at (3, -0.25) {|};
-                \node[opacity=0.2,mux] (regdst) at (-2,-1) {|};
-                \node[opacity=0.2,block] (pc) at (-8, 2) {PC};
-                \node[opacity=0.2,block] (writebuf) at (6, -2) {Write buffer};
+                \node[opacity=0.2, block] (if) at (-7,0) {Instruction Memory};
+                \node[opacity=0.2, block] (sign) at (-1,-3) {Sign extend};
+                \node[opacity=0.2, block] (alu) at (4,0) {ALU};
+                \node[opacity=0.2, block] (alucont) at (4,-4) {ALU control};
+                \node[opacity=0.2, block] (mem) at (8.2,0) {Memory};
+                \node[opacity=0.2, block] (jal) at (6,-0.22) {JAL};
+                \node[opacity=0.2, mux] (memread) at (10,0) {|};
+                \node[opacity=0.2, mux] (shmt) at (2,1.25) {|};
+                \node[opacity=0.2, mux] (imm) at (3, -0.25) {|};
+                \node[opacity=0.2, mux] (regdst) at (-2,-1) {|};
+                \node[opacity=0.2, block] (pc) at (-8, 2) {PC};
+                \node[opacity=0.2, block] (writebuf) at (6, -2) {Write buffer};
 
-                \path[opacity=0.2,draw, ->] (if) -- (split);
-                \path[opacity=0.2,draw, -] (split) -- (splitspace.center);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (sign);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (cont);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.160);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (jump.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (alucont.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (regdst.215);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (shmt.145);
-                \path[opacity=0.2,draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
-                \path[opacity=0.2,draw, ->] (alucont) -- (alu);
-                \path[opacity=0.2,draw, ->] (alucont) -| (12, 0) |- (jump);
-                \path[opacity=0.2,draw, ->] (reg.340) -| (2,-0.25) |- (imm.145);
-                \path[opacity=0.2,draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
-                \path[opacity=0.2,draw, thick, ->] (1.25, 0.5) |- (4, 2) -| (7,1) |- (mem.164);
-                \path[opacity=0.2,draw, thick, ->] (4,2) -| (jump.295);
-                \path[opacity=0.2,draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
-                \path[opacity=0.2,draw, dashed, ->] (alu.20) -| (jump);
-                \path[opacity=0.2,draw, ->] (alu.340) -- (jal);
-                \path[opacity=0.2,draw, ->] (jal) -- (mem.196);
-                \path[opacity=0.2,draw, ->] (imm) -- (alu.202);
-                \path[opacity=0.2,draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |- (memread.215);
-                \path[opacity=0.2,draw, ->] (mem.10) -- (memread.145);
-                \path[opacity=0.2,draw, ->] (sign) -| (2.5, -1) |- (imm.215);
-                \path[opacity=0.2,draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
-                \path[opacity=0.2,draw, ->] (pc) -| (if);
-                \path[opacity=0.2,draw, ->] (pc) -| (-4, 4) |- (jump);
-                \path[opacity=0.2,draw, ->] (jump.160) -| (pc);
-                \path[opacity=0.2,draw, ->] (jal) -- (writebuf);
-                \path[opacity=0.2,draw, ->] (memread) -| (11, -1) |- (writebuf.15);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf.170) -| (reg.300);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf) -| (reg);
-                \path[opacity=0.2,draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
+                \path[opacity=0.2, draw, ->] (if) -- (split);
+                \path[opacity=0.2, draw, -] (split) -- (splitspace.center);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (sign);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (cont);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.160);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (jump.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (2,-5.5) -| (alucont.290);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (regdst.215);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (shmt.145);
+                \path[opacity=0.2, draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (12.5, 0) |- (jump);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (shmt);
+                \path[opacity=0.2, draw, thick, ->] (reg.340) -| (2.25,-0.25) |- (imm.145);
+                \path[opacity=0.2, draw, thick, ->] (2.25,-0.25) |- (3,0.75) -- (7,0.75) |-
+                (mem.164);
+                \path[opacity=0.2, draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
+                \path[opacity=0.2, draw, thick, -] (1.25,0.5) |- (4,2);
+                \path[opacity=0.2, draw, thick, ->] (4,2) -| (jump.295);
+                \path[opacity=0.2, draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
+                \path[opacity=0.2, draw, ->, dashed, color=blue] (alu.20) -| (jump);
+                \path[opacity=0.2, draw, ->] (alu.340) -- (jal);
+                \path[opacity=0.2, draw, ->] (jal) -- (mem.196);
+                \path[opacity=0.2, draw, ->] (imm) -- (alu.202);
+                \path[opacity=0.2, draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |-
+                (memread.215);
+                \path[opacity=0.2, draw, ->] (mem.10) -- (memread.145);
+                \path[opacity=0.2, draw, ->] (sign) -| (2.5, -1) |- (imm.215);
+                \path[opacity=0.2, draw, ->] (2.5,-3) -| (12, 0) |- (jump.340);
+                \path[opacity=0.2, draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
+                \path[opacity=0.2, draw, ->] (pc) -| (if);
+                \path[opacity=0.2, draw, ->] (pc) -| (-4, 4) |- (jump);
+                \path[opacity=0.2, draw, ->] (jump.160) -| (pc);
+                \path[opacity=0.2, draw, ->] (jal) -- (writebuf);
+                \path[opacity=0.2, draw, ->] (memread) -| (11, -1) |- (writebuf.15);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf.170) -| (reg.300);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf) -| (reg);
+                \path[opacity=0.2, draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
 
-                \path[opacity=0.2,draw, ->, color=blue] (cont.55) -| (jump.220);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.45) -| (jump.230);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.35) -| (jump.245);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.25) -| (11.5,0) |-(writebuf.345);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.15) -| (memread);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.5) -| (mem.55);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.355) -| (mem.125);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.345) -| (jal);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.335) -| (imm);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.325) -| (shmt);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.315) -| (1.5, 0.5) |- (alucont.160);
-                %\path[opacity=0.2,draw, ->, color=blue] (cont.305) -- (reg.110);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.250) -- (sign.128);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.240) -| (regdst);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -- (alu);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.55) -| (jump.220);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.45) -| (jump.230);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.35) -| (jump.245);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.25) -| (11.5,0) |-
+                (writebuf.345);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.15) -| (memread);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.5) -| (mem.55);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.355) -| (mem.125);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.345) -| (jal);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.335) -| (imm);
+                %\path[draw, ->, color=blue] (cont.325) -| (shmt);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.325) -| (1.5, -4) |-
+                (2, -5) -| (alucont.250);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.250) -- (sign.128);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.240) -| (regdst);
 
-                \node[opacity=0.2,block] (clock) at (-7, -5) {Clock};
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -- (if);
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -| (writebuf);
+                \node[opacity=0.2, block] (clock) at (-7, -5.25) {Clock};
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (-9.5,0) |- (pc);
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (writebuf);
             \end{tikzpicture}
         }
     \end{figure}
@@ -1064,79 +1102,85 @@
 \begin{frame}
     \begin{figure}
         \centering
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{tikzpicture}
-                \node[opacity=0.2,block] (reg) at (0,0) {Register file};
-                \node[opacity=0.2,control] (cont) at (-1,3.5) {Control unit};
-                \node[opacity=0.2,block] (jump) at (5,5.5) {Jump unit};
-                \node[opacity=0.2,empty] (splitspace) at (-3,0) {};
-                \node[opacity=0.2,block] (split) at (-4,0) {Splitter};
-                \node[opacity=0.2,block] (if) at (-7,0) {Instruction Memory};
+                \node[opacity=0.2, block] (reg) at (0,0) {Register file};
+                \node[opacity=0.2, control] (cont) at (-1,4.5) {Control unit};
+                \node[opacity=0.2, block] (jump) at (5,6.5) {Jump unit};
+                \node[opacity=0.2, empty] (splitspace) at (-3,0) {};
+                \node[opacity=0.2, block] (split) at (-4,0) {Splitter};
+                \node[opacity=0.2, block] (if) at (-7,0) {Instruction Memory};
                 \node[block] (sign) at (-1,-3) {Sign extend};
-                \node[opacity=0.2,block] (alu) at (4,0) {ALU};
-                \node[opacity=0.2,block] (alucont) at (4,-4) {ALU control};
-                \node[opacity=0.2,block] (mem) at (8.2,0) {Memory};
-                \node[opacity=0.2,block] (jal) at (6,-0.22) {JAL};
-                \node[opacity=0.2,mux] (memread) at (10,0) {|};
-                \node[opacity=0.2,mux] (shmt) at (2,1) {|};
-                \node[opacity=0.2,mux] (imm) at (3, -0.25) {|};
-                \node[opacity=0.2,mux] (regdst) at (-2,-1) {|};
-                \node[opacity=0.2,block] (pc) at (-8, 2) {PC};
-                \node[opacity=0.2,block] (writebuf) at (6, -2) {Write buffer};
+                \node[opacity=0.2, block] (alu) at (4,0) {ALU};
+                \node[opacity=0.2, block] (alucont) at (4,-4) {ALU control};
+                \node[opacity=0.2, block] (mem) at (8.2,0) {Memory};
+                \node[opacity=0.2, block] (jal) at (6,-0.22) {JAL};
+                \node[opacity=0.2, mux] (memread) at (10,0) {|};
+                \node[opacity=0.2, mux] (shmt) at (2,1.25) {|};
+                \node[opacity=0.2, mux] (imm) at (3, -0.25) {|};
+                \node[opacity=0.2, mux] (regdst) at (-2,-1) {|};
+                \node[opacity=0.2, block] (pc) at (-8, 2) {PC};
+                \node[opacity=0.2, block] (writebuf) at (6, -2) {Write buffer};
 
-                \path[opacity=0.2,draw, ->] (if) -- (split);
-                \path[opacity=0.2,draw, -] (split) -- (splitspace.center);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (sign);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (cont);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.160);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (jump.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (alucont.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (regdst.215);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (shmt.145);
-                \path[opacity=0.2,draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
-                \path[opacity=0.2,draw, ->] (alucont) -- (alu);
-                \path[opacity=0.2,draw, ->] (alucont) -| (12, 0) |- (jump);
-                \path[opacity=0.2,draw, ->] (reg.340) -| (2,-0.25) |- (imm.145);
-                \path[opacity=0.2,draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
-                \path[opacity=0.2,draw, thick, ->] (1.25, 0.5) |- (4, 2) -| (7,1) |- (mem.164);
-                \path[opacity=0.2,draw, thick, ->] (4,2) -| (jump.295);
-                \path[opacity=0.2,draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
-                \path[opacity=0.2,draw, dashed, ->] (alu.20) -| (jump);
-                \path[opacity=0.2,draw, ->] (alu.340) -- (jal);
-                \path[opacity=0.2,draw, ->] (jal) -- (mem.196);
-                \path[opacity=0.2,draw, ->] (imm) -- (alu.202);
-                \path[opacity=0.2,draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |- (memread.215);
-                \path[opacity=0.2,draw, ->] (mem.10) -- (memread.145);
-                \path[opacity=0.2,draw, ->] (sign) -| (2.5, -1) |- (imm.215);
-                \path[opacity=0.2,draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
-                \path[opacity=0.2,draw, ->] (pc) -| (if);
-                \path[opacity=0.2,draw, ->] (pc) -| (-4, 4) |- (jump);
-                \path[opacity=0.2,draw, ->] (jump.160) -| (pc);
-                \path[opacity=0.2,draw, ->] (jal) -- (writebuf);
-                \path[opacity=0.2,draw, ->] (memread) -| (11, -1) |- (writebuf.15);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf.170) -| (reg.300);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf) -| (reg);
-                \path[opacity=0.2,draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
+                \path[opacity=0.2, draw, ->] (if) -- (split);
+                \path[opacity=0.2, draw, -] (split) -- (splitspace.center);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (sign);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (cont);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.160);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (jump.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (2,-5.5) -| (alucont.290);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (regdst.215);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (shmt.145);
+                \path[opacity=0.2, draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (12.5, 0) |- (jump);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (shmt);
+                \path[opacity=0.2, draw, thick, ->] (reg.340) -| (2.25,-0.25) |- (imm.145);
+                \path[opacity=0.2, draw, thick, ->] (2.25,-0.25) |- (3,0.75) -- (7,0.75) |-
+                (mem.164);
+                \path[opacity=0.2, draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
+                \path[opacity=0.2, draw, thick, -] (1.25,0.5) |- (4,2);
+                \path[opacity=0.2, draw, thick, ->] (4,2) -| (jump.295);
+                \path[opacity=0.2, draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
+                \path[opacity=0.2, draw, ->, dashed, color=blue] (alu.20) -| (jump);
+                \path[opacity=0.2, draw, ->] (alu.340) -- (jal);
+                \path[opacity=0.2, draw, ->] (jal) -- (mem.196);
+                \path[opacity=0.2, draw, ->] (imm) -- (alu.202);
+                \path[opacity=0.2, draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |-
+                (memread.215);
+                \path[opacity=0.2, draw, ->] (mem.10) -- (memread.145);
+                \path[opacity=0.2, draw, ->] (sign) -| (2.5, -1) |- (imm.215);
+                \path[opacity=0.2, draw, ->] (2.5,-3) -| (12, 0) |- (jump.340);
+                \path[opacity=0.2, draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
+                \path[opacity=0.2, draw, ->] (pc) -| (if);
+                \path[opacity=0.2, draw, ->] (pc) -| (-4, 4) |- (jump);
+                \path[opacity=0.2, draw, ->] (jump.160) -| (pc);
+                \path[opacity=0.2, draw, ->] (jal) -- (writebuf);
+                \path[opacity=0.2, draw, ->] (memread) -| (11, -1) |- (writebuf.15);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf.170) -| (reg.300);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf) -| (reg);
+                \path[opacity=0.2, draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
 
-                \path[opacity=0.2,draw, ->, color=blue] (cont.55) -| (jump.220);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.45) -| (jump.230);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.35) -| (jump.245);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.25) -| (11.5,0) |-(writebuf.345);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.15) -| (memread);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.5) -| (mem.55);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.355) -| (mem.125);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.345) -| (jal);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.335) -| (imm);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.325) -| (shmt);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.315) -| (1.5, 0.5) |- (alucont.160);
-                %\path[opacity=0.2,draw, ->, color=blue] (cont.305) -- (reg.110);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.250) -- (sign.128);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.240) -| (regdst);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -- (alu);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.55) -| (jump.220);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.45) -| (jump.230);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.35) -| (jump.245);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.25) -| (11.5,0) |-
+                (writebuf.345);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.15) -| (memread);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.5) -| (mem.55);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.355) -| (mem.125);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.345) -| (jal);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.335) -| (imm);
+                %\path[draw, ->, color=blue] (cont.325) -| (shmt);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.325) -| (1.5, -4) |-
+                (2, -5) -| (alucont.250);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.250) -- (sign.128);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.240) -| (regdst);
 
-                \node[opacity=0.2,block] (clock) at (-7, -5) {Clock};
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -- (if);
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -| (writebuf);
+                \node[opacity=0.2, block] (clock) at (-7, -5.25) {Clock};
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (-9.5,0) |- (pc);
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (writebuf);
             \end{tikzpicture}
         }
     \end{figure}
@@ -1183,79 +1227,85 @@
 \begin{frame}
     \begin{figure}
         \centering
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{tikzpicture}
-                \node[opacity=0.2,block] (reg) at (0,0) {Register file};
-                \node[opacity=0.2,control] (cont) at (-1,3.5) {Control unit};
-                \node[opacity=0.2,block] (jump) at (5,5.5) {Jump unit};
-                \node[opacity=0.2,empty] (splitspace) at (-3,0) {};
-                \node[opacity=0.2,block] (split) at (-4,0) {Splitter};
+                \node[opacity=0.2, block] (reg) at (0,0) {Register file};
+                \node[opacity=0.2, control] (cont) at (-1,4.5) {Control unit};
+                \node[opacity=0.2, block] (jump) at (5,6.5) {Jump unit};
+                \node[opacity=0.2, empty] (splitspace) at (-3,0) {};
+                \node[opacity=0.2, block] (split) at (-4,0) {Splitter};
                 \node[block] (if) at (-7,0) {Instruction Memory};
-                \node[opacity=0.2,block] (sign) at (-1,-3) {Sign extend};
-                \node[opacity=0.2,block] (alu) at (4,0) {ALU};
-                \node[opacity=0.2,block] (alucont) at (4,-4) {ALU control};
-                \node[opacity=0.2,block] (mem) at (8.2,0) {Memory};
-                \node[opacity=0.2,block] (jal) at (6,-0.22) {JAL};
-                \node[opacity=0.2,mux] (memread) at (10,0) {|};
-                \node[opacity=0.2,mux] (shmt) at (2,1) {|};
-                \node[opacity=0.2,mux] (imm) at (3, -0.25) {|};
-                \node[opacity=0.2,mux] (regdst) at (-2,-1) {|};
-                \node[opacity=0.2,block] (pc) at (-8, 2) {PC};
-                \node[opacity=0.2,block] (writebuf) at (6, -2) {Write buffer};
+                \node[opacity=0.2, block] (sign) at (-1,-3) {Sign extend};
+                \node[opacity=0.2, block] (alu) at (4,0) {ALU};
+                \node[opacity=0.2, block] (alucont) at (4,-4) {ALU control};
+                \node[opacity=0.2, block] (mem) at (8.2,0) {Memory};
+                \node[opacity=0.2, block] (jal) at (6,-0.22) {JAL};
+                \node[opacity=0.2, mux] (memread) at (10,0) {|};
+                \node[opacity=0.2, mux] (shmt) at (2,1.25) {|};
+                \node[opacity=0.2, mux] (imm) at (3, -0.25) {|};
+                \node[opacity=0.2, mux] (regdst) at (-2,-1) {|};
+                \node[opacity=0.2, block] (pc) at (-8, 2) {PC};
+                \node[opacity=0.2, block] (writebuf) at (6, -2) {Write buffer};
 
-                \path[opacity=0.2,draw, ->] (if) -- (split);
-                \path[opacity=0.2,draw, -] (split) -- (splitspace.center);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (sign);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (cont);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.160);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (jump.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (alucont.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (regdst.215);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (shmt.145);
-                \path[opacity=0.2,draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
-                \path[opacity=0.2,draw, ->] (alucont) -- (alu);
-                \path[opacity=0.2,draw, ->] (alucont) -| (12, 0) |- (jump);
-                \path[opacity=0.2,draw, ->] (reg.340) -| (2,-0.25) |- (imm.145);
-                \path[opacity=0.2,draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
-                \path[opacity=0.2,draw, thick, ->] (1.25, 0.5) |- (4, 2) -| (7,1) |- (mem.164);
-                \path[opacity=0.2,draw, thick, ->] (4,2) -| (jump.295);
-                \path[opacity=0.2,draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
-                \path[opacity=0.2,draw, dashed, ->] (alu.20) -| (jump);
-                \path[opacity=0.2,draw, ->] (alu.340) -- (jal);
-                \path[opacity=0.2,draw, ->] (jal) -- (mem.196);
-                \path[opacity=0.2,draw, ->] (imm) -- (alu.202);
-                \path[opacity=0.2,draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |- (memread.215);
-                \path[opacity=0.2,draw, ->] (mem.10) -- (memread.145);
-                \path[opacity=0.2,draw, ->] (sign) -| (2.5, -1) |- (imm.215);
-                \path[opacity=0.2,draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
-                \path[opacity=0.2,draw, ->] (pc) -| (if);
-                \path[opacity=0.2,draw, ->] (pc) -| (-4, 4) |- (jump);
-                \path[opacity=0.2,draw, ->] (jump.160) -| (pc);
-                \path[opacity=0.2,draw, ->] (jal) -- (writebuf);
-                \path[opacity=0.2,draw, ->] (memread) -| (11, -1) |- (writebuf.15);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf.170) -| (reg.300);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf) -| (reg);
-                \path[opacity=0.2,draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
+                \path[opacity=0.2, draw, ->] (if) -- (split);
+                \path[opacity=0.2, draw, -] (split) -- (splitspace.center);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (sign);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (cont);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.160);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (jump.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (2,-5.5) -| (alucont.290);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (regdst.215);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (shmt.145);
+                \path[opacity=0.2, draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (12.5, 0) |- (jump);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (shmt);
+                \path[opacity=0.2, draw, thick, ->] (reg.340) -| (2.25,-0.25) |- (imm.145);
+                \path[opacity=0.2, draw, thick, ->] (2.25,-0.25) |- (3,0.75) -- (7,0.75) |-
+                (mem.164);
+                \path[opacity=0.2, draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
+                \path[opacity=0.2, draw, thick, -] (1.25,0.5) |- (4,2);
+                \path[opacity=0.2, draw, thick, ->] (4,2) -| (jump.295);
+                \path[opacity=0.2, draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
+                \path[opacity=0.2, draw, ->, dashed, color=blue] (alu.20) -| (jump);
+                \path[opacity=0.2, draw, ->] (alu.340) -- (jal);
+                \path[opacity=0.2, draw, ->] (jal) -- (mem.196);
+                \path[opacity=0.2, draw, ->] (imm) -- (alu.202);
+                \path[opacity=0.2, draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |-
+                (memread.215);
+                \path[opacity=0.2, draw, ->] (mem.10) -- (memread.145);
+                \path[opacity=0.2, draw, ->] (sign) -| (2.5, -1) |- (imm.215);
+                \path[opacity=0.2, draw, ->] (2.5,-3) -| (12, 0) |- (jump.340);
+                \path[opacity=0.2, draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
+                \path[opacity=0.2, draw, ->] (pc) -| (if);
+                \path[opacity=0.2, draw, ->] (pc) -| (-4, 4) |- (jump);
+                \path[opacity=0.2, draw, ->] (jump.160) -| (pc);
+                \path[opacity=0.2, draw, ->] (jal) -- (writebuf);
+                \path[opacity=0.2, draw, ->] (memread) -| (11, -1) |- (writebuf.15);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf.170) -| (reg.300);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf) -| (reg);
+                \path[opacity=0.2, draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
 
-                \path[opacity=0.2,draw, ->, color=blue] (cont.55) -| (jump.220);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.45) -| (jump.230);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.35) -| (jump.245);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.25) -| (11.5,0) |-(writebuf.345);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.15) -| (memread);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.5) -| (mem.55);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.355) -| (mem.125);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.345) -| (jal);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.335) -| (imm);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.325) -| (shmt);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.315) -| (1.5, 0.5) |- (alucont.160);
-                %\path[opacity=0.2,draw, ->, color=blue] (cont.305) -- (reg.110);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.250) -- (sign.128);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.240) -| (regdst);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -- (alu);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.55) -| (jump.220);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.45) -| (jump.230);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.35) -| (jump.245);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.25) -| (11.5,0) |-
+                (writebuf.345);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.15) -| (memread);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.5) -| (mem.55);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.355) -| (mem.125);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.345) -| (jal);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.335) -| (imm);
+                %\path[draw, ->, color=blue] (cont.325) -| (shmt);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.325) -| (1.5, -4) |-
+                (2, -5) -| (alucont.250);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.250) -- (sign.128);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.240) -| (regdst);
 
-                \node[opacity=0.2,block] (clock) at (-7, -5) {Clock};
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -- (if);
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -| (writebuf);
+                \node[opacity=0.2, block] (clock) at (-7, -5.25) {Clock};
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (-9.5,0) |- (pc);
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (writebuf);
             \end{tikzpicture}
         }
     \end{figure}
@@ -1309,79 +1359,85 @@
 \begin{frame}
     \begin{figure}
         \centering
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{tikzpicture}
-                \node[opacity=0.2,block] (reg) at (0,0) {Register file};
-                \node[opacity=0.2,control] (cont) at (-1,3.5) {Control unit};
-                \node[opacity=0.2,block] (jump) at (5,5.5) {Jump unit};
-                \node[opacity=0.2,empty] (splitspace) at (-3,0) {};
-                \node[opacity=0.2,block] (split) at (-4,0) {Splitter};
-                \node[opacity=0.2,block] (if) at (-7,0) {Instruction Memory};
-                \node[opacity=0.2,block] (sign) at (-1,-3) {Sign extend};
-                \node[opacity=0.2,block] (alu) at (4,0) {ALU};
-                \node[opacity=0.2,block] (alucont) at (4,-4) {ALU control};
+                \node[opacity=0.2, block] (reg) at (0,0) {Register file};
+                \node[opacity=0.2, control] (cont) at (-1,4.5) {Control unit};
+                \node[opacity=0.2, block] (jump) at (5,6.5) {Jump unit};
+                \node[opacity=0.2, empty] (splitspace) at (-3,0) {};
+                \node[opacity=0.2, block] (split) at (-4,0) {Splitter};
+                \node[opacity=0.2, block] (if) at (-7,0) {Instruction Memory};
+                \node[opacity=0.2, block] (sign) at (-1,-3) {Sign extend};
+                \node[opacity=0.2, block] (alu) at (4,0) {ALU};
+                \node[opacity=0.2, block] (alucont) at (4,-4) {ALU control};
                 \node[block] (mem) at (8.2,0) {Memory};
-                \node[opacity=0.2,block] (jal) at (6,-0.22) {JAL};
-                \node[opacity=0.2,mux] (memread) at (10,0) {|};
-                \node[opacity=0.2,mux] (shmt) at (2,1) {|};
-                \node[opacity=0.2,mux] (imm) at (3, -0.25) {|};
-                \node[opacity=0.2,mux] (regdst) at (-2,-1) {|};
-                \node[opacity=0.2,block] (pc) at (-8, 2) {PC};
-                \node[opacity=0.2,block] (writebuf) at (6, -2) {Write buffer};
+                \node[opacity=0.2, block] (jal) at (6,-0.22) {JAL};
+                \node[opacity=0.2, mux] (memread) at (10,0) {|};
+                \node[opacity=0.2, mux] (shmt) at (2,1.25) {|};
+                \node[opacity=0.2, mux] (imm) at (3, -0.25) {|};
+                \node[opacity=0.2, mux] (regdst) at (-2,-1) {|};
+                \node[opacity=0.2, block] (pc) at (-8, 2) {PC};
+                \node[opacity=0.2, block] (writebuf) at (6, -2) {Write buffer};
 
-                \path[opacity=0.2,draw, ->] (if) -- (split);
-                \path[opacity=0.2,draw, -] (split) -- (splitspace.center);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (sign);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (cont);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.160);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (jump.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (alucont.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (regdst.215);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (shmt.145);
-                \path[opacity=0.2,draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
-                \path[opacity=0.2,draw, ->] (alucont) -- (alu);
-                \path[opacity=0.2,draw, ->] (alucont) -| (12, 0) |- (jump);
-                \path[opacity=0.2,draw, ->] (reg.340) -| (2,-0.25) |- (imm.145);
-                \path[opacity=0.2,draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
-                \path[opacity=0.2,draw, thick, ->] (1.25, 0.5) |- (4, 2) -| (7,1) |- (mem.164);
-                \path[opacity=0.2,draw, thick, ->] (4,2) -| (jump.295);
-                \path[opacity=0.2,draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
-                \path[opacity=0.2,draw, dashed, ->] (alu.20) -| (jump);
-                \path[opacity=0.2,draw, ->] (alu.340) -- (jal);
-                \path[opacity=0.2,draw, ->] (jal) -- (mem.196);
-                \path[opacity=0.2,draw, ->] (imm) -- (alu.202);
-                \path[opacity=0.2,draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |- (memread.215);
-                \path[opacity=0.2,draw, ->] (mem.10) -- (memread.145);
-                \path[opacity=0.2,draw, ->] (sign) -| (2.5, -1) |- (imm.215);
-                \path[opacity=0.2,draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
-                \path[opacity=0.2,draw, ->] (pc) -| (if);
-                \path[opacity=0.2,draw, ->] (pc) -| (-4, 4) |- (jump);
-                \path[opacity=0.2,draw, ->] (jump.160) -| (pc);
-                \path[opacity=0.2,draw, ->] (jal) -- (writebuf);
-                \path[opacity=0.2,draw, ->] (memread) -| (11, -1) |- (writebuf.15);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf.170) -| (reg.300);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf) -| (reg);
-                \path[opacity=0.2,draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
+                \path[opacity=0.2, draw, ->] (if) -- (split);
+                \path[opacity=0.2, draw, -] (split) -- (splitspace.center);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (sign);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (cont);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.160);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (jump.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (2,-5.5) -| (alucont.290);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (regdst.215);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (shmt.145);
+                \path[opacity=0.2, draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (12.5, 0) |- (jump);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (shmt);
+                \path[opacity=0.2, draw, thick, ->] (reg.340) -| (2.25,-0.25) |- (imm.145);
+                \path[opacity=0.2, draw, thick, ->] (2.25,-0.25) |- (3,0.75) -- (7,0.75) |-
+                (mem.164);
+                \path[opacity=0.2, draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
+                \path[opacity=0.2, draw, thick, -] (1.25,0.5) |- (4,2);
+                \path[opacity=0.2, draw, thick, ->] (4,2) -| (jump.295);
+                \path[opacity=0.2, draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
+                \path[opacity=0.2, draw, ->, dashed, color=blue] (alu.20) -| (jump);
+                \path[opacity=0.2, draw, ->] (alu.340) -- (jal);
+                \path[opacity=0.2, draw, ->] (jal) -- (mem.196);
+                \path[opacity=0.2, draw, ->] (imm) -- (alu.202);
+                \path[opacity=0.2, draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |-
+                (memread.215);
+                \path[opacity=0.2, draw, ->] (mem.10) -- (memread.145);
+                \path[opacity=0.2, draw, ->] (sign) -| (2.5, -1) |- (imm.215);
+                \path[opacity=0.2, draw, ->] (2.5,-3) -| (12, 0) |- (jump.340);
+                \path[opacity=0.2, draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
+                \path[opacity=0.2, draw, ->] (pc) -| (if);
+                \path[opacity=0.2, draw, ->] (pc) -| (-4, 4) |- (jump);
+                \path[opacity=0.2, draw, ->] (jump.160) -| (pc);
+                \path[opacity=0.2, draw, ->] (jal) -- (writebuf);
+                \path[opacity=0.2, draw, ->] (memread) -| (11, -1) |- (writebuf.15);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf.170) -| (reg.300);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf) -| (reg);
+                \path[opacity=0.2, draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
 
-                \path[opacity=0.2,draw, ->, color=blue] (cont.55) -| (jump.220);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.45) -| (jump.230);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.35) -| (jump.245);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.25) -| (11.5,0) |-(writebuf.345);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.15) -| (memread);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.5) -| (mem.55);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.355) -| (mem.125);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.345) -| (jal);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.335) -| (imm);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.325) -| (shmt);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.315) -| (1.5, 0.5) |- (alucont.160);
-                %\path[opacity=0.2,draw, ->, color=blue] (cont.305) -- (reg.110);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.250) -- (sign.128);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.240) -| (regdst);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -- (alu);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.55) -| (jump.220);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.45) -| (jump.230);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.35) -| (jump.245);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.25) -| (11.5,0) |-
+                (writebuf.345);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.15) -| (memread);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.5) -| (mem.55);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.355) -| (mem.125);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.345) -| (jal);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.335) -| (imm);
+                %\path[draw, ->, color=blue] (cont.325) -| (shmt);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.325) -| (1.5, -4) |-
+                (2, -5) -| (alucont.250);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.250) -- (sign.128);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.240) -| (regdst);
 
-                \node[opacity=0.2,block] (clock) at (-7, -5) {Clock};
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -- (if);
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -| (writebuf);
+                \node[opacity=0.2, block] (clock) at (-7, -5.25) {Clock};
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (-9.5,0) |- (pc);
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (writebuf);
             \end{tikzpicture}
         }
     \end{figure}
@@ -1437,83 +1493,233 @@
     The Memory is tested in the same manner as the Register File.
 \end{frame}
 
+\section{Jump Unit}
+\begin{frame}
+    \begin{figure}
+        \centering
+        \scalebox{0.45}{
+            \begin{tikzpicture}
+                \node[opacity=0.2, block] (reg) at (0,0) {Register file};
+                \node[opacity=0.2, control] (cont) at (-1,4.5) {Control unit};
+                \node[block] (jump) at (5,6.5) {Jump unit};
+                \node[opacity=0.2, empty] (splitspace) at (-3,0) {};
+                \node[opacity=0.2, block] (split) at (-4,0) {Splitter};
+                \node[opacity=0.2, block] (if) at (-7,0) {Instruction Memory};
+                \node[opacity=0.2, block] (sign) at (-1,-3) {Sign extend};
+                \node[opacity=0.2, block] (alu) at (4,0) {ALU};
+                \node[opacity=0.2, block] (alucont) at (4,-4) {ALU control};
+                \node[opacity=0.2, block] (mem) at (8.2,0) {Memory};
+                \node[opacity=0.2, block] (jal) at (6,-0.22) {JAL};
+                \node[opacity=0.2, mux] (memread) at (10,0) {|};
+                \node[opacity=0.2, mux] (shmt) at (2,1.25) {|};
+                \node[opacity=0.2, mux] (imm) at (3, -0.25) {|};
+                \node[opacity=0.2, mux] (regdst) at (-2,-1) {|};
+                \node[opacity=0.2, block] (pc) at (-8, 2) {PC};
+                \node[opacity=0.2, block] (writebuf) at (6, -2) {Write buffer};
+
+                \path[opacity=0.2, draw, ->] (if) -- (split);
+                \path[opacity=0.2, draw, -] (split) -- (splitspace.center);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (sign);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (cont);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.160);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (jump.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (2,-5.5) -| (alucont.290);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (regdst.215);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (shmt.145);
+                \path[opacity=0.2, draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (12.5, 0) |- (jump);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (shmt);
+                \path[opacity=0.2, draw, thick, ->] (reg.340) -| (2.25,-0.25) |- (imm.145);
+                \path[opacity=0.2, draw, thick, ->] (2.25,-0.25) |- (3,0.75) -- (7,0.75) |-
+                (mem.164);
+                \path[opacity=0.2, draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
+                \path[opacity=0.2, draw, thick, -] (1.25,0.5) |- (4,2);
+                \path[opacity=0.2, draw, thick, ->] (4,2) -| (jump.295);
+                \path[opacity=0.2, draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
+                \path[opacity=0.2, draw, ->, dashed, color=blue] (alu.20) -| (jump);
+                \path[opacity=0.2, draw, ->] (alu.340) -- (jal);
+                \path[opacity=0.2, draw, ->] (jal) -- (mem.196);
+                \path[opacity=0.2, draw, ->] (imm) -- (alu.202);
+                \path[opacity=0.2, draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |-
+                (memread.215);
+                \path[opacity=0.2, draw, ->] (mem.10) -- (memread.145);
+                \path[opacity=0.2, draw, ->] (sign) -| (2.5, -1) |- (imm.215);
+                \path[opacity=0.2, draw, ->] (2.5,-3) -| (12, 0) |- (jump.340);
+                \path[opacity=0.2, draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
+                \path[opacity=0.2, draw, ->] (pc) -| (if);
+                \path[opacity=0.2, draw, ->] (pc) -| (-4, 4) |- (jump);
+                \path[opacity=0.2, draw, ->] (jump.160) -| (pc);
+                \path[opacity=0.2, draw, ->] (jal) -- (writebuf);
+                \path[opacity=0.2, draw, ->] (memread) -| (11, -1) |- (writebuf.15);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf.170) -| (reg.300);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf) -| (reg);
+                \path[opacity=0.2, draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
+
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -- (alu);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.55) -| (jump.220);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.45) -| (jump.230);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.35) -| (jump.245);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.25) -| (11.5,0) |-
+                (writebuf.345);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.15) -| (memread);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.5) -| (mem.55);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.355) -| (mem.125);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.345) -| (jal);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.335) -| (imm);
+                %\path[draw, ->, color=blue] (cont.325) -| (shmt);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.325) -| (1.5, -4) |-
+                (2, -5) -| (alucont.250);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.250) -- (sign.128);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.240) -| (regdst);
+
+                \node[opacity=0.2, block] (clock) at (-7, -5.25) {Clock};
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (-9.5,0) |- (pc);
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (writebuf);
+            \end{tikzpicture}
+        }
+    \end{figure}
+\end{frame}
+\subsection{Background}
+\begin{frame}
+    The Jump Unit is the one controlling which instructions to load next. It
+    takes four inputs:
+    \begin{itemize}
+        \item Sign extended value from the Sign Extend
+        \item Zero signal from the ALU
+        \item The \texttt{beq} signal
+        \item The PC
+    \end{itemize}
+    and produces one output:
+    \begin{itemize}
+        \item The new PC
+    \end{itemize}
+\end{frame}
+\begin{frame}
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}
+            \node[block] (and) at (0,0) {\texttt{AND}};
+            \node[block] (inc) at (-2,1) {+4};
+            \node[block] (add) at (2,1) {+};
+            \node[empty] (pc) at (-4,1) {PC};
+            \node[empty] (beq) at (-0.5,-1.5) {\texttt{beq}};
+            \node[empty] (zero) at (0.5,-1.5) {Zero};
+            \node[empty] (imm) at (4,1) {Immediate};
+            \node[empty] (out) at (-4,2) {New PC};
+            \node[mux] (mux) at (0,2) {|};
+
+            \path[draw, ->, color=blue] (beq.65) -- (and.245);
+            \path[draw, ->, color=blue] (zero.115) -- (and.295);
+            \path[draw, ->, color=blue] (and) -- (mux);
+            \path[draw, ->] (pc) -- (inc);
+            \path[draw, ->] (inc) -- (add);
+            \path[draw, ->] (imm) -- (add);
+            \path[draw, ->] (add.north) |- (mux.45);
+            \path[draw, ->] (1, 1) |- (mux.315);
+            \path[draw, ->] (mux) -- (out);
+
+            \draw (-2.8,-0.8) rectangle (2.8,2.8);
+        \end{tikzpicture}
+    \end{figure}
+\end{frame}
+\subsection{Implementation \& Testing}
+\begin{frame}
+    The Jump Unit is responsible for handling branching and jumping
+    instructions. In the initial single cycle MIPS processor, we are only
+    aiming at implementing the branching instruction \texttt{beq}.
+
+    \vspace{\baselineskip}
+    As shown in the previous figure, it can be done with two adders, one
+    \texttt{AND} gate, and a multiplexor.
+
+    \vspace{\baselineskip}
+    Testing is performed in the same manner as before.
+\end{frame}
+
 \section{Write Back}
 \begin{frame}
     \begin{figure}
         \centering
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{tikzpicture}
-                \node[opacity=0.2,block] (reg) at (0,0) {Register file};
-                \node[opacity=0.2,control] (cont) at (-1,3.5) {Control unit};
-                \node[opacity=0.2,block] (jump) at (5,5.5) {Jump unit};
-                \node[opacity=0.2,empty] (splitspace) at (-3,0) {};
-                \node[opacity=0.2,block] (split) at (-4,0) {Splitter};
-                \node[opacity=0.2,block] (if) at (-7,0) {Instruction Memory};
-                \node[opacity=0.2,block] (sign) at (-1,-3) {Sign extend};
-                \node[opacity=0.2,block] (alu) at (4,0) {ALU};
-                \node[opacity=0.2,block] (alucont) at (4,-4) {ALU control};
-                \node[opacity=0.2,block] (mem) at (8.2,0) {Memory};
-                \node[opacity=0.2,block] (jal) at (6,-0.22) {JAL};
-                \node[opacity=0.2,mux] (memread) at (10,0) {|};
-                \node[opacity=0.2,mux] (shmt) at (2,1) {|};
-                \node[opacity=0.2,mux] (imm) at (3, -0.25) {|};
-                \node[opacity=0.2,mux] (regdst) at (-2,-1) {|};
-                \node[opacity=0.2,block] (pc) at (-8, 2) {PC};
+                \node[opacity=0.2, block] (reg) at (0,0) {Register file};
+                \node[opacity=0.2, control] (cont) at (-1,4.5) {Control unit};
+                \node[opacity=0.2, block] (jump) at (5,6.5) {Jump unit};
+                \node[opacity=0.2, empty] (splitspace) at (-3,0) {};
+                \node[opacity=0.2, block] (split) at (-4,0) {Splitter};
+                \node[opacity=0.2, block] (if) at (-7,0) {Instruction Memory};
+                \node[opacity=0.2, block] (sign) at (-1,-3) {Sign extend};
+                \node[opacity=0.2, block] (alu) at (4,0) {ALU};
+                \node[opacity=0.2, block] (alucont) at (4,-4) {ALU control};
+                \node[opacity=0.2, block] (mem) at (8.2,0) {Memory};
+                \node[opacity=0.2, block] (jal) at (6,-0.22) {JAL};
+                \node[opacity=0.2, mux] (memread) at (10,0) {|};
+                \node[opacity=0.2, mux] (shmt) at (2,1.25) {|};
+                \node[opacity=0.2, mux] (imm) at (3, -0.25) {|};
+                \node[opacity=0.2, mux] (regdst) at (-2,-1) {|};
+                \node[opacity=0.2, block] (pc) at (-8, 2) {PC};
                 \node[block] (writebuf) at (6, -2) {Write buffer};
 
-                \path[opacity=0.2,draw, ->] (if) -- (split);
-                \path[opacity=0.2,draw, -] (split) -- (splitspace.center);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (sign);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (cont);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.160);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (reg.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (jump.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (alucont.200);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (regdst.215);
-                \path[opacity=0.2,draw, ->] (splitspace.center) |- (shmt.145);
-                \path[opacity=0.2,draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
-                \path[opacity=0.2,draw, ->] (alucont) -- (alu);
-                \path[opacity=0.2,draw, ->] (alucont) -| (12, 0) |- (jump);
-                \path[opacity=0.2,draw, ->] (reg.340) -| (2,-0.25) |- (imm.145);
-                \path[opacity=0.2,draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
-                \path[opacity=0.2,draw, thick, ->] (1.25, 0.5) |- (4, 2) -| (7,1) |- (mem.164);
-                \path[opacity=0.2,draw, thick, ->] (4,2) -| (jump.295);
-                \path[opacity=0.2,draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
-                \path[opacity=0.2,draw, dashed, ->] (alu.20) -| (jump);
-                \path[opacity=0.2,draw, ->] (alu.340) -- (jal);
-                \path[opacity=0.2,draw, ->] (jal) -- (mem.196);
-                \path[opacity=0.2,draw, ->] (imm) -- (alu.202);
-                \path[opacity=0.2,draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |- (memread.215);
-                \path[opacity=0.2,draw, ->] (mem.10) -- (memread.145);
-                \path[opacity=0.2,draw, ->] (sign) -| (2.5, -1) |- (imm.215);
-                \path[opacity=0.2,draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
-                \path[opacity=0.2,draw, ->] (pc) -| (if);
-                \path[opacity=0.2,draw, ->] (pc) -| (-4, 4) |- (jump);
-                \path[opacity=0.2,draw, ->] (jump.160) -| (pc);
-                \path[opacity=0.2,draw, ->] (jal) -- (writebuf);
-                \path[opacity=0.2,draw, ->] (memread) -| (11, -1) |- (writebuf.15);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf.170) -| (reg.300);
-                \path[opacity=0.2,draw, dashed, ->] (writebuf) -| (reg);
-                \path[opacity=0.2,draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
+                \path[opacity=0.2, draw, ->] (if) -- (split);
+                \path[opacity=0.2, draw, -] (split) -- (splitspace.center);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (sign);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (cont);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.160);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (reg.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (jump.200);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (2,-5.5) -| (alucont.290);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (regdst.215);
+                \path[opacity=0.2, draw, ->] (splitspace.center) |- (shmt.145);
+                \path[opacity=0.2, draw, ->] (reg.200) -| (-2.5, -0.5) |- (regdst.145);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (12.5, 0) |- (jump);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -| (shmt);
+                \path[opacity=0.2, draw, thick, ->] (reg.340) -| (2.25,-0.25) |- (imm.145);
+                \path[opacity=0.2, draw, thick, ->] (2.25,-0.25) |- (3,0.75) -- (7,0.75) |-
+                (mem.164);
+                \path[opacity=0.2, draw, thick, ->] (reg.20) -| (1.25,0.5) |- (shmt.215);
+                \path[opacity=0.2, draw, thick, -] (1.25,0.5) |- (4,2);
+                \path[opacity=0.2, draw, thick, ->] (4,2) -| (jump.295);
+                \path[opacity=0.2, draw, ->] (shmt) -| (2.5, 0.5) |- (alu.158);
+                \path[opacity=0.2, draw, ->, dashed, color=blue] (alu.20) -| (jump);
+                \path[opacity=0.2, draw, ->] (alu.340) -- (jal);
+                \path[opacity=0.2, draw, ->] (jal) -- (mem.196);
+                \path[opacity=0.2, draw, ->] (imm) -- (alu.202);
+                \path[opacity=0.2, draw, ->] (7, -0.22) |- (8, -1) -| (9.25,-0.5) |-
+                (memread.215);
+                \path[opacity=0.2, draw, ->] (mem.10) -- (memread.145);
+                \path[opacity=0.2, draw, ->] (sign) -| (2.5, -1) |- (imm.215);
+                \path[opacity=0.2, draw, ->] (2.5,-3) -| (12, 0) |- (jump.340);
+                \path[opacity=0.2, draw, thick, ->] (regdst) -| (5, -0.6) |- (jal.210);
+                \path[opacity=0.2, draw, ->] (pc) -| (if);
+                \path[opacity=0.2, draw, ->] (pc) -| (-4, 4) |- (jump);
+                \path[opacity=0.2, draw, ->] (jump.160) -| (pc);
+                \path[opacity=0.2, draw, ->] (jal) -- (writebuf);
+                \path[opacity=0.2, draw, ->] (memread) -| (11, -1) |- (writebuf.15);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf.170) -| (reg.300);
+                \path[opacity=0.2, draw, dashed, ->] (writebuf) -| (reg);
+                \path[opacity=0.2, draw, dashed, ->, color=blue] (writebuf.190) -| (reg.240);
 
-                \path[opacity=0.2,draw, ->, color=blue] (cont.55) -| (jump.220);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.45) -| (jump.230);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.35) -| (jump.245);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.25) -| (11.5,0) |-(writebuf.345);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.15) -| (memread);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.5) -| (mem.55);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.355) -| (mem.125);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.345) -| (jal);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.335) -| (imm);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.325) -| (shmt);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.315) -| (1.5, 0.5) |- (alucont.160);
-                %\path[opacity=0.2,draw, ->, color=blue] (cont.305) -- (reg.110);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.250) -- (sign.128);
-                \path[opacity=0.2,draw, ->, color=blue] (cont.240) -| (regdst);
+                \path[opacity=0.2, draw, ->, color=blue] (alucont) -- (alu);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.55) -| (jump.220);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.45) -| (jump.230);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.35) -| (jump.245);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.25) -| (11.5,0) |-
+                (writebuf.345);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.15) -| (memread);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.5) -| (mem.55);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.355) -| (mem.125);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.345) -| (jal);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.335) -| (imm);
+                %\path[draw, ->, color=blue] (cont.325) -| (shmt);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.325) -| (1.5, -4) |-
+                (2, -5) -| (alucont.250);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.250) -- (sign.128);
+                \path[opacity=0.2, draw, ->, color=blue] (cont.240) -| (regdst);
 
-                \node[opacity=0.2,block] (clock) at (-7, -5) {Clock};
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -- (if);
-                \path[opacity=0.2,draw, ->, thick, color=green] (clock) -| (writebuf);
+                \node[opacity=0.2, block] (clock) at (-7, -5.25) {Clock};
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (-9.5,0) |- (pc);
+                \path[opacity=0.2, draw, ->, thick, color=green] (clock) -| (writebuf);
             \end{tikzpicture}
         }
     \end{figure}
