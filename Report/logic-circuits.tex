@@ -1,11 +1,21 @@
 In this section, we will be looking at some basic combinatorial circuits. We
-start by looking at some logic gates, which implement some basic boolean
-functions. Then we will combine these basic gates into more complex networks: A
-decoder, which expands an $n$-bit input into $2^n$ outputs. A half adder, which
-takes two binary inputs and computes the sum and the carry of the two. A full
-adder, which does the same operation as the half adder, but with an additional
-third binary input. Finally, an $n$-bit adder, by combining a chain of a half
-adder followed by $n-1$ full adders.
+use this as an entry point for hardware design, both due to the ARK
+course\cite{ref:diku} at DIKU, and due to the book\cite{ref:ark} recommending
+to read appendix C, which covers the basics of logic design, prior to reading
+chapter 4, which covers implementing a simple MIPS processor. We are only going
+to cover a subset of appendix C, as it should be sufficient as an introduction.
+
+We start by looking at some logic gates, which implement some basic boolean
+functions. Then we will combine these basic gates into more complex networks:
+\begin{itemize}
+    \item A decoder, which expands an $n$-bit input into $2^n$ outputs.
+    \item A half adder, which takes two binary inputs and computes the sum and
+        the carry of the two.
+    \item A full adder, which does the same operation as the half adder, but
+        with an additional third binary input.
+    \item a $n$-bit adder, by combining a chain of a half adder followed by
+        $n-1$ full adders.
+\end{itemize}
 
 For each of these combinatorial circuits, we go through the theory behind it,
 describe the procedure of translating the theory into an SME network and
@@ -24,7 +34,7 @@ logic gates:
     \item[\texttt{OR}] - outputs \texttt{1} if one or more of its inputs are
         \texttt{1}, otherwise it outputs \texttt{0}.
 
-    \item[\texttt{NOT}] -outputs the inverse of its input, i.e. \texttt{1}
+    \item[\texttt{NOT}] - outputs the inverse of its input, i.e. \texttt{1}
         becomes \texttt{0} and \texttt{0} becomes \texttt{1}.
 
     \item[\texttt{XOR}] - outputs \texttt{1} iff exactly one of its inputs are
@@ -59,29 +69,21 @@ for \texttt{NOT}, which only uses 1 bit) can be seen in Table
 \subsubsection*{Implementation}
 Implementing each of these four logic gates is straightforward: There is an
 input bus with two 1-bit values, a process for each of the gates, and an output
-bus with a 1-bit value for each of the logic gates. Each process takes the two
-bits from the input bus, computes their respective logical function and sends
-the result out on the output bus.
-% (See Figure \ref{fig:logic-gate}).
-%
-%\begin{figure}
-%    \centering
-%    \begin{tikzpicture}
-%        \coordinate(input);
-%        \node[block, right of=input] (A) {Logic gate};
-%        \path[->] (input) edge node [midway, above] {input} (A);
-%        \node[right of=A] (output) {};
-%        \path[->] (A) edge node [midway, above] {output} (output);
-%    \end{tikzpicture}
-%    \caption{The structure of a Logic gate process}
-%    \label{fig:logic-gate}
-%\end{figure}
+bus with a 1-bit value for each of the logic gates. We do not need additional
+input busses, as each process which uses the bus as input, receives its own
+copy of the input in each clock. Furthermore, we only need one output bus, as
+each process writes to its own bit within it. Each process takes the two bits
+from the input bus, computes their respective logical function and sends the
+result out onto its bit on the output bus.
+% TODO skulle være nået hertil!
+
 
 \subsubsection*{Testing}
 To test the four processes, we construct a process, which sets the bits on the
 input bus to all of the values in the truth table, and checks whether or not
-each process puts the expected value from the truth table on their output bus.
-How the processes are connected can be seen in Figure \ref{fig:logic-test}.
+each process puts the expected value from the truth table onto their bit on the
+output bus.  How the processes are connected can be seen in Figure
+\ref{fig:logic-test}.
 
 \begin{figure}
     \centering
