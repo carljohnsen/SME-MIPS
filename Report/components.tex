@@ -1,11 +1,68 @@
 In this section, we will be looking at the major components of the MIPS
-processor. For each component, we will go through the theory of the component,
-then we will look at translating theory into an SME implementation, and the
-verification of the implementations. The order in which the components are
-mentioned, is the order of implementation.
+processor. We look at the components before wiring them together into a
+processor, as it keeps each step more isolated and simple.
+
+For each component, we will go through the theory of the component, then we
+will look at translating theory into an SME implementation, and finally the
+verification of the implementations. When we are verifying the implementation,
+we should construct a tester process, just as with the basic logic circuits.
+The order in which the components are mentioned is derived from chapter 4.3 in
+the book\cite{ref:ark}, and should be the order of implementation.
 
 By the end of this section, we should have all of the required resources for
 building our single cycle MIPS processor using SME.
+
+\subsection{Instruction Memory}
+The first component that we need is a memory unit to hold the instructions of a
+program, and to supply instructions at a given address. We will also need a
+register holding the current address in the program called the Program Counter
+(PC). The memory unit has one input: the address from the PC, and one output:
+the read instruction. The PC has one input: the input address. The Instruction
+Memory, PC and their connections can be seen in Figure \ref{fig:inst}.
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \node[block] (inmem) at (0,0) {Instruction Memory};
+        \node[block] (pc) at (-2, 2) {PC};
+        \node[empty] (prog) at (1.5,2) {Program Counter};
+        \node[empty] (inst) at (4,0) {Instruction};
+        \node[empty] (addr) at (-4,2) {Address};
+
+        \path[draw, ->] (pc) -| (inmem);
+        \path[draw, ->] (inmem) -- (inst);
+        \path[draw, ->] (addr) -- (pc);
+    \end{tikzpicture}
+    \caption{The Instruction Memory}
+    \label{fig:inst}
+\end{figure}
+
+\subsubsection*{Implementation \& Testing}
+Both the PC and the Instruction Memory should be SME processes. We could have
+combined the two components into a single SME process, but we are trying to
+keep each process as simple as possible. The input bus for the PC, the Program
+Counter bus and the instruction bus, should all contain an \texttt{uint} value.
+
+The PC should have a single \texttt{uint} value holding the current address,
+and on each tick, it should output its stored value, and store the new input
+value.
+
+The Instruction Memory should have an \texttt{byte} array, as this will make
+indexing into the array simpler. Usually, the Instruction Memory and the Memory
+Unit share the same address space. However, for simplicity, we give each
+component its own memory. On each tick, the Instruction Memory should take the
+input address, read the \texttt{byte} at the given index and the following 3
+\texttt{byte}s, and finally pack all 4 bytes together into an \texttt{uint}.
+
+We could have had the memory as an \texttt{uint} array, but then we would have
+to divide the address by 4, since the addresses in the MIPS processor are word
+aligned. We could modify the processor to deal with addresses in an indexing
+manner, however this would make programs harder to translate, as the compiled
+programs can have absolute addresses.
+
+Testing the Instruction Memory is very trivial. The program should be hardcoded
+into the \texttt{byte} array in the memory. The tester process should then send
+values to the PC, and verify that the output on the instruction bus, matches
+the value at the given address.
 
 \subsection{Register file}
 The Register File is the component that holds values for the processor. It is
@@ -340,35 +397,6 @@ bus. C\# handles the sign extension for us.
 
 It is tested in the same manner as the previous components.
 
-\subsection{Instruction Memory}
-The Instruction Memory is the part of the processor, which holds the program.
-It has a chunk of memory, and for each clock, it outputs the value at the given
-address. It has one input, the program counter (PC), and one output, the read
-instruction. The Instruction Memory can be seen in Figure \ref{fig:inst}
-\begin{figure}
-    \centering
-    \begin{tikzpicture}
-        \node[block] (inmem) at (0,0) {Instruction Memory};
-        \node[empty] (pc) at (-2, 2) {PC};
-        \node[empty] (inst) at (4,0) {Instruction};
-
-        \path[draw, ->] (pc) -| (inmem);
-        \path[draw, ->] (inmem) -- (inst);
-    \end{tikzpicture}
-    \caption{The Instruction Memory}
-    \label{fig:inst}
-\end{figure}
-
-\subsubsection*{Implementation \& Testing}
-Upon receiving all of its inputs, the SME process should read the address from
-the PC bus, and output the value stored in the memory at the read
-address.
-
-Usually the memory should be a \texttt{byte} array. However, since we are
-working with C\#, we can just use a \texttt{int} array for simplicity, as we do
-not have to worry about word alignment.
-
-The Instruction Memory is tested in the same manner as the previous components.
 
 \subsection{Memory unit}
 The memory unit is the main memory. The CPU can either read or write to the
