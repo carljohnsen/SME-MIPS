@@ -159,6 +159,7 @@ stored at these addresses. It is also important to verify the behaviour of
 register zero.
 
 \subsection{ALU}
+\label{sec:alu}
 The ALU (Arithmetic Logic Unit) is the part of the processor, which makes the
 actual computation. It takes three inputs: InputA, InputB and an ALU Opcode
 indicating which computation to perform. It has two outputs: The result of the
@@ -222,9 +223,12 @@ from the ALUOp bus, and then it performs a \texttt{switch} on the ALU Opcode.
 For the instructions that it accepts, it takes the input from the two input
 busses, do the computation, and output the result on the Result bus. SME will
 handle the the actual computation, and as such we do not need to do anything
-but do the right computation in C\#. Finally, the ALU should set the flag on
-the Zero bus, depending on whether or not the result of the computation was 0.
-How the ALU opcode is encoded is described in Section \ref{sec:alu-control}.
+but do the right computation in C\#. Note: it is important to cast the
+\texttt{uint} input to \texttt{int}, if the operation is signed.
+
+Finally, the ALU should set the flag on the Zero bus, depending on whether or
+not the result of the computation was 0.  How the ALU opcode is encoded is
+described in Section \ref{sec:alu-control}.
 
 There are no special cases to consider when testing the ALU, we should just
 test whether or not it can compute the right result, based on the inputs.
