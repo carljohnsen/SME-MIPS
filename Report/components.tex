@@ -44,18 +44,20 @@ Counter bus and the instruction bus, should all contain an \texttt{uint} value.
 
 The PC should have a single \texttt{uint} value holding the current address,
 and on each tick, it should output its stored value, and store the new input
-value.
+value. It should also be clocked, as this is the starting point of every
+instruction.
 
 The Instruction Memory should have an \texttt{byte} array, as this will make
 indexing into the array simpler. Usually, the Instruction Memory and the Memory
 Unit share the same address space. However, for simplicity, we give each
 component its own memory. On each tick, the Instruction Memory should take the
-input address, read the \texttt{byte} at the given index and the following 3
-\texttt{byte}s, and finally pack all 4 bytes together into an \texttt{uint}.
+input address, read the byte at the given index and the following 3 bytes, and
+finally pack all 4 bytes together into an \texttt{uint}, and place it on the
+instruction bus.
 
 We could have had the memory as an \texttt{uint} array, but then we would have
-to divide the address by 4, since the addresses in the MIPS processor are word
-aligned. We could modify the processor to deal with addresses in an indexing
+to divide the address by 4, since the addresses in the MIPS processor are byte
+addressed. We could modify the processor to deal with addresses in an indexing
 manner, however this would make programs harder to translate, as the compiled
 programs can have absolute addresses.
 
@@ -65,27 +67,30 @@ values to the PC, and verify that the output on the instruction bus, matches
 the value at the given address.
 
 \subsection{Register file}
-The Register File is the component that holds values for the processor. It is
-the first step in a memory hierarchy, and is thus the fastest memory available.
-There are 32 registers in a 32-bit MIPS processor. The registers are divided
-into groups based on their usage. This does not matter from a hardware
-perspective, except for register 0, which is immutable and always 0.
+The MIPS processor has 32 general-purpose 32-bit registers, which is stored in
+a structure called the Register File. Each of the registers can be read from or
+written to, except for register 0, which is immutable and always 0. It is the
+first step in a memory hierarchy, and is thus the fastest memory available.
+The registers are divided into groups based on their usage, but this does not
+matter from a hardware perspective.
 
-The Register File has 5 inputs: Read Address A, Read Address B, Write Enabled,
-Write Address and Write Data. It also has two outputs: Output A and Output B.
-It has two stages: reading and writing. In the reading stage, it takes the
-value in the register at the address of Read Address A, and outputs it on
-Output B, and vice versa for Read Address B and Output B. In the writing stage,
-if the Write Enabled flag is set, it takes the value from the Write Data, and
-stores it in the register with the address in Write Address.
+The Register File has 5 inputs: Read Address A, Read Address B, Write Enabled
+(\texttt{RegWrite}), Write Address and Write Data. The Register File has two
+outputs: Output A and Output B.  There are two stages of the Register File:
+reading and writing. In the reading stage, it takes the value in the register
+at the address of Read Address A, and outputs it on Output A, and vice versa
+for Read Address B and Output B. In the writing stage, if the Write Enabled
+flag is set, it takes the value from the Write Data bus, and stores it in the
+register with the address given in the Write Address bus.
 
 We need to be careful of the order in which we read and write from the Register
 File. We need to make sure that when an instruction reads from the Register
 File, it always gets the latest data, i.e. if an instruction reads from the
 same register as a previous instruction writes to, it should get the newly
 written value. This is easy to fix in the single cycle processor, as we just
-need to write before reading. The Register File and its inputs and outputs can
-be seen in Figure \ref{fig:register}.
+need to write before reading. We cannot do it in the reverse order, as the
+Register File might then output old values. The Register File and its inputs
+and outputs can be seen in Figure \ref{fig:register}.
 
 \begin{figure}
     \centering
@@ -126,18 +131,24 @@ be seen in Figure \ref{fig:register}.
     \label{fig:register}
 \end{figure}
 
-\subsubsection*{Implementation}
-The implementation of the register file in SME is done by the use of an
-\texttt{int} array. We construct a process, that when all of its inputs are
-ready, it takes the write input, and stores it in the array with the given
-index, if it is greater than 0, and if the \texttt{RegWrite} flag has been set.
-In case we do get a 0, we just ignore the request, as this is usually the
-pattern of a \texttt{nop} instruction.
+\subsubsection*{Implementation \& Testing}
+The Register File should be an SME process. The collection of registers should
+be an \texttt{uint} array of length 32. The address busses should all contain
+an \texttt{byte} value, as the number of addressable registers never exceed
+$2^8=256$. The output busses and the Write Data bus should all contain an
+\texttt{uint} value. Finally, the \texttt{RegWrite} bus should contain a
+\texttt{bool}.
 
-After the process have written to the register, it processes the read
-addresses, and outputs the values stored in the array at the given addresses.
+On each clock tick, the register file should check if the
+\texttt{RegWrite} flag is set, in which case it should take the value from the
+Write Data bus, and store in the register at the address from the Write Address
+bus. Then it should take the value in the register at the address from the Read
+Address A bus, and output onto the Output A bus, and analougously for the Read
+Address B bus and the Output B bus.
 
-\subsubsection*{Testing}
+It should be noted that if the write address is 0, then the write should be
+ignored, as register 0 is immutable.
+
 Testing the register file is very trivial. We start by sending some values
 on the write data bus, along with some addresses and the \texttt{RegWrite}
 flag set.
@@ -180,8 +191,8 @@ result, and a flag indicating whether the result was 0.
         \path[draw, -] (inb.east) -| (spacing.205);
         \path[draw, ->] (spacing.205) -- (alu.205);
         \path[draw, color=blue, ->] (aluop) -- (alu);
-        \path[draw, -] (alu.25) -| (align2.east);
-        \path[draw, ->] (align2.east) -- (result);
+        \path[draw, color=blue, -] (alu.25) -| (align2.east);
+        \path[draw, color=blue, ->] (align2.east) -- (result);
         \path[draw, -] (alu.335) -| (align3.east);
         \path[draw, ->] (align3.east) -- (zero);
     \end{tikzpicture}
@@ -189,148 +200,132 @@ result, and a flag indicating whether the result was 0.
     \label{fig:alu}
 \end{figure}
 
-\subsubsection*{Implementation}
+\subsubsection*{Implementation \& Testing}
 To implement the ALU, we start by making an \tt{enum}, so that the code becomes
 more human readable. Each entry in the \tt{enum} corresponds to a computation
-that the ALU should perform. We start by implementing the same instructions as
-the book proposes:  % TODO ref!
-\texttt{add}, \texttt{sub}, \texttt{and}, \texttt{or}, \texttt{slt},
-\texttt{sw}, \texttt{lw} and \texttt{beq}.  To perform these instructions, the
-ALU should be able to perform addition, subtraction, logical \tt{AND}, logical
-\tt{OR} and the comparison less than.
+that the ALU should perform. We could have followed the ALU Opcode given in the
+book\cite{ref:ark}, however it states that its encoding of the ALU Opcode is
+generated using a CAD tool, and as such we will generate it ourselves too.
 
-Constructing the ALU process in SME is straightforward, it reads from the ALUOp
-bus, and then it performs a \texttt{switch} on the ALU Opcode. For the
-instructions that it accepts, it takes the input from the two input busses, do
-the computation, and output the result on the Result bus. Finally, the ALU
-should set the flag on the zero bus, whether or not the computation was 0. How
-the ALU opcode is encoded is described in Section \ref{sec:alu-control}.
+We start by implementing the same instructions as the book\cite{ref:ark}
+proposes in chapter 4.1: \texttt{add}, \texttt{sub}, \texttt{and}, \texttt{or},
+\texttt{slt}, \texttt{sw}, \texttt{lw} and \texttt{beq}. To perform these
+instructions, the ALU should be able to perform addition, subtraction, logical
+\tt{AND}, logical \tt{OR} and the comparison less than.
 
-\subsubsection*{Testing}
-Testing the ALU is like the Register File, very trivial. Construct a tester
-process, which sends values on the Input A, Input B and ALU Opcode busses,
-reads the values from the Result and Zero busses, and verify that the values
-are as expected.
+The two input busses and the Result bus should all contain an \texttt{uint}
+value. The ALU Opcode bus should contain a \texttt{byte} value. Finally, the
+Zero bus should contain a \texttt{bool} value.
 
-\subsection{Control Unit}
-\label{sec:control-unit}
-The control unit is part of the decoding step. It takes the opcode of the
-instruction, and based on the opcode, it sets control flags used throughout the
-processor. It sets the following control flags:
-\begin{description}
-    \item[RegDst] Controls which part of the instruction that indicates which
-        B register to read from.
+Constructing the ALU process in SME is straightforward, it reads the ALU Opcode
+from the ALUOp bus, and then it performs a \texttt{switch} on the ALU Opcode.
+For the instructions that it accepts, it takes the input from the two input
+busses, do the computation, and output the result on the Result bus. SME will
+handle the the actual computation, and as such we do not need to do anything
+but do the right computation in C\#. Finally, the ALU should set the flag on
+the Zero bus, depending on whether or not the result of the computation was 0.
+How the ALU opcode is encoded is described in Section \ref{sec:alu-control}.
 
-    \item[Branch] Controls whether or not the instruction is a branch
-        instruction.
+There are no special cases to consider when testing the ALU, we should just
+test whether or not it can compute the right result, based on the inputs.
 
-    \item[MemRead] Controls whether or not there should be read from memory.
+\subsection{Sign Extend}
+The Sign Extend is used for extracting the 16-bit values from the instruction,
+called the Immediate. It has one input: the lower 16 bits from the
+instruction, and one output: the 32-bit sign extended value. It takes its
+input, which is 16-bit, and converts it into a 32-bit value, extending the sign
+if present. The Sign Extend can be seen in Figure \ref{fig:sign}
 
-    \item[MemtoReg] Controls whether or not the value from memory should be
-        stored in the register file.
-
-    \item[ALUOp] Opcode indicating which operation should be performed in
-        the ALU. It is send to the ALU Control for further processing.
-
-    \item[MemWrite] Controls whether or not data should be written to memory.
-
-    \item[ALUSrc] Controls whether the B input for the ALU should be the
-        value read from the register file, or if it should be the value
-        extracted from the instruction.
-
-    \item[RegWrite] Controls whether or not data should be written to the
-        register file.
-\end{description}
-Each of the control flags goes to their respective part of the processor.
-We will return to this component, when we have to extend it to handle more
-instructions. The control unit can be seen in Figure \ref{fig:cont-unit}
 \begin{figure}
     \centering
     \begin{tikzpicture}
-        \node[control] (cont)   at (0,  0)   {Control Unit};
-        \node[empty] (opcode)   at (-3, 0)   {Opcode};
-        \node[empty] (branch)   at (4,  1.75) {\texttt{Branch}};
-        \node[empty] (regwrite) at (4,  1.25) {\texttt{RegWrite}};
-        \node[empty] (memtoreg) at (4,  0.75) {\texttt{MemToReg}};
-        \node[empty] (memwrite) at (4,  0.25) {\texttt{MemWrite}};
-        \node[empty] (memread)  at (4, -0.25) {\texttt{MemRead}};
-        \node[empty] (alusrc)   at (4, -0.75) {\texttt{ALUSrc}};
-        \node[empty] (aluop)    at (4, -1.25) {\texttt{ALUOp}};
-        \node[empty] (regdst)   at (4, -1.75) {\texttt{RegDst}};
+        \node[block] (sign) at (0,0) {Sign Extend};
+        \node[empty] (imm) at (-3,0) {Immediate};
+        \node[empty] (immout) at (4,0) {Sign extended immediate};
 
-        \path[draw, ->] (opcode) -- (cont);
-
-        \path[draw, ->, color=blue] (cont.35)  -| (2,1.5) |- (branch);
-        \path[draw, ->, color=blue] (cont.25)  -| (2.25,1) |- (regwrite);
-        \path[draw, ->, color=blue] (cont.15)  -| (2.5,0.5) |- (memtoreg);
-        \path[draw, ->, color=blue] (cont.5)   -| (2.75,0.125) |- (memwrite);
-        \path[draw, ->, color=blue] (cont.355) -| (2.75,-0.125) |- (memread);
-        \path[draw, ->, color=blue] (cont.345) -| (2.5,-0.5) |- (alusrc);
-        \path[draw, ->, color=blue] (cont.335) -| (2.25,-1) |- (aluop);
-        \path[draw, ->, color=blue] (cont.325) -| (2,-1.5) |- (regdst);
+        \path[draw, ->] (imm) -- (sign);
+        \path[draw, ->] (sign) -- (immout);
     \end{tikzpicture}
-    \caption{The Control Unit}
-    \label{fig:cont-unit}
+    \caption{The Sign Extend}
+    \label{fig:sign}
 \end{figure}
 
 \subsubsection*{Implementation \& Testing}
-The book describes the logic needed to implement this unit. However, it only
-describes the logic for the before mentioned instructions, and is therefore
-hard to extend. Therefore, we start by making an extendable Control Unit.
+To implement the Sign Extend, we construct an SME process. The input bus should
+contain a \texttt{short} value, and the output bus should contain an
+\texttt{uint} value. On each clock tick, the SME proces takes the 16-bit
+immediate, and outputs it on its 32-bit output bus. We could manually do the
+sign extending, but it is simple to let C\# handle the sign extension for us.
 
-As with the ALU, start by having an \texttt{enum} for both the opcode and the
-ALUOp. Then the process should \texttt{switch} on the opcode, and set the flags
-accordingly. This way, adding more instructions is just adding entries in the
-\texttt{enum}s, and adding cases to the \texttt{switch}, and then it is up to
-the VHDL generator to construct the logic.
+Testing the Sign Extend is straightforward: send values on the input bus, and
+verify that the same number is on the output bus.
 
-As with the Register File and the ALU, we test the Control Unit, by having a
-tester process, which sends input, and verifies the output values.
+\subsection{Memory unit}
+The Memory Unit is the main memory of the processor. It is the second step of
+the memory hierarchy, and is thus slower than the Register File, but can
+contain a lot more data. The processor can either read or write to the Memory
+Unit. The addresses for the memory are byte addresses and word aligned, i.e. in
+the 32-bit processor, the word size is 32 bit, and therefore the address should
+be dividable by 4.
 
-\subsection{ALU control}\label{sec:alu-control}
-The ALU control is used for generating the ALU Operation control code, which
-the ALU uses for selecting which operation to perform. It takes two inputs: the
-\texttt{ALUOp} code from the control unit, and the \texttt{funct} code from the
-instruction, and it computes its output based on these. The ALU Control can be
-seen in Figure \ref{fig:alu-cont}
+The Memory Unit has four inputs: Address, Data, \texttt{MemRead} and
+\texttt{MemWrite}. It has a single output: Read Data. In one clock cycle, the
+Memory Unit either reads or writes. The Memory Unit can be seen in Figure
+\ref{fig:mem}.
 \begin{figure}
     \centering
     \begin{tikzpicture}
-        \node[block] (alucont) at (0,0) {ALU Control};
-        \node[empty] (aluop) at (-3, -1) {ALUOp};
-        \node[empty] (funct) at (-3, -1.5) {Funct};
-        \node[empty] (aluope) at (0, 2) {ALU Operation};
+        \node[block] (mem) at (0,0) {Memory};
+        \node[empty] (addr) at (-3,0.4) {Address};
+        \node[empty] (data) at (-3,-0.4) {Data};
+        \node[empty] (memread) at (-1.5, 1) {\texttt{MemRead}};
+        \node[empty] (memwrite) at (1.5, 1) {\texttt{MemWrite}};
+        \node[empty] (readdata) at (3, 0) {Read Data};
 
-        \path[draw, ->, color=blue] (aluop) -| (alucont.250);
-        \path[draw, ->] (funct) -| (alucont.290);
-        \path[draw, ->, color=blue] (alucont) -- (aluope);
+        \path[draw, ->] (addr) -- (mem.154);
+        \path[draw, ->] (data) -- (mem.206);
+        \path[draw, color=blue, ->] (memread) -| (mem.110);
+        \path[draw, color=blue, ->] (memwrite) -| (mem.70);
+        \path[draw, ->] (mem) -- (readdata);
     \end{tikzpicture}
-    \caption{The ALU Control}
-    \label{fig:alu-cont}
+    \caption{The Memory Unit}
+    \label{fig:mem}
 \end{figure}
 
-If the \texttt{ALUOp} from the control unit indicates that the instruction is
-an R format instruction, it uses the \texttt{funct} code for selecting the
-operation.  Otherwise it bases its output purely on the \texttt{ALUOp} code. As
-before, we will return to this component, when we need to extend the
-instruction set.
-
 \subsubsection*{Implementation \& Testing}
-As with the main Control Unit, the book describes usable logic, but it does not
-correspond to our own ALUOp from the Control Unit, or the needed ALU Operation
-codes for the ALU. As such, we should do the same as in the Control Unit. We
-start by checking whether or not the opcode from the instruction indicates that
-the instruction is an R-format. If this is the case, we need to \texttt{switch}
-on the \texttt{funct} field of the instuction, otherwise \texttt{switch} on the
-opcode from the ALUOp.
+To implement the Memory Unit, we construct an SME process. The Address, Data
+and Output busses should all contain an \texttt{uint} value. The two control
+busses \texttt{MemRead} and \texttt{MemWrite} should both contain a
+\texttt{bool} value.
 
-It is tested in the same manner as the Control Unit.
+As with the Instruction Memory, we are going to need a chunk of memory. Like
+the Instruction Memory, the memory chunk should be a \texttt{byte} array, and
+should read and write in the same manner, i.e. either packing or unpacking 4
+bytes, from and to memory.
+
+On each clock tick, the process should check if the \texttt{MemRead} flag is
+set, in which case it should read the value on the Address bus, and output the
+value stored in memory at the read address.
+
+If that was not the case, it should check if the \texttt{MemWrite} flag is set,
+in which case it should read the value at the Address bus and the Data bus,
+store the read data in memory at the read address.
+
+To test the Memory Unit, we should just try to store some values, and check if
+we can fetch the same values again.
 
 \subsection{Splitter}
-This is a very simple component, but it is still used in the decoding step of
-the processor. It takes the instruction, which has been fetched from memory,
-and divides it into chunks for the different parts of the decoding. The
-instruction is partitioned as followed (the bits are inclusive):
+The book\cite{ref:ark} takes the instruction read from the Instruction Memory,
+and splits it out to the different components. One way of handling this could
+be to send the instruction bus to all the components that needs something from
+the instruction. However, then the resulting VHDL might send all 32 bits to
+multiple components, when 5 bits might have been sufficient. As such, we
+construct our own component for splitting up the instruction.
+
+The splitter is a very simple component: It takes the instruction, which has
+been fetched from memory, and divides it into chunks for the different parts of
+the decoding. The instruction is partitioned as followed (the bits are
+inclusive):
 \begin{itemize}
     \item Opcode - bits 26-31
     \item Read Address A - bits 21-25
@@ -365,86 +360,23 @@ The Splitter can be seen in Figure \ref{fig:split}
 \end{figure}
 
 \subsubsection*{Implementation \& Testing}
-The implementation is straightforward: We take the instruction comming from the
-instruction fetch part of the processor, and extract the bits at the indices,
-by using C\# bit hacking. Finally, output the extracted values on the
-respective output busses.
+The implementation is straightforward: We construct an SME process, which takes
+the instruction coming from the Instruction Memory, and extract the bits at the
+indices, by using C\# bit hacking. The Input bus should contain an
+\texttt{uint} value. The Immediate bus should contain an \texttt{short} value.
+The rest of the busses should contain an \texttt{byte} value.  Finally, the
+process should output the extracted values on the respective output busses.
 
-As before, testing is performed by constructing a tester process, which sends
-input, and verifies the output.
-
-\subsection{Sign Extend}
-The Sign Extend is used for extracting values from the instruction. It takes
-its input, which is 16-bit, and converts it into a 32-bit value, extending the
-sign if present. The Sign Extend can be seen in Figure \ref{fig:sign}
-\begin{figure}
-    \centering
-    \begin{tikzpicture}
-        \node[block] (sign) at (0,0) {Sign Extend};
-        \node[empty] (imm) at (-3,0) {Immediate};
-        \node[empty] (immout) at (4,0) {Sign extended immediate};
-
-        \path[draw, ->] (imm) -- (sign);
-        \path[draw, ->] (sign) -- (immout);
-    \end{tikzpicture}
-    \caption{The Sign Extend}
-    \label{fig:sign}
-\end{figure}
-
-\subsubsection*{Implementation \& Testing}
-The SME proces takes the 16-bit immediate, and outputs it on its 32-bit output
-bus. C\# handles the sign extension for us.
-
-It is tested in the same manner as the previous components.
-
-
-\subsection{Memory unit}
-The memory unit is the main memory. The CPU can either read or write to the
-memory unit. The addresses for the memory are word sized, i.e. in the 32-bit
-processor, the word size is 32 bit. The Memory Unit has four inputs: Address,
-Data, \texttt{MemRead} and \texttt{MemWrite}. It has a single output: Read
-Data. In one clock, the Memory Unit either reads or writes. The Memory Unit can
-be seen in Figure \ref{fig:mem}
-\begin{figure}
-    \centering
-    \begin{tikzpicture}
-        \node[block] (mem) at (0,0) {Memory};
-        \node[empty] (addr) at (-3,0.4) {Address};
-        \node[empty] (data) at (-3,-0.4) {Data};
-        \node[empty] (memread) at (-1.5, 1) {\texttt{MemRead}};
-        \node[empty] (memwrite) at (1.5, 1) {\texttt{MemWrite}};
-        \node[empty] (readdata) at (3, 0) {Read Data};
-
-        \path[draw, ->] (addr) -- (mem.154);
-        \path[draw, ->] (data) -- (mem.206);
-        \path[draw, color=blue, ->] (memread) -| (mem.110);
-        \path[draw, color=blue, ->] (memwrite) -| (mem.70);
-        \path[draw, ->] (mem) -- (readdata);
-    \end{tikzpicture}
-    \caption{The Memory Unit}
-    \label{fig:mem}
-\end{figure}
-
-\subsubsection*{Implementation \& Testing}
-As with the Instruction Memory, we are going to need a chunk of memory.
-However, this time we do want to construct it using a \texttt{byte} array, as
-later programs expect this. As such, the SME process needs to pack four bytes
-into an \texttt{int} value.
-
-In each clock, the process should check if the \texttt{MemRead} flag is set, in
-which case it should read the value on the Address bus, and output the value
-stored in memory at the read address. Then it should check if the
-\texttt{MemWrite} flag is set, in which case it should read the value at the
-Address bus and the Data bus, store the read data in memory at the read
-address.
-
-The Memory Unit is tested in the same manner as the Register File.
+Testing the Splitter requires no special procedures.
 
 \subsection{Jump Unit}
+The book\cite{ref:ark} describes how to implement \texttt{beq}, by the use of
+multiple components. However, we should combine these components into a single
+unit, the Jump Unit, to simplify the processor.
+
 The Jump Unit is the one controlling which instruction to load next. It takes
-four inputs: sign extend, Zero, \texttt{beq} and the PC. It
-produces one output: the new PC. The Jump Unit and its connections
-can be seen in Figure \ref{fig:jump}
+four inputs: sign extend, Zero, \texttt{beq} and the PC. It produces one
+output: the new PC.
 \begin{figure}
     \centering
     \begin{tikzpicture}
@@ -479,19 +411,179 @@ normal program traversal (i.e. execute the instructions in order) and the
 \texttt{beq} instruction. We will be adding support for more branch and jump
 instructions later.
 
-\subsubsection*{Implementation \& Testing}
-The book describes the logic for both of the initial requirements. To add the
-normal program traversel, the Jump Unit should take the input PC, and increment
-it by 4, such that it points to the next instruction. To add support for
-branching, it should take the incremented PC, and add it with the sign extended
-immediate. The \texttt{beq} signal and the Zero signal should go to an
-\texttt{AND} gate, which should be a control signal for a multiplexor. The
-incremented PC, and the PC with the added immediate should go into inputs for
-the mux. If the control signal into the multiplexor is \texttt{0}, then the
-incremented PC should be the output, otherwise the PC with the added immediate.
-The output from the multiplexor should also be the output for the Jump Unit.
+For the simple traversal, the Jump Unit takes the previous PC, and increments
+it by 4. For the \texttt{beq} instruction, it takes the value from the Sign
+Extend, shifts it left by 2, and add that value to the incremented PC. Finally,
+it chooses between the incremented PC and the added sign extend, based on the
+\texttt{beq} and Zero flags. The Jump Unit and its internals can be seen in
+Figure \ref{fig:jump}.
 
-The testing is performed in the same manner as with the other components.
+\subsubsection*{Implementation \& Testing}
+We have the all of the logic described in the background. To implement the Jump
+Unit, we implement all of the logic components as SME processes. We are going
+to need 4 components: an +4 incrementer, an adder, an \texttt{AND} gate and a
+multiplexor.
+
+The Incrementer takes the PC bus as input, and produces a single output on the
+inced bus. The two busses should both contain an \texttt{uint} value. On each
+clock tick, it should take the value from the PC bus, add 4 to it and put it on
+the inc bus.
+
+The Adder takes the inc bus and the immediate bus from the Sign Extend as
+input. It has a single output bus: the added bus. All of the busses should
+contain an \texttt{uint} value. On each clock tick, the Adder should add its
+two inputs together, and put the result on the add bus.
+
+The \texttt{AND} gate is like in the logic gates example, but with the
+\texttt{beq} and Zero as inputs, and its output should be on a new bus: anded.
+All of its busses should contain a \texttt{bool} value.
+
+Finally, we have the multiplexor, which takes the inced, added and anded busses
+as input, and produces a single output: the new PC. The new PC bus should
+contain an \texttt{uint} value. On each clock tick, if the flag from the anded
+bus is set to \texttt{1}, then it should put the value from the added bus onto
+the new PC bus. Otherwise it should output the value from the inced bus.
+
+We could have made all the logic in C\#, however this makes it easier to
+extend, as each subcomponent is very simple.
+
+We test the Jump Unit by initially verifying that the PC increments as it
+should, if the two control signals are \texttt{0}. Then it should be tested, if
+the correct branching addresses are constructed.
+
+\subsection{ALU control}\label{sec:alu-control}
+The ALU control is used for generating the ALU Operation control code, which
+the ALU uses for selecting which operation to perform. It takes two inputs: the
+\texttt{ALUOp} code from the control unit, and the \texttt{funct} code from the
+instruction. It produces a single output: The ALU Opcode. The ALU Control can
+be seen in Figure \ref{fig:alu-cont}.
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \node[block] (alucont) at (0,0) {ALU Control};
+        \node[empty] (aluop) at (-3, -1) {ALUOp};
+        \node[empty] (funct) at (-3, -1.5) {Funct};
+        \node[empty] (aluope) at (0, 2) {ALU Operation};
+
+        \path[draw, ->, color=blue] (aluop) -| (alucont.250);
+        \path[draw, ->] (funct) -| (alucont.290);
+        \path[draw, ->, color=blue] (alucont) -- (aluope);
+    \end{tikzpicture}
+    \caption{The ALU Control}
+    \label{fig:alu-cont}
+\end{figure}
+
+If the \texttt{ALUOp} indicates that the instruction is an R format
+instruction, it uses the \texttt{funct} code for selecting the operation.
+Otherwise it bases its output on the \texttt{ALUOp} code. We will return to
+this component, when we need to extend the instruction set.
+
+\subsubsection*{Implementation \& Testing}
+The book\cite{ref:ark} describes the logic to implement the ALU Control.
+However, like the ALU, it has been generated, and is difficult to extend. As
+such, we construct our own ALU Control, and let the VHDL generator handle the
+logic generation.
+
+To make the source code more human readable, we should have two additional
+\texttt{enum}s: one for the \texttt{ALUOp} code and one for the \texttt{funct}.
+Then we construct an SME process, which has the connections as specified in the
+background section. All of its busses should contain \texttt{byte} values.
+
+On each clock tick, the ALU Control checks if the \texttt{ALUOp} code indicate
+R format instruction or not. If the instruction is an R format, the process
+should \texttt{switch} on the \texttt{funct} code. If not, it should
+\texttt{switch} on the \texttt{ALUOp} code. In all cases in both
+\texttt{switch}s, the ALU Control should output the ALU Operation corresponding
+to the computation that the instruction expects.
+
+To test the ALU Control, the tester process should try all possible
+combinations, as there should not be too many combinations.
+
+\subsection{Control Unit}
+\label{sec:control-unit}
+The control unit is part of the decoding step. It takes the opcode of the
+instruction, and based on the opcode, it sets control flags used throughout the
+processor. All of the control flags mentioned throughout the other components
+are set by the Control Unit. It sets the following control flags:
+\begin{description}
+    \item[RegDst] Controls which part of the instruction that indicates which
+        B register to read from.
+
+    \item[Branch] Controls whether or not the instruction is a branch
+        instruction.
+
+    \item[MemRead] Controls whether or not there should be read from memory.
+
+    \item[MemtoReg] Controls whether or not the value from memory should be
+        stored in the register file.
+
+    \item[ALUOp] Opcode indicating which operation should be performed in
+        the ALU. It is send to the ALU Control for further processing.
+
+    \item[MemWrite] Controls whether or not data should be written to memory.
+
+    \item[ALUSrc] Controls whether the B input for the ALU should be the
+        value read from the register file, or if it should be the value
+        extracted from the instruction.
+
+    \item[RegWrite] Controls whether or not data should be written to the
+        register file.
+\end{description}
+Each of the control flags goes to their respective part of the processor.
+We will return to this component, when we have to extend it to handle more
+instructions. The control unit and its connections can be seen in Figure
+\ref{fig:cont-unit}.
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \node[control] (cont)   at (0,  0)   {Control Unit};
+        \node[empty] (opcode)   at (-3, 0)   {Opcode};
+        \node[empty] (branch)   at (4,  1.75) {\texttt{Branch}};
+        \node[empty] (regwrite) at (4,  1.25) {\texttt{RegWrite}};
+        \node[empty] (memtoreg) at (4,  0.75) {\texttt{MemToReg}};
+        \node[empty] (memwrite) at (4,  0.25) {\texttt{MemWrite}};
+        \node[empty] (memread)  at (4, -0.25) {\texttt{MemRead}};
+        \node[empty] (alusrc)   at (4, -0.75) {\texttt{ALUSrc}};
+        \node[empty] (aluop)    at (4, -1.25) {\texttt{ALUOp}};
+        \node[empty] (regdst)   at (4, -1.75) {\texttt{RegDst}};
+
+        \path[draw, ->] (opcode) -- (cont);
+
+        \path[draw, ->, color=blue] (cont.35)  -| (2,1.5) |- (branch);
+        \path[draw, ->, color=blue] (cont.25)  -| (2.25,1) |- (regwrite);
+        \path[draw, ->, color=blue] (cont.15)  -| (2.5,0.5) |- (memtoreg);
+        \path[draw, ->, color=blue] (cont.5)   -| (2.75,0.125) |- (memwrite);
+        \path[draw, ->, color=blue] (cont.355) -| (2.75,-0.125) |- (memread);
+        \path[draw, ->, color=blue] (cont.345) -| (2.5,-0.5) |- (alusrc);
+        \path[draw, ->, color=blue] (cont.335) -| (2.25,-1) |- (aluop);
+        \path[draw, ->, color=blue] (cont.325) -| (2,-1.5) |- (regdst);
+    \end{tikzpicture}
+    \caption{The Control Unit}
+    \label{fig:cont-unit}
+\end{figure}
+
+\subsubsection*{Implementation \& Testing}
+As with the ALU Control, the book\cite{ref:ark} describes the logic needed to
+implement this unit. However, again it is not trivial to extend later on, so we
+construct our own Control Unit, and let the VHDL generator handle the logic
+generation.
+
+We construct an SME process, which has all of the busses described in the
+background section. The input opcode bus and the ALUOp code bus should both
+contain an \texttt{byte} value. The rest of the busses should all contain an
+\texttt{bool} value.
+
+As with the ALU Control, we should have an \texttt{enum} on the opcode, to make
+it more human readable. We do not need one for the ALUOp, as the ALU Control
+already described it.
+
+On each clock tick, the Control Unit reads the opcode from the input bus. Then
+it should \texttt{switch} on the read opcode, and set all of the flags
+accordingly. How the flags should be set, depends on the instruction, and
+should be straightforward, but time demanding.
+
+As with the ALU Control, testing the Control Unit should be done by trying
+every opcode available.
 
 \subsection{Write back}
 The final stage of the processor is the Write Back. Here, the values are sent
@@ -499,14 +591,21 @@ to the Register File for storing.
 
 \subsubsection*{Implementation \& Testing}
 Usually in the single cycle MIPS processor, there is nothing special in the
-Write Back. However, in SME we are not allowed to have unclocked cycles, and
-there is a cycle from the Register File, through the ALU and the Memory Unit,
-and back to the Register File.
+Write Back stage. However, in SME we are not allowed to have unclocked cycles,
+and there is a cycle from the Register File, through the ALU and the Memory
+Unit, and back to the Register File.
 
-To solve this, we introduce a Write Buffer. The write buffer takes the Write
-Data, Write Register and \texttt{WriteEnabled} as input, and produces the same
-output. On each clock, it should output its stored values, and store its input
-values. The Write Buffer can be seen in Figure \ref{fig:wb}
+To solve this, we introduce a Write Buffer. The write buffer should be clocked,
+and takes the Write Data, Write Register and \texttt{WriteEnabled} as input,
+and produces the same output. On each clock tick, it should output its stored
+values, and store its input values.
+
+We could also have made one of the previous components clocked, however we do
+not want to this, as this specific problem will be solved when we pipeline the
+processor in section \ref{sec:pipelining}, and then the Write Buffer can be
+removed again.
+
+The Write Buffer and its connections can be seen in Figure \ref{fig:wb}.
 \begin{figure}
     \centering
     \begin{tikzpicture}
@@ -528,5 +627,5 @@ values. The Write Buffer can be seen in Figure \ref{fig:wb}
     \caption{The Write Buffer}
     \label{fig:wb}
 \end{figure}
-
-Testing is performed in the same manner as the previous components.
+Testing the Write Buffer is very trivial: verify that it outputs its input from
+the previous clock tick.
