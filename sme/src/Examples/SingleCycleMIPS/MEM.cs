@@ -92,23 +92,19 @@ namespace SingleCycleMIPS
                 uint add = addr.val;
                 if (memread.flg)
                 {
-                    byte b0 = mem[add];
-                    byte b1 = mem[add + 1];
-                    byte b2 = mem[add + 2];
-                    byte b3 = mem[add + 3];
                     output.data = 0u 
-                        | (uint) (b3 << 24) 
-                        | (uint) (b2 << 16) 
-                        | (uint) (b1 << 8) 
-                        | b0;
+                        | (uint) (mem[add]     << 24) 
+                        | (uint) (mem[add + 1] << 16) 
+                        | (uint) (mem[add + 2] << 8) 
+                        |         mem[add + 3];
                 }
                 else if (memwrite.flg)
                 {
                     uint data = write.data;
-                    mem[add] = (byte)(data & 0xFF);
-                    mem[add + 1] = (byte)((data >> 8) & 0xFF);
-                    mem[add + 2] = (byte)((data >> 16) & 0xFF);
-                    mem[add + 3] = (byte)((data >> 24) & 0xFF);
+                    mem[add]     = (byte)((data >> 24) & 0xFF);
+                    mem[add + 1] = (byte)((data >> 16) & 0xFF);
+                    mem[add + 2] = (byte)((data >> 8)  & 0xFF);
+                    mem[add + 3] = (byte)( data        & 0xFF);
                     output.data = 0;
                 }
                 else
@@ -119,11 +115,11 @@ namespace SingleCycleMIPS
                 Console.Write("MEM [");
                 for (int i = 0; i < 15; i++)
                 {
-                    int a = 0;
-                    a |= mem[i * 4];
-                    a |= mem[i * 4 + 1] << 8;
-                    a |= mem[i * 4 + 2] << 16;
-                    a |= mem[i * 4 + 3] << 24;
+                    int a = 0
+                    | mem[i * 4]     << 24
+                    | mem[i * 4 + 1] << 16
+                    | mem[i * 4 + 2] << 8
+                    | mem[i * 4 + 3];
                     Console.Write(a + ",");
                 }
                 Console.WriteLine("]");

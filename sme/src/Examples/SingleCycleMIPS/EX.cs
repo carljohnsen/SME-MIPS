@@ -448,10 +448,22 @@ namespace SingleCycleMIPS
             uint addr { get; set; }
         }
 
+        [InitializedBus]
+        public interface ShiftBranch : IBus
+        {
+            uint addr { get; set; }
+        }
+
+        [InitializedBus]
+        public interface ShiftJump : IBus
+        {
+            uint addr { get; set; }
+        }
+
         public class Adder : SimpleProcess
         {
             [InputBus]
-            ID.SignExtOut immediate;
+            ShiftBranch immediate;
             [InputBus]
             IF.IncrementerOut pc;
 
@@ -460,7 +472,7 @@ namespace SingleCycleMIPS
 
             protected override void OnTick()
             {
-                output.address = immediate.data + pc.address;
+                output.address = immediate.addr + pc.address;
             }
         }
 
@@ -508,7 +520,7 @@ namespace SingleCycleMIPS
             [InputBus]
             ID.OutputA outa;
             [InputBus]
-            Instruction inst;
+            ShiftJump inst;
             [InputBus]
             JumpReg jr;
 
@@ -518,6 +530,34 @@ namespace SingleCycleMIPS
             protected override void OnTick()
             {
                 output.addr = jr.flg ? outa.data : inst.addr;
+            }
+        }
+
+        public class ShiftB : SimpleProcess
+        {
+            [InputBus]
+            ID.SignExtOut immediate;
+
+            [OutputBus]
+            ShiftBranch output;
+
+            protected override void OnTick()
+            {
+                output.addr = immediate.data << 2;
+            }
+        }
+
+        public class shiftJ : SimpleProcess
+        {
+            [InputBus]
+            Instruction inst;
+
+            [OutputBus]
+            ShiftJump output;
+
+            protected override void OnTick()
+            {
+                output.addr = inst.addr << 2;
             }
         }
 
