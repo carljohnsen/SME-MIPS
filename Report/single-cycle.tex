@@ -408,28 +408,35 @@ examples, as both are simple to implement, and they do not require anything
 special from the environment.
 
 We are not going to give the implementation in MIPS assembly, as this would not
-be readable. Instead, we are going to construct some low level \texttt{C} code,
-which should be easy translatable into MIPS assembly. Once we have made the
-assembly, we can easily dump it into MARS, which can then produce a ascii hex
-dump, which we can then paste into our instruction memory.
+be readable. Instead, we are going to construct some low level C code,
+which should be easy translatable into MIPS assembly, and easilier verifiable
+on a real machine. Once we have made the assembly, we can easily dump it into
+MARS, which can then produce a ascii hex dump, which we can then paste into our
+instruction memory.
 
 \subsubsection*{Quicksort}
-There are three parts of the Quicksort program: Loading data into memory,
-the partition function and the quicksort function. We are going to use the
-simple partition function from the algorithm book\cite{ref:alg}, and the
-quicksort function, also from the algorithm book.
+Quicksort is a sorting algorithm, for doing comparison based sorting. The
+algorithm is heavily described in the algorithm book\cite{ref:alg}, and as such
+we wont go into details about the algorithm. We could have chosen one of the
+other sorting algorithms from the book, but quicksort should not be too hard to
+implement.
 
-We could have implemented the Hoare partitioning algorithm. However, we are
-trying to keep the program itself as simple as possible, as performance is not
-the target of the program, but rather correctness of the processor, i.e.  that
-our processor implementation produce the same result as MARS.
+There are three parts of the Quicksort program: Loading data into memory, the
+partition function and the quicksort function. We are going to use the
+partition function from the algorithm book, and the quicksort function, also
+from the algorithm book, as both are simple to implement.
+
+We could have implemented the Hoare partitioning algorithm. However, it is not
+as simple, and performance is not the target of the program, but rather
+correctness of the processor, i.e.  that our processor implementation produce
+the same result as MARS.
 
 \begin{description}
     \item[Loading data into memory] We start by loading data into memory, so
         that our quicksort program has some data to sort. Which numbers we are
         going to use is not important, rather the amount of numbers, as the
         quicksort algorithm uses it as argument. We construct a function
-        called \texttt{load()}, which inserts 6 numbers into the given memory
+        called \texttt{load}, which inserts 6 numbers into the given memory
         address.
         \begin{lstlisting}
  void load(int *a) {
@@ -441,7 +448,7 @@ our processor implementation produce the same result as MARS.
     *(a+5) = 3;
 }\end{lstlisting}
 
-    \item[The partitioning function] Then we implement the \texttt{partition()}
+    \item[The partitioning function] Then we implement the \texttt{partition}
         function as described in the algorithm book\cite{ref:alg}. Note that
         statements in the book have been expanded to more closely resemble
         assembly.
@@ -474,7 +481,7 @@ int partition(int *a, int p, int r) {
 \end{lstlisting}
 
     \item[The quicksort function] Finally, we implement the
-        \texttt{quicksort()} function as described in the algorithms book.
+        \texttt{quicksort} function as described in the algorithms book.
 \begin{lstlisting}
 void quicksort(int *a, int p, int r) {
     if (p < r) {
@@ -485,31 +492,37 @@ void quicksort(int *a, int p, int r) {
 }
 \end{lstlisting}
 
-    \item[Initial call to the algorithm] Bla bla main function
+    \item[Initial call to the algorithm] To emphasize the order of calling, and
+        the arguments, we also construct a \texttt{main} function.
 \begin{lstlisting}
-main()
+int main() {
+    int arr[6], i;
+    load(arr);
+    quicksort(arr, 0, 5);
+}
 \end{lstlisting}
 \end{description}
-Do note that the arguments to both the \texttt{quicksort()} and
-\texttt{partition()} functions, are inclusive. To verify the correctness, we
-should look at the memory, where the initial data now should be in sorted
-order.
+Do note that the arguments to both the \texttt{quicksort} and
+\texttt{partition} functions, are inclusive. To verify the correctness, we
+should look at the memory, where the data now should be in sorted order.
 
 \subsubsection*{Towers Of Hanoi}
 Towers Of Hanoi is a puzzle, where one has to move a tower of discs, from one
-peg, to another, with one additional auxilary peg, by only moving one disk at
+peg, to another, with one additional auxilary peg, by only moving one disc at
 the time.
 
-Usually when searching for Towers Of Hanoi implementations, the program just
-prints which move to make. However, since our processor does not support
-printing at this state, we modify it. We are going to represent the three pegs
+By searching, we find a pseudo approach to the problem, by using
+recursion\cite{ref:hanoi}. We are going to represent the three pegs
 as an array, which is three times the size of the tower. As such, each peg is
-just one third of the array.
+just one third of the array. Furthermore, as with quicksort, we start by
+loading data into memory, have a \texttt{tower} function, which performs the
+move, and finally correct way of calling the functions.
 
 \begin{description}
     \item[Loading data into memory] We need to initialize the memory. We are
-        just going to fill the first third of the array with descending
-        numbers.
+        going to fill the first third of the array, i.e. the first peg, with
+        descending numbers. Each number indicate which disc it is. The rest of
+        the pegs with 0, indicating no disc.
 \begin{lstlisting}
 void init(int num, int *from, int *to, int *aux) {
     int i;
@@ -521,12 +534,16 @@ void init(int num, int *from, int *to, int *aux) {
 }
 \end{lstlisting}
 
-    \item[The tower function] This is the \texttt{tower()} function, which
-        moves the disks from peg to peg.
+    \item[The tower function] This is the \texttt{tower} function, which
+        moves the discs from peg to peg. We use the same approach as the pseudo
+        code\cite{ref:hanoi}. As with quicksort, the statements have been
+        expanded to more closely resemble assembly. We make the three arguments
+        as stack pointers to each of the pegs. To preserve each of the
+        pointers, we have pointers to each of them, i.e. pointer pointer.
 \begin{lstlisting}
 void tower(int num, int **from, int **to, int **aux) {
     int *t, *f;
-    if (num == 1) {
+    if (num == 0) {
         t = *to;
         f = *from;
         f--;
@@ -550,14 +567,15 @@ void tower(int num, int **from, int **to, int **aux) {
 }
 \end{lstlisting}
 
-    \item[Calling the algorithm] We construct a \texttt{main()} function, to
-        ensure that the algorithm is correct, and that it can be run in regular
-        \texttt{C}.
+    \item[Calling the algorithm] We construct a \texttt{main} function, to
+        emphasize how to make the arguments.
 \begin{lstlisting}
 int main() {
     int num = 5;
     int *arr = int[num*3];
     init(num, arr, arr+num, arr+(2*num));
+    int *f=num, *t=num, *a=2*num;
+    tower(num-1, &f, &a, &t);
 }
 \end{lstlisting}
 \end{description}

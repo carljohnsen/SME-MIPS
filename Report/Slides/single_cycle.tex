@@ -594,6 +594,200 @@
     \end{figure}
 \end{frame}
 
+\section{Larger MIPS programs}
+\begin{frame}
+    To test the full single cycle MIPS processor, we are going to implement two
+    test programs in MIPS assembly: Quicksort and Towers of Hanoi.
+
+    \vspace{\baselineskip}
+    We are not going to give the implementation in MIPS assembly, as this would
+    be unreadable. Instead, we are going to construct some low level C code,
+    which should be easily translatable into MIPS assembly.
+\end{frame}
+
+\subsection{Quicksort}
+\begin{frame}
+    Quicksort is a sorting algorithm, which is heavily described in the
+    'Introduction to Algorithms' book.
+
+    \vspace{\baselineskip}
+    There are four parts of the Quicksort program:
+    \begin{itemize}
+        \item Loading data into memory
+        \item Partitioning the data
+        \item Recursively calling \texttt{quicksort}
+        \item Initial call to \texttt{quicksort}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+    We start by loading data into memory, so the quicksort program has some
+    data to sort. The data itself is not important, but rather the amount of
+    data, as we need this as parameter for the \texttt{quicsort} call.
+
+\begin{lstlisting}
+ void load(int *a) {
+    *(a)   = 5;
+    *(a+1) = 8;
+    *(a+2) = 2;
+    *(a+3) = 9;
+    *(a+4) = 1;
+    *(a+5) = 3;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+    Then we have the partitioning function, which we get from the 'Introduction
+    to Algorithms' book. Note that the statements have been expanded to more
+    closely resemble assembly.
+\end{frame}
+\begin{frame}[fragile]
+\begin{lstlisting}
+int partition(int *a, int p, int r) {
+    int x, i, j, tmp1, tmp2, *addr1, *addr2;
+    addr1 = a + r;
+    x = *(addr1);
+    i = p - 1;
+    for (j = p; j < r; j++) {
+        addr1 = a + j;
+        if (*(addr1) <= x) {
+            i++;
+            addr1 = a + i;
+            addr2 = a + j;
+            tmp1 = *(addr1);
+            tmp2 = *(addr2);
+            *(addr1) = tmp2;
+            *(addr2) = tmp1;
+        }
+    }
+    addr1 = a + i + 1;
+    addr2 = a + r;
+    tmp1 = *(addr1);
+    tmp2 = *(addr2);
+    *(addr1) = tmp2;
+    *(addr2) = tmp1;
+    return i + 1;
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+    Then we have the recursive calls to \texttt{quicksort}
+\begin{lstlisting}
+void quicksort(int *a, int p, int r) {
+    if (p < r) {
+        int q = partition(a, p, r);
+        quicksort(a, p, q-1);
+        quicksort(a, q+1, r);
+    }
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+    Finally, we have the initial call to \texttt{quicksort} in a \texttt{main}
+    function. Note that the indices to the initial call are inclusive.
+\begin{lstlisting}
+int main() {
+    int arr[6], i;
+    load(arr);
+    quicksort(arr, 0, 5);
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}
+    Since we have no way of printing from our program yet, we should just look
+    at the contents of the memory, to check that the data is now sorted.
+\end{frame}
+
+\subsection{Towers of Hanoi}
+\begin{frame}
+    Towers of Hanoi is a puzzle, where one has to move a tower of discs from
+    one peg to another, by using an additional auxilary peg, and by only moving
+    one disc at the time.
+
+    \vspace{\baselineskip}
+    By searching, we find a pseudo approach to the problem, by using recursion
+    \url{https://www.cs.cmu.edu/~cburch/survey/recurse/hanoiimpl.html}
+\end{frame}
+
+\begin{frame}
+    We are going to represent the three pegs as an array, which is three times
+    the size of the tower of discs. As such, each peg is just one third of the
+    array.
+
+    \vspace{\baselineskip}
+    As with quicksort, we start by loading data into memory. Then we have the
+    \texttt{tower} function, which moves an tower. Finally, we again describe
+    the initial call to the function.
+\end{frame}
+\begin{frame}[fragile]
+    To initialize the memory, we fill the first third of the array with
+    descending numebers. Each number indicate which disc it is. The rest of the
+    pegs are set to 0, indicating no disc.
+\begin{lstlisting}
+void init(int num, int *from, int *to, int *aux) {
+    int i;
+    for (i = 0; i < num; i++) {
+        *(from+i) = num - i;
+        *(to+i) = 0;
+        *(aux+i) = 0;
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+    Then we have the \texttt{tower} function. Each part of the array should
+    behave like stacks, i.e. one can only put on top, or remove from the top.
+    To solve this throughout function calls, we keep the three pointers in
+    memory, and therefore we have pointer pointer as arguments. As with the
+    \texttt{quicksort} function, the statements have been expanded.
+\end{frame}
+\begin{frame}[fragile]
+\begin{lstlisting}
+void tower(int num, int **from, int **to, int **aux) {
+    int *t, *f;
+    if (num == 0) {
+        t = *to;
+        f = *from;
+        f--;
+        *t = *f;
+        t++;
+        *f = 0;
+        *to = t;
+        *from = f;
+    } else {
+        tower(num-1, from, aux, to);
+        t = *to;
+        f = *from;
+        f--;
+        *t = *f;
+        t++;
+        *f = 0;
+        *to = t;
+        *from = f;
+        tower(num-1, aux, to, from);
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+    Finally, we have the \texttt{main} function, constructing the correct
+    arguments.
+\begin{lstlisting}
+int main() {
+    int num = 5;
+    int *arr = int[num*3];
+    init(num, arr, arr+num, arr+(2*num));
+    int *f=num, *t=num, *a=2*num;
+    tower(num-1, &f, &a, &t);
+}
+\end{lstlisting}
+    When the program has finished, the last third of the array should contain
+    the numbers in descending order.
+\end{frame}
+
 % exit section
 \AtBeginSection{}
 \section*{}
