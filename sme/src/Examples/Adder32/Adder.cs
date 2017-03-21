@@ -19,15 +19,15 @@ namespace Adder32 {
 			[InputBus] InputB0 input1;
 			[OutputBus] Carry0 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 	}
 
 	public class FullAdder1
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -53,7 +53,7 @@ namespace Adder32 {
 			[InputBus] InputB1 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -62,7 +62,7 @@ namespace Adder32 {
 			[InputBus] Carry0 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -77,9 +77,9 @@ namespace Adder32 {
 
 	public class FullAdder2
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -105,7 +105,7 @@ namespace Adder32 {
 			[InputBus] InputB2 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -114,7 +114,7 @@ namespace Adder32 {
 			[InputBus] Carry1 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -129,9 +129,9 @@ namespace Adder32 {
 
 	public class FullAdder3
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -157,7 +157,7 @@ namespace Adder32 {
 			[InputBus] InputB3 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -166,7 +166,7 @@ namespace Adder32 {
 			[InputBus] Carry2 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -181,9 +181,9 @@ namespace Adder32 {
 
 	public class FullAdder4
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -209,7 +209,7 @@ namespace Adder32 {
 			[InputBus] InputB4 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -218,7 +218,7 @@ namespace Adder32 {
 			[InputBus] Carry3 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -233,9 +233,9 @@ namespace Adder32 {
 
 	public class FullAdder5
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -261,7 +261,7 @@ namespace Adder32 {
 			[InputBus] InputB5 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -270,7 +270,7 @@ namespace Adder32 {
 			[InputBus] Carry4 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -285,9 +285,9 @@ namespace Adder32 {
 
 	public class FullAdder6
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -313,7 +313,7 @@ namespace Adder32 {
 			[InputBus] InputB6 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -322,7 +322,7 @@ namespace Adder32 {
 			[InputBus] Carry5 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -337,9 +337,9 @@ namespace Adder32 {
 
 	public class FullAdder7
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -365,7 +365,7 @@ namespace Adder32 {
 			[InputBus] InputB7 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -374,7 +374,7 @@ namespace Adder32 {
 			[InputBus] Carry6 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -389,9 +389,9 @@ namespace Adder32 {
 
 	public class FullAdder8
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -417,7 +417,7 @@ namespace Adder32 {
 			[InputBus] InputB8 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -426,7 +426,7 @@ namespace Adder32 {
 			[InputBus] Carry7 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -441,9 +441,9 @@ namespace Adder32 {
 
 	public class FullAdder9
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -469,7 +469,7 @@ namespace Adder32 {
 			[InputBus] InputB9 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -478,7 +478,7 @@ namespace Adder32 {
 			[InputBus] Carry8 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -493,9 +493,9 @@ namespace Adder32 {
 
 	public class FullAdder10
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -521,7 +521,7 @@ namespace Adder32 {
 			[InputBus] InputB10 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -530,7 +530,7 @@ namespace Adder32 {
 			[InputBus] Carry9 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -545,9 +545,9 @@ namespace Adder32 {
 
 	public class FullAdder11
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -573,7 +573,7 @@ namespace Adder32 {
 			[InputBus] InputB11 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -582,7 +582,7 @@ namespace Adder32 {
 			[InputBus] Carry10 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -597,9 +597,9 @@ namespace Adder32 {
 
 	public class FullAdder12
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -625,7 +625,7 @@ namespace Adder32 {
 			[InputBus] InputB12 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -634,7 +634,7 @@ namespace Adder32 {
 			[InputBus] Carry11 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -649,9 +649,9 @@ namespace Adder32 {
 
 	public class FullAdder13
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -677,7 +677,7 @@ namespace Adder32 {
 			[InputBus] InputB13 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -686,7 +686,7 @@ namespace Adder32 {
 			[InputBus] Carry12 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -701,9 +701,9 @@ namespace Adder32 {
 
 	public class FullAdder14
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -729,7 +729,7 @@ namespace Adder32 {
 			[InputBus] InputB14 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -738,7 +738,7 @@ namespace Adder32 {
 			[InputBus] Carry13 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -753,9 +753,9 @@ namespace Adder32 {
 
 	public class FullAdder15
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -781,7 +781,7 @@ namespace Adder32 {
 			[InputBus] InputB15 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -790,7 +790,7 @@ namespace Adder32 {
 			[InputBus] Carry14 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -805,9 +805,9 @@ namespace Adder32 {
 
 	public class FullAdder16
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -833,7 +833,7 @@ namespace Adder32 {
 			[InputBus] InputB16 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -842,7 +842,7 @@ namespace Adder32 {
 			[InputBus] Carry15 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -857,9 +857,9 @@ namespace Adder32 {
 
 	public class FullAdder17
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -885,7 +885,7 @@ namespace Adder32 {
 			[InputBus] InputB17 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -894,7 +894,7 @@ namespace Adder32 {
 			[InputBus] Carry16 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -909,9 +909,9 @@ namespace Adder32 {
 
 	public class FullAdder18
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -937,7 +937,7 @@ namespace Adder32 {
 			[InputBus] InputB18 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -946,7 +946,7 @@ namespace Adder32 {
 			[InputBus] Carry17 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -961,9 +961,9 @@ namespace Adder32 {
 
 	public class FullAdder19
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -989,7 +989,7 @@ namespace Adder32 {
 			[InputBus] InputB19 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -998,7 +998,7 @@ namespace Adder32 {
 			[InputBus] Carry18 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -1013,9 +1013,9 @@ namespace Adder32 {
 
 	public class FullAdder20
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -1041,7 +1041,7 @@ namespace Adder32 {
 			[InputBus] InputB20 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -1050,7 +1050,7 @@ namespace Adder32 {
 			[InputBus] Carry19 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -1065,9 +1065,9 @@ namespace Adder32 {
 
 	public class FullAdder21
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -1093,7 +1093,7 @@ namespace Adder32 {
 			[InputBus] InputB21 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -1102,7 +1102,7 @@ namespace Adder32 {
 			[InputBus] Carry20 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -1117,9 +1117,9 @@ namespace Adder32 {
 
 	public class FullAdder22
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -1145,7 +1145,7 @@ namespace Adder32 {
 			[InputBus] InputB22 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -1154,7 +1154,7 @@ namespace Adder32 {
 			[InputBus] Carry21 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -1169,9 +1169,9 @@ namespace Adder32 {
 
 	public class FullAdder23
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -1197,7 +1197,7 @@ namespace Adder32 {
 			[InputBus] InputB23 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -1206,7 +1206,7 @@ namespace Adder32 {
 			[InputBus] Carry22 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -1221,9 +1221,9 @@ namespace Adder32 {
 
 	public class FullAdder24
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -1249,7 +1249,7 @@ namespace Adder32 {
 			[InputBus] InputB24 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -1258,7 +1258,7 @@ namespace Adder32 {
 			[InputBus] Carry23 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -1273,9 +1273,9 @@ namespace Adder32 {
 
 	public class FullAdder25
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -1301,7 +1301,7 @@ namespace Adder32 {
 			[InputBus] InputB25 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -1310,7 +1310,7 @@ namespace Adder32 {
 			[InputBus] Carry24 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -1325,9 +1325,9 @@ namespace Adder32 {
 
 	public class FullAdder26
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -1353,7 +1353,7 @@ namespace Adder32 {
 			[InputBus] InputB26 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -1362,7 +1362,7 @@ namespace Adder32 {
 			[InputBus] Carry25 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -1377,9 +1377,9 @@ namespace Adder32 {
 
 	public class FullAdder27
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -1405,7 +1405,7 @@ namespace Adder32 {
 			[InputBus] InputB27 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -1414,7 +1414,7 @@ namespace Adder32 {
 			[InputBus] Carry26 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -1429,9 +1429,9 @@ namespace Adder32 {
 
 	public class FullAdder28
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -1457,7 +1457,7 @@ namespace Adder32 {
 			[InputBus] InputB28 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -1466,7 +1466,7 @@ namespace Adder32 {
 			[InputBus] Carry27 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -1481,9 +1481,9 @@ namespace Adder32 {
 
 	public class FullAdder29
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -1509,7 +1509,7 @@ namespace Adder32 {
 			[InputBus] InputB29 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -1518,7 +1518,7 @@ namespace Adder32 {
 			[InputBus] Carry28 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -1533,9 +1533,9 @@ namespace Adder32 {
 
 	public class FullAdder30
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -1561,7 +1561,7 @@ namespace Adder32 {
 			[InputBus] InputB30 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -1570,7 +1570,7 @@ namespace Adder32 {
 			[InputBus] Carry29 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess
@@ -1585,9 +1585,9 @@ namespace Adder32 {
 
 	public class FullAdder31
 	{
-		[InitializedBus] public interface Internal0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface Internal2 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface Internal0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
 		public class XOR0 : SimpleProcess
 		{
@@ -1613,7 +1613,7 @@ namespace Adder32 {
 			[InputBus] InputB31 input1;
 			[OutputBus] Internal2 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class AND1 : SimpleProcess
@@ -1622,7 +1622,7 @@ namespace Adder32 {
 			[InputBus] Carry30 input1;
 			[OutputBus] Internal1 output;
 
-			protected override void OnTick() { output.Bit = input0.Bit & input1.Bit; }
+			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
 		public class OR : SimpleProcess

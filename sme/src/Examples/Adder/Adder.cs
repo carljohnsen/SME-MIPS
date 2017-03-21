@@ -27,7 +27,7 @@ namespace Adder
 
 		protected override void OnTick()
 		{
-			output.Carry = input.Bit0 & input.Bit1;
+			output.Carry = input.Bit0 && input.Bit1;
 		}
 	}
 }

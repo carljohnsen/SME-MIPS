@@ -12,7 +12,7 @@ namespace Adder32 {
 	<# 
 		for (int i = 0; i < BitWidth; i++) 
 		{
-	#>[InitializedBus] public interface InputA<#Write("" + i);#> : IBus { int Bit { get; set; } }
+	#>[InitializedBus] public interface InputA<#Write("" + i);#> : IBus { bool Bit { get; set; } }
 	<#
 		}
 	#>
@@ -20,7 +20,7 @@ namespace Adder32 {
 	<# 
 		for (int i = 0; i < BitWidth; i++) 
 		{
-	#>[InitializedBus] public interface InputB<#Write("" + i);#> : IBus { int Bit { get; set; } }
+	#>[InitializedBus] public interface InputB<#Write("" + i);#> : IBus { bool Bit { get; set; } }
 	<#
 		}
 	#>
@@ -28,7 +28,7 @@ namespace Adder32 {
 	<# 
 		for (int i = 0; i < BitWidth; i++) 
 		{
-	#>[InitializedBus] public interface Output<#Write("" + i);#> : IBus { int Bit { get; set; } }
+	#>[InitializedBus] public interface Output<#Write("" + i);#> : IBus { bool Bit { get; set; } }
 	<#
 		}
 	#>
@@ -36,7 +36,7 @@ namespace Adder32 {
 	<# 
 		for (int i = 0; i < BitWidth; i++) 
 		{
-	#>[InitializedBus] public interface Carry<#Write("" + i);#> : IBus { int Bit { get; set; } }
+	#>[InitializedBus] public interface Carry<#Write("" + i);#> : IBus { bool Bit { get; set; } }
 	<#
 		}
 	#>

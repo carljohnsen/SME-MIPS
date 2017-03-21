@@ -8,17 +8,17 @@ namespace FullAdder
 		[InitializedBus]
 		public interface Internal0 : IBus
 		{
-			int Bit { get; set; }
+			bool Bit { get; set; }
 		}
 		[InitializedBus]
 		public interface Internal1 : IBus
 		{
-			int Bit { get; set; }
+			bool Bit { get; set; }
 		}
 		[InitializedBus]
 		public interface Internal2 : IBus
 		{
-			int Bit { get; set; }
+			bool Bit { get; set; }
 		}
 
 		public class XOR0 : SimpleProcess
@@ -112,76 +112,76 @@ namespace FullAdder
 			Console.WriteLine("Started testing");
 			await ClockAsync();
 
-			input.BitA = 0;
-			input.BitB = 0;
-			input.BitC = 0;
+            input.BitA = false;
+			input.BitB = false;
+			input.BitC = false;
 
 			await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(output.Sum == 0);
-			System.Diagnostics.Debug.Assert(output.Carry == 0);
+			System.Diagnostics.Debug.Assert(!output.Sum);
+			System.Diagnostics.Debug.Assert(!output.Carry);
 
-			input.BitA = 1;
-			input.BitB = 0;
-			input.BitC = 0;
-
-			await ClockAsync();
-
-			System.Diagnostics.Debug.Assert(output.Sum == 1);
-			System.Diagnostics.Debug.Assert(output.Carry == 0);
-
-			input.BitA = 0;
-			input.BitB = 1;
-			input.BitC = 0;
+			input.BitA = true;
+			input.BitB = false;
+			input.BitC = false;
 
 			await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(output.Sum == 1);
-			System.Diagnostics.Debug.Assert(output.Carry == 0);
+			System.Diagnostics.Debug.Assert(output.Sum);
+			System.Diagnostics.Debug.Assert(!output.Carry);
 
-			input.BitA = 0;
-			input.BitB = 0;
-			input.BitC = 1;
-
-			await ClockAsync();
-
-			System.Diagnostics.Debug.Assert(output.Sum == 1);
-			System.Diagnostics.Debug.Assert(output.Carry == 0);
-
-			input.BitA = 1;
-			input.BitB = 1;
-			input.BitC = 0;
+			input.BitA = false;
+			input.BitB = true;
+			input.BitC = false;
 
 			await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(output.Sum == 0);
-			System.Diagnostics.Debug.Assert(output.Carry == 1);
+			System.Diagnostics.Debug.Assert(output.Sum);
+			System.Diagnostics.Debug.Assert(!output.Carry);
 
-			input.BitA = 1;
-			input.BitB = 0;
-			input.BitC = 1;
-
-			await ClockAsync();
-
-			System.Diagnostics.Debug.Assert(output.Sum == 0);
-			System.Diagnostics.Debug.Assert(output.Carry == 1);
-
-			input.BitA = 0;
-			input.BitB = 1;
-			input.BitC = 1;
+			input.BitA = false;
+			input.BitB = false;
+			input.BitC = true;
 
 			await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(output.Sum == 0);
-			System.Diagnostics.Debug.Assert(output.Carry == 1);
+			System.Diagnostics.Debug.Assert(output.Sum);
+			System.Diagnostics.Debug.Assert(!output.Carry);
 
-			input.BitA = 1;
-			input.BitB = 1;
-			input.BitC = 1;
+			input.BitA = true;
+			input.BitB = true;
+			input.BitC = false;
 
 			await ClockAsync();
-			System.Diagnostics.Debug.Assert(output.Sum == 1);
-			System.Diagnostics.Debug.Assert(output.Carry == 1);
+
+			System.Diagnostics.Debug.Assert(!output.Sum);
+			System.Diagnostics.Debug.Assert(output.Carry);
+
+			input.BitA = true;
+			input.BitB = false;
+			input.BitC = true;
+
+			await ClockAsync();
+
+			System.Diagnostics.Debug.Assert(!output.Sum);
+			System.Diagnostics.Debug.Assert(output.Carry);
+
+			input.BitA = false;
+			input.BitB = true;
+			input.BitC = true;
+
+			await ClockAsync();
+
+			System.Diagnostics.Debug.Assert(!output.Sum);
+			System.Diagnostics.Debug.Assert(output.Carry);
+
+			input.BitA = true;
+			input.BitB = true;
+			input.BitC = true;
+
+			await ClockAsync();
+			System.Diagnostics.Debug.Assert(output.Sum);
+			System.Diagnostics.Debug.Assert(output.Carry);
 			Console.WriteLine("Done testing");
 		}
 	}

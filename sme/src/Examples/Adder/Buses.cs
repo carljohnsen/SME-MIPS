@@ -6,14 +6,14 @@ namespace Adder
 	[InitializedBus]
 	public interface Input : IBus
 	{
-		int Bit0 { get; set; }
-		int Bit1 { get; set; }
+		bool Bit0 { get; set; }
+		bool Bit1 { get; set; }
 	}
 
 	[InitializedBus]
 	public interface Output : IBus
 	{
-		int Sum { get; set; }
-		int Carry { get; set; }
+		bool Sum { get; set; }
+		bool Carry { get; set; }
 	}
 }

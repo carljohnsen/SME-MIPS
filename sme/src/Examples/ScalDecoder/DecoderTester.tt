@@ -39,7 +39,7 @@ for (int i = 0; i < pow; i++) {
 	for (int j = 0; j < BitWidth; j++) 
 	{
 #>
-			input<#Write(""+j);#>.Bit = <#Write(""+i);#> >> <#Write(""+j);#> & 1;
+			input<#Write(""+j);#>.Bit = (<#Write(""+i);#> >> <#Write(""+j);#> & 1) == 1;
 <#
 	}
 #>
@@ -48,7 +48,7 @@ for (int i = 0; i < pow; i++) {
 	for (int j = 0; j < pow; j++)
 	{
 #>
-			System.Diagnostics.Debug.Assert(output<#Write(""+j);#>.Bit == <# if (i == j) { Write("1"); } else { Write("0"); } #>);
+			System.Diagnostics.Debug.Assert(<# if (i != j) { Write("!"); } #>output<#Write(""+j);#>.Bit);
 <#
 	}
 #>

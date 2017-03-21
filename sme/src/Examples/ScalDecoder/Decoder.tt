@@ -15,7 +15,7 @@ namespace ScalDecoder
 <# for (int i = 0; i < BitWidth; i++)
 {
 #>
-		[InitializedBus] public interface InputN<#Write(""+i);#> : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface InputN<#Write(""+i);#> : IBus { bool Bit { get; set; } }
 <#
 }
 #>
@@ -30,7 +30,7 @@ namespace ScalDecoder
 
 			protected override void OnTick()
 			{
-				output.Bit = ~input.Bit & 1;
+				output.Bit = !input.Bit;
 			}
 		}
 <#
@@ -57,7 +57,7 @@ namespace ScalDecoder
 <# for (int j = 1; j < BitWidth; j++)
 {
 #>
-						   & input<#Write(""+j);#>.Bit
+						   && input<#Write(""+j);#>.Bit
 <#
 }
 #>;

@@ -5,12 +5,12 @@ namespace ScalDecoder
 {
 	public class Decoder 
 	{
-		[InitializedBus] public interface InputN0 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface InputN1 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface InputN2 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface InputN3 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface InputN4 : IBus { int Bit { get; set; } }
-		[InitializedBus] public interface InputN5 : IBus { int Bit { get; set; } }
+		[InitializedBus] public interface InputN0 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface InputN1 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface InputN2 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface InputN3 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface InputN4 : IBus { bool Bit { get; set; } }
+		[InitializedBus] public interface InputN5 : IBus { bool Bit { get; set; } }
 
 		public class NOT0 : SimpleProcess
 		{
@@ -19,7 +19,7 @@ namespace ScalDecoder
 
 			protected override void OnTick()
 			{
-				output.Bit = ~input.Bit & 1;
+				output.Bit = !input.Bit;
 			}
 		}
 		public class NOT1 : SimpleProcess
@@ -29,7 +29,7 @@ namespace ScalDecoder
 
 			protected override void OnTick()
 			{
-				output.Bit = ~input.Bit & 1;
+				output.Bit = !input.Bit;
 			}
 		}
 		public class NOT2 : SimpleProcess
@@ -39,7 +39,7 @@ namespace ScalDecoder
 
 			protected override void OnTick()
 			{
-				output.Bit = ~input.Bit & 1;
+				output.Bit = !input.Bit;
 			}
 		}
 		public class NOT3 : SimpleProcess
@@ -49,7 +49,7 @@ namespace ScalDecoder
 
 			protected override void OnTick()
 			{
-				output.Bit = ~input.Bit & 1;
+				output.Bit = !input.Bit;
 			}
 		}
 		public class NOT4 : SimpleProcess
@@ -59,7 +59,7 @@ namespace ScalDecoder
 
 			protected override void OnTick()
 			{
-				output.Bit = ~input.Bit & 1;
+				output.Bit = !input.Bit;
 			}
 		}
 		public class NOT5 : SimpleProcess
@@ -69,7 +69,7 @@ namespace ScalDecoder
 
 			protected override void OnTick()
 			{
-				output.Bit = ~input.Bit & 1;
+				output.Bit = !input.Bit;
 			}
 		}
 
@@ -86,11 +86,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -107,11 +107,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -128,11 +128,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -149,11 +149,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -170,11 +170,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -191,11 +191,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -212,11 +212,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -233,11 +233,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -254,11 +254,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -275,11 +275,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -296,11 +296,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -317,11 +317,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -338,11 +338,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -359,11 +359,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -380,11 +380,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -401,11 +401,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -422,11 +422,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -443,11 +443,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -464,11 +464,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -485,11 +485,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -506,11 +506,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -527,11 +527,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -548,11 +548,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -569,11 +569,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -590,11 +590,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -611,11 +611,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -632,11 +632,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -653,11 +653,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -674,11 +674,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -695,11 +695,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -716,11 +716,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -737,11 +737,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -758,11 +758,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -779,11 +779,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -800,11 +800,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -821,11 +821,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -842,11 +842,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -863,11 +863,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -884,11 +884,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -905,11 +905,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -926,11 +926,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -947,11 +947,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -968,11 +968,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -989,11 +989,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1010,11 +1010,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1031,11 +1031,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1052,11 +1052,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1073,11 +1073,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1094,11 +1094,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1115,11 +1115,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1136,11 +1136,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1157,11 +1157,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1178,11 +1178,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1199,11 +1199,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1220,11 +1220,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1241,11 +1241,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1262,11 +1262,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1283,11 +1283,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1304,11 +1304,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1325,11 +1325,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1346,11 +1346,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1367,11 +1367,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1388,11 +1388,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}
@@ -1409,11 +1409,11 @@ namespace ScalDecoder
 			protected override void OnTick()
 			{
 				output.Bit = input0.Bit
-						   & input1.Bit
-						   & input2.Bit
-						   & input3.Bit
-						   & input4.Bit
-						   & input5.Bit
+						   && input1.Bit
+						   && input2.Bit
+						   && input3.Bit
+						   && input4.Bit
+						   && input5.Bit
 ;
 			}
 		}

@@ -1,4 +1,4 @@
-ori  $a0 $0  10            # n = 3
+ori  $a0 $0  7            # n = 3
 ori  $sp $0  8192         # set stack
 ori  $s0 $0  1            # constant 1
 la   $ra exit             # Load exit as final return addr

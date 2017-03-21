@@ -17,32 +17,32 @@ namespace Adder
 			Console.WriteLine("Started testing");
 			await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(output.Sum == 0);
-			System.Diagnostics.Debug.Assert(output.Carry == 0);
+			System.Diagnostics.Debug.Assert(!output.Sum);
+			System.Diagnostics.Debug.Assert(!output.Carry);
 
-			input.Bit0 = 1;
-			input.Bit1 = 0;
-
-			await ClockAsync();
-
-			System.Diagnostics.Debug.Assert(output.Sum == 1);
-			System.Diagnostics.Debug.Assert(output.Carry == 0);
-
-			input.Bit0 = 0;
-			input.Bit1 = 1;
+			input.Bit0 = true;
+            input.Bit1 = false;
 
 			await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(output.Sum == 1);
-			System.Diagnostics.Debug.Assert(output.Carry == 0);
+			System.Diagnostics.Debug.Assert(output.Sum);
+			System.Diagnostics.Debug.Assert(!output.Carry);
 
-			input.Bit0 = 1;
-			input.Bit1 = 1;
+            input.Bit0 = false;
+			input.Bit1 = true;
 
 			await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(output.Sum == 0);
-			System.Diagnostics.Debug.Assert(output.Carry == 1);
+			System.Diagnostics.Debug.Assert(output.Sum);
+			System.Diagnostics.Debug.Assert(!output.Carry);
+
+			input.Bit0 = true;
+			input.Bit1 = true;
+
+			await ClockAsync();
+
+			System.Diagnostics.Debug.Assert(!output.Sum);
+			System.Diagnostics.Debug.Assert(output.Carry);
 			Console.WriteLine("Done testing");
 		}
 	}

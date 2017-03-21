@@ -13,7 +13,7 @@ namespace ScalDecoder {
 <# for (int i = 0; i < BitWidth; i++)
 {
 #>
-	[InitializedBus] public interface Input<#Write(""+i);#> : IBus { int Bit { get; set; } }
+	[InitializedBus] public interface Input<#Write(""+i);#> : IBus { bool Bit { get; set; } }
 <#
 }
 #>
@@ -21,7 +21,7 @@ namespace ScalDecoder {
 <# for (int i = 0; i < pow; i++)
 {
 #>
-	[InitializedBus] public interface Output<#Write(""+i);#> : IBus { int Bit { get; set; } }
+	[InitializedBus] public interface Output<#Write(""+i);#> : IBus { bool Bit { get; set; } }
 <#
 }
 #>

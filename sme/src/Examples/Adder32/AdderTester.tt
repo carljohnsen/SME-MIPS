@@ -17,8 +17,8 @@ namespace Adder32 {
 <# for (int i = 0; i < BitWidth; i++)
 {
 #>
-			inputa<#Write(""+i);#>.Bit = (num1 >> <#Write(""+i);#>) & 1;
-			inputb<#Write(""+i);#>.Bit = (num2 >> <#Write(""+i);#>) & 1;
+			inputa<#Write(""+i);#>.Bit = ((num1 >> <#Write(""+i);#>) & 1) == 1;
+			inputb<#Write(""+i);#>.Bit = ((num2 >> <#Write(""+i);#>) & 1) == 1;
 <#
 }
 #>
@@ -30,7 +30,7 @@ namespace Adder32 {
 <# for (int i = 0; i < BitWidth; i++)
 {
 #>
-			result |= output<#Write(""+i);#>.Bit << <#Write(""+i);#>;
+			result |= (output<#Write(""+i);#>.Bit ? 1 : 0) << <#Write(""+i);#>;
 <#
 }
 #>
@@ -76,7 +76,7 @@ namespace Adder32 {
 			InputNumbers(-2147483648, -2147483648);
 			await ClockAsync();
 			System.Diagnostics.Debug.Assert(GetOutput() == 0, "Overflow output");
-			System.Diagnostics.Debug.Assert(overflow.Bit == 1, "Overflow bit");
+			System.Diagnostics.Debug.Assert(overflow.Bit, "Overflow bit");
 
 			// A bunch of random tests
 			Random rnd = new Random();
