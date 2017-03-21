@@ -328,7 +328,6 @@ namespace SingleCycleMIPS
             [OutputBus]
             OutputB outputB;
 
-            //int[] data = new int[32];
             uint[] data = Enumerable.Repeat((uint) 0, 32).ToArray();
 
             protected override void OnTick()

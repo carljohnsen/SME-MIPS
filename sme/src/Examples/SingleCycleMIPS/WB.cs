@@ -11,12 +11,6 @@ namespace SingleCycleMIPS
 
     public class WB
     {
-        /*[InitializedBus]
-        public interface RegWrite : IBus
-        {
-            bool flg { get; set; }
-        }*/
-
         [InitializedBus]
         public interface BufIn : IBus
         {
@@ -27,10 +21,8 @@ namespace SingleCycleMIPS
         public class WriteBuffer : SimpleProcess
         {
             [InputBus]
-            //ID.MuxOutput addrIn;
             EX.RegWriteAddr addrIn;
             [InputBus]
-            //BufIn dataIn;
             MEM.MemOut dataIn;
             [InputBus]
             RegWrite regwriteIn;

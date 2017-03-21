@@ -16,19 +16,7 @@ namespace SingleCycleMIPS
     }
 
     public class MEM
-    {/*
-        [InitializedBus]
-        public interface Address : IBus
-        {
-            int addr { get; set; }
-        }
-
-        [InitializedBus]
-        public interface Data : IBus
-        {
-            int data { get; set; }
-        }*/
-
+    {
         [InitializedBus]
         public interface ReadData : IBus
         {
@@ -48,43 +36,13 @@ namespace SingleCycleMIPS
             [InputBus]
             MemRead memread;
             [InputBus]
-            //EX.ALUResult addr;
             EX.JALOut addr;
             [InputBus]
             ID.OutputB write;
-            //[InputBus]
-            //IF.DEBUG_SHUTDOWN dbg;
 
             [OutputBus]
             ReadData output;
 
-            /*int[] mem = new int[1024];
-
-            protected override void OnTick()
-            {
-                if (memread.flg)
-                {
-                    output.data = mem[addr.data];
-                    //Console.WriteLine("Reading " + tmp + " from " + addr.data);
-                }
-                else if (memwrite.flg)
-                {
-                    //Console.WriteLine("Writing " + write.data + " to " + addr.data);
-                    mem[addr.data] = write.data;
-                    output.data = 0; // Escape latch warning!
-                }
-                else // Escape latch warning!
-                    output.data = 0;
-                if (true)//!dbg.running)
-                {
-                    Console.Write("MEM [");
-                    for (int i = 0; i < 10; i++)
-                    {
-                        Console.Write(mem[i] + ",");
-                    }
-                    Console.WriteLine("]");
-                }
-            }*/
             byte[] mem = new byte[16384];
 
             protected override void OnTick()
@@ -131,7 +89,6 @@ namespace SingleCycleMIPS
             [InputBus]
             ReadData mem;
             [InputBus]
-            //EX.ALUResult alu;
             EX.JALOut jal;
             [InputBus]
             MemToReg memtoreg;

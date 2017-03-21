@@ -183,7 +183,6 @@ namespace SingleCycleMIPS
             ID.Shamt shmt;
             [InputBus]
             ID.OutputA reada;
-            //ImmMuxOut immreg;
             [InputBus]
             Shift shift;
 
@@ -243,13 +242,13 @@ namespace SingleCycleMIPS
                 {
                     switch ((ALUOpcodes)op.code)
                     {
-                        case ALUOpcodes.add: output.val = (short)ALUOps.add; break;
-                        case ALUOpcodes.sub: output.val = (short)ALUOps.sub; break;
-                        case ALUOpcodes.or:  output.val = (short)ALUOps.or;  break;
+                        case ALUOpcodes.add:  output.val = (short)ALUOps.add;  break;
+                        case ALUOpcodes.sub:  output.val = (short)ALUOps.sub;  break;
+                        case ALUOpcodes.or:   output.val = (short)ALUOps.or;   break;
                         case ALUOpcodes.addu: output.val = (short)ALUOps.addu; break;    
-                        case ALUOpcodes.slt: output.val = (short)ALUOps.slt; break;
+                        case ALUOpcodes.slt:  output.val = (short)ALUOps.slt;  break;
                         case ALUOpcodes.sltu: output.val = (short)ALUOps.sltu; break;    
-                        default:             output.val = 0;                 break; // nop
+                        default:              output.val = 0;                  break; // nop
                     }
                     jr.flg = false;
                     shift.flg = false;
@@ -260,11 +259,9 @@ namespace SingleCycleMIPS
         public class ALU : SimpleProcess
         {
             [InputBus]
-            //ID.OutputA inA;
             ShmtMuxOut inA;
             [InputBus]
             ImmMuxOut inB;
-            //ShmtMuxOut inB;
             [InputBus]
             ALUOperation op;
 
@@ -272,7 +269,6 @@ namespace SingleCycleMIPS
             Zero zero;
             [OutputBus]
             ALUResult result;
-            //WB.BufIn result;
 
             uint HI = 0;
             uint LO = 0;
@@ -357,7 +353,6 @@ namespace SingleCycleMIPS
                         tmp = unchecked((uint)-1);
                         break;
                 }
-                //Console.WriteLine("ALU " + inA.data + " " + ((ALUOps) op.val) + " " + inB.data +  " = " + tmp);
                 result.data = tmp;
                 zero.flg = tmp == 0;
             }
