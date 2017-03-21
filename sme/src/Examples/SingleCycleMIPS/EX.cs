@@ -135,13 +135,13 @@ namespace SingleCycleMIPS
         [InitializedBus]
         public interface ImmMuxOut : IBus
         {
-            int data { get; set; }
+            uint data { get; set; }
         }
 
         [InitializedBus]
         public interface ShmtMuxOut : IBus
         {
-            int data { get; set; }
+            uint data { get; set; }
         }
 
         [InitializedBus]
@@ -153,7 +153,7 @@ namespace SingleCycleMIPS
         [InitializedBus]
         public interface ALUResult : IBus
         {
-            int data { get; set; }
+            uint data { get; set; }
         }
 
         public class ImmMux : SimpleProcess
@@ -274,53 +274,53 @@ namespace SingleCycleMIPS
             ALUResult result;
             //WB.BufIn result;
 
-            int HI = 0;
-            int LO = 0;
+            uint HI = 0;
+            uint LO = 0;
 
             protected override void OnTick()
             {
-                int tmp = -1;
-                long tmp2 = -1L;
+                uint tmp = unchecked((uint) -1);
+                ulong tmp2 = unchecked((ulong) -1L);
                 switch ((ALUOps) op.val)
                 {
-                    case ALUOps.sr:
-                        tmp = (int) (unchecked((uint) inB.data) >> inA.data);
+                    case ALUOps.sr: // Second operand of >> must be int......
+                        tmp = inB.data >> (int) inA.data;
                         break;
                     case ALUOps.sl:
-                        tmp = (int) (unchecked((uint) inB.data) << inA.data);
+                        tmp = inB.data << (int) inA.data;
                         break;
                     case ALUOps.sra:
-                        tmp = inA.data << inB.data;
+                        tmp = (uint) ((int) inA.data << (int) inB.data);
                         break;
                     case ALUOps.add:
-                        tmp = inA.data + inB.data;
+                        tmp = (uint) ((int) inA.data + (int) inB.data);
                         break;
                     case ALUOps.addu:
-                        tmp = (int) (((uint)inA.data) + ((uint)inB.data));
+                        tmp = inA.data + inB.data;
                         break;
                     case ALUOps.sub:
-                        tmp = inA.data - inB.data;
+                        tmp = (uint) ((int) inA.data - (int) inB.data);
                         break;
                     case ALUOps.subu:
-                        tmp = (int)(((uint)inA.data) - ((uint)inB.data));
+                        tmp = inA.data - inB.data;
                         break;
                     case ALUOps.mult:
-                        tmp2 = inA.data * inB.data;
-                        HI = (int)(tmp2 >> 32);
-                        LO = (int)(tmp2 & 0xFFFFFFFF);
+                        tmp2 = (ulong) ((int) inA.data * (int) inB.data);
+                        HI = (uint) (tmp2 >> 32);
+                        LO = (uint) tmp2;
                         break;
                     case ALUOps.multu: 
-                        tmp2 = ((uint)inA.data) * ((uint)inB.data);
-                        HI = (int)(tmp2 >> 32);
-                        LO = (int)(tmp2 & 0xFFFFFFFF);
+                        tmp2 = inA.data * inB.data;
+                        HI = (uint) (tmp2 >> 32);
+                        LO = (uint) tmp2;
                         break;
                     case ALUOps.div: // Remember divide by 0...
-                        HI = inA.data % inB.data;
-                        LO = inA.data / inB.data;
+                        HI = (uint) ((int) inA.data % (int) inB.data);
+                        LO = (uint) ((int) inA.data / (int) inB.data);
                         break;
                     case ALUOps.divu: // Remember divide by 0...
-                        HI = (int)(((uint)inA.data) % ((uint)inB.data));
-                        LO = (int)(((uint)inA.data) / ((uint)inB.data));
+                        HI = inA.data % inB.data;
+                        LO = inA.data / inB.data;
                         break;
                     case ALUOps.and:
                         tmp = inA.data & inB.data;
@@ -335,10 +335,10 @@ namespace SingleCycleMIPS
                         tmp = ~(inA.data | inB.data);
                         break;
                     case ALUOps.slt:
-                        tmp = inA.data < inB.data ? 1 : 0;
+                        tmp = (int) inA.data < (int) inB.data ? 1u : 0u;
                         break;
                     case ALUOps.sltu:
-                        tmp = ((uint)inA.data) < ((uint)inB.data) ? 1 : 0;
+                        tmp = inA.data < inB.data ? 1u : 0u;
                         break;
                     case ALUOps.mtlo:
                         LO = inA.data;
@@ -354,7 +354,7 @@ namespace SingleCycleMIPS
                         break;
                     default: // Catch unknown
                         Console.WriteLine("Should not be!");
-                        tmp = -1;
+                        tmp = unchecked((uint)-1);
                         break;
                 }
                 //Console.WriteLine("ALU " + inA.data + " " + ((ALUOps) op.val) + " " + inB.data +  " = " + tmp);
@@ -388,7 +388,7 @@ namespace SingleCycleMIPS
         [InitializedBus]
         public interface JALOut : IBus
         {
-            int val { get; set; }
+            uint val { get; set; }
         }
 
         public class JalUnit : SimpleProcess
@@ -415,7 +415,7 @@ namespace SingleCycleMIPS
         [InitializedBus]
         public interface AdderOut : IBus
         {
-            int address { get; set; }
+            uint address { get; set; }
         }
 
         [InitializedBus]
@@ -427,25 +427,25 @@ namespace SingleCycleMIPS
         [InitializedBus]
         public interface Instruction : IBus
         {
-            int addr { get; set; }
+            uint addr { get; set; }
         }
 
         [InitializedBus]
         public interface JumpAddr : IBus
         {
-            int addr { get; set; }
+            uint addr { get; set; }
         }
 
         [InitializedBus]
         public interface Mux0Out : IBus
         {
-            int addr { get; set; }
+            uint addr { get; set; }
         }
 
         [InitializedBus]
         public interface Mux2Out : IBus
         {
-            int addr { get; set; }
+            uint addr { get; set; }
         }
 
         public class Adder : SimpleProcess

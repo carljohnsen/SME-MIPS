@@ -101,7 +101,7 @@ namespace SingleCycleMIPS
         [InitializedBus]
         public interface WriteData : IBus
         {
-            int data { get; set; }
+            uint data { get; set; }
         }
 
         [InitializedBus]
@@ -113,19 +113,19 @@ namespace SingleCycleMIPS
         [InitializedBus]
         public interface SignExtOut : IBus
         {
-            int data { get; set; }
+            uint data { get; set; }
         }
 
         [InitializedBus]
         public interface OutputA : IBus
         {
-            int data { get; set; }
+            uint data { get; set; }
         }
 
         [InitializedBus]
         public interface OutputB : IBus
         {
-            int data { get; set; }
+            uint data { get; set; }
         }
 
         [InitializedBus]
@@ -190,7 +190,7 @@ namespace SingleCycleMIPS
                 byte  rd     = (byte) ((tmp >> 11) & 0x1F);
                 byte  shamt  = (byte) ((tmp >> 6)  & 0x1F);
                 byte  funct  = (byte) ( tmp        & 0x3F);
-                int   addr   = (int)  ( tmp        & 0x03FFFFFF); // Last 25 bit
+                uint  addr   = (uint) ( tmp        & 0x03FFFFFF); // Last 25 bit
                 short ext    = (short)( tmp        & 0xFFFF); // Last 16 bit
 
                 shmt.amount = shamt;
@@ -234,9 +234,9 @@ namespace SingleCycleMIPS
             protected override void OnTick()
             {
                 if (logIm.flg)
-                    output.data = 0 | input.data;
+                    output.data = (uint) (0 | input.data);
                 else
-                    output.data = input.data;
+                    output.data = (uint) input.data;
             }
         }
 
@@ -329,7 +329,7 @@ namespace SingleCycleMIPS
             OutputB outputB;
 
             //int[] data = new int[32];
-            int[] data = Enumerable.Repeat(0, 32).ToArray();
+            uint[] data = Enumerable.Repeat((uint) 0, 32).ToArray();
 
             protected override void OnTick()
             {

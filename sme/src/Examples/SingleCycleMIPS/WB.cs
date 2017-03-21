@@ -20,7 +20,7 @@ namespace SingleCycleMIPS
         [InitializedBus]
         public interface BufIn : IBus
         {
-            int data { get; set; }
+            uint data { get; set; }
         }
 
         [ClockedProcess]

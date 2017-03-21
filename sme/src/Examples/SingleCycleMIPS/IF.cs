@@ -14,19 +14,19 @@ namespace SingleCycleMIPS
         [InitializedBus]
         public interface Address : IBus
         {
-            int address { get; set; }
+            uint address { get; set; }
         }
 
         [InitializedBus]
         public interface PCIn : IBus
         {
-            int newAddress { get; set; }
+            uint newAddress { get; set; }
         }
 
         [InitializedBus]
         public interface IncrementerOut : IBus
         {
-            int address { get; set; }
+            uint address { get; set; }
         }
 
         [ClockedProcess]
@@ -142,7 +142,7 @@ namespace SingleCycleMIPS
             };*/
 
             // qsort!
-            /*uint[] program =
+            uint[] program =
             {
                 0x37bd0064,
                 0x34010004,
@@ -226,12 +226,12 @@ namespace SingleCycleMIPS
                 0x23bd0004,
                 0x13e00001,
                 0x03e00008,
-            };*/
+            };
 
             // Towers of hanoi!
-            uint[] program =
+            /*uint[] program =
             {
-                0x3404000A,
+                0x34040005,
                 0x341d1000,
                 0x34100001,
                 0x201f00f8,
@@ -293,13 +293,13 @@ namespace SingleCycleMIPS
                 0xacc80000,
                 0xaca90000,
                 0x03e00008,
-            };
+            };*/
 
             int c = 0;
 
             protected override void OnTick()
             {
-                int i = addr.address;
+                uint i = addr.address;
                 if (i >= 0 && i < program.Length)
                 {
                     c++;
