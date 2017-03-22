@@ -2,7 +2,7 @@
 using System.Linq;
 using SME;
 
-namespace SingleCycleMIPS
+namespace PipelinedMIPS
 {
     public enum Opcodes
     {
@@ -60,105 +60,8 @@ namespace SingleCycleMIPS
         sltu,
     }
 
-    [InitializedBus]
-    public interface RegDst : IBus
+    public partial class ID
     {
-        bool flg { get; set; }
-    }
-
-    [InitializedBus]
-    public interface RegWrite : IBus
-    {
-        bool flg { get; set; }
-    }
-
-    [InitializedBus]
-    public interface LogicalImmediate : IBus
-    {
-        bool flg { get; set; }
-    }
-
-    public class ID
-    {
-        [InitializedBus]
-        public interface ReadA : IBus
-        {
-            byte addr { get; set; }
-        }
-
-        [InitializedBus]
-        public interface ReadB : IBus
-        {
-            byte addr { get; set; }
-        }
-
-        [InitializedBus, ClockedBus]
-        public interface WriteAddr : IBus
-        {
-            byte val { get; set; }
-        }
-
-        [InitializedBus]
-        public interface WriteData : IBus
-        {
-            uint data { get; set; }
-        }
-
-        [InitializedBus]
-        public interface SignExtIn : IBus
-        {
-            short data { get; set; }
-        }
-
-        [InitializedBus]
-        public interface SignExtOut : IBus
-        {
-            uint data { get; set; }
-        }
-
-        [InitializedBus]
-        public interface OutputA : IBus
-        {
-            uint data { get; set; }
-        }
-
-        [InitializedBus]
-        public interface OutputB : IBus
-        {
-            uint data { get; set; }
-        }
-
-        [InitializedBus]
-        public interface ControlIn : IBus
-        {
-            byte opcode { get; set; }
-        }
-
-        [InitializedBus]
-        public interface MuxInput : IBus
-        {
-            byte rt { get; set; }
-            byte rd { get; set; }
-        }
-
-        [InitializedBus]
-        public interface MuxOutput : IBus
-        {
-            byte addr { get; set; }
-        }
-
-        [InitializedBus]
-        public interface WriteEnabled : IBus
-        {
-            bool flg { get; set; }
-        }
-
-        [InitializedBus]
-        public interface Shamt : IBus
-        {
-            byte amount { get; set; }
-        }
-
         public class Splitter : SimpleProcess
         {
             [InputBus]
@@ -173,11 +76,11 @@ namespace SingleCycleMIPS
             [OutputBus]
             ControlIn control;
             [OutputBus]
-            MuxInput mux;
+            RegDstMuxInput mux;
             [OutputBus]
             ALUFunct aluFunct;
             [OutputBus]
-            JumpUnit.Instruction jump;
+            Jump jump;
             [OutputBus]
             Shamt shmt;
 
@@ -205,15 +108,15 @@ namespace SingleCycleMIPS
             }
         }
 
-        public class Mux : SimpleProcess
+        public class RegDstMux : SimpleProcess
         {
             [InputBus]
             RegDst regdst;
             [InputBus]
-            MuxInput input;
+            RegDstMuxInput input;
 
             [OutputBus]
-            MuxOutput write;
+            WriteDst write;
 
             protected override void OnTick()
             {
@@ -262,7 +165,7 @@ namespace SingleCycleMIPS
             [OutputBus]
             RegWrite regwrite;
             [OutputBus]
-            Jump jump;
+            Jmp jump;
             [OutputBus]
             JAL jal;
             [OutputBus]
@@ -272,7 +175,7 @@ namespace SingleCycleMIPS
 
             protected override void OnTick()
             {
-                // flag format = [BranchNot, Jump reg, Logical immediate, JAL, Jump, RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch]
+                // flag format = [BranchNot, Jump reg, Logical immediate, JAL, Jmp, RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch]
                 short flags = 0; // nop
                 ALUOpcodes alu = 0; // nop
                 switch ((Opcodes)input.opcode)
@@ -307,8 +210,6 @@ namespace SingleCycleMIPS
                 aluop.code   = (byte)alu;
             }
         }
-
-
 
         public class Register : SimpleProcess
         {
@@ -351,6 +252,109 @@ namespace SingleCycleMIPS
                     Console.WriteLine(data[i * 8 + 7] + (i == 3 ? "\t]" : ","));
                 }
                 */
+            }
+        }
+
+        public partial class Pipe
+        {
+            [ClockedProcess]
+            public class Reg : SimpleProcess
+            {
+                [InputBus]
+                ID.OutputA outai;
+                [InputBus]
+                ID.OutputB outbi;
+                [InputBus]
+                ID.SignExtOut signi;
+                [InputBus]
+                IF.Pipe.IncrementerOut inci;
+                [InputBus]
+                ID.Jump jumpi;
+                [InputBus]
+                ID.Shamt shmti;
+                [InputBus]
+                ID.WriteDst dsti;
+                [InputBus]
+                ID.ALUFunct functi;
+                [InputBus]
+                ID.RegWrite regwritei;
+                [InputBus]
+                ID.ALUOp aluopi;
+                [InputBus]
+                ID.ALUSrc alusrci;
+                [InputBus]
+                ID.Branch branchi;
+                [InputBus]
+                ID.Jmp jmpi;
+                [InputBus]
+                ID.JAL jali;
+                [InputBus]
+                ID.BranchNot bnei;
+                [InputBus]
+                ID.MemRead memreadi;
+                [InputBus]
+                ID.MemWrite memwritei;
+                [InputBus]
+                ID.MemToReg memtoregi;
+
+                [OutputBus]
+                OutputA outao;
+                [OutputBus]
+                OutputB outbo;
+                [OutputBus]
+                SignExtOut signo;
+                [OutputBus]
+                IncrementerOut inco;
+                [OutputBus]
+                Jump jumpo;
+                [OutputBus]
+                Shamt shmto;
+                [OutputBus]
+                WriteDst dsto;
+                [OutputBus]
+                ALUFunct functo;
+                [OutputBus]
+                RegWrite regwriteo;
+                [OutputBus]
+                ALUOp aluopo;
+                [OutputBus]
+                ALUSrc alusrco;
+                [OutputBus]
+                Branch brancho;
+                [OutputBus]
+                Jmp jmpo;
+                [OutputBus]
+                JAL jalo;
+                [OutputBus]
+                BranchNot bneo;
+                [OutputBus]
+                MemRead memreado;
+                [OutputBus]
+                MemWrite memwriteo;
+                [OutputBus]
+                MemToReg memtorego;
+
+                protected override void OnTick()
+                {
+                    outao.data = outai.data;
+                    outbo.data = outbi.data;
+                    signo.data = signi.data;
+                    inco.addr  = inci.addr;
+                    jumpo.addr = jumpi.addr;
+                    shmto.amount = shmti.amount;
+                    dsto.addr = dsti.addr;
+                    functo.val = functi.val;
+                    regwriteo.flg = regwritei.flg;
+                    aluopo.code = aluopi.code;
+                    alusrco.flg = alusrci.flg;
+                    brancho.flg = branchi.flg;
+                    jmpo.flg = jmpi.flg;
+                    jalo.flg = jali.flg;
+                    bneo.flg = bnei.flg;
+                    memreado.flg = memreadi.flg;
+                    memwriteo.flg = memwritei.flg;
+                    memtorego.flg = memtoregi.flg;
+                }
             }
         }
     }

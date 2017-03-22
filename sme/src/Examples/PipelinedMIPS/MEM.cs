@@ -1,44 +1,20 @@
 ﻿using System;
 using SME;
 
-namespace SingleCycleMIPS
+namespace PipelinedMIPS
 {
-    [InitializedBus]
-    public interface MemRead : IBus
+    public partial class MEM
     {
-        bool flg { get; set; }
-    }
-
-    [InitializedBus]
-    public interface MemWrite : IBus
-    {
-        bool flg { get; set; }
-    }
-
-    public class MEM
-    {
-        [InitializedBus]
-        public interface ReadData : IBus
-        {
-            uint data { get; set; }
-        }
-
-        [InitializedBus]
-        public interface MemOut : IBus
-        {
-            uint data { get; set; }
-        }
-
         public class Memory : SimpleProcess
         {
             [InputBus]
-            MemWrite memwrite;
+            ID.Pipe.MemWrite memwrite;
             [InputBus]
-            MemRead memread;
+            ID.Pipe.MemRead memread;
             [InputBus]
             EX.JALOut addr;
             [InputBus]
-            ID.OutputB write;
+            ID.Pipe.OutputB write;
 
             [OutputBus]
             ReadData output;
@@ -83,82 +59,10 @@ namespace SingleCycleMIPS
                 Console.WriteLine("]");
             }
         }
-
-        public class Mux : SimpleProcess
-        {
-            [InputBus]
-            ReadData mem;
-            [InputBus]
-            EX.JALOut jal;
-            [InputBus]
-            MemToReg memtoreg;
-
-            [OutputBus]
-            MemOut output;
-
-            protected override void OnTick()
-            {
-                output.data = memtoreg.flg ? mem.data : jal.val;
-            }
-        }
     }
 
-    public class JumpUnit
+    public partial class JumpUnit
     {
-        [InitializedBus]
-        public interface AdderOut : IBus
-        {
-            uint address { get; set; }
-        }
-
-        [InitializedBus]
-        public interface AndOut : IBus
-        {
-            bool flg { get; set; }
-        }
-
-        [InitializedBus]
-        public interface Instruction : IBus
-        {
-            uint addr { get; set; }
-        }
-
-        [InitializedBus]
-        public interface JumpPacker : IBus
-        {
-            uint addr { get; set; }
-        }
-
-        [InitializedBus]
-        public interface JrMuxOut : IBus
-        {
-            uint addr { get; set; }
-        }
-
-        [InitializedBus]
-        public interface PCSrc : IBus
-        {
-            bool flg { get; set; }
-        }
-
-        [InitializedBus]
-        public interface ShiftBranch : IBus
-        {
-            uint addr { get; set; }
-        }
-
-        [InitializedBus]
-        public interface ShiftJump : IBus
-        {
-            uint addr { get; set; }
-        }
-
-        [InitializedBus]
-        public interface BranchCondition : IBus
-        {
-            bool flg { get; set; }
-        }
-
         public class Adder : SimpleProcess
         {
             [InputBus]
@@ -178,11 +82,11 @@ namespace SingleCycleMIPS
         public class JrMux : SimpleProcess
         { 
             [InputBus]
-            ID.OutputA outa;
+            ID.Pipe.OutputA outa;
             [InputBus]
             JumpPacker inst;
             [InputBus]
-            JumpReg jr;
+            EX.JumpReg jr;
 
             [OutputBus]
             JrMuxOut output;
@@ -214,9 +118,9 @@ namespace SingleCycleMIPS
         public class Or : SimpleProcess
         {
             [InputBus]
-            Jump jmp;
+            ID.Pipe.Jmp jmp;
             [InputBus]
-            JumpReg jr;
+            EX.JumpReg jr;
             [InputBus]
             AndOut branch;
 
@@ -232,7 +136,7 @@ namespace SingleCycleMIPS
         public class ShiftB : SimpleProcess
         {
             [InputBus]
-            ID.SignExtOut immediate;
+            ID.Pipe.SignExtOut immediate;
 
             [OutputBus]
             ShiftBranch output;
@@ -246,7 +150,7 @@ namespace SingleCycleMIPS
         public class shiftJ : SimpleProcess
         {
             [InputBus]
-            Instruction inst;
+            ID.Pipe.Jump inst;
 
             [OutputBus]
             ShiftJump output;
@@ -279,7 +183,7 @@ namespace SingleCycleMIPS
             [InputBus]
             EX.Zero zero;
             [InputBus]
-            BranchNot bne;
+            ID.Pipe.BranchNot bne;
 
             [OutputBus]
             BranchCondition cond;
@@ -293,7 +197,7 @@ namespace SingleCycleMIPS
         public class And : SimpleProcess
         {
             [InputBus]
-            Branch branch;
+            ID.Pipe.Branch branch;
             [InputBus]
             BranchCondition cond;
 

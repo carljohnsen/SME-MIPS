@@ -1,7 +1,7 @@
 ﻿using System;
 using SME;
 
-namespace SingleCycleMIPS
+namespace PipelinedMIPS
 {
     // http://www.kurtm.net/mipsasm/
     // https://www.eg.bucknell.edu/~csci320/mips_web/

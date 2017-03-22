@@ -1,40 +1,10 @@
 ﻿using System;
 using SME;
 
-namespace SingleCycleMIPS
+namespace PipelinedMIPS
 {
-    public class IF
+    public partial class IF
     {
-        [InitializedBus]
-        public interface Instruction : IBus
-        {
-            uint instruction { get; set; }
-        }
-
-        [InitializedBus]
-        public interface Address : IBus
-        {
-            uint address { get; set; }
-        }
-
-        [InitializedBus]
-        public interface PCIn : IBus
-        {
-            uint newAddress { get; set; }
-        }
-
-        [InitializedBus]
-        public interface MuxIn : IBus
-        {
-            uint addr { get; set; }
-        }
-
-        [InitializedBus]
-        public interface IncrementerOut : IBus
-        {
-            uint address { get; set; }
-        }
-
         [ClockedProcess]
         public class PC : SimpleProcess
         {
@@ -123,20 +93,8 @@ namespace SingleCycleMIPS
             }
         }
 
-        public class Pipe
+        public partial class Pipe
         {
-            [InitializedBus]
-            public interface IncrementerOut : IBus
-            {
-                uint addr { get; set; }
-            }
-
-            [InitializedBus]
-            public interface Instruction : IBus
-            {
-                uint instruction { get; set; }
-            }
-
             [ClockedProcess]
             public class Reg : SimpleProcess
             {

@@ -1,7 +1,7 @@
 ﻿using System;
 using SME;
 
-namespace SingleCycleMIPS
+namespace PipelinedMIPS
 {
     // Values taken from MIPS reference data card from the book
     public enum Funcs
@@ -45,61 +45,7 @@ namespace SingleCycleMIPS
         tne=54
     }
 
-    [InitializedBus]
-    public interface ALUOp : IBus
-    {
-        byte code { get; set; }
-    }
-
-    [InitializedBus]
-    public interface ALUFunct : IBus
-    {
-        byte val { get; set; }
-    }
-
-    [InitializedBus]
-    public interface ALUSrc : IBus
-    {
-        bool flg { get; set; }
-    }
-
-    [InitializedBus]
-    public interface Branch : IBus
-    {
-        bool flg { get; set; }
-    }
-
-    [InitializedBus]
-    public interface Jump : IBus
-    {
-        bool flg { get; set; }
-    }
-
-    [InitializedBus]
-    public interface JAL : IBus
-    {
-        bool flg { get; set; }
-    }
-
-    [InitializedBus]
-    public interface JumpReg : IBus
-    {
-        bool flg { get; set; }
-    }
-
-    [InitializedBus]
-    public interface Shift : IBus
-    {
-        bool flg { get; set; }
-    }
-
-    [InitializedBus]
-    public interface BranchNot : IBus
-    {
-        bool flg { get; set; }
-    }
-
-    public class EX
+    public partial class EX
     {
         public enum ALUOps
         {
@@ -126,44 +72,14 @@ namespace SingleCycleMIPS
             sltu,
         }
 
-        [InitializedBus]
-        public interface ALUOperation : IBus
-        {
-            short val { get; set; }
-        }
-
-        [InitializedBus]
-        public interface ImmMuxOut : IBus
-        {
-            uint data { get; set; }
-        }
-
-        [InitializedBus]
-        public interface ShmtMuxOut : IBus
-        {
-            uint data { get; set; }
-        }
-
-        [InitializedBus]
-        public interface Zero : IBus
-        {
-            bool flg { get; set; }
-        }
-
-        [InitializedBus]
-        public interface ALUResult : IBus
-        {
-            uint data { get; set; }
-        }
-
         public class ImmMux : SimpleProcess
         {
             [InputBus]
-            ALUSrc src;
+            ID.Pipe.ALUSrc src;
             [InputBus]
-            ID.OutputB register;
+            ID.Pipe.OutputB register;
             [InputBus]
-            ID.SignExtOut immediate;
+            ID.Pipe.SignExtOut immediate;
 
             [OutputBus]
             ImmMuxOut output;
@@ -180,9 +96,9 @@ namespace SingleCycleMIPS
         public class ShmtMux : SimpleProcess
         {
             [InputBus]
-            ID.Shamt shmt;
+            ID.Pipe.Shamt shmt;
             [InputBus]
-            ID.OutputA reada;
+            ID.Pipe.OutputA reada;
             [InputBus]
             Shift shift;
 
@@ -198,9 +114,9 @@ namespace SingleCycleMIPS
         public class ALUControl : SimpleProcess
         {
             [InputBus]
-            ALUOp op;
+            ID.Pipe.ALUOp op;
             [InputBus]
-            ALUFunct funct;
+            ID.Pipe.ALUFunct funct;
 
             [OutputBus]
             ALUOperation output;
@@ -367,9 +283,9 @@ namespace SingleCycleMIPS
         public class JalMux : SimpleProcess
         {
             [InputBus]
-            ID.MuxOutput writeAddr;
+            ID.Pipe.WriteDst writeAddr;
             [InputBus]
-            JAL jal;
+            ID.Pipe.JAL jal;
 
             [OutputBus]
             RegWriteAddr output;
@@ -389,7 +305,7 @@ namespace SingleCycleMIPS
         public class JalUnit : SimpleProcess
         {
             [InputBus]
-            JAL jal;
+            ID.Pipe.JAL jal;
             [InputBus]
             IF.Pipe.IncrementerOut pc;
             [InputBus]

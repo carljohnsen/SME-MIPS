@@ -1,31 +1,19 @@
 ﻿using System;
 using SME;
 
-namespace SingleCycleMIPS
+namespace PipelinedMIPS
 {
-    [InitializedBus]
-    public interface MemToReg : IBus
+    public partial class WB
     {
-        bool flg { get; set; }
-    }
-
-    public class WB
-    {
-        [InitializedBus]
-        public interface BufIn : IBus
-        {
-            uint data { get; set; }
-        }
-
         [ClockedProcess]
         public class WriteBuffer : SimpleProcess
         {
             [InputBus]
             EX.RegWriteAddr addrIn;
             [InputBus]
-            MEM.MemOut dataIn;
+            MemOut dataIn;
             [InputBus]
-            RegWrite regwriteIn;
+            ID.Pipe.RegWrite regwriteIn;
 
             [OutputBus]
             ID.WriteAddr addrOut;
@@ -39,6 +27,24 @@ namespace SingleCycleMIPS
                 addrOut.val = addrIn.addr;
                 dataOut.data = dataIn.data;
                 regwriteOut.flg = regwriteIn.flg;
+            }
+        }
+
+        public class Mux : SimpleProcess
+        {
+            [InputBus]
+            MEM.ReadData mem;
+            [InputBus]
+            EX.JALOut jal;
+            [InputBus]
+            ID.Pipe.MemToReg memtoreg;
+
+            [OutputBus]
+            MemOut output;
+
+            protected override void OnTick()
+            {
+                output.data = memtoreg.flg ? mem.data : jal.val;
             }
         }
     }

@@ -5,8 +5,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{50E31EFB-78A1-406D-9D50-43D005B66375}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>SingleCycleMIPS</RootNamespace>
-    <AssemblyName>SingleCycleMIPS</AssemblyName>
+    <RootNamespace>PipelinedMIPS</RootNamespace>
+    <AssemblyName>PipelinedMIPS</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -38,6 +38,7 @@
     <Compile Include="EX.cs" />
     <Compile Include="WB.cs" />
     <Compile Include="Testers.cs" />
+    <Compile Include="BusDefinitions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Render\VHDL\SME.Render.VHDL.csproj">
