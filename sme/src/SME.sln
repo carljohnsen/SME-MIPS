@@ -39,7 +39,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Register", "Examples\Regist
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALU", "Examples\ALU\ALU.csproj", "{B437488B-64D6-4473-9BED-A3B9E0E32562}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SingleCycleMIPS", "Examples\SingleCycleMIPS\SingleCycleMIPS.csproj", "{50E31EFB-78A1-406D-9D50-43D005B66375}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipelinedMIPS", "Examples\PipelinedMIPS\PipelinedMIPS.csproj", "{50E31EFB-78A1-406D-9D50-43D005B66375}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testing", "testing\testing.csproj", "{CD17B80B-D921-417B-8FA6-D553EB97B81D}"
 EndProject
