@@ -93,6 +93,54 @@ namespace PipelinedMIPS
             }
         }
 
+        public class JumpJrMux : SimpleProcess
+        {
+            [InputBus]
+            ID.Pipe.OutputA outa;
+            [InputBus]
+            JumpPacked inst;
+            [InputBus]
+            JumpReg jr;
+
+            [OutputBus]
+            JumpAddress output;
+
+            protected override void OnTick()
+            {
+                output.addr = jr.flg ? outa.data : inst.addr;
+            }
+        }
+
+        public class JumpPacker : SimpleProcess
+        {
+            [InputBus]
+            ShiftJump mux;
+            [InputBus]
+            IF.Pipe.IncrementerOut pc;
+
+            [OutputBus]
+            JumpPacked output;
+
+            protected override void OnTick()
+            {
+                output.addr = (pc.addr & 0xF0000000) | mux.addr;
+            }
+        }
+
+        public class JumpShift : SimpleProcess
+        {
+            [InputBus]
+            ID.Pipe.Jump inst;
+
+            [OutputBus]
+            ShiftJump output;
+
+            protected override void OnTick()
+            {
+                output.addr = inst.addr << 2;
+            }
+        }
+
         public class ShmtMux : SimpleProcess
         {
             [InputBus]
@@ -108,6 +156,36 @@ namespace PipelinedMIPS
             protected override void OnTick()
             {
                 output.data = shift.flg ? shmt.amount : reada.data;
+            }
+        }
+
+        public class BranchAdder : SimpleProcess
+        {
+            [InputBus]
+            ShiftBranch immediate;
+            [InputBus]
+            IF.Pipe.IncrementerOut pc;
+
+            [OutputBus]
+            BranchAddress output;
+
+            protected override void OnTick()
+            {
+                output.addr = immediate.addr + pc.addr;
+            }
+        }
+
+        public class BranchShift : SimpleProcess
+        {
+            [InputBus]
+            ID.Pipe.SignExtOut immediate;
+
+            [OutputBus]
+            ShiftBranch output;
+
+            protected override void OnTick()
+            {
+                output.addr = immediate.data << 2;
             }
         }
 
@@ -274,12 +352,6 @@ namespace PipelinedMIPS
             }
         }
 
-        [InitializedBus]
-        public interface RegWriteAddr : IBus
-        {
-            byte addr { get; set; }
-        }
-
         public class JalMux : SimpleProcess
         {
             [InputBus]
@@ -294,12 +366,6 @@ namespace PipelinedMIPS
             {
                 output.addr = jal.flg ? (byte)31 : writeAddr.addr;
             }
-        }
-
-        [InitializedBus]
-        public interface JALOut : IBus
-        {
-            uint val { get; set; }
         }
 
         public class JalUnit : SimpleProcess
@@ -317,6 +383,88 @@ namespace PipelinedMIPS
             protected override void OnTick()
             {
                 output.val = jal.flg ? pc.addr : alu.data;
+            }
+        }
+
+        public partial class Pipe
+        {
+            public class Reg : SimpleProcess
+            {
+                [InputBus]
+                ID.Pipe.Branch branchi;
+                [InputBus]
+                EX.BranchAddress baddri;
+                [InputBus]
+                ID.Pipe.BranchNot bnei;
+                [InputBus]
+                EX.JALOut jouti;
+                [InputBus]
+                ID.Pipe.Jmp jmpi;
+                [InputBus]
+                EX.JumpAddress jaddri;
+                [InputBus]
+                EX.JumpReg jmpregi;
+                [InputBus]
+                ID.Pipe.MemRead memreadi;
+                [InputBus]
+                ID.Pipe.MemToReg memtoregi;
+                [InputBus]
+                ID.Pipe.MemWrite memwritei;
+                [InputBus]
+                ID.Pipe.OutputB outputbi;
+                [InputBus]
+                ID.Pipe.RegWrite regwritei;
+                [InputBus]
+                EX.RegWriteAddr regaddri;
+                [InputBus]
+                EX.Zero zeroi;
+
+                [OutputBus]
+                Branch brancho;
+                [OutputBus]
+                BranchAddress baddro;
+                [OutputBus]
+                BranchNot bneo;
+                [OutputBus]
+                JALOut jouto;
+                [OutputBus]
+                Jmp jmpo;
+                [OutputBus]
+                JumpAddress jaddro;
+                [OutputBus]
+                JumpReg jmprego;
+                [OutputBus]
+                MemRead memreado;
+                [OutputBus]
+                MemToReg memtorego;
+                [OutputBus]
+                MemWrite memwriteo;
+                [OutputBus]
+                OutputB outputbo;
+                [OutputBus]
+                RegWrite regwriteo;
+                [OutputBus]
+                RegWriteAddr regaddro;
+                [OutputBus]
+                Zero zeroo;
+
+                protected override void OnTick()
+                {
+                    brancho.flg = branchi.flg;
+                    baddro.addr = baddri.addr;
+                    bneo.flg = bnei.flg;
+                    jouto.val = jouti.val;
+                    jmpo.flg = jmpi.flg;
+                    jaddro.addr = jaddri.addr;
+                    jmprego.flg = jmpregi.flg;
+                    memreado.flg = memreadi.flg;
+                    memtorego.flg = memtoregi.flg;
+                    memwriteo.flg = memwritei.flg;
+                    outputbo.data = outputbi.data;
+                    regwriteo.flg = regwritei.flg;
+                    regaddro.addr = regaddri.addr;
+                    zeroo.flg = zeroi.flg;
+                }
             }
         }
     }

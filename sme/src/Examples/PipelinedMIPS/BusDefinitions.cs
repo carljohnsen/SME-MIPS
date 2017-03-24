@@ -336,6 +336,12 @@ namespace PipelinedMIPS
         }
 
         [InitializedBus]
+        public interface BranchAddress : IBus
+        {
+            uint addr { get; set; }
+        }
+
+        [InitializedBus]
         public interface ImmMuxOut : IBus
         {
             uint data { get; set; }
@@ -360,6 +366,24 @@ namespace PipelinedMIPS
         }
 
         [InitializedBus]
+        public interface JALOut : IBus
+        {
+            uint val { get; set; }
+        }
+
+        [InitializedBus]
+        public interface JumpAddress : IBus
+        {
+            uint addr { get; set; }
+        }
+
+        [InitializedBus]
+        public interface JumpPacked : IBus
+        {
+            uint addr { get; set; }
+        }
+
+        [InitializedBus]
         public interface JumpReg : IBus
         {
             bool flg { get; set; }
@@ -367,48 +391,6 @@ namespace PipelinedMIPS
 
         [InitializedBus]
         public interface Shift : IBus
-        {
-            bool flg { get; set; }
-        }
-    }
-
-    public partial class MEM
-    {
-        [InitializedBus]
-        public interface ReadData : IBus
-        {
-            uint data { get; set; }
-        }
-    }
-
-    public partial class JumpUnit
-    {
-        [InitializedBus]
-        public interface AdderOut : IBus
-        {
-            uint address { get; set; }
-        }
-
-        [InitializedBus]
-        public interface AndOut : IBus
-        {
-            bool flg { get; set; }
-        }
-
-        [InitializedBus]
-        public interface JumpPacker : IBus
-        {
-            uint addr { get; set; }
-        }
-
-        [InitializedBus]
-        public interface JrMuxOut : IBus
-        {
-            uint addr { get; set; }
-        }
-
-        [InitializedBus]
-        public interface PCSrc : IBus
         {
             bool flg { get; set; }
         }
@@ -426,6 +408,130 @@ namespace PipelinedMIPS
         }
 
         [InitializedBus]
+        public interface RegWriteAddr : IBus
+        {
+            byte addr { get; set; }
+        }
+
+        public partial class Pipe
+        {
+            [InitializedBus]
+            public interface Branch : IBus
+            {
+                bool flg { get; set; }
+            }
+
+            [InitializedBus]
+            public interface BranchAddress : IBus
+            {
+                uint addr { get; set; }
+            }
+
+            [InitializedBus]
+            public interface BranchNot : IBus
+            {
+                bool flg { get; set; }
+            }
+
+            [InitializedBus]
+            public interface JALOut : IBus
+            {
+                uint val { get; set; }
+            }
+
+            [InitializedBus]
+            public interface Jmp : IBus
+            {
+                bool flg { get; set; }
+            }
+
+            [InitializedBus]
+            public interface JumpAddress : IBus
+            {
+                uint addr { get; set; }
+            }
+
+            [InitializedBus]
+            public interface JumpReg : IBus
+            {
+                bool flg { get; set; }
+            }
+
+            [InitializedBus]
+            public interface MemRead : IBus
+            {
+                bool flg { get; set; }
+            }
+
+            [InitializedBus]
+            public interface MemToReg : IBus
+            {
+                bool flg { get; set; }
+            }
+
+            [InitializedBus]
+            public interface MemWrite : IBus
+            {
+                bool flg { get; set; }
+            }
+
+            [InitializedBus]
+            public interface OutputB : IBus
+            {
+                uint data { get; set; }
+            }
+
+            [InitializedBus]
+            public interface RegWrite : IBus
+            {
+                bool flg { get; set; }
+            }
+
+            [InitializedBus]
+            public interface RegWriteAddr : IBus
+            {
+                byte addr { get; set; }
+            }
+
+            [InitializedBus]
+            public interface Zero : IBus
+            {
+                bool flg { get; set; }
+            }
+        }
+    }
+
+    public partial class MEM
+    {
+        [InitializedBus]
+        public interface ReadData : IBus
+        {
+            uint data { get; set; }
+        }
+
+        public partial class Pipe
+        {
+            
+        }
+    }
+
+    public partial class JumpUnit
+    {
+        [InitializedBus]
+        public interface AndOut : IBus
+        {
+            bool flg { get; set; }
+        }
+
+
+
+        [InitializedBus]
+        public interface PCSrc : IBus
+        {
+            bool flg { get; set; }
+        }
+
+        [InitializedBus]
         public interface BranchCondition : IBus
         {
             bool flg { get; set; }
@@ -434,12 +540,6 @@ namespace PipelinedMIPS
 
     public partial class WB
     {
-        [InitializedBus]
-        public interface BufIn : IBus
-        {
-            uint data { get; set; }
-        }
-
         [InitializedBus]
         public interface MemOut : IBus
         {

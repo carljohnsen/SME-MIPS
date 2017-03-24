@@ -9,11 +9,11 @@ namespace PipelinedMIPS
         public class WriteBuffer : SimpleProcess
         {
             [InputBus]
-            EX.RegWriteAddr addrIn;
+            EX.Pipe.RegWriteAddr addrIn;
             [InputBus]
             MemOut dataIn;
             [InputBus]
-            ID.Pipe.RegWrite regwriteIn;
+            EX.Pipe.RegWrite regwriteIn;
 
             [OutputBus]
             ID.WriteAddr addrOut;
@@ -30,14 +30,14 @@ namespace PipelinedMIPS
             }
         }
 
-        public class Mux : SimpleProcess
+        public class MemMux : SimpleProcess
         {
             [InputBus]
             MEM.ReadData mem;
             [InputBus]
-            EX.JALOut jal;
+            EX.Pipe.JALOut jal;
             [InputBus]
-            ID.Pipe.MemToReg memtoreg;
+            EX.Pipe.MemToReg memtoreg;
 
             [OutputBus]
             MemOut output;

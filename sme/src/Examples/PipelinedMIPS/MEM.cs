@@ -8,13 +8,13 @@ namespace PipelinedMIPS
         public class Memory : SimpleProcess
         {
             [InputBus]
-            ID.Pipe.MemWrite memwrite;
+            EX.Pipe.MemWrite memwrite;
             [InputBus]
-            ID.Pipe.MemRead memread;
+            EX.Pipe.MemRead memread;
             [InputBus]
-            EX.JALOut addr;
+            EX.Pipe.JALOut addr;
             [InputBus]
-            ID.Pipe.OutputB write;
+            EX.Pipe.OutputB write;
 
             [OutputBus]
             ReadData output;
@@ -63,46 +63,12 @@ namespace PipelinedMIPS
 
     public partial class JumpUnit
     {
-        public class Adder : SimpleProcess
-        {
-            [InputBus]
-            ShiftBranch immediate;
-            [InputBus]
-            IF.Pipe.IncrementerOut pc;
-
-            [OutputBus]
-            AdderOut output;
-
-            protected override void OnTick()
-            {
-                output.address = immediate.addr + pc.addr;
-            }
-        }
-
-        public class JrMux : SimpleProcess
-        { 
-            [InputBus]
-            ID.Pipe.OutputA outa;
-            [InputBus]
-            JumpPacker inst;
-            [InputBus]
-            EX.JumpReg jr;
-
-            [OutputBus]
-            JrMuxOut output;
-
-            protected override void OnTick()
-            {
-                output.addr = jr.flg ? outa.data : inst.addr;
-            }
-        }
-
         public class BranchOrJumpMux : SimpleProcess
         {
             [InputBus]
-            JrMuxOut jump;
+            EX.Pipe.JumpAddress jump;
             [InputBus]
-            AdderOut branch;
+            EX.Pipe.BranchAddress branch;
             [InputBus]
             AndOut shouldBranch;
 
@@ -111,16 +77,16 @@ namespace PipelinedMIPS
 
             protected override void OnTick()
             {
-                pc.addr = shouldBranch.flg ? branch.address : jump.addr;
+                pc.addr = shouldBranch.flg ? branch.addr : jump.addr;
             }
         }
 
         public class Or : SimpleProcess
         {
             [InputBus]
-            ID.Pipe.Jmp jmp;
+            EX.Pipe.Jmp jmp;
             [InputBus]
-            EX.JumpReg jr;
+            EX.Pipe.JumpReg jr;
             [InputBus]
             AndOut branch;
 
@@ -133,57 +99,12 @@ namespace PipelinedMIPS
             }
         }
 
-        public class ShiftB : SimpleProcess
-        {
-            [InputBus]
-            ID.Pipe.SignExtOut immediate;
-
-            [OutputBus]
-            ShiftBranch output;
-
-            protected override void OnTick()
-            {
-                output.addr = immediate.data << 2;
-            }
-        }
-
-        public class shiftJ : SimpleProcess
-        {
-            [InputBus]
-            ID.Pipe.Jump inst;
-
-            [OutputBus]
-            ShiftJump output;
-
-            protected override void OnTick()
-            {
-                output.addr = inst.addr << 2;
-            }
-        }
-
-        // Packs the 4 most significant bits of the PC into the instr addr
-        public class Packer : SimpleProcess
-        {
-            [InputBus]
-            ShiftJump mux;
-            [InputBus]
-            IF.Pipe.IncrementerOut pc;
-
-            [OutputBus]
-            JumpPacker output;
-
-            protected override void OnTick()
-            {
-                output.addr = (pc.addr & 0xF0000000) | mux.addr;
-            }
-        }
-
         public class Condition : SimpleProcess
         {
             [InputBus]
-            EX.Zero zero;
+            EX.Pipe.Zero zero;
             [InputBus]
-            ID.Pipe.BranchNot bne;
+            EX.Pipe.BranchNot bne;
 
             [OutputBus]
             BranchCondition cond;
@@ -197,7 +118,7 @@ namespace PipelinedMIPS
         public class And : SimpleProcess
         {
             [InputBus]
-            ID.Pipe.Branch branch;
+            EX.Pipe.Branch branch;
             [InputBus]
             BranchCondition cond;
 
