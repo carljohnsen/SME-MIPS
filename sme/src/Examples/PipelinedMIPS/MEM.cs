@@ -45,7 +45,7 @@ namespace PipelinedMIPS
                 {
                     output.data = 0;
                 }
-
+                /*
                 Console.Write("MEM [");
                 for (int i = 0; i < 15; i++)
                 {
@@ -56,7 +56,7 @@ namespace PipelinedMIPS
                     | mem[i * 4 + 3];
                     Console.Write(a + ",");
                 }
-                Console.WriteLine("]");
+                Console.WriteLine("]");*/
             }
         }
 

@@ -1,1 +1,21 @@
-aoeu
+In this section, we will be looking at pipelining our single cycle MIPS
+processor, and handle the problems, which are introduced by pipelining.
+
+We start by going through the background and motivation for pipelining, and
+then proceed on how to extend our single cycle MIPS processor to have pipes.
+
+As mentioned, pipelining introduces new problems to handle in the processor,
+and we will solve it by adding two new components: the forwarding unit, which
+forwards results from previous instructions to later instructions, and the
+hazard detection unit, which controls when to stall the pipeline, and when the
+instruction should read the forwarded value, or the value stored in the
+Register File.
+
+Throughout each step, we will also be writing programs, in order to verify that
+our processor behaves as specified.
+
+\subsection{Introducing the pipes}
+
+
+\subsection{Forwarding}
+\subsection{Hazard Detection}
