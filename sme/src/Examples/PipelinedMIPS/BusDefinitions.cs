@@ -85,7 +85,7 @@ namespace PipelinedMIPS
         [InitializedBus]
         public interface WriteAddr : IBus
         {
-            byte val { get; set; }
+            byte addr { get; set; }
         }
 
         [InitializedBus]
@@ -511,7 +511,35 @@ namespace PipelinedMIPS
 
         public partial class Pipe
         {
-            
+            [InitializedBus]
+            public interface JALOut : IBus
+            {
+                uint val { get; set; }
+            }
+
+            [InitializedBus]
+            public interface MemToReg : IBus
+            {
+                bool flg { get; set; }
+            }
+
+            [InitializedBus]
+            public interface ReadData : IBus
+            {
+                uint data { get; set; }
+            }
+
+            [InitializedBus]
+            public interface RegWrite : IBus
+            {
+                bool flg { get; set; }
+            }
+
+            [InitializedBus]
+            public interface RegWriteAddr : IBus
+            {
+                byte addr { get; set;}
+            }
         }
     }
 
@@ -541,7 +569,7 @@ namespace PipelinedMIPS
     public partial class WB
     {
         [InitializedBus]
-        public interface MemOut : IBus
+        public interface WriteData : IBus
         {
             uint data { get; set; }
         }

@@ -388,6 +388,7 @@ namespace PipelinedMIPS
 
         public partial class Pipe
         {
+            [ClockedProcess]
             public class Reg : SimpleProcess
             {
                 [InputBus]

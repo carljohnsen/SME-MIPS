@@ -59,6 +59,44 @@ namespace PipelinedMIPS
                 Console.WriteLine("]");
             }
         }
+
+        public partial class Pipe
+        {
+            [ClockedProcess]
+            public class Reg : SimpleProcess
+            {
+                [InputBus]
+                EX.Pipe.JALOut jouti;
+                [InputBus]
+                EX.Pipe.MemToReg memtoregi;
+                [InputBus]
+                MEM.ReadData readdatai;
+                [InputBus]
+                EX.Pipe.RegWrite regwritei;
+                [InputBus]
+                EX.Pipe.RegWriteAddr regaddri;
+
+                [OutputBus]
+                JALOut jouto;
+                [OutputBus]
+                MemToReg memtorego;
+                [OutputBus]
+                ReadData readdatao;
+                [OutputBus]
+                RegWrite regwriteo;
+                [OutputBus]
+                RegWriteAddr regaddro;
+
+                protected override void OnTick()
+                {
+                    jouto.val = jouti.val;
+                    memtorego.flg = memtoregi.flg;
+                    readdatao.data = readdatai.data;
+                    regwriteo.flg = regwritei.flg;
+                    regaddro.addr = regaddri.addr;
+                }
+            }
+        }
     }
 
     public partial class JumpUnit

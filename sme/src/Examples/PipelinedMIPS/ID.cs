@@ -218,11 +218,14 @@ namespace PipelinedMIPS
             [InputBus]
             ReadB readB;
             [InputBus]
-            WriteEnabled regWrite;
+            MEM.Pipe.RegWrite regWrite;
+            //WriteEnabled regWrite;
             [InputBus]
-            WriteAddr writeAddr;
+            MEM.Pipe.RegWriteAddr writeAddr;
+            //WriteAddr writeAddr;
             [InputBus]
-            WriteData writeData;
+            WB.WriteData writeData;
+            //WriteData writeData;
 
             [OutputBus]
             OutputA outputA;
@@ -233,9 +236,9 @@ namespace PipelinedMIPS
 
             protected override void OnTick()
             {
-                if (regWrite.flg && writeAddr.val > 0)
+                if (regWrite.flg && writeAddr.addr > 0)
                 {
-                    data[writeAddr.val] = writeData.data;
+                    data[writeAddr.addr] = writeData.data;
                 }
                 outputA.data = data[readA.addr];
                 outputB.data = data[readB.addr];
