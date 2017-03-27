@@ -1,0 +1,234 @@
+% {{{ Preamble ----------------------------------------------------------------
+\documentclass{beamer}
+
+% encodings, fonts etc.
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+% Hold kæft utf
+\makeatletter
+\def\UTFviii@defined#1{%
+  \ifx#1\relax
+      ?%
+  \else\expandafter
+    #1%
+  \fi
+}
+
+\makeatother
+
+% math packages
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+% beamer configuration
+\usetheme{Copenhagen}
+%\useoutertheme{infolines}
+%\usetheme{metropolis}
+\beamertemplatenavigationsymbolsempty
+%\setbeamertemplate{theorems}[numbered]
+\setbeamersize{description width=2.0em}
+
+%\usepackage{pgfpages}
+%\setbeameroption{show notes}
+%\setbeameroption{show notes on second screen=right}
+
+% algorithms
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+% misc. packages
+\usepackage{float}
+\usepackage{varwidth}
+\usepackage{listings}
+\lstset{
+  %breaklines=true,
+  keepspaces=true,
+  %frame=ltrb,
+  %framesep=1pt,
+  %commentstyle=\color{grey},
+  basicstyle=\ttfamily\tiny,
+  %numbers=left,
+  title=\lstname,
+  %columns=fullflexible,
+  inputencoding=utf8,
+  extendedchars=true,
+}
+
+% graphics and tikz
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows,calc}
+\tikzset{
+    on grid,
+    node distance=3cm,
+    auto,
+    block/.style = {
+        draw,
+        shape=rectangle,
+        minimum height=3em,
+        minimum width=3em,
+        line width=1pt
+    },
+    control/.style = {
+        draw,
+        shape=circle,
+        minimum height=7em,
+        minimum width=3em,
+        line width=1pt
+    },
+    mux/.style = {
+        draw,
+        shape=rectangle,
+        minimum height=1.5em,
+        minimum width=1em,
+        line width=1pt
+    },
+    empty/.style = {
+        shape=rectangle,
+        minimum height=3em,
+        minimum width=3em
+    },
+    >=latex',
+}
+
+
+% mathematics
+\newtheorem{proposition}{Proposition}
+
+\renewcommand{\tt}{\texttt}
+
+% title page
+\title{Pipelined MIPS processor}
+\author[Carl-Johannes Johnsen]{
+  \mbox{Carl-Johannes Johnsen}}
+\institute{Department of Computer Science\\
+           University of Copenhagen}
+%\date{December 22, 2016}
+% }}} -------------------------------------------------------------------------
+
+\begin{document}
+
+% {{{ Title page --------------------------------------------------------------
+\frame{\titlepage}
+% }}} -------------------------------------------------------------------------
+
+% {{{ Table of contents -------------------------------------------------------
+%\begin{frame}
+%  \frametitle{Outline}
+%  \tableofcontents
+%\end{frame}
+% }}} -------------------------------------------------------------------------
+\section{Introduction}
+\subsection{Overview}
+\begin{frame}
+    In this lecture, we will be looking at pipelining our single cycle MIPS
+    processor.
+
+    \vspace{\baselineskip}
+    We will go through the motivation and background for pipelining, and the
+    steps for implementing it in SME.
+
+    \vspace{\baselineskip}
+    Finally, we will look at handling the problems introduced by pipelining, by
+    adding two new units: the Forwarding Unit, and the Hazard Detection Unit.
+\end{frame}
+
+\subsection{Motivation \& Background}
+\begin{frame}
+    The single cycle MIPS processor is not very efficient, as the clock rate is
+    determined by the longest possible path in the processor.
+
+    \vspace{\baselineskip}
+    In order to increase the clock rate, we must decrease the longest path in
+    the processor, by introducing pipes.
+\end{frame}
+\begin{frame}
+    Pipes are registers in the processor, which temporarely store all the
+    values computed so far.
+
+    \vspace{\baselineskip}
+    This ensures that the data does not have to travel as far, until it has
+    reached a safe state.
+\end{frame}
+\begin{frame}
+    Determining where to place the pipes, is done by dividing the processor
+    into stages.
+
+    \vspace{\baselineskip}
+    We will follow the classic MIPS example, and divide the processor into 5
+    stages:
+    \begin{itemize}
+        \item Instruction Fetch (IF)
+        \item Instruction Decode (ID)
+        \item Execute (EX)
+        \item Memory (MEM)
+        \item Write Back (WB)
+    \end{itemize}
+    We are going to insert a pipe between each state, i.e. 4 pipes.
+\end{frame}
+
+\section{Implementation}
+\subsection{Implementation}
+\begin{frame}
+    We have two ways of implementing pipes in SME:
+    \begin{itemize}
+        \item Clocked Busses - for busses which only traverses 2 stages
+        \item Clocked Processes - for dividing busses traversing more than 2
+            stages
+    \end{itemize}
+    Just adding the \texttt{ClockedBus} attribute to the busses seems simpler.
+    However, it can become more explicit, by adding additional busses, and to
+    have a process, which explicitly touches all of the busses, which should go
+    into the pipe.
+\end{frame}
+\begin{frame}
+    Introducing the pipes is fairly straightforward. For each pipe, we add a
+    copy of the bus, which the 'next' stage needs. Then, for each pipe, we add
+    an SME process, which takes all the busses from the 'previous' stage, and
+    outputs their data on the matching newly added pipe bus. Finally, the
+    references in the 'next' stage should be updated to look at the piped
+    busses.
+\end{frame}
+\begin{frame}
+    This process can be repeated for all of the required pipes. There is only
+    one problem: the Jump Unit. The processor do not know when to jump, until
+    the MEM stage, as the adresses needs to be computed in the EX stage.
+
+    \vspace{\baselineskip}
+    To solve this, the Jump Unit should be divided out to the different stages.
+    The IF stage should handle incrementing the Program Counter, and choosing
+    between the addresses from the MEM stage, and the incremented Program
+    Counter.
+
+    \vspace{\baselineskip}
+    The EX stage should as mentioned, compute the addresses, and finally, the
+    MEM stage should hold the logic for choosing between the branch address and
+    the jump address.
+\end{frame}
+\begin{frame}
+    Finally, in the single cycle MIPS processor, we added a Write Buffer in
+    order to eliminate the cycle from the Register File to the Register File.
+
+    \vspace{\baselineskip}
+    However, by introducing pipes, we have also introduced buffers, and as
+    such, we can remove the Write Buffer.
+\end{frame}
+
+\subsection{Testing}
+
+
+
+% exit section
+\AtBeginSection{}
+\section*{}
+
+% {{{ Bibliography ------------------------------------------------------------
+%\begin{frame}{Bibliography}
+%  \tiny
+%  \bibliographystyle{plain}
+%  \bibliography{pl}
+%\end{frame}
+% }}} -------------------------------------------------------------------------
+
+\end{document}

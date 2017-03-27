@@ -53,8 +53,5 @@
       <Name>SME</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Quicksort.asm" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
