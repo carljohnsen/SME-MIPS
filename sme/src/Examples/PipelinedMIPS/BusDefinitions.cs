@@ -324,6 +324,18 @@ namespace PipelinedMIPS
             {
                 bool flg { get; set; }
             }
+
+            [InitializedBus]
+            public interface ReadA : IBus
+            {
+                byte addr { get; set; }
+            }
+
+            [InitializedBus]
+            public interface ReadB : IBus
+            {
+                byte addr { get; set; }
+            }
         }
     }
 
@@ -339,6 +351,18 @@ namespace PipelinedMIPS
         public interface BranchAddress : IBus
         {
             uint addr { get; set; }
+        }
+
+        [InitializedBus]
+        public interface ForwardA : IBus
+        {
+            uint data { get; set; }
+        }
+
+        [InitializedBus]
+        public interface ForwardB : IBus
+        {
+            uint data { get; set; }
         }
 
         [InitializedBus]
@@ -497,6 +521,21 @@ namespace PipelinedMIPS
             public interface Zero : IBus
             {
                 bool flg { get; set; }
+            }
+        }
+
+        public partial class Forwarding
+        {
+            [InitializedBus]
+            public interface ForwardA : IBus
+            {
+                byte selection { get; set; }
+            }
+
+            [InitializedBus]
+            public interface ForwardB : IBus
+            {
+                byte selection { get; set; }
             }
         }
     }

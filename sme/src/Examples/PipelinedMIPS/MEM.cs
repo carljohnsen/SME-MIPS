@@ -45,7 +45,7 @@ namespace PipelinedMIPS
                 {
                     output.data = 0;
                 }
-                /*
+
                 Console.Write("MEM [");
                 for (int i = 0; i < 15; i++)
                 {
@@ -56,7 +56,7 @@ namespace PipelinedMIPS
                     | mem[i * 4 + 3];
                     Console.Write(a + ",");
                 }
-                Console.WriteLine("]");*/
+                Console.WriteLine("]");
             }
         }
 
@@ -89,11 +89,11 @@ namespace PipelinedMIPS
 
                 protected override void OnTick()
                 {
-                    jouto.val = jouti.val;
-                    memtorego.flg = memtoregi.flg;
+                    jouto.val      = jouti.val;
+                    memtorego.flg  = memtoregi.flg;
                     readdatao.data = readdatai.data;
-                    regwriteo.flg = regwritei.flg;
-                    regaddro.addr = regaddri.addr;
+                    regwriteo.flg  = regwritei.flg;
+                    regaddro.addr  = regaddri.addr;
                 }
             }
         }

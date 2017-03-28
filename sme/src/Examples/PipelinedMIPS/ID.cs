@@ -4,62 +4,6 @@ using SME;
 
 namespace PipelinedMIPS
 {
-    public enum Opcodes
-    {
-        Rformat,
-        j = 2,
-        jal,
-        beq,
-        bne,
-        blez,
-        bgtz,
-        addi,
-        addiu,
-        slti,
-        sltiu,
-        andi,
-        ori,
-        xori,
-        lui,
-        floating=17,
-        lb=32,
-        lh,
-        lwl,
-        lw,
-        lbu,
-        lhu,
-        lwr,
-        sb=40,
-        sh,
-        swl,
-        sw,
-        swr=46,
-        cache,
-        ll,
-        lwc1,
-        lwc2,
-        pref,
-        ldc1=53,
-        ldc2,
-        sc=56,
-        swc1,
-        swc2,
-        sdc1=61,
-        sdc2=62,
-    }
-
-    public enum ALUOpcodes
-    {
-        RFormat,
-        sub,
-        add,
-        addu,
-        and,
-        or,
-        slt,
-        sltu,
-    }
-
     public partial class ID
     {
         public class Splitter : SimpleProcess
@@ -219,13 +163,10 @@ namespace PipelinedMIPS
             ReadB readB;
             [InputBus]
             MEM.Pipe.RegWrite regWrite;
-            //WriteEnabled regWrite;
             [InputBus]
             MEM.Pipe.RegWriteAddr writeAddr;
-            //WriteAddr writeAddr;
             [InputBus]
             WB.WriteData writeData;
-            //WriteData writeData;
 
             [OutputBus]
             OutputA outputA;
@@ -299,6 +240,10 @@ namespace PipelinedMIPS
                 ID.MemWrite memwritei;
                 [InputBus]
                 ID.MemToReg memtoregi;
+                [InputBus]
+                ID.ReadA readai;
+                [InputBus]
+                ID.ReadB readbi;
 
                 [OutputBus]
                 OutputA outao;
@@ -336,27 +281,33 @@ namespace PipelinedMIPS
                 MemWrite memwriteo;
                 [OutputBus]
                 MemToReg memtorego;
+                [OutputBus]
+                ReadA readao;
+                [OutputBus]
+                ReadB readbo;
 
                 protected override void OnTick()
                 {
-                    outao.data = outai.data;
-                    outbo.data = outbi.data;
-                    signo.data = signi.data;
-                    inco.addr  = inci.addr;
-                    jumpo.addr = jumpi.addr;
-                    shmto.amount = shmti.amount;
-                    dsto.addr = dsti.addr;
-                    functo.val = functi.val;
+                    outao.data    = outai.data;
+                    outbo.data    = outbi.data;
+                    signo.data    = signi.data;
+                    inco.addr     = inci.addr;
+                    jumpo.addr    = jumpi.addr;
+                    shmto.amount  = shmti.amount;
+                    dsto.addr     = dsti.addr;
+                    functo.val    = functi.val;
                     regwriteo.flg = regwritei.flg;
-                    aluopo.code = aluopi.code;
-                    alusrco.flg = alusrci.flg;
-                    brancho.flg = branchi.flg;
-                    jmpo.flg = jmpi.flg;
-                    jalo.flg = jali.flg;
-                    bneo.flg = bnei.flg;
-                    memreado.flg = memreadi.flg;
+                    aluopo.code   = aluopi.code;
+                    alusrco.flg   = alusrci.flg;
+                    brancho.flg   = branchi.flg;
+                    jmpo.flg      = jmpi.flg;
+                    jalo.flg      = jali.flg;
+                    bneo.flg      = bnei.flg;
+                    memreado.flg  = memreadi.flg;
                     memwriteo.flg = memwritei.flg;
                     memtorego.flg = memtoregi.flg;
+                    readao.addr   = readai.addr;
+                    readbo.addr   = readbi.addr;
                 }
             }
         }

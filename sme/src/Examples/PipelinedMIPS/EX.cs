@@ -3,73 +3,62 @@ using SME;
 
 namespace PipelinedMIPS
 {
-    // Values taken from MIPS reference data card from the book
-    public enum Funcs
-    {
-        sll,
-        srl=2,
-        sra,
-        sllv,
-        srlv=6,
-        srav,
-        jr,
-        jalr,
-        movz,
-        movn,
-        syscall,
-        _break, // break is a keyword
-        sync=15,
-        mfhi,
-        mthi,
-        mflo,
-        mtlo,
-        mult=24,
-        multu,
-        div,
-        divu,
-        add=32,
-        addu,
-        sub,
-        subu,
-        and,
-        or,
-        xor,
-        nor,
-        slt=42,
-        sltu,
-        tge=48,
-        tgeu,
-        tlt,
-        tltu,
-        teq,
-        tne=54
-    }
-
     public partial class EX
     {
-        public enum ALUOps
+        public class ForwardAMux : SimpleProcess
         {
-            and,
-            or,
-            add,
-            sl,
-            sr,
-            sra,
-            sub,
-            slt,
-            addu,
-            subu,
-            mult,
-            multu,
-            nor,
-            div,
-            divu,
-            xor,
-            mtlo,
-            mthi,
-            mflo,
-            mfhi,
-            sltu,
+            [InputBus]
+            ID.Pipe.OutputA original;
+            [InputBus]
+            EX.Pipe.JALOut mem;
+            [InputBus]
+            MEM.Pipe.JALOut wb;
+            [InputBus]
+            Forwarding.ForwardA forwardingUnit;
+
+            [OutputBus]
+            ForwardA output;
+
+            protected override void OnTick()
+            {
+                switch ((ForwardSelection)forwardingUnit.selection)
+                {
+                    case ForwardSelection.original: //Console.WriteLine("a org");
+                        output.data = original.data; break;
+                    case ForwardSelection.mem: //Console.WriteLine("a mem");
+                        output.data = mem.val; break;
+                    case ForwardSelection.wb: //Console.WriteLine("a wb");
+                        output.data = wb.val; break;
+                }
+            }
+        }
+
+        public class ForwardBMux : SimpleProcess
+        {
+            [InputBus]
+            ID.Pipe.OutputB original;
+            [InputBus]
+            EX.Pipe.JALOut mem;
+            [InputBus]
+            MEM.Pipe.JALOut wb;
+            [InputBus]
+            Forwarding.ForwardB forwardingUnit;
+
+            [OutputBus]
+            ForwardB output;
+
+            protected override void OnTick()
+            {
+                switch ((ForwardSelection)forwardingUnit.selection)
+                {
+                    case ForwardSelection.original:
+                        output.data = original.data; break;
+                    case ForwardSelection.mem: //Console.WriteLine("b mem");
+                        output.data = mem.val; break;
+                    case ForwardSelection.wb: //Console.WriteLine("b wb");
+                        output.data = wb.val; break;
+                }
+            }
         }
 
         public class ImmMux : SimpleProcess
@@ -77,7 +66,7 @@ namespace PipelinedMIPS
             [InputBus]
             ID.Pipe.ALUSrc src;
             [InputBus]
-            ID.Pipe.OutputB register;
+            ForwardB register;
             [InputBus]
             ID.Pipe.SignExtOut immediate;
 
@@ -96,7 +85,7 @@ namespace PipelinedMIPS
         public class JumpJrMux : SimpleProcess
         {
             [InputBus]
-            ID.Pipe.OutputA outa;
+            ForwardA outa;
             [InputBus]
             JumpPacked inst;
             [InputBus]
@@ -116,7 +105,7 @@ namespace PipelinedMIPS
             [InputBus]
             ShiftJump mux;
             [InputBus]
-            IF.Pipe.IncrementerOut pc;
+            ID.Pipe.IncrementerOut pc;
 
             [OutputBus]
             JumpPacked output;
@@ -146,7 +135,7 @@ namespace PipelinedMIPS
             [InputBus]
             ID.Pipe.Shamt shmt;
             [InputBus]
-            ID.Pipe.OutputA reada;
+            ForwardA reada;
             [InputBus]
             Shift shift;
 
@@ -164,7 +153,7 @@ namespace PipelinedMIPS
             [InputBus]
             ShiftBranch immediate;
             [InputBus]
-            IF.Pipe.IncrementerOut pc;
+            ID.Pipe.IncrementerOut pc;
 
             [OutputBus]
             BranchAddress output;
@@ -209,40 +198,40 @@ namespace PipelinedMIPS
                 {
                     switch ((Funcs)funct.val)
                     {
-                        case Funcs.add:   output.val = (short)ALUOps.add;   jr.flg = false; shift.flg = false; break;
-                        case Funcs.addu:  output.val = (short)ALUOps.addu;  jr.flg = false; shift.flg = false; break;
-                        case Funcs.sub:   output.val = (short)ALUOps.sub;   jr.flg = false; shift.flg = false; break;
-                        case Funcs.subu:  output.val = (short)ALUOps.subu;  jr.flg = false; shift.flg = false; break;    
-                        case Funcs.and:   output.val = (short)ALUOps.and;   jr.flg = false; shift.flg = false; break;
-                        case Funcs.or :   output.val = (short)ALUOps.or;    jr.flg = false; shift.flg = false; break;
-                        case Funcs.nor:   output.val = (short)ALUOps.nor;   jr.flg = false; shift.flg = false; break;    
-                        case Funcs.slt:   output.val = (short)ALUOps.slt;   jr.flg = false; shift.flg = false; break;
-                        case Funcs.sltu:  output.val = (short)ALUOps.sltu;  jr.flg = false; shift.flg = false; break;    
-                        case Funcs.jr:    output.val = (short)ALUOps.or;    jr.flg = true;  shift.flg = false; break;
-                        case Funcs.srl:   output.val = (short)ALUOps.sr;    jr.flg = false; shift.flg = true;  break;
-                        case Funcs.sll:   output.val = (short)ALUOps.sl;    jr.flg = false; shift.flg = true;  break;
-                        case Funcs.mtlo:  output.val = (short)ALUOps.mtlo;  jr.flg = false; shift.flg = false; break;
-                        case Funcs.mthi:  output.val = (short)ALUOps.mthi;  jr.flg = false; shift.flg = false; break;
-                        case Funcs.mflo:  output.val = (short)ALUOps.mflo;  jr.flg = false; shift.flg = false; break;
-                        case Funcs.mfhi:  output.val = (short)ALUOps.mfhi;  jr.flg = false; shift.flg = false; break;
-                        case Funcs.mult:  output.val = (short)ALUOps.mult;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.add: output.val = (short)ALUOps.add; jr.flg = false; shift.flg = false; break;
+                        case Funcs.addu: output.val = (short)ALUOps.addu; jr.flg = false; shift.flg = false; break;
+                        case Funcs.sub: output.val = (short)ALUOps.sub; jr.flg = false; shift.flg = false; break;
+                        case Funcs.subu: output.val = (short)ALUOps.subu; jr.flg = false; shift.flg = false; break;
+                        case Funcs.and: output.val = (short)ALUOps.and; jr.flg = false; shift.flg = false; break;
+                        case Funcs.or: output.val = (short)ALUOps.or; jr.flg = false; shift.flg = false; break;
+                        case Funcs.nor: output.val = (short)ALUOps.nor; jr.flg = false; shift.flg = false; break;
+                        case Funcs.slt: output.val = (short)ALUOps.slt; jr.flg = false; shift.flg = false; break;
+                        case Funcs.sltu: output.val = (short)ALUOps.sltu; jr.flg = false; shift.flg = false; break;
+                        case Funcs.jr: output.val = (short)ALUOps.or; jr.flg = true; shift.flg = false; break;
+                        case Funcs.srl: output.val = (short)ALUOps.sr; jr.flg = false; shift.flg = true; break;
+                        case Funcs.sll: output.val = (short)ALUOps.sl; jr.flg = false; shift.flg = true; break;
+                        case Funcs.mtlo: output.val = (short)ALUOps.mtlo; jr.flg = false; shift.flg = false; break;
+                        case Funcs.mthi: output.val = (short)ALUOps.mthi; jr.flg = false; shift.flg = false; break;
+                        case Funcs.mflo: output.val = (short)ALUOps.mflo; jr.flg = false; shift.flg = false; break;
+                        case Funcs.mfhi: output.val = (short)ALUOps.mfhi; jr.flg = false; shift.flg = false; break;
+                        case Funcs.mult: output.val = (short)ALUOps.mult; jr.flg = false; shift.flg = false; break;
                         case Funcs.multu: output.val = (short)ALUOps.multu; jr.flg = false; shift.flg = false; break;
-                        case Funcs.div:   output.val = (short)ALUOps.div;   jr.flg = false; shift.flg = false; break;
-                        case Funcs.divu:  output.val = (short)ALUOps.divu;  jr.flg = false; shift.flg = false; break;
-                        default:          output.val = 0;                   jr.flg = false; shift.flg = false; break; // nop
+                        case Funcs.div: output.val = (short)ALUOps.div; jr.flg = false; shift.flg = false; break;
+                        case Funcs.divu: output.val = (short)ALUOps.divu; jr.flg = false; shift.flg = false; break;
+                        default: output.val = 0; jr.flg = false; shift.flg = false; break; // nop
                     }
                 }
                 else
                 {
                     switch ((ALUOpcodes)op.code)
                     {
-                        case ALUOpcodes.add:  output.val = (short)ALUOps.add;  break;
-                        case ALUOpcodes.sub:  output.val = (short)ALUOps.sub;  break;
-                        case ALUOpcodes.or:   output.val = (short)ALUOps.or;   break;
-                        case ALUOpcodes.addu: output.val = (short)ALUOps.addu; break;    
-                        case ALUOpcodes.slt:  output.val = (short)ALUOps.slt;  break;
-                        case ALUOpcodes.sltu: output.val = (short)ALUOps.sltu; break;    
-                        default:              output.val = 0;                  break; // nop
+                        case ALUOpcodes.add: output.val = (short)ALUOps.add; break;
+                        case ALUOpcodes.sub: output.val = (short)ALUOps.sub; break;
+                        case ALUOpcodes.or: output.val = (short)ALUOps.or; break;
+                        case ALUOpcodes.addu: output.val = (short)ALUOps.addu; break;
+                        case ALUOpcodes.slt: output.val = (short)ALUOps.slt; break;
+                        case ALUOpcodes.sltu: output.val = (short)ALUOps.sltu; break;
+                        default: output.val = 0; break; // nop
                     }
                     jr.flg = false;
                     shift.flg = false;
@@ -269,44 +258,44 @@ namespace PipelinedMIPS
 
             protected override void OnTick()
             {
-                uint tmp = unchecked((uint) -1);
-                ulong tmp2 = unchecked((ulong) -1L);
-                switch ((ALUOps) op.val)
+                uint tmp = unchecked((uint)-1);
+                ulong tmp2 = unchecked((ulong)-1L);
+                switch ((ALUOps)op.val)
                 {
                     case ALUOps.sr: // Second operand of >> must be int......
-                        tmp = inB.data >> (int) inA.data;
+                        tmp = inB.data >> (int)inA.data;
                         break;
                     case ALUOps.sl:
-                        tmp = inB.data << (int) inA.data;
+                        tmp = inB.data << (int)inA.data;
                         break;
                     case ALUOps.sra:
-                        tmp = (uint) ((int) inA.data << (int) inB.data);
+                        tmp = (uint)((int)inA.data << (int)inB.data);
                         break;
                     case ALUOps.add:
-                        tmp = (uint) ((int) inA.data + (int) inB.data);
+                        tmp = (uint)((int)inA.data + (int)inB.data);
                         break;
                     case ALUOps.addu:
                         tmp = inA.data + inB.data;
                         break;
                     case ALUOps.sub:
-                        tmp = (uint) ((int) inA.data - (int) inB.data);
+                        tmp = (uint)((int)inA.data - (int)inB.data);
                         break;
                     case ALUOps.subu:
                         tmp = inA.data - inB.data;
                         break;
                     case ALUOps.mult:
-                        tmp2 = (ulong) ((int) inA.data * (int) inB.data);
-                        HI = (uint) (tmp2 >> 32);
-                        LO = (uint) tmp2;
+                        tmp2 = (ulong)((int)inA.data * (int)inB.data);
+                        HI = (uint)(tmp2 >> 32);
+                        LO = (uint)tmp2;
                         break;
-                    case ALUOps.multu: 
+                    case ALUOps.multu:
                         tmp2 = inA.data * inB.data;
-                        HI = (uint) (tmp2 >> 32);
-                        LO = (uint) tmp2;
+                        HI = (uint)(tmp2 >> 32);
+                        LO = (uint)tmp2;
                         break;
                     case ALUOps.div: // Remember divide by 0...
-                        HI = (uint) ((int) inA.data % (int) inB.data);
-                        LO = (uint) ((int) inA.data / (int) inB.data);
+                        HI = (uint)((int)inA.data % (int)inB.data);
+                        LO = (uint)((int)inA.data / (int)inB.data);
                         break;
                     case ALUOps.divu: // Remember divide by 0...
                         HI = inA.data % inB.data;
@@ -325,7 +314,7 @@ namespace PipelinedMIPS
                         tmp = ~(inA.data | inB.data);
                         break;
                     case ALUOps.slt:
-                        tmp = (int) inA.data < (int) inB.data ? 1u : 0u;
+                        tmp = (int)inA.data < (int)inB.data ? 1u : 0u;
                         break;
                     case ALUOps.sltu:
                         tmp = inA.data < inB.data ? 1u : 0u;
@@ -373,7 +362,7 @@ namespace PipelinedMIPS
             [InputBus]
             ID.Pipe.JAL jal;
             [InputBus]
-            IF.Pipe.IncrementerOut pc;
+            ID.Pipe.IncrementerOut pc;
             [InputBus]
             ALUResult alu;
 
@@ -412,7 +401,7 @@ namespace PipelinedMIPS
                 [InputBus]
                 ID.Pipe.MemWrite memwritei;
                 [InputBus]
-                ID.Pipe.OutputB outputbi;
+                ForwardB outputbi;
                 [InputBus]
                 ID.Pipe.RegWrite regwritei;
                 [InputBus]
@@ -465,6 +454,48 @@ namespace PipelinedMIPS
                     regwriteo.flg = regwritei.flg;
                     regaddro.addr = regaddri.addr;
                     zeroo.flg = zeroi.flg;
+                }
+            }
+        }
+
+        public partial class Forwarding
+        {
+            public class ForwardingUnit : SimpleProcess
+            {
+                [InputBus]
+                EX.Pipe.RegWriteAddr memrd;
+                [InputBus]
+                MEM.Pipe.RegWriteAddr wbrd;
+                [InputBus]
+                EX.Pipe.RegWrite memrw;
+                [InputBus]
+                MEM.Pipe.RegWrite wbrw;
+                [InputBus]
+                ID.Pipe.ReadA rs;
+                [InputBus]
+                ID.Pipe.ReadB rt;
+
+                [OutputBus]
+                ForwardA outa;
+                [OutputBus]
+                ForwardB outb;
+
+                protected override void OnTick()
+                {
+                    //Console.WriteLine(string.Format("{0} {1} {2} {3} {4} {5}", rs.addr, rt.addr, memrd.addr, memrw.flg, wbrd.addr, wbrw.flg));
+                    if (rs.addr == memrd.addr && memrw.flg)
+                        outa.selection = (byte) ForwardSelection.mem;
+                    else if (rs.addr == wbrd.addr && wbrw.flg)
+                        outa.selection = (byte) ForwardSelection.wb;
+                    else
+                        outa.selection = (byte) ForwardSelection.original;
+
+                    if (rt.addr == memrd.addr && memrw.flg)
+                        outb.selection = (byte) ForwardSelection.mem;
+                    else if (rt.addr == wbrd.addr && wbrw.flg)
+                        outb.selection = (byte) ForwardSelection.wb;
+                    else
+                        outb.selection = (byte) ForwardSelection.original;
                 }
             }
         }

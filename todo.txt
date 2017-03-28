@@ -1,5 +1,8 @@
-Logic circuits
-Decoder
-Adder
-Full-adder
-32bit full adder
+feedback
+skriv motivation, alternativ og valg
+der skal noget mere baggrund til i afsnit 1, før afsnit 3 giver mest mening.
+
+husk at handle division by 0 i alu!
+husk at ændr hvordan IF læser programmet!
+
+https://www.cise.ufl.edu/~mssz/CompOrg/CDA-proc.html

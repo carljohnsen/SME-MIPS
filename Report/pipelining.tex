@@ -15,7 +15,116 @@ Throughout each step, we will also be writing programs, in order to verify that
 our processor behaves as specified.
 
 \subsection{Introducing the pipes}
+We have the single cycle MIPS processor, which accepts the core integer
+instruction set. However, it is not very efficient, as the clock rate of the
+processor is determined by the longest possible path in the processor, so in
+order to increase the clock rate, we must decrease the longest path in the
+processor, which we solve with pipes.
 
+Pipes are registers in the processor, where we temporarely store all the values
+computed so far. It takes all of its inputs, and holds them until the next
+clock tick, where it will forward the values it is holding. This ensures that
+the data does not have to travel as far, until it have reached a safe (TODO:
+find på et bedre ord end safe) state.
 
-\subsection{Forwarding}
-\subsection{Hazard Detection}
+In order to know where to put the pipes, we divide the processor into stages.
+We will use the same stages, as proposed in the book\cite{ref:ark}, i.e. divide
+the processor into 5 stages: Instruction Fetch (IF), Instruction Decode (ID),
+Execution (EX), Memory (MEM) and Write Back (WB). In between each stage, we are
+going to insert a pipe, i.e. we are going to insert 4 pipes.
+
+Introducing pipes also introduces additional problems, which we will discuss
+further in sections \ref{sec:forw} and \ref{sec:haz}
+
+\subsubsection*{Implementation}
+There are two ways to implement pipes in SME: by using clocked busses, or by
+using clocked processes. If the bus only traverses 2 stages, then we can use
+clocked busses, as the semantics of a clocked bus is exactly the same as a
+pipe. However, if the bus traverses more than 2 stages, we are going to need
+additional processes, as the clocked bus only stores its value for one clock.
+Furthermore, if the only change to the bus is the given \texttt{ClockedBus}
+attribute, then determining whether or not a bus is part of a pipe. As such, we
+should have the pipe and its busses in its own class, as it then receives its
+own prefix, and the code then becomes more readable.
+
+Introducing the pipes in our processor is fairly straightforward, as we just
+add 4 classes, each with the same set of busses as the 'previous' stage outputs
+to the 'next' stage, and each with a register process, which forwards all the
+values from the 'previous' stages busses, onto its own busses with the same
+name.
+
+Let us take a subset of the IF/ID pipe, as an example. We assume that each
+state is in its own classes, i.e. \texttt{IF} and \texttt{ID}, and that the
+\texttt{IF} stage has the \texttt{Instruction} bus, which the \texttt{ID} stage
+reads from. Then, by adding a subclass to the \texttt{IF} stage, the name of
+the bus that the \texttt{ID} class calls is converteted from
+\texttt{IF.Instruction} to \texttt{IF.Pipe.Instruction}, emphasizing that the
+bus is now piped.
+
+Now, this process can be repeated for all of the required pipes. There is only
+one really tricky part of pipelining: the Jump Unit. We dont know whether we
+should jump until the \texttt{MEM} stage, as the computations are made in the
+\texttt{EX} stage, and the conditions are computed in the \texttt{MEM} stage.
+However, the Program Counter has to increment, regardless of whether or not we
+should jump. As such, we should divide the Jump Unit into its subcomponents,
+and place some of the logic in the \texttt{IF}, some in the \texttt{EX} stage
+and finally some of it in the \texttt{MEM} stage.
+
+For the \texttt{IF} stage, the incrementer and a multiplexor should be placed
+inside the stage. The multiplexor should take an address computed from the
+\texttt{MEM} stage, and the incremented Program Counter, and based on whether
+or not the instruction that has reached the \texttt{MEM} stage was a branch or
+jump instruction, it should choose the computed address.
+
+The core computation of the jump and branch instructions should be placed in
+the \texttt{EX} stage. As such, the \texttt{EX} stage should compute both the
+branch address and the jump address.
+
+Finally, the \texttt{MEM} stage should hold the decision logic. First, it
+should determine if the instruction was an branch instruction, and whether or
+not the condition has been satisfied, in which case, the  address forwarded to
+the \texttt{IF} stage should be the branch address. If this was not the case,
+the computed jump address should be the one forwarded.
+
+Finally, in the single cycle MIPS processor, we introduced the Write Buffer, in
+order to remove the cycle from and to the Register File. However, by
+introducing pipes, we have introduced a new buffer, and thus the Write Buffer
+can be removed.
+
+\subsubsection*{Testing}
+To test the processor, we can use any of the programs, that we have previously
+written. However, since we have pipelined the processor, we need to insert
+bubbles, in order for data to be available for each instruction. A bubble is a
+set of No Operation (\texttt{nop}) instructions, which performs no operation,
+and does not modify neither the Register File nor the Memory.
+
+We are going to implement a simple program, which is easy to verify: a small
+loop, which computes $n$ fibonacci numbers, and places them in memory. As with
+the simple cycle, we are going to give pseudo low level C code:
+\begin{lstlisting}
+void init(int *arr) {
+    *(arr)   = 1;
+    *(arr+1) = 1;
+}
+
+void loop(int *arr, int n) {
+    int i, tmp1, tmp2, tmp3;
+    for (i = 0; i < n; i++) {
+        tmp1 = *(arr+i);
+        tmp2 = *(arr+i+1);
+        tmp3 = tmp1 + tmp2;
+        *(arr+i+2) = tmp3;
+    }
+}
+\end{lstlisting}
+Note that for verification in C, the array should be $n+2$, due to
+initialization. Furthermore, when we port it to MIPS assembly, after each
+instruction, we should insert 4 \texttt{nop}'s, to ensure the data is ready for
+the next instruction. When the program has run, the $n+2$ fibonacci numbers
+should be in memory, at the given address.
+
+\subsection{Forwarding}\label{sec:forw}
+Forwarding er data hazards, som kan løses uden stalling
+\subsection{Hazard Detection}\label{sec:haz}
+Hazard detection håndtere indsættelsen af bobler, både med read delay og branch
+og jump delay

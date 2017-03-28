@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{50E31EFB-78A1-406D-9D50-43D005B66375}</ProjectGuid>
+    <ProjectGuid>{80D6DBEC-60D4-4742-B0C5-A6CA2E113C53}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>PipelinedMIPS</RootNamespace>
     <AssemblyName>PipelinedMIPS</AssemblyName>
@@ -17,45 +17,38 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BusDefinitions.cs" />
+    <Compile Include="EX.cs" />
     <Compile Include="ID.cs" />
     <Compile Include="IF.cs" />
     <Compile Include="MEM.cs" />
-    <Compile Include="EX.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="WB.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Testers.cs" />
-    <Compile Include="BusDefinitions.cs" />
+    <Compile Include="Enums.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Render\VHDL\SME.Render.VHDL.csproj">
-      <Project>{B6BDF863-F356-4DD7-8BA7-22B1DFFF7223}</Project>
-      <Name>SME.Render.VHDL</Name>
+    <ProjectReference Include="..\..\SME\SME.csproj">
+      <Project>{CDC88908-F9B8-40CB-B746-86C8A4C1871B}</Project>
+      <Name>SME</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Render\GraphViz\SME.Render.GraphViz.csproj">
       <Project>{268A0B13-B84C-42F1-96D9-96550ED2F71F}</Project>
       <Name>SME.Render.GraphViz</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SME\SME.csproj">
-      <Project>{CDC88908-F9B8-40CB-B746-86C8A4C1871B}</Project>
-      <Name>SME</Name>
+    <ProjectReference Include="..\..\Render\VHDL\SME.Render.VHDL.csproj">
+      <Project>{B6BDF863-F356-4DD7-8BA7-22B1DFFF7223}</Project>
+      <Name>SME.Render.VHDL</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Quicksort.asm" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -16,10 +16,7 @@ namespace PipelinedMIPS
 
             protected override void OnTick()
             {
-                uint a = input.newAddress;
-                //Console.WriteLine(a);
-                output.address = a;
-                //output.address = input.newAddress;
+                output.address = input.newAddress;
             }
         }
 
@@ -71,11 +68,12 @@ namespace PipelinedMIPS
             [OutputBus]
             DEBUG_SHUTDOWN shut;
 
-            byte[] program = System.IO.File.ReadAllBytes("programs/pipelinenobranch");
+            byte[] program = System.IO.File.ReadAllBytes("programs/fibforw");
 
             protected override void OnTick()
             {
                 uint i = addr.address;
+                //Console.WriteLine("0x{0:x8}", i);
                 if (i >= 0 && i < program.Length)
                 {
                     instr.instruction = 0u
@@ -110,7 +108,7 @@ namespace PipelinedMIPS
 
                 protected override void OnTick()
                 {
-                    inco.addr = inci.address;
+                    inco.addr         = inci.address;
                     insto.instruction = insti.instruction;
                 }
             }

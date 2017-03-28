@@ -5,7 +5,6 @@ namespace PipelinedMIPS
 {
     public partial class WB
     {
-
         public class MemMux : SimpleProcess
         {
             [InputBus]
