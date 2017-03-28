@@ -74,7 +74,7 @@ namespace SingleCycleMIPS
             [OutputBus]
             DEBUG_SHUTDOWN shut;
 
-            byte[] program = System.IO.File.ReadAllBytes("programs/pipelinenobranch");
+            byte[] program = System.IO.File.ReadAllBytes("programs/fibforw");
 
             protected override void OnTick()
             {
