@@ -168,7 +168,7 @@
     We are going to insert a pipe between each state, i.e. 4 pipes.
 \end{frame}
 
-\section{Implementation}
+\section{Introducing the pipes}
 \subsection{Implementation}
 \begin{frame}
     We have two ways of implementing pipes in SME:
@@ -216,7 +216,54 @@
 \end{frame}
 
 \subsection{Testing}
+\begin{frame}
+    To test the pipelind processor, we could use any of the programs we have
+    previously written. However, since we have pipelined the processor, we
+    need to insert bubbles in our program, to ensure the data is ready for all
+    of the instructions.
 
+    \vspace{\baselineskip}
+    An bubble is a No Operation (\texttt{nop}) instruction, which performs no
+    operation, and touches neither the Register File nor the Memory.
+\end{frame}
+\begin{frame}
+    We are going to implement a simple program, which is easy to verify: a
+    small loop, which computes $n$ fibonacci numbers, and places them in
+    memory.
+
+    \vspace{\baselineskip}
+    As we have done previously, we are going to give pseudo low level C code.
+\end{frame}
+\begin{frame}[fragile]
+\begin{lstlisting}
+void init(int *arr) {
+    *(arr)   = 1;
+    *(arr+1) = 1;
+}
+
+void loop(int *arr, int n) {
+    int i, tmp1, tmp2, tmp3;
+    for (i = 0; i < n; i++) {
+        tmp1 = *(arr+i);
+        tmp2 = *(arr+i+1);
+        tmp3 = tmp1 + tmp2;
+        *(arr+i+2) = tmp3;
+    }
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}
+    Note: if the program is written in actual C, the allocated array should be
+    $n+2$, due to initialization values.
+
+    \vspace{\baselineskip}
+    Furthermore, when we port it to MIPS assembly, after each instruction, we
+    should insert a bubble of 4 \texttt{nop}'s.
+
+    \vspace{\baselineskip}
+    When the program has run, the $n+2$ fibonacci numbers should be in memory,
+    at the given address.
+\end{frame}
 
 
 % exit section
