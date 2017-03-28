@@ -124,7 +124,41 @@ the next instruction. When the program has run, the $n+2$ fibonacci numbers
 should be in memory, at the given address.
 
 \subsection{Forwarding}\label{sec:forw}
-Forwarding er data hazards, som kan løses uden stalling
+By introducing pipes, we also introduced data hazards and control hazards. We
+will go through control hazards in section \ref{sec:haz}. Data hazards are when
+one instruction writes to a register, that a following instruction reads from.
+This is not a problem in the single cycle processor, as all data have been
+written to registers in the same clock cycle. This is not the case in the
+pipelined processor, e.g. the data might reside in the MEM stage, when it is
+needed in the EX stage.
+
+We can eliminate some of the data hazards by implementing an additional unit:
+the Forwarding Unit. The rest of the data hazards will be handled by hazard
+detection in section \ref{sec:haz}. The Forwarding Unit looks at the register
+addresses used by the instruction in the EX stage, and checks if it corresponds
+with the register write address of either the instruction in the MEM stage, or
+the instruction in the WB stage. If they correspond, it forwards the value from
+either the MEM or the WB stage to the EX stage.
+
+\subsubsection*{Implementation}
+Implementing the Forwarding Unit should be done with an SME process. As it
+interferes with the EX stage, it should be put in the EX stage. The unit should
+be controlling two multiplexors. The first multiplexor should control whether
+Output A should come from the ID pipe, the write data from the MEM stage or the
+write data from the WB stage. The other multiplexor is analogous, but with
+Output B. The two multiplexors should be controlled by the Forwarding Unit,
+i.e. it should generate the control signals for the multiplexors based on the
+two register read addresses of the current instruction in the EX stage, the
+register write address and write enabled signal both from the MEM and the WB
+stages.
+
+\subsubsection*{Testing}
+Testing is straightforward: we can just remove all of the \texttt{nop}'s from
+the fibonacci program, except for those which come after either a load, a
+branch or a jump, as these hazards are not handled yet.
+
 \subsection{Hazard Detection}\label{sec:haz}
 Hazard detection håndtere indsættelsen af bobler, både med read delay og branch
 og jump delay
+
+\subsection{Branch prediction?}

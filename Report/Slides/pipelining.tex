@@ -265,6 +265,42 @@ void loop(int *arr, int n) {
     at the given address.
 \end{frame}
 
+\section{Forwarding}
+\begin{frame}
+    By introducing pipes, we also introduced data hazards and control hazards.
+    We start by looking at handling data hazards.
+
+    \vspace{\baselineskip}
+    Data hazards are when one instruction writes to a register that a following
+    instruction reads from. This was not a problem in the single cycle
+    processor, as all the data had been written in the same clock cycle.
+\end{frame}
+\begin{frame}
+    We can eliminate some of the data hazards by implementing an additional
+    unit: the Forwarding Unit.
+
+    \vspace{\baselineskip}
+    This unit looks at the registers used by the instruction in the EX stage,
+    and if the instruction in either the MEM or the WB stage writes to either
+    of the registers, then the Forwarding will forward that data to the EX
+    stage.
+\end{frame}
+
+\subsection{Implementation \& Testing}
+\begin{frame}
+    Implementing the Forwarding unit should be done with an SME process, which
+    should be put in the EX stage.
+
+    \vspace{\baselineskip}
+    The unit should be controlling two multiplexors, which decides whether the
+    EX stage should use the values read from registers, the value from the MEM
+    stage or the value from the WB stage.
+
+    \vspace{\baselineskip}
+    Testing the forwarding unit is straightforward: we just remove the
+    \texttt{nop}'s from the fibonacci program, except for those following a
+    load, branch or jump, as these hazards are not handled yet.
+\end{frame}
 
 % exit section
 \AtBeginSection{}
