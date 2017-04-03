@@ -12,19 +12,18 @@ namespace PipelinedMIPS
             PCIn input;
             [InputBus]
             ID.HazardDetection.Stall stall;
+            [InputBus]
+            ID.HazardDetection.Flush flush;
 
             uint addr = 0;
-            uint dontCare;
 
             [OutputBus]
             Address output;
 
             protected override void OnTick()
             {
-                if (!stall.flg)
+                if (!stall.flg || flush.flg)
                     addr = input.newAddress;
-                else
-                    dontCare = input.newAddress;
                 output.address = addr;
             }
         }
@@ -44,7 +43,7 @@ namespace PipelinedMIPS
             protected override void OnTick()
             {
                 pc.newAddress = jmp.flg ? jump.addr : inc.address;
-                //Console.WriteLine(jmp.flg + " " + inc.address);
+                //Console.WriteLine(jmp.flg + " " + jump.addr);
             }
         }
 
@@ -79,7 +78,7 @@ namespace PipelinedMIPS
             [OutputBus]
             DEBUG_SHUTDOWN shut;
 
-            byte[] program = System.IO.File.ReadAllBytes("/home/carljohnsen/Dropbox/Kandidat/MIPS/fibforw");
+            byte[] program = System.IO.File.ReadAllBytes("/home/carljohnsen/Dropbox/Kandidat/MIPS/quicksort");
 
             protected override void OnTick()
             {
@@ -114,8 +113,12 @@ namespace PipelinedMIPS
 
                 [InputBus]
                 ID.HazardDetection.Stall stall;
+                [InputBus]
+                ID.HazardDetection.Flush flush;
                 uint inctmp = 0;
                 uint insttmp = 0;
+
+                //bool toggled = false;
 
                 [OutputBus]
                 IncrementerOut inco;
@@ -124,21 +127,19 @@ namespace PipelinedMIPS
 
                 protected override void OnTick()
                 {
-                    if (stall.flg)
+                    if (flush.flg)
                     {
-                        inco.addr = 0;
-                        insto.instruction = 0;
+                        inctmp = 0;
+                        insttmp = 0;
                     }
-                    else
+                    else if (!stall.flg)
                     {
                         inctmp = inci.address;
                         insttmp = insti.instruction;
-                        inco.addr = inctmp;
-                        insto.instruction = insttmp;
                     }
                     inco.addr = inctmp;
                     insto.instruction = insttmp;
-                    //Console.WriteLine("0x{0:x8}", insttmp);
+                    //Console.WriteLine("0x{0:x8} 0x{1:x8}", inctmp, insttmp);
                 }
             }
         }

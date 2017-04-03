@@ -119,7 +119,7 @@ namespace PipelinedMIPS
 
             protected override void OnTick()
             {
-                // flag format = [BranchNot, Jump reg, Logical immediate, JAL, Jmp, RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch]
+                // flag format = [BranchNot, Logical immediate, JAL, Jmp, RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch]
                 short flags = 0; // nop
                 ALUOpcodes alu = 0; // nop
                 switch ((Opcodes)input.opcode)
@@ -167,7 +167,11 @@ namespace PipelinedMIPS
                 ReadA reada;
                 [InputBus]
                 ReadB readb;
+                [InputBus]
+                JumpUnit.PCSrc branchOrJump;
 
+                [OutputBus]
+                Flush flush;
                 [OutputBus]
                 Stall stall;
 
@@ -178,6 +182,9 @@ namespace PipelinedMIPS
                          (readb.addr == writeaddr.addr)));
                     //Console.WriteLine(a);
                     stall.flg = a;
+                    bool b = branchOrJump.flg;
+                    //b = false;
+                    flush.flg = b;
                 }
             }
         }
@@ -273,7 +280,9 @@ namespace PipelinedMIPS
                 ID.ReadB readbi;
 
                 [InputBus]
-                ID.HazardDetection.Stall flush;
+                ID.HazardDetection.Stall stall;
+                [InputBus]
+                ID.HazardDetection.Flush flush;
                 uint outatmp = 0;
                 uint outbtmp = 0;
                 uint signtmp = 0;
@@ -338,7 +347,7 @@ namespace PipelinedMIPS
 
                 protected override void OnTick()
                 {
-                    if (flush.flg)
+                    if (flush.flg || stall.flg)
                     {
                         outatmp = 0;
                         outbtmp = 0;

@@ -411,6 +411,8 @@ namespace PipelinedMIPS
                 [InputBus]
                 EX.Zero zeroi;
 
+                [InputBus]
+                ID.HazardDetection.Flush flush;
                 bool branchtmp = false;
                 uint baddrtmp = 0;
                 bool bnetmp = false;
@@ -457,20 +459,40 @@ namespace PipelinedMIPS
 
                 protected override void OnTick()
                 {
-                    branchtmp = branchi.flg;
-                    baddrtmp = baddri.addr;
-                    bnetmp = bnei.flg;
-                    jouttmp = jouti.val;
-                    jmptmp = jmpi.flg;
-                    jaddrtmp = jaddri.addr;
-                    jmpregtmp = jmpregi.flg;
-                    memreadtmp = memreadi.flg;
-                    memtoregtmp = memtoregi.flg;
-                    memwritetmp = memwritei.flg;
-                    outputbtmp = outputbi.data;
-                    regwritetmp = regwritei.flg;
-                    regaddrtmp = regaddri.addr;
-                    zerotmp = zeroi.flg;
+                    if (flush.flg)
+                    {
+                        branchtmp = false;
+                        baddrtmp = 0;
+                        bnetmp = false;
+                        jouttmp = 0;
+                        jmptmp = false;
+                        jaddrtmp = 0;
+                        jmpregtmp = false;
+                        memreadtmp = false;
+                        memtoregtmp = false;
+                        memwritetmp = false;
+                        outputbtmp = 0;
+                        regwritetmp = false;
+                        regaddrtmp = 0;
+                        zerotmp = false;
+                    }
+                    else
+                    {
+                        branchtmp = branchi.flg;
+                        baddrtmp = baddri.addr;
+                        bnetmp = bnei.flg;
+                        jouttmp = jouti.val;
+                        jmptmp = jmpi.flg;
+                        jaddrtmp = jaddri.addr;
+                        jmpregtmp = jmpregi.flg;
+                        memreadtmp = memreadi.flg;
+                        memtoregtmp = memtoregi.flg;
+                        memwritetmp = memwritei.flg;
+                        outputbtmp = outputbi.data;
+                        regwritetmp = regwritei.flg;
+                        regaddrtmp = regaddri.addr;
+                        zerotmp = zeroi.flg;
+                    }
 
                     //Console.WriteLine(memreadtmp + " " + jouttmp);
 

@@ -186,6 +186,12 @@ namespace PipelinedMIPS
             {
                 bool flg { get; set; }
             }
+
+            [InitializedBus]
+            public interface Flush : IBus
+            {
+                bool flg { get; set; }
+            }
         }
 
         [InitializedBus]
