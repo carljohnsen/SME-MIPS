@@ -12,7 +12,8 @@ namespace PipelinedMIPS
             [InputBus]
             EX.Pipe.JALOut mem;
             [InputBus]
-            MEM.Pipe.JALOut wb;
+            WB.WriteData wb;
+            //MEM.Pipe.JALOut wb;
             [InputBus]
             Forwarding.ForwardA forwardingUnit;
 
@@ -28,7 +29,7 @@ namespace PipelinedMIPS
                     case ForwardSelection.mem: //Console.WriteLine("a mem");
                         output.data = mem.val; break;
                     case ForwardSelection.wb: //Console.WriteLine("a wb");
-                        output.data = wb.val; break;
+                        output.data = wb.data; break;
                 }
             }
         }
@@ -40,7 +41,8 @@ namespace PipelinedMIPS
             [InputBus]
             EX.Pipe.JALOut mem;
             [InputBus]
-            MEM.Pipe.JALOut wb;
+            WB.WriteData wb;
+            //MEM.Pipe.JALOut wb;
             [InputBus]
             Forwarding.ForwardB forwardingUnit;
 
@@ -56,7 +58,7 @@ namespace PipelinedMIPS
                     case ForwardSelection.mem: //Console.WriteLine("b mem");
                         output.data = mem.val; break;
                     case ForwardSelection.wb: //Console.WriteLine("b wb");
-                        output.data = wb.val; break;
+                        output.data = wb.data; break;
                 }
             }
         }
@@ -409,6 +411,21 @@ namespace PipelinedMIPS
                 [InputBus]
                 EX.Zero zeroi;
 
+                bool branchtmp = false;
+                uint baddrtmp = 0;
+                bool bnetmp = false;
+                uint jouttmp = 0;
+                bool jmptmp = false;
+                uint jaddrtmp = 0;
+                bool jmpregtmp = false;
+                bool memreadtmp = false;
+                bool memtoregtmp = false;
+                bool memwritetmp = false;
+                uint outputbtmp = 0;
+                bool regwritetmp = false;
+                byte regaddrtmp = 0;
+                bool zerotmp = false;
+
                 [OutputBus]
                 Branch brancho;
                 [OutputBus]
@@ -440,20 +457,37 @@ namespace PipelinedMIPS
 
                 protected override void OnTick()
                 {
-                    brancho.flg = branchi.flg;
-                    baddro.addr = baddri.addr;
-                    bneo.flg = bnei.flg;
-                    jouto.val = jouti.val;
-                    jmpo.flg = jmpi.flg;
-                    jaddro.addr = jaddri.addr;
-                    jmprego.flg = jmpregi.flg;
-                    memreado.flg = memreadi.flg;
-                    memtorego.flg = memtoregi.flg;
-                    memwriteo.flg = memwritei.flg;
-                    outputbo.data = outputbi.data;
-                    regwriteo.flg = regwritei.flg;
-                    regaddro.addr = regaddri.addr;
-                    zeroo.flg = zeroi.flg;
+                    branchtmp = branchi.flg;
+                    baddrtmp = baddri.addr;
+                    bnetmp = bnei.flg;
+                    jouttmp = jouti.val;
+                    jmptmp = jmpi.flg;
+                    jaddrtmp = jaddri.addr;
+                    jmpregtmp = jmpregi.flg;
+                    memreadtmp = memreadi.flg;
+                    memtoregtmp = memtoregi.flg;
+                    memwritetmp = memwritei.flg;
+                    outputbtmp = outputbi.data;
+                    regwritetmp = regwritei.flg;
+                    regaddrtmp = regaddri.addr;
+                    zerotmp = zeroi.flg;
+
+                    //Console.WriteLine(memreadtmp + " " + jouttmp);
+
+                    brancho.flg = branchtmp;
+                    baddro.addr = baddrtmp;
+                    bneo.flg = bnetmp;
+                    jouto.val = jouttmp;
+                    jmpo.flg = jmptmp;
+                    jaddro.addr = jaddrtmp;
+                    jmprego.flg = jmpregtmp;
+                    memreado.flg = memreadtmp;
+                    memtorego.flg = memtoregtmp;
+                    memwriteo.flg = memwritetmp;
+                    outputbo.data = outputbtmp;
+                    regwriteo.flg = regwritetmp;
+                    regaddro.addr = regaddrtmp;
+                    zeroo.flg = zerotmp;
                 }
             }
         }
@@ -491,9 +525,9 @@ namespace PipelinedMIPS
                         outa.selection = (byte) ForwardSelection.original;
 
                     if (rt.addr == memrd.addr && memrw.flg)
-                        outb.selection = (byte) ForwardSelection.mem;
+                        outb.selection = (byte)ForwardSelection.mem;
                     else if (rt.addr == wbrd.addr && wbrw.flg)
-                        outb.selection = (byte) ForwardSelection.wb;
+                        outb.selection = (byte)ForwardSelection.wb;
                     else
                         outb.selection = (byte) ForwardSelection.original;
                 }

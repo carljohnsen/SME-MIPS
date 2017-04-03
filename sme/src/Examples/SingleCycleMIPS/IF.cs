@@ -74,11 +74,12 @@ namespace SingleCycleMIPS
             [OutputBus]
             DEBUG_SHUTDOWN shut;
 
-            byte[] program = System.IO.File.ReadAllBytes("programs/fibforw");
+            byte[] program = System.IO.File.ReadAllBytes("/home/carljohnsen/Dropbox/Kandidat/MIPS/fibforw");
 
             protected override void OnTick()
             {
                 uint i = addr.address;
+                //Console.WriteLine("0x{0:x8}", i);
                 if (i >= 0 && i < program.Length)
                 {
                     instr.instruction = 0u

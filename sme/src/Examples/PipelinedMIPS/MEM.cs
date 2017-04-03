@@ -46,7 +46,7 @@ namespace PipelinedMIPS
                     output.data = 0;
                 }
 
-                /*Console.Write("MEM [");
+                Console.Write("MEM [");
                 for (int i = 0; i < 15; i++)
                 {
                     int a = 0
@@ -56,7 +56,7 @@ namespace PipelinedMIPS
                     | mem[i * 4 + 3];
                     Console.Write(a + ",");
                 }
-                Console.WriteLine("]");*/
+                Console.WriteLine("]");
             }
         }
 
@@ -76,6 +76,12 @@ namespace PipelinedMIPS
                 [InputBus]
                 EX.Pipe.RegWriteAddr regaddri;
 
+                uint jouttmp = 0;
+                bool memtoregtmp = false;
+                uint readdatatmp = 0;
+                bool regwritetmp = false;
+                byte regaddrtmp = 0;
+
                 [OutputBus]
                 JALOut jouto;
                 [OutputBus]
@@ -89,11 +95,17 @@ namespace PipelinedMIPS
 
                 protected override void OnTick()
                 {
-                    jouto.val      = jouti.val;
-                    memtorego.flg  = memtoregi.flg;
-                    readdatao.data = readdatai.data;
-                    regwriteo.flg  = regwritei.flg;
-                    regaddro.addr  = regaddri.addr;
+                    jouttmp = jouti.val;
+                    memtoregtmp = memtoregi.flg;
+                    readdatatmp = readdatai.data;
+                    regwritetmp = regwritei.flg;
+                    regaddrtmp = regaddri.addr;
+
+                    jouto.val      = jouttmp;
+                    memtorego.flg  = memtoregtmp;
+                    readdatao.data = readdatatmp;
+                    regwriteo.flg  = regwritetmp;
+                    regaddro.addr  = regaddrtmp;
                 }
             }
         }

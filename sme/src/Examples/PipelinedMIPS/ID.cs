@@ -155,6 +155,33 @@ namespace PipelinedMIPS
             }
         }
 
+        public partial class HazardDetection
+        {
+            public class Unit : SimpleProcess
+            {
+                [InputBus]
+                ID.Pipe.WriteDst writeaddr;
+                [InputBus]
+                ID.Pipe.MemRead memread;
+                [InputBus]
+                ReadA reada;
+                [InputBus]
+                ReadB readb;
+
+                [OutputBus]
+                Stall stall;
+
+                protected override void OnTick()
+                { // TODO fix
+                    bool a = (memread.flg &&
+                        ((reada.addr == writeaddr.addr) ||
+                         (readb.addr == writeaddr.addr)));
+                    //Console.WriteLine(a);
+                    stall.flg = a;
+                }
+            }
+        }
+
         public class Register : SimpleProcess
         {
             [InputBus]
@@ -245,6 +272,29 @@ namespace PipelinedMIPS
                 [InputBus]
                 ID.ReadB readbi;
 
+                [InputBus]
+                ID.HazardDetection.Stall flush;
+                uint outatmp = 0;
+                uint outbtmp = 0;
+                uint signtmp = 0;
+                uint inctmp = 0;
+                uint jumptmp = 0;
+                byte shmttmp = 0;
+                byte dsttmp = 0;
+                byte functtmp = 0;
+                bool regwritetmp = false;
+                byte aluoptmp = 0;
+                bool alusrctmp = false;
+                bool branchtmp = false;
+                bool jmptmp = false;
+                bool jaltmp = false;
+                bool bnetmp = false;
+                bool memreadtmp = false;
+                bool memwritetmp = false;
+                bool memtoregtmp = false;
+                byte readatmp = 0;
+                byte readbtmp = 0;
+
                 [OutputBus]
                 OutputA outao;
                 [OutputBus]
@@ -288,26 +338,75 @@ namespace PipelinedMIPS
 
                 protected override void OnTick()
                 {
-                    outao.data    = outai.data;
-                    outbo.data    = outbi.data;
-                    signo.data    = signi.data;
-                    inco.addr     = inci.addr;
-                    jumpo.addr    = jumpi.addr;
-                    shmto.amount  = shmti.amount;
-                    dsto.addr     = dsti.addr;
-                    functo.val    = functi.val;
-                    regwriteo.flg = regwritei.flg;
-                    aluopo.code   = aluopi.code;
-                    alusrco.flg   = alusrci.flg;
-                    brancho.flg   = branchi.flg;
-                    jmpo.flg      = jmpi.flg;
-                    jalo.flg      = jali.flg;
-                    bneo.flg      = bnei.flg;
-                    memreado.flg  = memreadi.flg;
-                    memwriteo.flg = memwritei.flg;
-                    memtorego.flg = memtoregi.flg;
-                    readao.addr   = readai.addr;
-                    readbo.addr   = readbi.addr;
+                    if (flush.flg)
+                    {
+                        outatmp = 0;
+                        outbtmp = 0;
+                        signtmp = 0;
+                        inctmp = 0;
+                        jumptmp = 0;
+                        shmttmp = 0;
+                        dsttmp = 0;
+                        functtmp = 0;
+                        regwritetmp = false;
+                        aluoptmp = 0;
+                        alusrctmp = false;
+                        branchtmp = false;
+                        jmptmp = false;
+                        jaltmp = false;
+                        bnetmp = false;
+                        memreadtmp = false;
+                        memwritetmp = false;
+                        memtoregtmp = false;
+                        readatmp = 0;
+                        readbtmp = 0;
+                    }
+                    else
+                    {
+                        outatmp = outai.data;
+                        outbtmp = outbi.data;
+                        signtmp = signi.data;
+                        inctmp = inci.addr;
+                        jumptmp = jumpi.addr;
+                        shmttmp = shmti.amount;
+                        dsttmp = dsti.addr;
+                        functtmp = functi.val;
+                        regwritetmp = regwritei.flg;
+                        aluoptmp = aluopi.code;
+                        alusrctmp = alusrci.flg;
+                        branchtmp = branchi.flg;
+                        jmptmp = jmpi.flg;
+                        jaltmp = jali.flg;
+                        bnetmp = bnei.flg;
+                        memreadtmp = memreadi.flg;
+                        memwritetmp = memwritei.flg;
+                        memtoregtmp = memtoregi.flg;
+                        readatmp = readai.addr;
+                        readbtmp = readbi.addr;
+                    }
+
+                    //Console.WriteLine((ALUOpcodes)aluoptmp + " " + readatmp + " " + readbtmp + " " + dsttmp);
+
+                    outao.data = outatmp;
+                    outbo.data = outbtmp;
+                    signo.data = signtmp;
+                    inco.addr = inctmp;
+                    jumpo.addr = jumptmp;
+                    shmto.amount = shmttmp;
+                    dsto.addr = dsttmp;
+                    functo.val = functtmp;
+                    regwriteo.flg = regwritetmp;
+                    aluopo.code = aluoptmp;
+                    alusrco.flg = alusrctmp;
+                    brancho.flg = branchtmp;
+                    jmpo.flg = jmptmp;
+                    jalo.flg = jaltmp;
+                    bneo.flg = bnetmp;
+                    memreado.flg = memreadtmp;
+                    memwriteo.flg = memwritetmp;
+                    memtorego.flg = memtoregtmp;
+                    readao.addr = readatmp;
+                    readbo.addr = readbtmp;
                 }
             }
         }

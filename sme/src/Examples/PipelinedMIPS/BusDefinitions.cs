@@ -179,6 +179,15 @@ namespace PipelinedMIPS
             bool flg { get; set; }
         }
 
+        public partial class HazardDetection
+        {
+            [InitializedBus]
+            public interface Stall : IBus
+            {
+                bool flg { get; set; }
+            }
+        }
+
         [InitializedBus]
         public interface Jmp : IBus
         {
