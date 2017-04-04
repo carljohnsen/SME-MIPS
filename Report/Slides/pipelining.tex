@@ -367,6 +367,12 @@ void loop(int *arr, int n) {
 \begin{frame}
     Testing this is straightforward, as the processor should be able to handle
     all of our previous programs, albeit with more clock cycles.
+
+    \vspace{\baselineskip}
+    Note: if these programs are tested against the single cycle processor, the
+    performance will be worse, when simulating. This is due to more processes
+    and busses, which gives the simulation more work. There should not be any
+    performance hit, when the processor is run on hardware.
 \end{frame}
 
 % exit section
