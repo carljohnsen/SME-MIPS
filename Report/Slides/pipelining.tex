@@ -302,6 +302,73 @@ void loop(int *arr, int n) {
     load, branch or jump, as these hazards are not handled yet.
 \end{frame}
 
+\section{Hazard Detection}
+\subsection{Data Hazards}
+\begin{frame}
+    As we just mentioned, we cannot handle all of the data hazards with just
+    fowarding. This is due to the forwarding destination being the EX stage,
+    and that the data might not be ready at that point.
+
+    \vspace{\baselineskip}
+    E.g. if we have a load instruction, which is followed by an instruction
+    that uses the loaded data in its computation. In this case, the loaded data
+    will not be ready until the load instruction has reached the WB stage.
+
+    \vspace{\baselineskip}
+    To handle this, the processor needs to detect the hazard, and insert a
+    bubble, and stall some of the pipes and registers.
+\end{frame}
+
+\subsection{Control Hazards}
+\begin{frame}
+    We also need to handle an additional type of hazard: control hazards.
+    Control hazards are when either a jump or a branch instruction has been
+    executed.
+
+    \vspace{\baselineskip}
+    The problem is that the branch or jump is not performed until the MEM
+    stage, which means that all of the previous states of the pipeline may have
+    been filled with instructions, which should not be executed.
+
+    \vspace{\baselineskip}
+    To solve this, we should detect the hazard, and in such case flush the
+    pipeline. Flushing is the action of resetting the registers in the pipes,
+    so they output \texttt{nop} instructions.
+\end{frame}
+
+\subsection{Implementation}
+\begin{frame}
+    The Hazard Detection Unit should be implemented in its own SME process.
+
+    \vspace{\baselineskip}
+    To handle the data hazards, the process should read the \texttt{memread}
+    flag from the EX stage, the destination register from the EX stage, and the
+    two source register address from the ID stage. If the flag has been set,
+    and the destination address match either of the two source adddresses, the
+    ID/EX pipe should be flushed, the IF/ID and the PC register should be
+    stalled.
+
+    \vspace{\baselineskip}
+    Stalling is setting the registers not to update, so they will output the
+    same data in the next clock cycle.
+\end{frame}
+\begin{frame}
+    To solve the control hazards, the unit should look at the signal from the
+    MEM stage, which indicates whether or not jumping should be performed.
+
+    \vspace{\baselineskip}
+    In such a case, the Hazard Detection Unit should send a signal to flush the
+    IF/ID, ID/EX and EX/MEM pipes. Note: the PC register should perform
+    normally, even though it might have been instructed to stall, as the stall
+    is now invalid.
+\end{frame}
+
+\subsection{Testing}
+\begin{frame}
+    Testing this is straightforward, as the processor should be able to handle
+    all of our previous programs, albeit with more clock cycles.
+\end{frame}
+
 % exit section
 \AtBeginSection{}
 \section*{}

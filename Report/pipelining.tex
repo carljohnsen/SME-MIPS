@@ -95,8 +95,8 @@ can be removed.
 To test the processor, we can use any of the programs, that we have previously
 written. However, since we have pipelined the processor, we need to insert
 bubbles, in order for data to be available for each instruction. A bubble is a
-set of No Operation (\texttt{nop}) instructions, which performs no operation,
-and does not modify neither the Register File nor the Memory.
+No Operation (\texttt{nop}) instruction, which performs no operation, and does
+not modify neither the Register File nor the Memory.
 
 We are going to implement a simple program, which is easy to verify: a small
 loop, which computes $n$ fibonacci numbers, and places them in memory. As with
@@ -158,7 +158,59 @@ the fibonacci program, except for those which come after either a load, a
 branch or a jump, as these hazards are not handled yet.
 
 \subsection{Hazard Detection}\label{sec:haz}
-Hazard detection håndtere indsættelsen af bobler, både med read delay og branch
-og jump delay
+As mentioned in section \ref{sec:forw}, we cannot avoid all data hazards with
+forwarding. This is due to forwarding only forwarding to the EX stage. However,
+if the instruction prior to the instruction in EX is a load, then the data wont
+be available, until the load instruction has reached the WB stage. To handle
+this, the processor needs to detect the hazard and insert a bubble, as this
+will delay the instruction, so that when it has reached the EX stage, the load
+instruction will be in the WB stage. When inserting a bubble in the middle of
+the pipeline, we have to stall some of the pipes and registers. Stalling is the
+action of outputting what is stored in the register, but not updating it, i.e.
+outputting the same data in the next clock cycle.
+
+We also need to be able to handle an additional type of hazard: control
+hazards. Control hazards are when either jump or branch instructions are
+executed. The problem is that the branch or jump is not performed until the MEM
+stage, which means that the pipeline following the jump or branch instruction
+may have been filled up by instructions, which should not be executed. To solve
+this, we should detect the hazard, and in such case flush the pipeline.
+Flushing the pipeline, is the action of resetting the registers in the pipes,
+so that they output a \texttt{nop} instruction.
+
+\subsubsection*{Implementation}
+The hazard detection should be implemented in its own SME process: the Hazard
+Detection Unit.
+
+To solve the data hazards, it needs to read the \texttt{memread} control flag
+from the EX stage, the register write address from the EX stage and the two
+source register addresses from the ID stage. If the \texttt{memread} flag has
+been set, and either of the source registers match the destination register,
+then the ID/EX pipe should be flushed, the IF/ID pipe should be stalled, and
+the PC register should be stalled.
+
+To solve the control hazards, it should read the \texttt{PCSrc} flag from the
+MEM stage (the one used by the PC register, to multiplex between the
+incremented address, and the jump/branch address), and if it is set, then the
+IF/ID, ID/EX and EX/MEM pipes should be flushed. Note: the PC register should
+read normally in the case of a flush, even though it might have to stall, as
+the stall is detected in the to be flushed part of the pipeline.
+
+\subsubsection*{Testing}
+Testing the new hazard detection is straightforward, as the processor should
+now be able to handle all of the previous programs, albeit in a larger amount
+of clock ticks, compared to the single cycle processor.
 
 \subsection{Branch prediction?}
+TODO
+
+få noget ala linux til at køre?
+
+scratchpad memory som agere cache?
+
+flere kerner?
+
+scalar processor?
+
+
+
