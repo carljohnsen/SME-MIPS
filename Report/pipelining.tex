@@ -257,6 +257,87 @@ with the register write address of either the instruction in the MEM stage, or
 the instruction in the WB stage. If they correspond, it forwards the value from
 either the MEM or the WB stage to the EX stage.
 
+\begin{figure}
+    \centering
+    \scalebox{0.5}{
+        \begin{tikzpicture}
+            \node[block] (alu) at (0.75,0) {ALU};
+            \node[block] (reg) at (-4,0) {Register File};
+            \node[block] (memo) at (4,0) {Memory};
+            \node[block] (jump) at (4,4.75) {Jump};
+            \node[block] (imem) at (-8,0) {Instruction Memory};
+            \node[block] (pc) at (-9, 2) {PC};
+            \node[control] (cont) at (-4, 3) {Control};
+            \node[mux] (wbm) at (8,1) {|};
+            \node[block] (forw) at (0, -3) {Forwarding Unit};
+            \node[mux] (forwa) at (-0.25, 0.3) {|};
+            \node[mux] (forwb) at (-0.75, -0.3) {|};
+            \node[mux] (addr) at (-4, 1) {|};
+
+            \node[empty] (if) at (-8, 6) {\textbf{IF}};
+            \node[empty] (id) at (-4, 6) {\textbf{ID}};
+            \node[empty] (ex) at (0, 6) {\textbf{EX}};
+            \node[empty] (mem) at (4, 6) {\textbf{MEM}};
+            \node[empty] (wb) at (8, 6) {\textbf{WB}};
+
+            \path[draw, ->] (pc) -| (imem);
+            \path[draw, ->] (imem) -- (reg);
+            \path[draw, ->] (-5.5,0) |- (cont);
+            \path[draw, ->] (-5.5,0) |- (addr.220);
+            \path[draw, ->] (-5.5,0) |- (addr.140);
+            %\path[draw, ->] (reg.15) -- (alu.151);
+            \path[draw, ->] (reg.15) -- (forwa);
+            \path[draw, ->] (forwa) --  (alu.151);
+            \path[draw, ->] (reg.345) -- (forwb);
+            \path[draw, ->] (forwb) -- (alu.209);
+            \path[draw, ->] (alu) -- (memo);
+            \path[draw, ->] (0,-0.3) |- (0,-1) -- (2.75,-1) |- (memo.210);
+            \path[draw, ->] (2.5, 0) |- (wbm.150);
+            \path[draw, ->] (memo) -- (6.5, 0) |- (wbm.210);
+            \path[draw, ->] (wbm) -| (9.25, -1.75) -| (reg.290);
+            \path[draw, color=blue, dashed, ->] (alu.30) -| (1.5,1) |- (4,2) -| (jump.290);
+            \path[draw, ->] (jump) |- (0,5.5) -| (pc);
+            \path[draw, ->] (-8,2) |- (jump.160);
+            \path[draw, ->] (-5.5,3) |- (jump.200);
+            \path[draw, thick, ->] (-1.25,-1.75) |- (forwb.220);
+            \path[draw, thick, ->] (-1.25,-1.75) |- (forwa.220);
+            \path[draw, dashed, ->] (2.5, 0) |- (-1.5, -1.5) |- (forwb.140);
+            \path[draw, dashed, ->] (-1.5, -1.5) |- (forwa.140);
+            \path[draw, ->] (addr) -| (-3, 1.5) -| (9.5,-2) -|
+            (reg.270);
+            \path[draw, thick, ->] (9.5, -2) |- (forw.353);
+            \path[draw, dashed, ->] (5,1.5) |- (forw.15);
+            \path[draw, dashed, ->] (-5.5,0) |- (-1.75,-1) |- (forw.170);
+            \path[draw, dashed, ->] (-5.5,0) |- (-2,-1.25) |- (forw.190);
+
+            \path[draw, color=blue, ->] (cont.310) -| (alu);
+            \path[draw, color=blue, ->] (cont.330) -| (memo.115);
+            \path[draw, color=blue, ->] (cont.350) -| (wbm);
+            \path[draw, color=blue, ->] (cont.10) -| (9.75,-2.25) -| (reg.250);
+            \path[draw, color=blue, ->] (cont.30) -| (jump.250);
+            \path[draw, color=blue, ->] (cont) -- (addr);
+            \path[draw, color=blue, thick, ->] (9.75,-2.25) |- (forw.345);
+            \path[draw, color=blue, dashed, ->] (5.25, 3.2) |- (forw.7);
+
+            \path[draw, color=blue, dashed, ->] (forw.115) -- (forwa);
+            \path[draw, color=blue, dashed, ->] (forw.144) -- (forwb);
+
+
+            \node[block, minimum height=170, minimum width=10, fill=white] (ifid) at
+            (-6,2.25) {};
+            \node[block, minimum height=190, minimum width=10, fill=white] (idex) at
+            (-2.5,1.75) {};
+            \node[block, minimum height=180, minimum width=10, fill=white]
+            (exmem) at (2,2) {};
+            \node[block, minimum height=180, minimum width=10, fill=white]
+            (exmem) at (6,2) {};
+        \end{tikzpicture}
+    }
+    \caption{The simplified pipelined processor with forwarding.}
+    \label{fig:forw}
+\end{figure}
+
+
 \subsubsection*{Implementation}
 Implementing the Forwarding Unit should be done with an SME process. As it
 interferes with the EX stage, it should be put in the EX stage. The unit should
