@@ -5,11 +5,9 @@ We start by going through the background and motivation for pipelining, and
 then proceed on how to extend our single cycle MIPS processor to have pipes.
 
 As mentioned, pipelining introduces new problems to handle in the processor,
-and we will solve it by adding two new components: the forwarding unit, which
+and we will solve it by adding two new components: the Forwarding Unit, which
 forwards results from previous instructions to later instructions, and the
-hazard detection unit, which controls when to stall the pipeline, and when the
-instruction should read the forwarded value, or the value stored in the
-Register File.
+Hazard Detection Unit, which controls when to stall the pipeline.
 
 Throughout each step, we will also be writing programs, in order to verify that
 our processor behaves as specified.
@@ -19,13 +17,12 @@ We have the single cycle MIPS processor, which accepts the core integer
 instruction set. However, it is not very efficient, as the clock rate of the
 processor is determined by the longest possible path in the processor, so in
 order to increase the clock rate, we must decrease the longest path in the
-processor, which we solve with pipes.
+processor. We solve this by introducing pipes.
 
 Pipes are registers in the processor, where we temporarely store all the values
 computed so far. It takes all of its inputs, and holds them until the next
 clock tick, where it will forward the values it is holding. This ensures that
-the data does not have to travel as far, until it have reached a safe (TODO:
-find på et bedre ord end safe) state.
+the data does not have to travel as far, until it have reached a safe state.
 
 In order to know where to put the pipes, we divide the processor into stages.
 We will use the same stages, as proposed in the book\cite{ref:ark}, i.e. divide
@@ -50,6 +47,7 @@ further in sections \ref{sec:forw} and \ref{sec:haz}
             \node[block] (pc) at (-9, 2) {PC};
             \node[control] (cont) at (-4, 3) {Control};
             \node[mux] (wbm) at (8,1) {|};
+            \node[mux] (addr) at (-4, 1) {|};
 
             \node[empty] (if) at (-8, 6) {\textbf{IF}};
             \node[empty] (id) at (-4, 6) {\textbf{ID}};
@@ -71,6 +69,8 @@ further in sections \ref{sec:forw} and \ref{sec:haz}
             \path[draw, dashed, -] (exmemt) -- (exmemb);
             \path[draw, dashed, -] (memwbt) -- (memwbb);
 
+            \path[draw, ->] (-5.5,0) |- (addr.220);
+            \path[draw, ->] (-5.5,0) |- (addr.140);
             \path[draw, ->] (pc) -| (imem);
             \path[draw, ->] (imem) -- (reg);
             \path[draw, ->] (-5.5,0) |- (cont);
@@ -80,17 +80,22 @@ further in sections \ref{sec:forw} and \ref{sec:haz}
             \path[draw, ->] (-1,-0.31) -| (-1,-1) -- (2.5,-1) |- (memo.210);
             \path[draw, ->] (2.5, 0) |- (wbm.150);
             \path[draw, ->] (memo) -- (6.5, 0) |- (wbm.210);
-            \path[draw, ->] (wbm) -| (9, -1.5) -| (reg);
+            \path[draw, ->] (wbm) -| (9, -1.5) -| (reg.290);
             \path[draw, ->] (alu.30) -| (1,1) |- (4,2) -| (jump.290);
             \path[draw, ->] (jump) |- (0,5.5) -| (pc);
             \path[draw, ->] (-8,2) |- (jump.160);
             \path[draw, ->] (-5.5,3) |- (jump.200);
+            \path[draw, ->] (addr) -| (-3, 1.5) -| (9.5,-2) -|
+            (reg.270);
 
-            \path[draw, color=blue, ->] (cont) -- (reg);
-            \path[draw, color=blue, ->] (cont.330) -| (alu);
-            \path[draw, color=blue, ->] (cont.350) -| (memo.115);
-            \path[draw, color=blue, ->] (cont.10) -| (wbm);
+            %\path[draw, color=blue, ->] (cont) -- (reg);
+            %\path[draw, color=blue, ->] (cont.10) -| (9.5,-2) -| (reg.250);
+            \path[draw, color=blue, ->] (cont.10) -| (9.75,-2.25) -| (reg.250);
+            \path[draw, color=blue, ->] (cont.310) -| (alu);
+            \path[draw, color=blue, ->] (cont.330) -| (memo.115);
+            \path[draw, color=blue, ->] (cont.350) -| (wbm);
             \path[draw, color=blue, ->] (cont.30) -| (jump.250);
+            \path[draw, color=blue, ->] (cont) -- (addr);
         \end{tikzpicture}
     }
     \caption{The simplified single cycle processor, and its stages. The stage
@@ -110,6 +115,7 @@ further in sections \ref{sec:forw} and \ref{sec:haz}
             \node[block] (pc) at (-9, 2) {PC};
             \node[control] (cont) at (-4, 3) {Control};
             \node[mux] (wbm) at (8,1) {|};
+            \node[mux] (addr) at (-4, 1) {|};
 
             \node[empty] (if) at (-8, 6) {\textbf{IF}};
             \node[empty] (id) at (-4, 6) {\textbf{ID}};
@@ -117,6 +123,8 @@ further in sections \ref{sec:forw} and \ref{sec:haz}
             \node[empty] (mem) at (4, 6) {\textbf{MEM}};
             \node[empty] (wb) at (8, 6) {\textbf{WB}};
 
+            \path[draw, ->] (-5.5,0) |- (addr.220);
+            \path[draw, ->] (-5.5,0) |- (addr.140);
             \path[draw, ->] (pc) -| (imem);
             \path[draw, ->] (imem) -- (reg);
             \path[draw, ->] (-5.5,0) |- (cont);
@@ -131,12 +139,16 @@ further in sections \ref{sec:forw} and \ref{sec:haz}
             \path[draw, ->] (jump) |- (0,5.5) -| (pc);
             \path[draw, ->] (-8,2) |- (jump.160);
             \path[draw, ->] (-5.5,3) |- (jump.200);
+            \path[draw, ->] (addr) -| (-3, 1.5) -| (9.5,-2) -|
+            (reg.270);
 
             \path[draw, color=blue, ->] (cont.310) -| (alu);
             \path[draw, color=blue, ->] (cont.330) -| (memo.115);
             \path[draw, color=blue, ->] (cont.350) -| (wbm);
-            \path[draw, color=blue, ->] (cont.10) -| (9.5,-2) -| (reg.250);
+            %\path[draw, color=blue, ->] (cont.10) -| (9.5,-2) -| (reg.250);
+            \path[draw, color=blue, ->] (cont.10) -| (9.75,-2.25) -| (reg.250);
             \path[draw, color=blue, ->] (cont.30) -| (jump.250);
+            \path[draw, color=blue, ->] (cont) -- (addr);
 
             \node[block, minimum height=170, minimum width=10, fill=white] (ifid) at
             (-6,2.25) {};
@@ -160,11 +172,11 @@ clocked busses, as the semantics of a clocked bus is exactly the same as a
 pipe. However, if the bus traverses more than 2 stages, we are going to need
 additional processes, as the clocked bus only stores its value for one clock.
 Furthermore, if the only change to the bus is the given \texttt{ClockedBus}
-attribute, then determining whether or not a bus is part of a pipe. As such, we
-should have the pipe and its busses in its own class, as it then receives its
-own prefix, and the code then becomes more readable.
+attribute, then determining whether or not a bus is part of a pipe can be
+problematic. As such, we should have the pipe and its busses in its own class,
+as it then receives its own prefix, and the code then becomes more readable.
 
-Introducing the pipes in our processor is fairly straightforward, as we just
+Introducing the pipes in this manner is fairly straightforward, as we just
 add 4 classes, each with the same set of busses as the 'previous' stage outputs
 to the 'next' stage, and each with a register process, which forwards all the
 values from the 'previous' stages busses, onto its own busses with the same
@@ -178,14 +190,15 @@ the bus that the \texttt{ID} class calls is converteted from
 \texttt{IF.Instruction} to \texttt{IF.Pipe.Instruction}, emphasizing that the
 bus is now piped.
 
-Now, this process can be repeated for all of the required pipes. There is only
-one really tricky part of pipelining: the Jump Unit. We dont know whether we
-should jump until the \texttt{MEM} stage, as the computations are made in the
-\texttt{EX} stage, and the conditions are computed in the \texttt{MEM} stage.
-However, the Program Counter has to increment, regardless of whether or not we
-should jump. As such, we should divide the Jump Unit into its subcomponents,
-and place some of the logic in the \texttt{IF}, some in the \texttt{EX} stage
-and finally some of it in the \texttt{MEM} stage.
+This process can be repeated for all of the required pipes. By following the
+division of the components, as proposed in the book \cite{ref:ark}, there is
+only one really tricky part of pipelining: the Jump Unit. We dont know whether
+we should jump until the \texttt{MEM} stage, as the computations are made in
+the \texttt{EX} stage, and the conditions are computed in the \texttt{MEM}
+stage.  However, the Program Counter has to increment, regardless of whether or
+not we should jump. As such, we should divide the Jump Unit into its
+subcomponents, and place some of the logic in the \texttt{IF}, some in the
+\texttt{EX} stage and finally some of it in the \texttt{MEM} stage.
 
 For the \texttt{IF} stage, the incrementer and a multiplexor should be placed
 inside the stage. The multiplexor should take an address computed from the
@@ -199,7 +212,7 @@ branch address and the jump address.
 
 Finally, the \texttt{MEM} stage should hold the decision logic. First, it
 should determine if the instruction was an branch instruction, and whether or
-not the condition has been satisfied, in which case, the  address forwarded to
+not the condition has been satisfied, in which case, the address forwarded to
 the \texttt{IF} stage should be the branch address. If this was not the case,
 the computed jump address should be the one forwarded.
 
@@ -208,7 +221,7 @@ order to remove the cycle from and to the Register File. However, by
 introducing pipes, we have introduced a new buffer, and thus the Write Buffer
 can be removed.
 
-\subsubsection*{Testing}
+\subsubsection*{Testing} % TODO hertil!
 To test the processor, we can use any of the programs, that we have previously
 written. However, since we have pipelined the processor, we need to insert
 bubbles, in order for data to be available for each instruction. A bubble is a
@@ -234,7 +247,7 @@ void loop(int *arr, int n) {
     }
 }
 \end{lstlisting}
-Note that for verification in C, the array should be $n+2$, due to
+Note that for verification in C, the size of the array should be $n+2$, due to
 initialization. Furthermore, when we port it to MIPS assembly, after each
 instruction, we should insert 4 \texttt{nop}'s, to ensure the data is ready for
 the next instruction. When the program has run, the $n+2$ fibonacci numbers
@@ -255,7 +268,12 @@ detection in section \ref{sec:haz}. The Forwarding Unit looks at the register
 addresses used by the instruction in the EX stage, and checks if it corresponds
 with the register write address of either the instruction in the MEM stage, or
 the instruction in the WB stage. If they correspond, it forwards the value from
-either the MEM or the WB stage to the EX stage.
+either the MEM or the WB stage to the EX stage. The overview of the processor
+with the forwarding unit can be seen in Figure \ref{fig:forw}.
+
+We could also have gone with the bubble approach, i.e. insert bubbles every
+time there is a data hazard. However, this would not be optimal, as there would
+be several clock cycles, where the processor is idle.
 
 \begin{figure}
     \centering
@@ -337,7 +355,6 @@ either the MEM or the WB stage to the EX stage.
     \label{fig:forw}
 \end{figure}
 
-
 \subsubsection*{Implementation}
 Implementing the Forwarding Unit should be done with an SME process. As it
 interferes with the EX stage, it should be put in the EX stage. The unit should
@@ -374,7 +391,103 @@ stage, which means that the pipeline following the jump or branch instruction
 may have been filled up by instructions, which should not be executed. To solve
 this, we should detect the hazard, and in such case flush the pipeline.
 Flushing the pipeline, is the action of resetting the registers in the pipes,
-so that they output a \texttt{nop} instruction.
+so that they output a \texttt{nop} instruction. The overview of the processor
+with the Hazard Detection Unit can be seen in Figure \ref{fig:hazard}.
+
+\begin{figure}
+    \centering
+    \scalebox{0.5}{
+        \begin{tikzpicture}
+            \node[block] (alu) at (0.75,0) {ALU};
+            \node[block] (reg) at (-4,0) {Register File};
+            \node[block] (memo) at (4,0) {Memory};
+            \node[block] (jump) at (4,4.75) {Jump};
+            \node[block] (imem) at (-8,0) {Instruction Memory};
+            \node[block] (pc) at (-9, 2) {PC};
+            \node[control] (cont) at (-4, 3) {Control};
+            \node[mux] (wbm) at (8,1) {|};
+            \node[block] (forw) at (0, -3) {Forwarding Unit};
+            \node[mux] (forwa) at (-0.25, 0.3) {|};
+            \node[mux] (forwb) at (-0.75, -0.3) {|};
+            \node[mux] (addr) at (-4, 1) {|};
+            \node[block] (haz) at (-4,6.5) {Hazard Detectection};
+
+            \node[empty] (if) at (-8, 8) {\textbf{IF}};
+            \node[empty] (id) at (-4, 8) {\textbf{ID}};
+            \node[empty] (ex) at (0, 8) {\textbf{EX}};
+            \node[empty] (mem) at (4, 8) {\textbf{MEM}};
+            \node[empty] (wb) at (8, 8) {\textbf{WB}};
+
+            \path[draw, ->] (pc) -| (imem);
+            \path[draw, ->] (imem) -- (reg);
+            \path[draw, ->] (-5.5,0) |- (cont);
+            \path[draw, ->] (-5.5,0) |- (addr.220);
+            \path[draw, ->] (-5.5,0) |- (addr.140);
+            %\path[draw, ->] (reg.15) -- (alu.151);
+            \path[draw, ->] (reg.15) -- (forwa);
+            \path[draw, ->] (forwa) --  (alu.151);
+            \path[draw, ->] (reg.345) -- (forwb);
+            \path[draw, ->] (forwb) -- (alu.209);
+            \path[draw, ->] (alu) -- (memo);
+            \path[draw, ->] (0,-0.3) |- (0,-1) -- (2.75,-1) |- (memo.210);
+            \path[draw, ->] (2.5, 0) |- (wbm.150);
+            \path[draw, ->] (memo) -- (6.5, 0) |- (wbm.210);
+            \path[draw, ->] (wbm) -| (9.25, -1.75) -| (reg.290);
+            \path[draw, color=blue, dashed, ->] (alu.30) -| (1.5,1) |- (4,2) -| (jump.290);
+            \path[draw, ->] (jump) |- (0,5.5) -| (pc);
+            \path[draw, ->] (-8,2) |- (jump.160);
+            \path[draw, ->] (-5.5,3) |- (jump.200);
+            \path[draw, thick, ->] (-1.25,-1.75) |- (forwb.220);
+            \path[draw, thick, ->] (-1.25,-1.75) |- (forwa.220);
+            \path[draw, dashed, ->] (2.5, 0) |- (-1.5, -1.5) |- (forwb.140);
+            \path[draw, dashed, ->] (-1.5, -1.5) |- (forwa.140);
+            \path[draw, ->] (addr) -| (-3, 1.5) -| (9.5,-2) -|
+            (reg.270);
+            \path[draw, thick, ->] (9.5, -2) |- (forw.353);
+            \path[draw, dashed, ->] (5,1.5) |- (forw.15);
+            \path[draw, dashed, ->] (-5.5,0) |- (-1.75,-1) |- (forw.170);
+            \path[draw, dashed, ->] (-5.5,0) |- (-2,-1.25) |- (forw.190);
+
+            \path[draw, color=blue, ->] (cont.310) -| (alu);
+            \path[draw, color=blue, ->] (cont.330) -| (memo.115);
+            \path[draw, color=blue, ->] (cont.350) -| (wbm);
+            \path[draw, color=blue, ->] (cont.10) -| (9.75,-2.25) -| (reg.250);
+            \path[draw, color=blue, ->] (cont.30) -| (jump.250);
+            \path[draw, color=blue, ->] (cont) -- (addr);
+            \path[draw, color=blue, thick, ->] (9.75,-2.25) |- (forw.345);
+            \path[draw, color=blue, dashed, ->] (5.25, 3.2) |- (forw.7);
+
+            \path[draw, color=blue, dashed, ->] (forw.115) -- (forwa);
+            \path[draw, color=blue, dashed, ->] (forw.144) -- (forwb);
+
+            % Hazard
+            \path[draw, thick, ->] (-0.75, 1.5) |- (haz); % addr
+            \path[draw, thick, color=blue, ->] (-1, 2.37) |- (haz.350); % mem
+            \path[draw, thick, ->] (-0.5, 5.5) |- (haz.10); % pcsrc
+            \path[draw, thick, ->] (-5.5, 4.55) -- (haz.200);% reada readb
+            \path[draw, dashed, color=blue, -] (haz) -- (-4, 5.75);
+
+            \node[block, minimum height=170, minimum width=10, fill=white] (ifid) at
+            (-6,2.25) {};
+            \node[block, minimum height=190, minimum width=10, fill=white] (idex) at
+            (-2.5,1.75) {};
+            \node[block, minimum height=180, minimum width=10, fill=white]
+            (exmem) at (2,2) {};
+            \node[block, minimum height=180, minimum width=10, fill=white]
+            (memwb) at (6,2) {};
+
+            \path[draw, dashed, color=blue, ->] (-4, 5.75) -| (exmem);
+            \path[draw, dashed, color=blue, ->] (-4, 5.75) -| (idex);
+            \path[draw, dashed, color=blue, ->] (-4, 5.75) -| (ifid.92);
+            \path[draw, dashed, color=blue, ->] (-4, 5.75) -| (pc.115);
+            \path[draw, color=blue, ->] (haz) -| (ifid.88);
+            \path[draw, color=blue, ->] (haz) -| (pc.65);
+        \end{tikzpicture}
+    }
+    \caption{The simplified pipelined processor with forwarding and hazard
+    detection.}
+    \label{fig:hazard}
+\end{figure}
 
 \subsubsection*{Implementation}
 The hazard detection should be implemented in its own SME process: the Hazard
