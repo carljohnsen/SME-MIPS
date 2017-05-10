@@ -10,7 +10,7 @@ using SME;
 namespace Adder32 {
 	public class HalfAdder0
 	{
-		public class XOR : SimpleProcess
+		public class XorGate : SimpleProcess
 		{
 			[InputBus] InputA0 input0;
 			[InputBus] InputB0 input1;
@@ -19,7 +19,7 @@ namespace Adder32 {
 			protected override void OnTick() { output.Bit = input0.Bit ^ input1.Bit; }
 		}
 
-		public class AND : SimpleProcess
+		public class AndGate : SimpleProcess
 		{
 			[InputBus] InputA0 input0;
 			[InputBus] InputB0 input1;
@@ -40,7 +40,7 @@ namespace Adder32 {
 		[InitializedBus] public interface Internal1 : IBus { bool Bit { get; set; } }
 		[InitializedBus] public interface Internal2 : IBus { bool Bit { get; set; } }
 
-		public class XOR0 : SimpleProcess
+		public class XorGate0 : SimpleProcess
 		{
 			[InputBus] InputA<#Write("" + i);#> input0;
 			[InputBus] InputB<#Write("" + i);#> input1;
@@ -49,7 +49,7 @@ namespace Adder32 {
 			protected override void OnTick() { output.Bit = input0.Bit ^ input1.Bit; }
 		}
 
-		public class XOR1 : SimpleProcess
+		public class XorGate1 : SimpleProcess
 		{
 			[InputBus] Internal0 input0;
 			[InputBus] Carry<#Write("" + (i-1));#> input1;
@@ -58,7 +58,7 @@ namespace Adder32 {
 			protected override void OnTick() { output.Bit = input0.Bit ^ input1.Bit; }
 		}
 
-		public class AND0 : SimpleProcess
+		public class AndGate0 : SimpleProcess
 		{
 			[InputBus] InputA<#Write("" + i);#> input0;
 			[InputBus] InputB<#Write("" + i);#> input1;
@@ -67,7 +67,7 @@ namespace Adder32 {
 			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
-		public class AND1 : SimpleProcess
+		public class AndGate1 : SimpleProcess
 		{
 			[InputBus] Internal0 input0;
 			[InputBus] Carry<#Write("" + (i-1));#> input1;
@@ -76,7 +76,7 @@ namespace Adder32 {
 			protected override void OnTick() { output.Bit = input0.Bit && input1.Bit; }
 		}
 
-		public class OR : SimpleProcess
+		public class OrGate : SimpleProcess
 		{
 			[InputBus] Internal1 input0;
 			[InputBus] Internal2 input1;

@@ -3,8 +3,7 @@ using SME;
 
 namespace Adder32 {
 
-	[ClockedProcess]
-	public class AdderTester : Process
+	public class AdderTester : SimulationProcess
 	{
 		public void InputNumbers(int num1, int num2)
 		{

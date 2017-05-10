@@ -3,8 +3,7 @@ using SME;
 
 namespace Register
 {
-	[ClockedProcess]
-	public class RegisterTester : Process
+	public class Tester : SimulationProcess
 	{
 		[InputBus]
 		OutputA outputA;

@@ -3,19 +3,19 @@ using SME;
 
 namespace Register
 {
-	[InitializedBus]
+	[TopLevelInputBus]
 	public interface ReadA : IBus
 	{
 		short addr { get; set;}
 	}
 
-	[InitializedBus]
+	[TopLevelInputBus]
 	public interface ReadB : IBus
 	{
 		short addr { get; set; }
 	}
 
-	[InitializedBus]
+	[TopLevelInputBus]
 	public interface Write : IBus
 	{
 		short addr { get; set; }
@@ -23,13 +23,13 @@ namespace Register
 		bool enabled { get; set; }
 	}
 
-	[InitializedBus]
+	[TopLevelOutputBus]
 	public interface OutputA : IBus
 	{
 		int data { get; set; }
 	}
 
-	[InitializedBus]
+	[TopLevelOutputBus]
 	public interface OutputB : IBus
 	{
 		int data { get; set; }

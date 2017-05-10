@@ -3,14 +3,14 @@ using SME;
 
 namespace LogicGates
 {
-    [TopLevelInputBus, InitializedBus]
+    [TopLevelInputBus]
     public interface Input : IBus
     {
         bool bit1 { get; set; }
         bool bit2 { get; set; }
     }
 
-    [TopLevelOutputBus, InitializedBus]
+    [TopLevelOutputBus]
     public interface Output : IBus
     {
         bool And { get; set; }

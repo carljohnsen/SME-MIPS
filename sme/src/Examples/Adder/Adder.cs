@@ -3,7 +3,7 @@ using SME;
 
 namespace Adder
 {
-	public class XOR : SimpleProcess
+	public class XorGate : SimpleProcess
 	{
 		[InputBus]
 		Input input;
@@ -17,7 +17,7 @@ namespace Adder
 		}
 	}
 
-	public class AND : SimpleProcess
+	public class AndGate : SimpleProcess
 	{
 		[InputBus]
 		Input input;

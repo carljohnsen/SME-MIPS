@@ -3,7 +3,7 @@ using SME;
 
 namespace FullAdder
 {
-	[InitializedBus]
+	[TopLevelInputBus]
 	public interface Input : IBus
 	{
 		bool BitA { get; set; }
@@ -11,7 +11,7 @@ namespace FullAdder
 		bool BitC { get; set; }
 	}
 
-	[InitializedBus]
+	[TopLevelOutputBus]
 	public interface Output : IBus
 	{
 		bool Sum { get; set; }

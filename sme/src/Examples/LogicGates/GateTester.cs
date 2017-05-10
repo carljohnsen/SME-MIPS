@@ -4,8 +4,7 @@ using SME;
 namespace LogicGates
 {
     // Tests the logic circuits
-    [ClockedProcess]
-    public class GateTester : Process
+	public class GateTester : SimulationProcess
     {
         // Names are kind of reversed, as it is input for the gate, and not the producer
         [OutputBus]

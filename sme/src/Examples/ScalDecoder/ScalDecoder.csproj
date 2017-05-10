@@ -8,6 +8,7 @@
     <RootNamespace>ScalDecoder</RootNamespace>
     <AssemblyName>ScalDecoder</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ReleaseVersion>0.2</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,24 +44,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Render\GraphViz\SME.Render.GraphViz.csproj">
-      <Project>{268A0B13-B84C-42F1-96D9-96550ED2F71F}</Project>
-      <Name>SME.Render.GraphViz</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SME\SME.csproj">
-      <Project>{CDC88908-F9B8-40CB-B746-86C8A4C1871B}</Project>
-      <Name>SME</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SimpleTrader\SimpleTradeImplementation\SimpleTradeImplementation.csproj">
-      <Project>{83BF7F48-BB3D-40C0-931D-B5BBCA93C92F}</Project>
-      <Name>SimpleTradeImplementation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Render\VHDL\SME.Render.VHDL.csproj">
-      <Project>{B6BDF863-F356-4DD7-8BA7-22B1DFFF7223}</Project>
-      <Name>SME.Render.VHDL</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Buses.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Buses.cs</LastGenOutput>
@@ -73,6 +56,28 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DecoderTester.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SME.VHDL\SME.VHDL.csproj">
+      <Project>{E796351B-EB59-4686-9B54-DE4A284E0433}</Project>
+      <Name>SME.VHDL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SME.Tracer\SME.Tracer.csproj">
+      <Project>{325E539D-9BA8-4EAE-BE6E-D7226A8E8B45}</Project>
+      <Name>SME.Tracer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SME.GraphViz\SME.GraphViz.csproj">
+      <Project>{268A0B13-B84C-42F1-96D9-96550ED2F71F}</Project>
+      <Name>SME.GraphViz</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SME.AST\SME.AST.csproj">
+      <Project>{B1C84452-3FA5-4176-BAB6-EF27DE76D452}</Project>
+      <Name>SME.AST</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SME\SME.csproj">
+      <Project>{CDC88908-F9B8-40CB-B746-86C8A4C1871B}</Project>
+      <Name>SME</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

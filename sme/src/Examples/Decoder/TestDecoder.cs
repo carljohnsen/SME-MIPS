@@ -3,8 +3,7 @@ using SME;
 
 namespace Decoder
 {
-	[ClockedProcess]
-	public class TestDecoder : Process
+	public class TestDecoder : SimulationProcess
 	{
 		[InputBus]
 		Output0 output0;

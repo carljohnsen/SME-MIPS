@@ -3,22 +3,18 @@ using SME;
 
 namespace Adder
 {
-	[ClockedProcess]
-	public class AdderTester : Process
+	public class AdderTester : SimulationProcess
 	{
 		[InputBus]
-		readonly Output output;
+		Output output;
 
 		[OutputBus]
-		readonly Input input;
+		Input input;
 
 		public async override System.Threading.Tasks.Task Run()
 		{
 			Console.WriteLine("Started testing");
 			await ClockAsync();
-
-			System.Diagnostics.Debug.Assert(!output.Sum);
-			System.Diagnostics.Debug.Assert(!output.Carry);
 
 			input.Bit0 = true;
             input.Bit1 = false;

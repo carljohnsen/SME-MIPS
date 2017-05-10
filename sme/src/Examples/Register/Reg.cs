@@ -4,8 +4,7 @@ using SME;
 
 namespace Register
 {
-	//[ClockedProcess]	
-	public class Register : SimpleProcess
+	public class Reg : SimpleProcess
 	{
 		[InputBus]
 		ReadA readA;
@@ -20,7 +19,6 @@ namespace Register
 		OutputB outputB;
 
 		int[] data = new int[32];
-		//int[] data = Enumerable.Repeat(0, 32).ToArray();
 
 		protected override void OnTick()
 		{

@@ -3,9 +3,8 @@ using SME;
 
 namespace LogicGates
 {
-
-    //[ClockedProcess]
-    public class AND : SimpleProcess
+	
+    public class AndGate : SimpleProcess
     {
         [InputBus]
         Input input;
@@ -19,8 +18,7 @@ namespace LogicGates
         }
     }
 
-    //[ClockedProcess]
-    public class OR : SimpleProcess
+    public class OrGate : SimpleProcess
     {
         [InputBus]
         Input input;
@@ -34,8 +32,7 @@ namespace LogicGates
         }
     }
 
-    //[ClockedProcess]
-    public class NOT : SimpleProcess
+    public class NotGate : SimpleProcess
     {
         [InputBus]
         Input input;
@@ -49,8 +46,7 @@ namespace LogicGates
         }
     }
 
-    //[ClockedProcess]
-    public class XOR : SimpleProcess
+    public class XorGate : SimpleProcess
     {
         [InputBus]
         Input input;

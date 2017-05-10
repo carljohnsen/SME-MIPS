@@ -3,33 +3,33 @@ using SME;
 
 namespace ALU
 {
-	[InitializedBus]
+	[TopLevelInputBus]
 	public interface InputA : IBus
 	{
-		int data { get; set; }
+		uint data { get; set; }
 	}
 
-	[InitializedBus]
+	[TopLevelInputBus]
 	public interface InputB : IBus
 	{
-		int data { get; set; } 
+		uint data { get; set; } 
 	}
 
-	[InitializedBus]
+	[TopLevelInputBus]
 	public interface ALUOp : IBus
 	{
 		opcodes code { get; set; }
 	}
 
-	[InitializedBus]
+	[TopLevelOutputBus]
 	public interface Zero : IBus
 	{
 		bool val { get; set; }
 	}
 
-	[InitializedBus]
+	[TopLevelOutputBus]
 	public interface Output : IBus
 	{
-		int data { get; set; }
+		uint data { get; set; }
 	}
 }

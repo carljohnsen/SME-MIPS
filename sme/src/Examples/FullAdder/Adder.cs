@@ -5,17 +5,16 @@ namespace FullAdder
 {
 	public class FullAdder
 	{
-		[InitializedBus]
 		public interface Internal0 : IBus
 		{
 			bool Bit { get; set; }
 		}
-		[InitializedBus]
+
 		public interface Internal1 : IBus
 		{
 			bool Bit { get; set; }
 		}
-		[InitializedBus]
+
 		public interface Internal2 : IBus
 		{
 			bool Bit { get; set; }
@@ -98,8 +97,7 @@ namespace FullAdder
 		}
 	}
 
-	[ClockedProcess]
-	public class AdderTester : Process
+	public class AdderTester : SimulationProcess
 	{
 		[InputBus]
 		Output output;

@@ -3,14 +3,14 @@ using SME;
 
 namespace Adder
 {
-	[InitializedBus]
+	[TopLevelInputBus]
 	public interface Input : IBus
 	{
 		bool Bit0 { get; set; }
 		bool Bit1 { get; set; }
 	}
 
-	[InitializedBus]
+	[TopLevelOutputBus]
 	public interface Output : IBus
 	{
 		bool Sum { get; set; }

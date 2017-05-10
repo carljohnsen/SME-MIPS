@@ -4,14 +4,14 @@ using SME;
 namespace ScalDecoder 
 {
 	
-		[InitializedBus] public interface InputN0 : IBus { bool Bit { get; set; } }
-		[InitializedBus] public interface InputN1 : IBus { bool Bit { get; set; } }
-		[InitializedBus] public interface InputN2 : IBus { bool Bit { get; set; } }
-		[InitializedBus] public interface InputN3 : IBus { bool Bit { get; set; } }
-		[InitializedBus] public interface InputN4 : IBus { bool Bit { get; set; } }
-		[InitializedBus] public interface InputN5 : IBus { bool Bit { get; set; } }
-		[InitializedBus] public interface InputN6 : IBus { bool Bit { get; set; } }
-		[InitializedBus] public interface InputN7 : IBus { bool Bit { get; set; } }
+		public interface InputN0 : IBus { bool Bit { get; set; } }
+		public interface InputN1 : IBus { bool Bit { get; set; } }
+		public interface InputN2 : IBus { bool Bit { get; set; } }
+		public interface InputN3 : IBus { bool Bit { get; set; } }
+		public interface InputN4 : IBus { bool Bit { get; set; } }
+		public interface InputN5 : IBus { bool Bit { get; set; } }
+		public interface InputN6 : IBus { bool Bit { get; set; } }
+		public interface InputN7 : IBus { bool Bit { get; set; } }
 
 		public class NOT0 : SimpleProcess
 		{

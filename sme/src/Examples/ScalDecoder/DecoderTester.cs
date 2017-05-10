@@ -4,8 +4,7 @@ using SME;
 namespace ScalDecoder 
 {
 
-	[ClockedProcess]
-	public class DecoderTester : Process 
+	public class DecoderTester : SimulationProcess 
 	{
 		[InputBus] Output0 output0;
 		[InputBus] Output1 output1;
