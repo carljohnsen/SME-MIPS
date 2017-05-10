@@ -18,7 +18,7 @@ namespace ALU
 	[InitializedBus]
 	public interface ALUOp : IBus
 	{
-		short code { get; set; }
+		opcodes code { get; set; }
 	}
 
 	[InitializedBus]

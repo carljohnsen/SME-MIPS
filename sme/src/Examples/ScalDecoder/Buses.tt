@@ -3,17 +3,18 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-<# int BitWidth = 6; #>
-<# int pow = 64; #>
+<# int BitWidth = 8; #>
+<# int pow = 256; #>
 using System;
 using SME;
 
-namespace ScalDecoder {
+namespace ScalDecoder 
+{
 
 <# for (int i = 0; i < BitWidth; i++)
 {
 #>
-	[InitializedBus] public interface Input<#Write(""+i);#> : IBus { bool Bit { get; set; } }
+	public interface Input<#Write(""+i);#> : IBus { bool Bit { get; set; } }
 <#
 }
 #>
@@ -21,7 +22,7 @@ namespace ScalDecoder {
 <# for (int i = 0; i < pow; i++)
 {
 #>
-	[InitializedBus] public interface Output<#Write(""+i);#> : IBus { bool Bit { get; set; } }
+	public interface Output<#Write(""+i);#> : IBus { bool Bit { get; set; } }
 <#
 }
 #>

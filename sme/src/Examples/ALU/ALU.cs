@@ -3,6 +3,16 @@ using SME;
 
 namespace ALU
 {
+	public delegate int f(int a, int b);
+
+	public enum opcodes
+	{
+		add,
+		sub,
+		and,
+		or,
+	};
+
 	//[ClockedProcess]
 	public class ALU : SimpleProcess
 	{
@@ -18,9 +28,16 @@ namespace ALU
 		[OutputBus]
 		Output output;
 
+		f[] funs = new f[] {
+			(a, b) => a + b,
+			(a, b) => a - b,
+			(a, b) => a & b,
+			(a, b) => a | b,
+		};
+
 		protected override void OnTick()
 		{
-			switch (op.code)
+			/*switch (op.code)
 			{
 				case 0x20: // add
 					int tmp = inputA.data + inputB.data;
@@ -47,7 +64,11 @@ namespace ALU
 					output.data = tmp;
 					zero.val = tmp == 0;
 					break;
-			}
+			}*/
+
+			int res = funs[(int) op.code](inputA.data, inputB.data);
+			output.data = res;
+			zero.val = res == 0;
 		}
 	}
 }

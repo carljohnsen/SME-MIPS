@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <time.h>
+#include <stdint.h>
 
-int n = 15;
+int n = 5;
 int *a;
 int *b;
 int *c;
@@ -14,9 +16,14 @@ int main() {
     a = from; b = to; c = aux;
     init(n, from, to, aux);
     int *f = from+n, *t = to, *a = aux;
-    draw();
+    struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
+    //draw();
     tower(n-1, &f, &a, &t);
-    draw();
+    //draw();
+    clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+    uint64_t delta = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_nsec - start.tv_nsec) / 1000;
+    printf("%lu", delta);
 }
 
 void draw() {

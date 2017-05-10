@@ -19,8 +19,8 @@ namespace Register
 		[OutputBus]
 		OutputB outputB;
 
-		//int[] data = new int[32];
-		int[] data = Enumerable.Repeat(0, 32).ToArray();
+		int[] data = new int[32];
+		//int[] data = Enumerable.Repeat(0, 32).ToArray();
 
 		protected override void OnTick()
 		{

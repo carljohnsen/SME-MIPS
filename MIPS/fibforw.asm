@@ -10,12 +10,18 @@ addi $a0 $a0 4
 loop:
 lw $t0 -4($a0)
 lw $t1 -8($a0)
+nop
 add $t2 $t0 $t1
 sw $t2 0($a0)
 addi $a0 $a0 4
 addi $t4 $t4 -1
 bnez $t4 loop
+nop
+nop
+nop
+nop
 j exit
+# Should not execute!
 sw $t2 0($0)
 sw $t2 4($0)
 sw $t2 8($0)

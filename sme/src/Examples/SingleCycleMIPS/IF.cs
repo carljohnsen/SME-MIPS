@@ -74,7 +74,7 @@ namespace SingleCycleMIPS
             [OutputBus]
             DEBUG_SHUTDOWN shut;
 
-            byte[] program = System.IO.File.ReadAllBytes("/home/carljohnsen/Dropbox/Kandidat/MIPS/quicksort");
+            byte[] program = System.IO.File.ReadAllBytes("/home/carljohnsen/Dropbox/Kandidat/MIPS/fibforw");
 
             protected override void OnTick()
             {

@@ -20,14 +20,14 @@ namespace Decoder
 	public class Not0 : SimpleProcess
 	{
 		[InputBus]
-		Input input;
+		Input0 input;
 
 		[OutputBus]
 		Internal0 output;
 
 		protected override void OnTick()
 		{
-			output.Bit = !input.Bit0;
+			output.Bit = !input.Bit;
 		}
 	}
 
@@ -35,14 +35,14 @@ namespace Decoder
 	public class Not1 : SimpleProcess
 	{
 		[InputBus]
-		Input input;
+		Input1 input;
 
 		[OutputBus]
 		Internal1 output;
 
 		protected override void OnTick()
 		{
-			output.Bit = !input.Bit1;
+			output.Bit = !input.Bit;
 		}
 	}
 
@@ -56,11 +56,11 @@ namespace Decoder
 		Internal1 input1;
 
 		[OutputBus]
-		Output output;
+		Output0 output;
 
 		protected override void OnTick()
 		{
-			output.Bit0 = input0.Bit && input1.Bit;
+			output.Bit = input0.Bit && input1.Bit;
 		}
 	}
 
@@ -68,17 +68,17 @@ namespace Decoder
 	public class And1 : SimpleProcess
 	{
 		[InputBus]
-		Input input0;
+		Input0 input0;
 
 		[InputBus]
 		Internal1 input1;
 
 		[OutputBus]
-		Output output;
+		Output1 output;
 
 		protected override void OnTick()
 		{
-			output.Bit1 = input0.Bit0 && input1.Bit;
+			output.Bit = input0.Bit && input1.Bit;
 		}
 	}
 
@@ -86,17 +86,17 @@ namespace Decoder
 	public class And2 : SimpleProcess
 	{
 		[InputBus]
-		Input input0;
+		Input1 input0;
 
 		[InputBus]
 		Internal0 input1;
 
 		[OutputBus]
-		Output output;
+		Output2 output;
 
 		protected override void OnTick()
 		{
-			output.Bit2 = input0.Bit1 && input1.Bit;
+			output.Bit = input0.Bit && input1.Bit;
 		}
 	}
 
@@ -104,14 +104,16 @@ namespace Decoder
 	public class And3 : SimpleProcess
 	{
 		[InputBus]
-		Input input;
+		Input0 input0;
+		[InputBus]
+		Input1 input1;
 
 		[OutputBus]
-		Output output;
+		Output3 output;
 
 		protected override void OnTick()
 		{
-			output.Bit3 = input.Bit0 && input.Bit1;
+			output.Bit = input0.Bit && input1.Bit;
 		}
 	}
 }

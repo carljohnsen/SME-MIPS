@@ -1,4 +1,4 @@
-ori $sp $0 0x3000
+ori $sp $0 0x1000
 or $a0 $0 $gp
 
 # load(int *a)

@@ -1,16 +1,23 @@
 #include <stdio.h>
+#include <time.h>
+#include <stdint.h>
 
 void init(int *arr);
 void loop(int *arr, int n);
 
 int main() {
+    struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     int n = 10, arr[n+2], i;
     init(arr);
     loop(arr, n);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+    uint64_t delta = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_nsec - start.tv_nsec) / 1000;
     for (i = 0; i < n+2; i++) {
         printf("%d, ", *(arr+i));
     }
     printf("\n");
+    printf("%lu\n", delta);
 }
 
 void init(int *arr) {

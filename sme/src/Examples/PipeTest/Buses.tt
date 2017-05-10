@@ -4,7 +4,7 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <# int size = 101; #>
-<# bool piped = true; #>
+<# bool piped = false; #>
 using SME;
 using System;
 

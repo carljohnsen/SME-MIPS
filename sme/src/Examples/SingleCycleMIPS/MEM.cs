@@ -70,7 +70,7 @@ namespace SingleCycleMIPS
                     output.data = 0;
                 }
 
-                Console.Write("MEM [");
+                /*Console.Write("MEM [");
                 for (int i = 0; i < 15; i++)
                 {
                     int a = 0
@@ -80,7 +80,7 @@ namespace SingleCycleMIPS
                     | mem[i * 4 + 3];
                     Console.Write(a + ",");
                 }
-                Console.WriteLine("]");
+                Console.WriteLine("]");*/
             }
         }
 

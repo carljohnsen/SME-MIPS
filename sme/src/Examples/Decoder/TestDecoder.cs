@@ -7,48 +7,56 @@ namespace Decoder
 	public class TestDecoder : Process
 	{
 		[InputBus]
-		Output output;
+		Output0 output0;
+		[InputBus]
+		Output1 output1;
+		[InputBus]
+		Output2 output2;
+		[InputBus]
+		Output3 output3;
 
 		[OutputBus]
-		Input input;
+		Input0 input0;
+		[OutputBus]
+		Input1 input1;
 
 		public async override System.Threading.Tasks.Task Run()
 		{
 			Console.WriteLine("Started testing...");
 			await ClockAsync();
 
-			input.Bit0 = false;
-			input.Bit1 = false;
+			input0.Bit = false;
+			input1.Bit = false;
 			await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(output.Bit0);
-			System.Diagnostics.Debug.Assert(!output.Bit1);
-			System.Diagnostics.Debug.Assert(!output.Bit2);
-			System.Diagnostics.Debug.Assert(!output.Bit3);
-			input.Bit0 = true;
-			input.Bit1 = false;
+			System.Diagnostics.Debug.Assert(output0.Bit);
+			System.Diagnostics.Debug.Assert(!output1.Bit);
+			System.Diagnostics.Debug.Assert(!output2.Bit);
+			System.Diagnostics.Debug.Assert(!output3.Bit);
+			input0.Bit = true;
+			input1.Bit = false;
 			await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(!output.Bit0);
-			System.Diagnostics.Debug.Assert(output.Bit1);
-			System.Diagnostics.Debug.Assert(!output.Bit2);
-			System.Diagnostics.Debug.Assert(!output.Bit3);
-			input.Bit0 = false;
-			input.Bit1 = true;
+			System.Diagnostics.Debug.Assert(!output0.Bit);
+			System.Diagnostics.Debug.Assert(output1.Bit);
+			System.Diagnostics.Debug.Assert(!output2.Bit);
+			System.Diagnostics.Debug.Assert(!output3.Bit);
+			input0.Bit = false;
+			input1.Bit = true;
 			await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(!output.Bit0);
-			System.Diagnostics.Debug.Assert(!output.Bit1);
-			System.Diagnostics.Debug.Assert(output.Bit2);
-			System.Diagnostics.Debug.Assert(!output.Bit3);
-			input.Bit0 = true;
-			input.Bit1 = true;
+			System.Diagnostics.Debug.Assert(!output0.Bit);
+			System.Diagnostics.Debug.Assert(!output1.Bit);
+			System.Diagnostics.Debug.Assert(output2.Bit);
+			System.Diagnostics.Debug.Assert(!output3.Bit);
+			input0.Bit = true;
+			input1.Bit = true;
 			await ClockAsync();
 
-			System.Diagnostics.Debug.Assert(!output.Bit0);
-			System.Diagnostics.Debug.Assert(!output.Bit1);
-			System.Diagnostics.Debug.Assert(!output.Bit2);
-			System.Diagnostics.Debug.Assert(output.Bit3);
+			System.Diagnostics.Debug.Assert(!output0.Bit);
+			System.Diagnostics.Debug.Assert(!output1.Bit);
+			System.Diagnostics.Debug.Assert(!output2.Bit);
+			System.Diagnostics.Debug.Assert(output3.Bit);
 			await ClockAsync();
 			Console.WriteLine("Testing done");
 		}
