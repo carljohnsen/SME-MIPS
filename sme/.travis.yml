@@ -1,0 +1,18 @@
+language: csharp
+solution: src/SME.sln
+before_install:
+  - sudo add-apt-repository ppa:pgavin/ghdl -y
+  - sudo apt-get -qq update
+  - sudo apt-get install -y ghdl
+install:
+  - nuget restore src/SME.sln
+script:
+  - xbuild /p:Configuration=Release src/SME.sln
+  - cd "$TRAVIS_BUILD_DIR/src/Examples/ColorBin/bin/Release" && mono ColorBin.exe
+  - cd "$TRAVIS_BUILD_DIR/src/Examples/SimpleTrader/bin/Release" && mono SimpleTrader.exe
+  - cd "$TRAVIS_BUILD_DIR/src/Examples/NoiseFilter/bin/Release" && mono NoiseFilter.exe
+  - cd "$TRAVIS_BUILD_DIR/src/Examples/AES256CBC/bin/Release" && mono AES256CBC.exe
+  - cd "$TRAVIS_BUILD_DIR/src/Examples/ColorBin/bin/Release/output/vhdl" && make test
+  - cd "$TRAVIS_BUILD_DIR/src/Examples/SimpleTrader/bin/Release/output/vhdl" && make test
+  - cd "$TRAVIS_BUILD_DIR/src/Examples/NoiseFilter/bin/Release/output/vhdl" && make test
+  - cd "$TRAVIS_BUILD_DIR/src/Examples/AES256CBC/bin/Release/output/vhdl" && make test

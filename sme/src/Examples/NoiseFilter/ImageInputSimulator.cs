@@ -1,6 +1,5 @@
 ﻿using SME;
 using System;
-using SME.Render.VHDL;
 using System.Threading.Tasks;
 using System.Linq;
 
@@ -9,7 +8,7 @@ namespace NoiseFilter
 	/// <summary>
 	/// Helper process that loads images and writes them into the simulation
 	/// </summary>
-	[VHDLIgnore]
+	[Ignore]
 	[ClockedProcess]
 	public class ImageInputSimulator : SimulationProcess
 	{

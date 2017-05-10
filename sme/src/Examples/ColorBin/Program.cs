@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SME;
 
 namespace ColorBin
@@ -10,11 +11,13 @@ namespace ColorBin
 			// Faster test
 			ImageInputSimulator.IMAGES = new[] { "image1.png" };
 
-			new Simulation()
+			var sim = new Simulation()
 				.BuildCSVFile()
 				.BuildGraph()
 				.BuildVHDL()
-				.Run(typeof(MainClass).Assembly);
+				;
+
+			sim.Run(typeof(MainClass).Assembly);
 		}
 	}
 }

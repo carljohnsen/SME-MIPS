@@ -114,7 +114,7 @@ namespace SME
 					let attrIn = n.GetCustomAttributes(typeof(InputBusAttribute), true).FirstOrDefault()
 					let attrOut = n.GetCustomAttributes(typeof(OutputBusAttribute), true).FirstOrDefault()
 					let attrInternal = n.GetCustomAttributes(typeof(InternalBusAttribute), true).FirstOrDefault()
-					where attrInternal == null && (attrOut != null || (attrIn == attrOut))
+					where attrInternal == null && (attrOut != null || ((attrIn == null) == (attrOut == null)))
 					select (IBus)n.GetValue(this)).ToArray();
 
 			var inputList = 
@@ -122,8 +122,17 @@ namespace SME
 					let attrIn = n.GetCustomAttributes(typeof(InputBusAttribute), true).FirstOrDefault()
 					let attrOut = n.GetCustomAttributes(typeof(OutputBusAttribute), true).FirstOrDefault()
 					let attrInternal = n.GetCustomAttributes(typeof(InternalBusAttribute), true).FirstOrDefault()
-					where attrInternal == null && (attrOut == null || (attrIn == attrOut))
+				    where attrInternal == null && (attrOut == null || ((attrIn == null)  == (attrOut == null)))
 					select (IBus)n.GetValue(this)).ToArray();
+
+
+			var violator = m_internalbusses.FirstOrDefault(x => x.BusType.GetCustomAttributes(typeof(TopLevelInputBusAttribute), true).FirstOrDefault() != null);
+			if (violator != null)
+				throw new NotSupportedException($"The bus {violator.BusType.FullName} is marked with [{nameof(InternalBusAttribute)}], but is also marked with [{nameof(TopLevelInputBusAttribute)}] ");
+
+			violator = m_internalbusses.FirstOrDefault(x => x.BusType.GetCustomAttributes(typeof(TopLevelOutputBusAttribute), true).FirstOrDefault() != null);
+			if (violator != null)
+				throw new NotSupportedException($"The bus {violator.BusType.FullName} is marked with [{nameof(InternalBusAttribute)}], but is also marked with [{nameof(TopLevelOutputBusAttribute)}] ");
 
 			if (((IProcess)this).IsClockedProcess)
 			{
