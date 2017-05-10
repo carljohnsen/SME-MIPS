@@ -3,8 +3,7 @@ using SME;
 
 namespace SingleCycleMIPS
 {
-    [ClockedProcess]
-    public class Tester : Process
+    public class Tester : SimulationProcess
     {
         [InputBus]
         IF.DEBUG_SHUTDOWN cpu;

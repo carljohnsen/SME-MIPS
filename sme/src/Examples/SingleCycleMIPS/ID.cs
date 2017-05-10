@@ -48,14 +48,15 @@ namespace SingleCycleMIPS
         sdc2=62,
     }
 
+	// TODO har ændret alle enums, som delte keyword med vhdl, for at se om det hjalp, men uden held
     public enum ALUOpcodes
     {
         RFormat,
         sub,
         add,
         addu,
-        and,
-        or,
+        and_,
+        or_,
         slt,
         sltu,
     }
@@ -131,7 +132,7 @@ namespace SingleCycleMIPS
         [InitializedBus]
         public interface ControlIn : IBus
         {
-            byte opcode { get; set; }
+			Opcodes opcode { get; set; }
         }
 
         [InitializedBus]
@@ -198,9 +199,9 @@ namespace SingleCycleMIPS
                 readB.addr = rt;
                 mux.rd = rd;
                 mux.rt = rt;
-                control.opcode = opcode;
+				control.opcode = (Opcodes) opcode;
                 signExt.data = ext; 
-                aluFunct.val = funct;
+				aluFunct.val = (Funcs) funct;
                 jump.addr = addr;
             }
         }
@@ -275,7 +276,7 @@ namespace SingleCycleMIPS
                 // flag format = [BranchNot, Jump reg, Logical immediate, JAL, Jump, RegDst, ALUSrc, MemToReg, RegWrite, MemRead, MemWrite, Branch]
                 short flags = 0; // nop
                 ALUOpcodes alu = 0; // nop
-                switch ((Opcodes)input.opcode)
+                switch (input.opcode)
                 { // The comments are the flags, X is dont care
                     case Opcodes.Rformat: flags = 0x048;                        break; // 000 0100 1000
                     case Opcodes.lw:      flags = 0x03C; alu = ALUOpcodes.add;  break; // 000 0011 1100
@@ -283,12 +284,12 @@ namespace SingleCycleMIPS
                     case Opcodes.beq:     flags = 0x001; alu = ALUOpcodes.sub;  break; // 000 0X0X 0001
                     case Opcodes.addi:    flags = 0x028; alu = ALUOpcodes.add;  break; // 000 0010 1000
                     case Opcodes.addiu:   flags = 0x028; alu = ALUOpcodes.addu; break; // 000 0010 1000    
-                    case Opcodes.j:       flags = 0x080; alu = ALUOpcodes.or;   break; // 0X0 1XXX 000X
-                    case Opcodes.andi:    flags = 0x228; alu = ALUOpcodes.and;  break; // 010 0010 1000    
-                    case Opcodes.ori:     flags = 0x228; alu = ALUOpcodes.or;   break; // 010 0010 1000
+                    case Opcodes.j:       flags = 0x080; alu = ALUOpcodes.or_;   break; // 0X0 1XXX 000X
+                    case Opcodes.andi:    flags = 0x228; alu = ALUOpcodes.and_;  break; // 010 0010 1000    
+                    case Opcodes.ori:     flags = 0x228; alu = ALUOpcodes.or_;   break; // 010 0010 1000
                     case Opcodes.slti:    flags = 0x228; alu = ALUOpcodes.slt;  break; // 010 0010 1000    
                     case Opcodes.sltiu:   flags = 0x228; alu = ALUOpcodes.sltu; break; // 010 0010 1000
-                    case Opcodes.jal:     flags = 0x188; alu = ALUOpcodes.or;   break; // 0X1 1XXX 100X
+                    case Opcodes.jal:     flags = 0x188; alu = ALUOpcodes.or_;   break; // 0X1 1XXX 100X
                     case Opcodes.bne:     flags = 0x401; alu = ALUOpcodes.sub;  break; // 100 0X0X 0001
                         // TODO jal og jr
                     // default: flags = 0; alu = 0; break;
@@ -304,31 +305,32 @@ namespace SingleCycleMIPS
                 memread.flg  = ((flags >>  2) & 1) == 1;
                 memwrite.flg = ((flags >>  1) & 1) == 1;
                 branch.flg   = ( flags        & 1) == 1;
-                aluop.code   = (byte)alu;
+                aluop.code   = alu;
             }
         }
 
 
 
-        public class Register : SimpleProcess
-        {
-            [InputBus]
-            ReadA readA;
-            [InputBus]
-            ReadB readB;
-            [InputBus]
-            WriteEnabled regWrite;
-            [InputBus]
-            WriteAddr writeAddr;
-            [InputBus]
-            WriteData writeData;
+		public class Register : SimpleProcess
+		{
+			[InputBus]
+			ReadA readA;
+			[InputBus]
+			ReadB readB;
+			[InputBus]
+			WriteEnabled regWrite;
+			[InputBus]
+			WriteAddr writeAddr;
+			[InputBus]
+			WriteData writeData;
 
-            [OutputBus]
-            OutputA outputA;
-            [OutputBus]
-            OutputB outputB;
+			[OutputBus]
+			OutputA outputA;
+			[OutputBus]
+			OutputB outputB;
 
-            uint[] data = Enumerable.Repeat((uint) 0, 32).ToArray();
+			//uint[] data = Enumerable.Repeat((uint) 0, 32).ToArray();
+			uint[] data = new uint[32];
 
             protected override void OnTick()
             {

@@ -8,9 +8,9 @@ namespace SingleCycleMIPS
         public static void Main(string[] args)
         {
             new Simulation()
-                //.BuildCSVFile()
-                //.BuildGraph()
-                //.BuildVHDL()
+                .BuildCSVFile()
+                .BuildGraph()
+                .BuildVHDL()
                 .Run(typeof(MainClass).Assembly);
         }
     }

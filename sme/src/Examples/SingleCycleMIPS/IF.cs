@@ -58,6 +58,7 @@ namespace SingleCycleMIPS
             }
         }
 
+		[TopLevelOutputBus]
         public interface DEBUG_SHUTDOWN : IBus
         {
             [InitialValue(true)]

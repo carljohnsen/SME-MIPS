@@ -8,7 +8,7 @@ namespace SingleCycleMIPS
     {
         sll,
         srl=2,
-        sra,
+        sra_,
         sllv,
         srlv=6,
         srav,
@@ -31,10 +31,10 @@ namespace SingleCycleMIPS
         addu,
         sub,
         subu,
-        and,
-        or,
-        xor,
-        nor,
+        and_,
+        or_,
+        xor_,
+        nor_,
         slt=42,
         sltu,
         tge=48,
@@ -48,13 +48,13 @@ namespace SingleCycleMIPS
     [InitializedBus]
     public interface ALUOp : IBus
     {
-        byte code { get; set; }
+		ALUOpcodes code { get; set; }
     }
 
     [InitializedBus]
     public interface ALUFunct : IBus
     {
-        byte val { get; set; }
+		Funcs val { get; set; }
     }
 
     [InitializedBus]
@@ -103,22 +103,22 @@ namespace SingleCycleMIPS
     {
         public enum ALUOps
         {
-            and,
-            or,
+            and_,
+            or_,
             add,
             sl,
             sr,
-            sra,
+            sra_,
             sub,
             slt,
             addu,
             subu,
             mult,
             multu,
-            nor,
+            nor_,
             div,
             divu,
-            xor,
+            xor_,
             mtlo,
             mthi,
             mflo,
@@ -129,7 +129,7 @@ namespace SingleCycleMIPS
         [InitializedBus]
         public interface ALUOperation : IBus
         {
-            short val { get; set; }
+			ALUOps val { get; set; }
         }
 
         [InitializedBus]
@@ -211,44 +211,44 @@ namespace SingleCycleMIPS
 
             protected override void OnTick()
             {
-                if (op.code == (byte)ALUOpcodes.RFormat) // R format
+                if (op.code == ALUOpcodes.RFormat) // R format
                 {
-                    switch ((Funcs)funct.val)
+                    switch (funct.val)
                     {
-                        case Funcs.add:   output.val = (short)ALUOps.add;   jr.flg = false; shift.flg = false; break;
-                        case Funcs.addu:  output.val = (short)ALUOps.addu;  jr.flg = false; shift.flg = false; break;
-                        case Funcs.sub:   output.val = (short)ALUOps.sub;   jr.flg = false; shift.flg = false; break;
-                        case Funcs.subu:  output.val = (short)ALUOps.subu;  jr.flg = false; shift.flg = false; break;    
-                        case Funcs.and:   output.val = (short)ALUOps.and;   jr.flg = false; shift.flg = false; break;
-                        case Funcs.or :   output.val = (short)ALUOps.or;    jr.flg = false; shift.flg = false; break;
-                        case Funcs.nor:   output.val = (short)ALUOps.nor;   jr.flg = false; shift.flg = false; break;    
-                        case Funcs.slt:   output.val = (short)ALUOps.slt;   jr.flg = false; shift.flg = false; break;
-                        case Funcs.sltu:  output.val = (short)ALUOps.sltu;  jr.flg = false; shift.flg = false; break;    
-                        case Funcs.jr:    output.val = (short)ALUOps.or;    jr.flg = true;  shift.flg = false; break;
-                        case Funcs.srl:   output.val = (short)ALUOps.sr;    jr.flg = false; shift.flg = true;  break;
-                        case Funcs.sll:   output.val = (short)ALUOps.sl;    jr.flg = false; shift.flg = true;  break;
-                        case Funcs.mtlo:  output.val = (short)ALUOps.mtlo;  jr.flg = false; shift.flg = false; break;
-                        case Funcs.mthi:  output.val = (short)ALUOps.mthi;  jr.flg = false; shift.flg = false; break;
-                        case Funcs.mflo:  output.val = (short)ALUOps.mflo;  jr.flg = false; shift.flg = false; break;
-                        case Funcs.mfhi:  output.val = (short)ALUOps.mfhi;  jr.flg = false; shift.flg = false; break;
-                        case Funcs.mult:  output.val = (short)ALUOps.mult;  jr.flg = false; shift.flg = false; break;
-                        case Funcs.multu: output.val = (short)ALUOps.multu; jr.flg = false; shift.flg = false; break;
-                        case Funcs.div:   output.val = (short)ALUOps.div;   jr.flg = false; shift.flg = false; break;
-                        case Funcs.divu:  output.val = (short)ALUOps.divu;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.add:   output.val = ALUOps.add;   jr.flg = false; shift.flg = false; break;
+                        case Funcs.addu:  output.val = ALUOps.addu;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.sub:   output.val = ALUOps.sub;   jr.flg = false; shift.flg = false; break;
+                        case Funcs.subu:  output.val = ALUOps.subu;  jr.flg = false; shift.flg = false; break;    
+                        case Funcs.and_:   output.val = ALUOps.and_;   jr.flg = false; shift.flg = false; break;
+                        case Funcs.or_:   output.val = ALUOps.or_;    jr.flg = false; shift.flg = false; break;
+                        case Funcs.nor_:   output.val = ALUOps.nor_;   jr.flg = false; shift.flg = false; break;    
+                        case Funcs.slt:   output.val = ALUOps.slt;   jr.flg = false; shift.flg = false; break;
+                        case Funcs.sltu:  output.val = ALUOps.sltu;  jr.flg = false; shift.flg = false; break;    
+                        case Funcs.jr:    output.val = ALUOps.or_;    jr.flg = true;  shift.flg = false; break;
+                        case Funcs.srl:   output.val = ALUOps.sr;    jr.flg = false; shift.flg = true;  break;
+                        case Funcs.sll:   output.val = ALUOps.sl;    jr.flg = false; shift.flg = true;  break;
+                        case Funcs.mtlo:  output.val = ALUOps.mtlo;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.mthi:  output.val = ALUOps.mthi;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.mflo:  output.val = ALUOps.mflo;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.mfhi:  output.val = ALUOps.mfhi;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.mult:  output.val = ALUOps.mult;  jr.flg = false; shift.flg = false; break;
+                        case Funcs.multu: output.val = ALUOps.multu; jr.flg = false; shift.flg = false; break;
+                        case Funcs.div:   output.val = ALUOps.div;   jr.flg = false; shift.flg = false; break;
+                        case Funcs.divu:  output.val = ALUOps.divu;  jr.flg = false; shift.flg = false; break;
                         default:          output.val = 0;                   jr.flg = false; shift.flg = false; break; // nop
                     }
                 }
                 else
                 {
-                    switch ((ALUOpcodes)op.code)
+                    switch (op.code)
                     {
-                        case ALUOpcodes.add:  output.val = (short)ALUOps.add;  break;
-                        case ALUOpcodes.sub:  output.val = (short)ALUOps.sub;  break;
-                        case ALUOpcodes.or:   output.val = (short)ALUOps.or;   break;
-                        case ALUOpcodes.addu: output.val = (short)ALUOps.addu; break;    
-                        case ALUOpcodes.slt:  output.val = (short)ALUOps.slt;  break;
-                        case ALUOpcodes.sltu: output.val = (short)ALUOps.sltu; break;    
-                        default:              output.val = 0;                  break; // nop
+                        case ALUOpcodes.add:  output.val = ALUOps.add;  break;
+                        case ALUOpcodes.sub:  output.val = ALUOps.sub;  break;
+                        case ALUOpcodes.or_:   output.val = ALUOps.or_;   break;
+                        case ALUOpcodes.addu: output.val = ALUOps.addu; break;    
+                        case ALUOpcodes.slt:  output.val = ALUOps.slt;  break;
+                        case ALUOpcodes.sltu: output.val = ALUOps.sltu; break;    
+                        default:              output.val = 0;           break; // nop
                     }
                     jr.flg = false;
                     shift.flg = false;
@@ -277,7 +277,8 @@ namespace SingleCycleMIPS
             {
                 uint tmp = unchecked((uint) -1);
                 ulong tmp2 = unchecked((ulong) -1L);
-                switch ((ALUOps) op.val)
+
+                switch (op.val)
                 {
                     case ALUOps.sr: // Second operand of >> must be int......
                         tmp = inB.data >> (int) inA.data;
@@ -285,7 +286,7 @@ namespace SingleCycleMIPS
                     case ALUOps.sl:
                         tmp = inB.data << (int) inA.data;
                         break;
-                    case ALUOps.sra:
+                    case ALUOps.sra_:
                         tmp = (uint) ((int) inA.data << (int) inB.data);
                         break;
                     case ALUOps.add:
@@ -318,16 +319,16 @@ namespace SingleCycleMIPS
                         HI = inA.data % inB.data;
                         LO = inA.data / inB.data;
                         break;
-                    case ALUOps.and:
+                    case ALUOps.and_:
                         tmp = inA.data & inB.data;
                         break;
-                    case ALUOps.or:
+                    case ALUOps.or_:
                         tmp = inA.data | inB.data;
                         break;
-                    case ALUOps.xor:
+                    case ALUOps.xor_:
                         tmp = inA.data ^ inB.data;
                         break;
-                    case ALUOps.nor:
+                    case ALUOps.nor_:
                         tmp = ~(inA.data | inB.data);
                         break;
                     case ALUOps.slt:
@@ -349,7 +350,7 @@ namespace SingleCycleMIPS
                         tmp = HI;
                         break;
                     default: // Catch unknown
-                        Console.WriteLine("Should not be!");
+                        //Console.WriteLine("Should not be!");
                         tmp = unchecked((uint)-1);
                         break;
                 }
@@ -573,7 +574,7 @@ namespace SingleCycleMIPS
             }
         }
 
-        public class And : SimpleProcess
+        public class AndGate : SimpleProcess
         {
             [InputBus]
             Branch branch;
