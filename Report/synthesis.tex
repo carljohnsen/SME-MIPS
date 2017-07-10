@@ -25,4 +25,45 @@ a testbench and a \texttt{Makefile} for running the testbench using
 \texttt{ghdl}. As such, to verify the generated VHDL, one only needs to run
 \texttt{make} inside the output \texttt{vhdl/} folder.
 
+TODO og så kommer der noter!
+
+Once the \texttt{ghdl} simulation has been passed, the VHDL files can be
+imported into a project in Vivado. Then the behavorial simulation should be
+run, and it should produce the same result as \texttt{ghdl}.
+
+Then the pins should be wired up, and the communication standard should be
+specified.
+
+Then, the project should be synthesized and implemented in Vivado. Once this is
+done, without errors, the post-implementation timing simulation should be launched.
+This simulation is the closest to actual hardware simulation.
+
+If the post-implementation simulation performs as expected, the project is
+ready for actual hardware, i.e. the bitstream can be written to the FPGA.
+
+Once the running bitstream has been verified, it is time to communicate with
+it. To do this, we must construct our own IP.
+
+An IP is a network, which can be used in a block design in Vivado. The IP
+should have an AXI interface in order to exposing registers through an
+interconnect to the ARM processor on the Zynq chip.
+
+Once the IP have been constructed and verified, a new project with a new block
+design should be added. Inside the block design, the processing system of the
+Zynq chip should be added and connected to our IP with the AXI interface.
+Additionally, if timing constraints on the clock was needed during the
+implementation of the pure VHDL, i.e. pre IP generation, then the clocking
+wizard should be added to the block design in order to either multiplying or
+dividing the clock.
+
+Once the bitstream has been generated, the hardware should be exported and
+opened in the Xilinx SDK. From here, the ARM processor on the Zynq chip can be
+programmed bare-metal. The AXI interface should have received a memory address,
+and the SDK should contain a library containing functions for accessing the
+registers on the other side of the AXI interface. I.e. a driver should be
+written for the new logic.
+
+Once the driver has been written, I can interface with the programmable logic
+of the Zynq chip.
+
 Processor is clocked at 5mhz!
