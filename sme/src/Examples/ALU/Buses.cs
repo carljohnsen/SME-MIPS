@@ -18,7 +18,7 @@ namespace ALU
 	[TopLevelInputBus]
 	public interface ALUOp : IBus
 	{
-		opcodes code { get; set; }
+		ALUOps code { get; set; }
 	}
 
 	[TopLevelOutputBus]

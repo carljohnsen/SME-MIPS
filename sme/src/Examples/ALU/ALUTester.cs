@@ -22,28 +22,28 @@ namespace ALU
 			Console.WriteLine("Started testing");
 			await ClockAsync();
 
-			op.code =  opcodes.add; // add
+			op.code =  ALUOps.add; // add
 			inputA.data = 2;
 			inputB.data = 2;
 			await ClockAsync();
 			System.Diagnostics.Debug.Assert(output.data == 4);
 			System.Diagnostics.Debug.Assert(zero.val == false);
 
-			op.code =  opcodes.sub; // sub
+			op.code =  ALUOps.sub; // sub
 			inputA.data = 2;
 			inputB.data = 2;
 			await ClockAsync();
 			System.Diagnostics.Debug.Assert(output.data == 0);
 			System.Diagnostics.Debug.Assert(zero.val == true);
 
-			op.code =  opcodes.and; // and
+			op.code =  ALUOps.and; // and
 			inputA.data = 1;
 			inputB.data = 1;
 			await ClockAsync();
 			System.Diagnostics.Debug.Assert(output.data == 1);
 			System.Diagnostics.Debug.Assert(zero.val == false);
 
-			op.code =  opcodes.or; // or
+			op.code =  ALUOps.or; // or
 			inputA.data = 2;
 			inputB.data = 1;
 			await ClockAsync();

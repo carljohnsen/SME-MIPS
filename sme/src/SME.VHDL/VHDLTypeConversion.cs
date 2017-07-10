@@ -103,7 +103,7 @@ namespace SME.VHDL
 					throw new Exception(string.Format("Unexpected conversion from {0} to {1}", svhdl, target));
 			}
 			else if (target.IsNumeric)
-			{				
+			{
 				if (svhdl.IsStdLogicVector || svhdl.IsSigned || svhdl.IsUnsigned)
 				{
 					var str = "{0}";
@@ -164,7 +164,8 @@ namespace SME.VHDL
 								Expression = new AssignmentExpression()
 								{
 									Left = iexp.Clone(),
-									Right = new CustomNodes.ConversionExpression() {
+									Right = new CustomNodes.ConversionExpression()
+									{
 										Expression = s,
 										SourceExpression = s.SourceExpression,
 										SourceResultType = targetsource,
@@ -314,7 +315,7 @@ namespace SME.VHDL
 							wexpr = string.Format("\"{0}\" & {1}", new string('0', target.Length - svhdl.Length), "{0}");
 
 						s.ReplaceWith(iexp);
-												      
+
 						var asstm = new ExpressionStatement()
 						{
 							SourceStatement = s.SourceExpression.Clone()
@@ -388,6 +389,9 @@ namespace SME.VHDL
 					return WrapExpression(render, s, string.Format("TO_UNSIGNED({0}, {1})", "{0}", target.Length), target);
 				else
 					throw new Exception("Unexpected case");
+			}
+			else if (target.Name.StartsWith("SingleCycleMIPS") && svhdl.IsSystemUnsigned) {
+				return WrapExpression(render, s, string.Format("{0}'VAL({1}", target, svhdl), target);
 			}
 			else
 				throw new Exception(string.Format("Unexpected target type: {0} for source: {1}", target, svhdl));

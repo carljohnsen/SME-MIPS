@@ -9,37 +9,34 @@ namespace SingleCycleMIPS
         bool flg { get; set; }
     }
 
-    public class WB
+    [InitializedBus]
+    public interface BufIn : IBus
     {
-        [InitializedBus]
-        public interface BufIn : IBus
+        uint data { get; set; }
+    }
+
+    [ClockedProcess]
+    public class WriteBuffer : SimpleProcess
+    {
+        [InputBus]
+        RegWriteAddr addrIn;
+        [InputBus]
+        MemOut dataIn;
+        [InputBus]
+        RegWrite regwriteIn;
+
+        [OutputBus]
+        WriteAddr addrOut;
+        [OutputBus]
+        WriteData dataOut;
+        [OutputBus]
+        WriteEnabled regwriteOut;
+
+        protected override void OnTick()
         {
-            uint data { get; set; }
-        }
-
-        [ClockedProcess]
-        public class WriteBuffer : SimpleProcess
-        {
-            [InputBus]
-            EX.RegWriteAddr addrIn;
-            [InputBus]
-            MEM.MemOut dataIn;
-            [InputBus]
-            RegWrite regwriteIn;
-
-            [OutputBus]
-            ID.WriteAddr addrOut;
-            [OutputBus]
-            ID.WriteData dataOut;
-            [OutputBus]
-            ID.WriteEnabled regwriteOut;
-
-            protected override void OnTick()
-            {
-                addrOut.val = addrIn.addr;
-                dataOut.data = dataIn.data;
-                regwriteOut.flg = regwriteIn.flg;
-            }
+            addrOut.val = addrIn.addr;
+            dataOut.data = dataIn.data;
+            regwriteOut.flg = regwriteIn.flg;
         }
     }
 }

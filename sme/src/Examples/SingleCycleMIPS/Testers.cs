@@ -6,7 +6,7 @@ namespace SingleCycleMIPS
     public class Tester : SimulationProcess
     {
         [InputBus]
-        IF.DEBUG_SHUTDOWN cpu;
+        DEBUG_SHUTDOWN cpu;
 
         public async override System.Threading.Tasks.Task Run()
         {

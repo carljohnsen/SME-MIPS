@@ -256,24 +256,26 @@ namespace SME.VHDL
 		/// <param name="indentation">The indentation to use.</param>
 		private IEnumerable<string> RenderStatement(AST.Method method, AST.Statement statement, int indentation)
 		{
-			if (statement is AST.ForStatement)
-				return RenderStatement(method, statement as AST.ForStatement, indentation);
-			else if (statement is AST.ReturnStatement)
-				return RenderStatement(method, statement as AST.ReturnStatement, indentation);
-			else if (statement is AST.BlockStatement)
-				return RenderStatement(method, statement as AST.BlockStatement, indentation);
-			else if (statement is AST.SwitchStatement)
-				return RenderStatement(method, statement as AST.SwitchStatement, indentation);
-			else if (statement is AST.IfElseStatement)
-				return RenderStatement(method, statement as AST.IfElseStatement, indentation);
-			else if (statement is AST.ExpressionStatement)
-				return RenderStatement(method, statement as AST.ExpressionStatement, indentation);
-			else if (statement is AST.CommentStatement)
-				return RenderStatement(method, statement as AST.CommentStatement, indentation);
-			else if (statement is AST.EmptyStatement)
-				return new string[0];
-			else				
-				throw new Exception($"Unuspported statement type: {statement.GetType().FullName}");
+            if (statement is AST.ForStatement)
+                return RenderStatement(method, statement as AST.ForStatement, indentation);
+            else if (statement is AST.ReturnStatement)
+                return RenderStatement(method, statement as AST.ReturnStatement, indentation);
+            else if (statement is AST.BlockStatement)
+                return RenderStatement(method, statement as AST.BlockStatement, indentation);
+            else if (statement is AST.SwitchStatement)
+                return RenderStatement(method, statement as AST.SwitchStatement, indentation);
+            else if (statement is AST.IfElseStatement)
+                return RenderStatement(method, statement as AST.IfElseStatement, indentation);
+            else if (statement is AST.ExpressionStatement)
+                return RenderStatement(method, statement as AST.ExpressionStatement, indentation);
+            else if (statement is AST.CommentStatement)
+                return RenderStatement(method, statement as AST.CommentStatement, indentation);
+            else if (statement is AST.BreakStatement)
+                return new string[0];
+            else if (statement is AST.EmptyStatement)
+                return new string[0];
+            else
+                throw new Exception($"Unuspported statement type: {statement.GetType().FullName}");
 		}		
 
 		/// <summary>
