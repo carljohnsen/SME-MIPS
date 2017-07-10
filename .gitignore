@@ -17,3 +17,7 @@
 !/Presentation/*.pdf
 
 /sme/src/testing/*
+
+/Xilinx/*/*.cache
+/Xilinx/*/*.runs
+

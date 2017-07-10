@@ -1,0 +1,28 @@
+In this section, I will be describing the steps required to implement an SME
+network onto an actual FPGA. I start with the initial logic gates design, as it
+is very simple to verify, and because it does not have any requirements
+regarding clocking.
+
+Then I will be implementing the single cycle MIPS processor, and finally show
+how to communicate with the hardware implemented on the FPGA. This section will
+be very hardware specific, as I have not had time to verify or develop an
+approach, which will run on additional hardware.
+
+\subsection{General workflow}
+TODO figur! SME > ghdl > vivado func > vivado post-impl > bitstream > interface func >
+export > SDK.
+
+In order to implement hardware onto an FPGA, one must describe the hardware
+using a hardware description language such as VHDL or Verilog. As mentioned
+before, SME can be transpiled into VHDL, and as such provides a high level
+approach for hardware design. Therefore, the first thing to do is to write an
+SME network, verify that it runs as expected, and then checking that the
+transpiler does not fail to transpile.
+
+Once the VHDL has been generated, the VHDL can be verified by using
+\texttt{ghdl}. \texttt{ghdl} is an commandline simulator for VHDL. SME provides
+a testbench and a \texttt{Makefile} for running the testbench using
+\texttt{ghdl}. As such, to verify the generated VHDL, one only needs to run
+\texttt{make} inside the output \texttt{vhdl/} folder.
+
+Processor is clocked at 5mhz!
