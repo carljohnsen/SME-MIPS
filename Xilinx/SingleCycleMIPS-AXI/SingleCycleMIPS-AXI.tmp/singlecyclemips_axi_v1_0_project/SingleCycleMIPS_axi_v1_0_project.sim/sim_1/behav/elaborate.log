@@ -1,0 +1,47 @@
+Vivado Simulator 2017.1
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.1/bin/unwrapped/win64.o/xelab.exe -wto 81d3d27dbddc428a99d154509403791d --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot SingleCycleMIPS_v1_0_behav xil_defaultlib.SingleCycleMIPS_v1_0 -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package xil_defaultlib.system_types
+Compiling package xil_defaultlib.custom_types
+Compiling architecture arch_imp of entity xil_defaultlib.SingleCycleMIPS_v1_0_Control [singlecyclemips_v1_0_control_def...]
+Compiling architecture arch_imp of entity xil_defaultlib.SingleCycleMIPS_v1_0_Instruction [singlecyclemips_v1_0_instruction...]
+Compiling architecture arch_imp of entity xil_defaultlib.SingleCycleMIPS_v1_0_Memory [singlecyclemips_v1_0_memory_defa...]
+Compiling architecture rtl of entity xil_defaultlib.Splitter [splitter_default]
+Compiling architecture rtl of entity xil_defaultlib.Mux [mux_default]
+Compiling architecture rtl of entity xil_defaultlib.SignExtend [signextend_default]
+Compiling architecture rtl of entity xil_defaultlib.Control [control_default]
+Compiling architecture rtl of entity xil_defaultlib.vhdl_Register [vhdl_register_default]
+Compiling architecture rtl of entity xil_defaultlib.PC [pc_default]
+Compiling architecture rtl of entity xil_defaultlib.Incrementer [incrementer_default]
+Compiling architecture rtl of entity xil_defaultlib.InstructionMemory [instructionmemory_default]
+Compiling architecture rtl of entity xil_defaultlib.Memory [memory_default]
+Compiling architecture rtl of entity xil_defaultlib.MemMux [memmux_default]
+Compiling architecture rtl of entity xil_defaultlib.ImmMux [immmux_default]
+Compiling architecture rtl of entity xil_defaultlib.ShmtMux [shmtmux_default]
+Compiling architecture rtl of entity xil_defaultlib.ALUControl [alucontrol_default]
+Compiling architecture rtl of entity xil_defaultlib.ALU [alu_default]
+Compiling architecture rtl of entity xil_defaultlib.JalMux [jalmux_default]
+Compiling architecture rtl of entity xil_defaultlib.JalUnit [jalunit_default]
+Compiling architecture rtl of entity xil_defaultlib.Adder [adder_default]
+Compiling architecture rtl of entity xil_defaultlib.Mux0 [mux0_default]
+Compiling architecture rtl of entity xil_defaultlib.Mux1 [mux1_default]
+Compiling architecture rtl of entity xil_defaultlib.Mux2 [mux2_default]
+Compiling architecture rtl of entity xil_defaultlib.ShiftB [shiftb_default]
+Compiling architecture rtl of entity xil_defaultlib.shiftJ [shiftj_default]
+Compiling architecture rtl of entity xil_defaultlib.Packer [packer_default]
+Compiling architecture rtl of entity xil_defaultlib.AndGate [andgate_default]
+Compiling architecture rtl of entity xil_defaultlib.WriteBuffer [writebuffer_default]
+Compiling architecture rtl of entity xil_defaultlib.SingleCycleMIPS [singlecyclemips_default]
+Compiling architecture rtl of entity xil_defaultlib.SingleCycleMIPS_export [singlecyclemips_export_default]
+Compiling architecture arch_imp of entity xil_defaultlib.singlecyclemips_v1_0
+Built simulation snapshot SingleCycleMIPS_v1_0_behav

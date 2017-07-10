@@ -1,0 +1,64 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/system_types.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/Types_SingleCycleMIPS.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/ALU.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity ALU
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/ALUControl.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity ALUControl
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/Adder.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Adder
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/AndGate.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity AndGate
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/Control.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Control
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/Splitter.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Splitter
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/Mux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Mux
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/SignExtend.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity SignExtend
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/vhdl_Register.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity vhdl_Register
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/PC.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity PC
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/Incrementer.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Incrementer
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/InstructionMemory.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity InstructionMemory
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/Memory.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Memory
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/MemMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity MemMux
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/ImmMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity ImmMux
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/ShmtMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity ShmtMux
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/JalMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity JalMux
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/JalUnit.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity JalUnit
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/Mux0.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Mux0
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/Mux1.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Mux1
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/Mux2.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Mux2
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/ShiftB.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity ShiftB
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/shiftJ.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity shiftJ
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/Packer.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity Packer
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/WriteBuffer.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity WriteBuffer
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/SingleCycleMIPS.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity SingleCycleMIPS
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/src/Export_SingleCycleMIPS.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity SingleCycleMIPS_export
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/hdl/SingleCycleMIPS_v1_0_Control.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity SingleCycleMIPS_v1_0_Control
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/hdl/SingleCycleMIPS_v1_0_Instruction.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity SingleCycleMIPS_v1_0_Instruction
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/hdl/SingleCycleMIPS_v1_0_Memory.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity SingleCycleMIPS_v1_0_Memory
+INFO: [VRFC 10-163] Analyzing VHDL file "c:/users/ihicajo/documents/xilinx/ip_repo/SingleCycleMIPS_1.0/hdl/SingleCycleMIPS_v1_0.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity SingleCycleMIPS_v1_0

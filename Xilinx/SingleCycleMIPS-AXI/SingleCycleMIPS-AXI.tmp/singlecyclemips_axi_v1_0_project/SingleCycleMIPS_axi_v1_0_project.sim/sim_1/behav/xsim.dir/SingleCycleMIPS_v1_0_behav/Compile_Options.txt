@@ -1,0 +1,1 @@
+-wto "81d3d27dbddc428a99d154509403791d" --debug "typical" --relax --mt "2" -L "xil_defaultlib" -L "secureip" --snapshot "SingleCycleMIPS_v1_0_behav" "xil_defaultlib.SingleCycleMIPS_v1_0" -log "elaborate.log" 
