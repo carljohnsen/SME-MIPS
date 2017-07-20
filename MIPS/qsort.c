@@ -7,13 +7,14 @@ int partition(int *a, int p, int r);
 void quicksort(int *a, int p, int r);
 
 int main() {
-    int arr[6], i;
+    int arr[8], i;
     load(arr);
     struct timespec start, end;
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
-    quicksort(arr, 0, 5);
+    quicksort(arr, 0, 7);
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
-    uint64_t delta = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_nsec - start.tv_nsec) / 1000;
+    uint64_t delta = (end.tv_sec - start.tv_sec) * 1000000 +
+        (end.tv_nsec - start.tv_nsec) / 1000;
     printf("%lu", delta);
     /*
     for (i = 0; i < 6; i++) {
@@ -29,6 +30,8 @@ void load(int *a) {
     *(a+3) = 9;
     *(a+4) = 1;
     *(a+5) = 3;
+    *(a+6) = 10;
+    *(a+7) = 4;
 }
 
 int partition(int *a, int p, int r) {
