@@ -1,52 +1,140 @@
 In this section, I will be describing the steps required to implement an SME
 network onto an actual FPGA. I start with the initial logic gates design, as it
-is very simple to verify, and because it does not have any requirements
+is very simple to verify and because it does not have any requirements
 regarding clocking.
 
-Then I will be implementing the single cycle MIPS processor, and finally show
+Then I will be implementing the single cycle MIPS processor and finally show
 how to communicate with the hardware implemented on the FPGA. This section will
 be very hardware specific, as I have not had time to verify or develop an
 approach, which will run on additional hardware.
 
 \subsection{General workflow}
-TODO figur! SME > ghdl > vivado func > vivado post-impl > bitstream > interface func >
-export > SDK.
+This section will give a general description of the workflow required for
+implementing hardware on an FPGA using SME. A short overview of the steps and
+their order, can be seen in figure \ref{fig:general-workflow},
 
+\begin{figure}
+    \begin{tikzpicture}[node distance=3cm]
+        \node[block, text width=2cm, align=center] (sme) {SME\\simulation};
+        \node[block, right of=sme, text width=2cm, align=center] (ghdl) {\texttt{ghdl}\\simulation};
+        \node[block, right of=ghdl, text width=2.5cm, align=center] (behav) {Vivado\\behavioral\\simulation};
+        \node[block, text width=2cm, align=center, right of=behav] (post) {Vivado\\post-impl\\simulation};
+        \node[block, below of=post, text width=2cm, align=center] (bitstream) {Generate\\bitstream};
+        \node[block, left of=bitstream, text width=2cm, align=center] (interface) {AXI\\interface};
+        \node[block, left of=interface, text width=2cm, align=center] (export) {Export\\Hardware};
+        \node[block, left of=export] (sdk) {SDK};
+
+        \path[draw, ->] (sme) -- (ghdl);
+        \path[draw, ->] (ghdl) -- (behav);
+        \path[draw, ->] (behav) -- (post);
+        \path[draw, ->] (post) -- (bitstream);
+        \path[draw, ->] (bitstream) -- (interface);
+        \path[draw, ->] (interface) -- (export);
+        \path[draw, ->] (export) -- (sdk);
+    \end{tikzpicture}
+    \caption{The general workflow for construction actual hardware using SME.}
+    \label{fig:general-workflow}
+\end{figure}
 In order to implement hardware onto an FPGA, one must describe the hardware
 using a hardware description language such as VHDL or Verilog. As mentioned
-before, SME can be transpiled into VHDL, and as such provides a high level
+before, SME can be transpiled into VHDL and as such provides a high level
 approach for hardware design. Therefore, the first thing to do is to write an
 SME network, verify that it runs as expected, and then checking that the
-transpiler does not fail to transpile.
+transpiler does not fail to transpile. We also need to specify which busses are
+top-level input and output busses. A top-level
+bus is a bus going either in or out of the SME network.
+
+To generate VHDL from SME, the \texttt{Main()} function needs two additional
+lines: \texttt{.BuildCSVFile()} and \texttt{.BuildVHDL()}
+\begin{lstlisting}
+public static void Main(string[] args)
+{
+    new Simulation()
+        .BuildCSVFile()
+        .BuildVHDL()
+        .Run(typeof(MainClass).Assembly);
+}
+\end{lstlisting}
+This will generate the VHDL code, a testbench for the VHDL code and a
+\texttt{csv} trace file used by the testbench. The trace file contains all the
+values sent on all of the busses within the network during simulation. The
+testbench takes all the input values in the \texttt{csv} file, sends them along
+the input busses, and finally verifies that the values on the other busses
+matches the value stored in the \texttt{csv} file.
 
 Once the VHDL has been generated, the VHDL can be verified by using
-\texttt{ghdl}. \texttt{ghdl} is an commandline simulator for VHDL. SME provides
+\texttt{ghdl} \cite{ref:ghdl}. \texttt{ghdl} is an commandline simulator for VHDL. SME provides
 a testbench and a \texttt{Makefile} for running the testbench using
 \texttt{ghdl}. As such, to verify the generated VHDL, one only needs to run
 \texttt{make} inside the output \texttt{vhdl/} folder.
 
-TODO og så kommer der noter!
-
 Once the \texttt{ghdl} simulation has been passed, the VHDL files can be
-imported into a project in Vivado. Then the behavorial simulation should be
-run, and it should produce the same result as \texttt{ghdl}.
+imported into a project in Vivado \cite{ref:vivado}. Vivado is a development environment created by
+Xilinx, an FPGA vendor, for designing and implementing hardware on an FPGA.
+When creating the project, we must specify the target platform. In this case,
+we are using a ZedBoard.
 
-Then the pins should be wired up, and the communication standard should be
-specified.
+A ZedBoard is a development board, which contains a Xilinx Zynq system on chip.
+A Zynq chip has two parts: a processing system (an ARM processor) and
+programmable logic (FPGA). These two parts are connected in two places: through an AXI interconnect and through DDR memory.
+We will be using the AXI interconnect, when communicating with the FPGA.
+AXI (Advanced eXtensible Interface) is an interconnect specification. We are not
+going to focus on how the protocol works. Additionally,
+the ZedBoard comes with a few buttons, switches and LEDs, which are connected to the FPGA part of the Zynq chip.
 
-Then, the project should be synthesized and implemented in Vivado. Once this is
-done, without errors, the post-implementation timing simulation should be launched.
-This simulation is the closest to actual hardware simulation.
+Once the project
+have been created, the behavorial simulation should be run in Vivado, which
+should produce the same result as the \texttt{ghdl} simulation.
 
-If the post-implementation simulation performs as expected, the project is
-ready for actual hardware, i.e. the bitstream can be written to the FPGA.
+Then the design should be elaborated into Register Transfer Level (RTL). RTL is
+a design abstraction, which consists of lower level components (E.g. gates and
+registers) wired together. The RTL schematic can also be used to verify if the
+design interpreted by Vivado matches the SME network.
+
+TODO få forklaret top-level input output, clock og reset
+
+Within the RTL, the top-level input and output busses has to be connected to
+some specified wire on the FPGA (E.g. input signal from a button). At the same
+time, the communication standard should be specified. However, we just choose
+the default: LVCMOS18. This is also the part where we connect the clock signal
+and the reset signal. All of this is required in by Vivado.
+
+Then the project is ready to be synthesized, placed and routed. This is done by
+the click of a button in Vivado and takes quite some time, especially for
+larger projects.
+
+If we use a clock signal in our design, we should start by synthesizing. Because once
+the design have been synthesized, we can introduce clocking constraints. Vivado uses
+these constraints as a target, when it is placing and routing the synthesized design.
+The only clocking constraint we are going to need is the clockrate. When Vivado has
+placed and routed the design, it creates a timing report, stating whether or not the
+timing constraints where met. The timing report computes a slack on each of the paths
+in the implementation. Slack is the difference in nanoseconds of how long it takes
+the signal for traversing the path, compared to the clocrate constraint. E.g. if it takes
+a signal 13 nanoseconds to traverse a path and the clockrate is specified to 10 nanoseconds
+per clock cycle, then the slack will be -3 nanoseconds. If we have a positive slack, we
+can increase the clockrate. If we have a negative slack, the clocrate should be reduced.
+
+Once the project have been placed and routed, the post-implementation timing
+simulation should be run. This simulation is the closest to actual hardware, as
+it models all of the components of the FPGA and all the wires. It also
+simulates timing on the wires, which is why it also takes some time to run.
+
+If the post-implementation simulation passes, it should also work as expected
+on actual hardware. The final step is to generate the bitstream and write it to
+the FPGA.
 
 Once the running bitstream has been verified, it is time to communicate with
-it. To do this, we must construct our own IP.
+it. To do this, we must construct our own Intellectual Property (IP). An IP is
+an already verified hardware component, which can have standardized connection
+and with these be connected to other IPs in a block design. The IP which we
+create should have an AXI interface, so it can communicate with the ARM
+processor on the Zynq chip.
 
-An IP is a network, which can be used in a block design in Vivado. The IP
-should have an AXI interface in order to exposing registers through an
-interconnect to the ARM processor on the Zynq chip.
+Vivado provides a template for generating IPs with an AXI interfaces. This
+template uses registers to store and send information trough the interface. So
+where we before connected our top-level busses to wires on the FPGA, they must
+now be connected to these registers. This is done in VHDL, not SME.
 
 Once the IP have been constructed and verified, a new project with a new block
 design should be added. Inside the block design, the processing system of the
@@ -56,14 +144,369 @@ implementation of the pure VHDL, i.e. pre IP generation, then the clocking
 wizard should be added to the block design in order to either multiplying or
 dividing the clock.
 
+Once the block design have been verified, it should be made into a
+synthesizable component, by creating a HDL wrapper. By doing this,
+we can synthesize, place, route and generate the bitstream.
+
 Once the bitstream has been generated, the hardware should be exported and
 opened in the Xilinx SDK. From here, the ARM processor on the Zynq chip can be
-programmed bare-metal. The AXI interface should have received a memory address,
-and the SDK should contain a library containing functions for accessing the
-registers on the other side of the AXI interface. I.e. a driver should be
-written for the new logic.
+programmed bare-metal. Bare-metal programming is programming without an operating
+system, i.e. injecting the compiled machine code directly into the instruction
+cache of the ARM processor. The AXI interface should have received a memory address,
+and the SDK should contain a library with functions for accessing the registers
+through the AXI interface. I.e. a driver should be written for the new logic.
 
-Once the driver has been written, I can interface with the programmable logic
-of the Zynq chip.
+Once the driver has been written, I can interface with the FPGA on the Zynq
+chip, by programming the ARM processor.
+
+\subsection{Logic gates}
+We start by implementing the first SME network, which we constructed: the logic
+gates. This network consisted of five SME processes: the four gates and the
+tester process. The tester process was only used for verification purposes, and
+should not be present in the generated VHDL. To solve this, the tester process
+should not be an \texttt{ClockedProcess}, but rather an
+\texttt{SimulatedProcess}. A \texttt{SimulatedProcess} has the same behavior as
+the \texttt{ClockedProcess}, except it does not generate any VHDL. The value
+which it inputs and outputs are caputered in the CSV tracefile, which is used
+by the generated testbench. Furthemore, all of the inputs and outputs to the
+gates, should be made top-level.
+
+When running the testbench trough \texttt{ghdl}, we should get the following
+output:
+\begin{lstlisting}
+TestBench_LogicGates.vhdl:166:8:@50ns:(report note): completed after 5 clockcycles
+\end{lstlisting}
+Which states that the simulation ran as expected in 5 clockcycles.
+
+Then we should create the Vivado project. As mentioned in the general workflow,
+the first thing to do is to run the behavorial simultion, and verify that it
+runs as expected. Running the logic gates should produce the waveform in figure
+\ref{fig:logic-wave}.
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{logic_gates_wave}
+    \caption{The waveform of the logic gates simulation.}
+    \label{fig:logic-wave}
+\end{figure}
+
+Then we should verify that the RTL schematic matches the SME network. The RTL
+network of the logic gates project can be seen in \ref{fig:logic-rtl}.
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{logic_gates_rtl}
+    \caption{The RTL schematic of the logic gates project.}
+    \label{fig:logic-rtl}
+\end{figure}
+
+Then we should choose where the top-level input and output wires should be
+connected. On the ZedBoard, the outputs should be connected to the LEDs and the
+inputs to the switch buttons. The reset signal should be wired to a button and
+since the logic gates project does not use the clock, anything can be connected.
+
+Then we can synthesize, place and route the project. Once it is done, we can
+run the post-implementation simulation. It should produce the same waveform as
+the previous waveform seen in figure \ref{fig:logic-wave}.
+
+Then the bitstream should be generated. Once it is done, it should be written
+to the ZedBoard. Flipping the switches should make the LEDs light as shown in
+figure \ref{fig:logic-fpga}.
+
+\begin{figure}
+    \includegraphics[width=.24\textwidth]{FF2}
+    \includegraphics[width=.24\textwidth]{FT2}
+    \includegraphics[width=.24\textwidth]{TF2}
+    \includegraphics[width=.24\textwidth]{TT2}
+    \caption{The LEDs with the different configurations of flip switches on the
+    ZedBoard. From left to right the inputs on each of the images are:
+    false-false, false-true, true-false, true-true. The four LEDs from left to
+    right on each image are: \texttt{AND}, \texttt{OR}, \texttt{NOT} and
+    \texttt{XOR}.}
+    \label{fig:logic-fpga}
+\end{figure}
+
+Then we need to set up the AXI interface. We start by creating a new RTL project
+in Vivado. Then we create a new IP by clicking "Tools > Create and package new
+IP". In the new dialog, we select "Create new AXI4 peripheral". Then we go
+through the wizard, selecting six 32 bit registers and selecting "Edit new IP"
+in the very end. This opens a new Vivado window, which has the base AXI VHDL
+process. Then we need to add the files from the logic gates project and edit
+the AXI process.
+
+The AXI template creates two files. The first file contains a wrapper component, which
+connects external connections to the inner components of the IP. If we needed a
+clock signal or reset signal, which should be seperate from the AXI clock and
+reset, we would need to add these ports here. The second file is the registers component
+of the AXI interface, which handles reading and writing to and from the slave registers.
+We are going to extend the registers to have signals
+from our logic gates and then extend the wrapper component, such that the logic gates
+are connected to the registers component.
+
+The registers component should have two new output signals: \texttt{bit1} and
+\texttt{bit2}, and four new input signals: \texttt{and}, \texttt{or},
+\texttt{not} and \texttt{xor}.
+\begin{lstlisting}
+-- Users to add ports here
+bit1 : out std_logic;
+bit2 : out std_logic;
+
+andgate : in std_logic;
+orgate  : in std_logic;
+notgate : in std_logic;
+xorgate : in std_logic;
+-- User ports ends
+\end{lstlisting}
+Then we need to ensure that the slave registers that the logic gate needs to write to
+are exclusivele to the logic gates. We are going to use slave registers 0 and 1 as the
+input bits, and slave registers 2, 3, 4 and 5 as the output. As such we should find
+all the occurrences where the registers component writes to slave registers 2, 3, 4 and 5,
+and comment them out.
+\begin{lstlisting}
+Before:
+-- slave registor 2
+slv_reg2(byte_index*8+7 downto byte_index*8) <= S_AXI_WDATA(byte_index*8+7 downto byte_index*8);
+
+After:
+-- slave registor 2
+-- slv_reg2(byte_index*8+7 downto byte_index*8) <= S_AXI_WDATA(byte_index*8+7 downto byte_index*8);
+\end{lstlisting}
+Finally, for the registers component, we need to add the new logic. It should
+output the contents of slave registers 0 and 1 to the \texttt{bit1} and
+\texttt{bit2} busses. Then it should take the values from the four logic gate
+outputs, and store them in slave registers 2, 3, 4 and 5:
+\begin{lstlisting}
+-- Add user logic here
+bit1 <= slv_reg0(0);
+bit2 <= slv_reg1(0);
+slv_reg2(0) <= andgate;
+slv_reg3(0) <= orgate;
+slv_reg4(0) <= notgate;
+slv_reg5(0) <= xorgate;
+-- User logic ends
+\end{lstlisting}
+Then we need to extend the wrapper component. We start by adding the types
+generated by SME
+\begin{lstlisting}
+-- library SYSTEM_TYPES;
+use work.SYSTEM_TYPES.ALL;
+
+-- library CUSTOM_TYPES;
+use work.CUSTOM_TYPES.ALL;
+\end{lstlisting}
+Then, we extend the component definition of the registers component, to have
+the added ports.
+\begin{lstlisting}
+port (
+    bit1 : out std_logic;
+    bit2 : out std_logic;
+    andgate : in std_logic;
+    orgate  : in std_logic;
+    notgate : in std_logic;
+    xorgate : in std_logic;
+    S_AXI_ACLK  : in std_logic;
+\end{lstlisting}
+Then, we add the component definition of our logic gates project, along with
+the signals going from the logic gates to the registers component. For the
+ports in the component definition, we just add the ports specified in the SME
+generated top-level file.
+\begin{lstlisting}
+component LogicGates_export is
+    port(
+
+    -- Top-level bus Input signals
+    Input_bit1: in T_SYSTEM_BOOL;
+    Input_bit2: in T_SYSTEM_BOOL;
+
+    -- Top-level bus Output signals
+    Output_And: out T_SYSTEM_BOOL;
+    Output_Or: out T_SYSTEM_BOOL;
+    Output_Not: out T_SYSTEM_BOOL;
+    Output_Xor: out T_SYSTEM_BOOL;
+
+
+    -- User defined signals here
+    -- #### USER-DATA-ENTITYSIGNALS-START
+    -- #### USER-DATA-ENTITYSIGNALS-END
+
+    -- Reset signal
+    RST : in Std_logic;
+
+    -- Clock signal
+    CLK : in Std_logic
+  );
+end component LogicGates_export;
+signal bit1 : std_logic;
+signal bit2 : std_logic;
+
+signal gates_and : std_logic;
+signal gates_or  : std_logic;
+signal gates_not : std_logic;
+signal gates_xor : std_logic;
+\end{lstlisting}
+Then, we need to map the signals to the instantiation of the registers component
+\begin{lstlisting}
+port map (
+    bit1 => bit1,
+    bit2 => bit2,
+    andgate => gates_and,
+    orgate  => gates_or,
+    notgate => gates_not,
+    xorgate => gates_xor,
+    S_AXI_ACLK  => s00_axi_aclk,
+\end{lstlisting}
+Finally, we need to instantiate the logic gates component. The clock and reset
+signals should just use the AXI clock and reset. Note: the AXI reset signal is
+inverted compared to the signal expected by the SME generated code. I.e. AXI
+resets when the signal is \texttt{0} and SME resets when the signal is
+\texttt{1}.
+\begin{lstlisting}
+-- Add user logic here
+LogicGates_inst : LogicGates_export
+port map (
+    Input_bit1 => bit1,
+    Input_bit2 => bit2,
+    Output_And => gates_and,
+    Output_Or  => gates_or,
+    Output_Not => gates_not,
+    Output_Xor => gates_xor,
+    RST => s00_axi_aresetn,
+    CLK => s00_axi_aclk
+);
+-- User logic ends
+\end{lstlisting}
+Now, we have wrapped our Logic Gates project in an AXI interface. The RTL
+should look as figure \ref{fig:logic-axi-rtl}.
+\begin{figure}
+    \includegraphics[width=\linewidth]{logic_axi_rtl}
+    \caption{The RTL schematic of the Logic Gates with AXI interface.}
+    \label{fig:logic-axi-rtl}
+\end{figure}
+Then we just need to package the IP. It should now be available in the IP
+catalog. In the original project, we need to create a block design. We need to
+add two components: the processing system and the logic gates with AXI. Upon
+adding the processing system, Vivado gives us the option to run block and
+connection automation. When both have run, we should have a block design as
+in figure \ref{fig:logic-axi-block}.
+\begin{figure}
+    \includegraphics[width=\linewidth]{logic_axi_block}
+    \caption{The finished block design contaning the processing system and the
+    Logic Gates AXI IPs.}
+    \label{fig:logic-axi-block}
+\end{figure}
+The next step is to create a HDL wrapper from the block design, and then
+generate the bitstream. Remember to add the Types files to the project,
+otherwise the IP cannot be synthesized. When the bitstream has been generated,
+we need to export our hardware to the Xilinx SDK. Note: the bitstream must be
+included.
+
+In the SDK, we start by creating a new Application project. We choose the
+"Hello World" example project, and call it "Tester". We need to write our new
+code in \texttt{Tester/src/helloworld.c}.
+
+Creating the sample project will also create a Board
+Support Package (BSP) called "Tester\_bsp". This BSP contains all the files related to the exported
+hardware. The file we are most interested in is
+\texttt{Tester\_bsp/ps7\_cortex9\_0/libsrc/LogicGates\_AXI\_v1\_0/src/LogicGates\_AXI.h}.
+This file contains all the functions for reading and writing to the AXI
+registers. We also need \texttt{xparameters.h}, as it contains the base address
+for the AXI interface. We also need \texttt{xil\_io.h} as it contains
+the types returned by the read and write functions. All of the header files
+should be included:
+\begin{lstlisting}
+#include "xparameters.h"
+#include "LogicGates_AXI.h"
+#include "xil_io.h"
+\end{lstlisting}
+Now, the default names given by Vivado and the SDK are a bit long and the
+registers are numbered. Therefore, we give them shorter and more appropriate
+names
+\begin{lstlisting}
+int base = XPAR_LOGICGATES_AXI_0_S00_AXI_BASEADDR;
+int bit1 = LOGICGATES_AXI_S00_AXI_SLV_REG0_OFFSET;
+int bit2 = LOGICGATES_AXI_S00_AXI_SLV_REG1_OFFSET;
+int and = LOGICGATES_AXI_S00_AXI_SLV_REG2_OFFSET;
+int or  = LOGICGATES_AXI_S00_AXI_SLV_REG3_OFFSET;
+int not = LOGICGATES_AXI_S00_AXI_SLV_REG4_OFFSET;
+int xor = LOGICGATES_AXI_S00_AXI_SLV_REG5_OFFSET;
+\end{lstlisting}
+We want to try and write all combinations to the registers, and verify that it
+outputs the same as the truth table specified in table \ref{tab:truth-table}. We start by
+writing two functions: one for writing to the two input registers and one for
+printing all of the registers.
+\begin{lstlisting}
+void print_regs() {
+    xil_printf("%d %d | %d %d %d %d\n",
+            LOGICGATES_AXI_mReadReg(base, bit1),
+            LOGICGATES_AXI_mReadReg(base, bit2),
+            LOGICGATES_AXI_mReadReg(base, and),
+            LOGICGATES_AXI_mReadReg(base, or),
+            LOGICGATES_AXI_mReadReg(base, not),
+            LOGICGATES_AXI_mReadReg(base, xor));
+}
+
+void write_regs(int bit1_data, int bit2_data) {
+    LOGICGATES_AXI_mWriteReg(base, bit1, bit1_data);
+    LOGICGATES_AXI_mWriteReg(base, bit2, bit2_data);
+}
+\end{lstlisting}
+Finally, the \texttt{main()} function should initialize the platform, write and
+read registers, and finally cleanup the platform.
+\begin{lstlisting}
+int main()
+{
+    init_platform();
+
+    write_regs(0,0);
+    print_regs();
+
+    write_regs(0,1);
+    print_regs();
+
+    write_regs(1,0);
+    print_regs();
+
+    write_regs(1,1);
+    print_regs();
+
+    cleanup_platform();
+    return 0;
+}
+\end{lstlisting}
+Then we program the FPGA, program the ARM and verify the output:
+\begin{lstlisting}
+0 0 | 0 0 1 0
+0 1 | 0 1 1 1
+1 0 | 0 1 0 1
+1 1 | 1 1 0 0
+\end{lstlisting}
+We have succesfully synthesized, placed and routed the VHDL generated by SME.
+Furthermore, we have shown how to interface with the implemented hardware, by
+adding an AXI interface to our design.
+
+\subsection{Single cycle MIPS processor}
+Now we want to implement the single cycle MIPS processor. The first point is to
+generate the VHDL from SME. The SME code needs a few adjustments to do this:
+\begin{itemize}
+    \item Enumerations should be complete. E.g. if a \texttt{switch} is
+        performed on a 5-bit number, the enumeration should contain 256
+        elements. Another possible fix is to exchange the switch statement with
+        a series of \texttt{else if}.
+
+    \item The HI and LO registers of the ALU should be merged into a 64-bit
+        register. This is due to the later synthesization connecting
+        subcomponents together, creating a bus where two subcomponents can
+        write to, which is not allowed on real hardware.
+\end{itemize}
+Once they have been handled, the SME code generates VHDL code. However, there is
+one thing, that SME cannot transpile, which we must do by hand. In the Splitter,
+where it casts a number to an enumeration:
+\begin{lstlisting}
+-- C#
+Opcodes opcode = (Opcodes)((tmp >> 26) & 0x3F);
+Funcs funct = (Funcs)(tmp & 0x3F);
+
+-- Hand written VHDL
+ControlIn_opcode <= SingleCycleMIPS_Opcodes'VAL(TO_INTEGER(UNSIGNED(instruction(31 downto 26))));
+ALUFunct_val <= SingleCycleMIPS_Funcs'VAL(TO_INTEGER(UNSIGNED(instruction(5 downto 0))));
+\end{lstlisting}
 
 Processor is clocked at 5mhz!
