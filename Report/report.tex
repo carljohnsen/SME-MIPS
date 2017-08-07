@@ -262,6 +262,30 @@ thanks to Daniel Lundberg Pedersen and Jeanette Johnsen for proof reading.
 {\small\bibliography{biblio}}
 
 \appendix
-\section{Guide til strukturen på github!}
+\section{Short guide on how to run the source code described in this thesis}
+All the source code constructed throughout this thesis, is available at
+\url{https://github.com/carljohnsen/SME-MIPS/}. It contains four folders:
+\begin{itemize}
+    \item \texttt{MIPS} - contains all the MIPS assembly code for the test
+        programs, along with the corresponding C code.
+
+    \item \texttt{Report} - contains this report, along with some of the
+        generated slides.
+
+    \item \texttt{Xilinx} - contains all the Xilinx Vivado projects mentioned
+        in this thesis.
+
+    \item \texttt{sme} - contains the source code for SME, along with all of
+        the SME projects I have made. My projects are located in
+        \texttt{sme/src/Examples/}.
+\end{itemize}
+To run the SME projects, the solution file \texttt{sme/SME.sln} has to be
+loaded in either Microsoft Visual Studio or MonoDevelop. Once opened, each of
+the projects in the \texttt{sme/Examples} folder can be run.
+
+To run the Vivado projects, the desired solution file (\texttt{.xpr}) has to be
+opened in Vivado. To open the block design, view the RTL schematic, run any of
+the simulations, synthesize, place \& route or write bitstream, one only have
+to press the button to the left, whose name correspond with the desired action.
 
 \end{document}
