@@ -1,17 +1,20 @@
 In this section, I will be describing the steps required to implement an SME
-network onto an actual FPGA. I start with the initial logic gates design, as it
+network onto an actual FPGA. I start with the initial Logic Gates design, as it
 is very simple to verify and because it does not have any requirements
 regarding clocking.
 
 Then I will be implementing the single cycle MIPS processor and finally show
 how to communicate with the hardware implemented on the FPGA. This section will
-be very hardware specific, as I have not had time to verify or develop an
-approach, which will run on additional hardware.
+be very hardware specific, as I have not verified or developed a
+general approach, which will run on additional hardware.
+
+All of the source code, both for SME and VHDL, can be found
+at~\cite{ref:github}.
 
 \subsection{General workflow}
 This section will give a general description of the workflow required for
 implementing hardware on an FPGA using SME. A short overview of the steps and
-their order, can be seen in figure \ref{fig:general-workflow},
+their order, can be seen in Figure~\ref{fig:general-workflow},
 
 \begin{figure}
     \begin{tikzpicture}[node distance=3cm]
@@ -40,9 +43,9 @@ using a hardware description language such as VHDL or Verilog. As mentioned
 before, SME can be transpiled into VHDL and as such provides a high level
 approach for hardware design. Therefore, the first thing to do is to write an
 SME network, verify that it runs as expected, and then checking that the
-transpiler does not fail to transpile. We also need to specify which busses are
-top-level input and output busses. A top-level
-bus is a bus going either in or out of the SME network.
+transpiler does not fail to transpile. The top-level input and output busses has
+to be specified in SME. A top-level bus is a bus going either in or out of the
+SME network.
 
 To generate VHDL from SME, the \texttt{Main()} function needs two additional
 lines: \texttt{.BuildCSVFile()} and \texttt{.BuildVHDL()}
@@ -63,153 +66,195 @@ the input busses, and finally verifies that the values on the other busses
 matches the value stored in the \texttt{csv} file.
 
 Once the VHDL has been generated, the VHDL can be verified by using
-\texttt{ghdl} \cite{ref:ghdl}. \texttt{ghdl} is an commandline simulator for VHDL. SME provides
-a testbench and a \texttt{Makefile} for running the testbench using
-\texttt{ghdl}. As such, to verify the generated VHDL, one only needs to run
-\texttt{make} inside the output \texttt{vhdl/} folder.
+\texttt{ghdl}~\cite{ref:ghdl}. \texttt{ghdl} is an commandline simulator for
+VHDL. SME provides a testbench and a \texttt{Makefile} for running the
+testbench using \texttt{ghdl}. As such, to verify the generated VHDL, one only
+needs to run \texttt{make} inside the output \texttt{vhdl/} folder.
 
-Once the \texttt{ghdl} simulation has been passed, the VHDL files can be
-imported into a project in Vivado \cite{ref:vivado}. Vivado is a development environment created by
-Xilinx, an FPGA vendor, for designing and implementing hardware on an FPGA.
-When creating the project, we must specify the target platform. In this case,
-we are using a ZedBoard.
+Once the \texttt{ghdl} simulation has been passed, the VHDL files can be
+imported into a project in Vivado~\cite{ref:vivado}. Vivado is a development
+environment created by Xilinx, an FPGA vendor, for designing and implementing
+hardware on an FPGA.  When creating the project, Vivado needs to know the
+target FPGA. In this project, I have been using a ZedBoard.
 
 A ZedBoard is a development board, which contains a Xilinx Zynq system on chip.
 A Zynq chip has two parts: a processing system (an ARM processor) and
-programmable logic (FPGA). These two parts are connected in two places: through an AXI interconnect and through DDR memory.
-We will be using the AXI interconnect, when communicating with the FPGA.
-AXI (Advanced eXtensible Interface) is an interconnect specification. We are not
-going to focus on how the protocol works. Additionally,
-the ZedBoard comes with a few buttons, switches and LEDs, which are connected to the FPGA part of the Zynq chip.
+programmable logic (FPGA). These two parts are connected in two places: through
+an AXI interconnect and through DDR memory.  I will be using the AXI
+interconnect, when communicating with the FPGA.  AXI (Advanced eXtensible
+Interface)~\cite{ref:axi} is an interconnect specification, which communicates
+by using transactions. I am not going to focus on the details of the protocol.
+Additionally, the ZedBoard comes with a few buttons, switches and LEDs, which
+are connected to the FPGA part of the Zynq chip.  These buttons and LEDs can be
+used as easy to set up input/output.
 
-Once the project
-have been created, the behavorial simulation should be run in Vivado, which
-should produce the same result as the \texttt{ghdl} simulation.
+Once the project have been created in Vivado, the behavorial simulation should
+be run. The behavorial simulation is the same as the \texttt{ghdl} simulation
+and should as such produce the same result.
 
 Then the design should be elaborated into Register Transfer Level (RTL). RTL is
 a design abstraction, which consists of lower level components (E.g. gates and
-registers) wired together. The RTL schematic can also be used to verify if the
-design interpreted by Vivado matches the SME network.
-
-TODO få forklaret top-level input output, clock og reset
+registers) wired together. The RTL schematic can also be used to verify whether
+or not the design interpreted by Vivado matches the SME network. The schematic
+shows all of the top-level input and output busses. Additionally, there are the
+\texttt{CLK} (clock) and \texttt{RST} (reset) busses. The \texttt{CLK} bus is
+the clock signal used throughout the network.  The \texttt{RST} bus is the
+reset signal. All the SME processes uses the \texttt{RST} signal, but only the
+clocked processes uses the \texttt{CLK} signal.
 
 Within the RTL, the top-level input and output busses has to be connected to
 some specified wire on the FPGA (E.g. input signal from a button). At the same
-time, the communication standard should be specified. However, we just choose
-the default: LVCMOS18. This is also the part where we connect the clock signal
-and the reset signal. All of this is required in by Vivado.
+time, the communication standard should be specified. I just choose the
+default, as I do not have any special requirements. This is also where the
+clock signal and the reset signal are connected to wires. All of this is
+required by Vivado, in order for it to place and route the design.
 
 Then the project is ready to be synthesized, placed and routed. This is done by
 the click of a button in Vivado and takes quite some time, especially for
 larger projects.
 
-If we use a clock signal in our design, we should start by synthesizing. Because once
-the design have been synthesized, we can introduce clocking constraints. Vivado uses
-these constraints as a target, when it is placing and routing the synthesized design.
-The only clocking constraint we are going to need is the clockrate. When Vivado has
-placed and routed the design, it creates a timing report, stating whether or not the
-timing constraints where met. The timing report computes a slack on each of the paths
-in the implementation. Slack is the difference in nanoseconds of how long it takes
-the signal for traversing the path, compared to the clocrate constraint. E.g. if it takes
-a signal 13 nanoseconds to traverse a path and the clockrate is specified to 10 nanoseconds
-per clock cycle, then the slack will be -3 nanoseconds. If we have a positive slack, we
-can increase the clockrate. If we have a negative slack, the clocrate should be reduced.
+If the design uses a clock signal (i.e. has clocked processes), the first step
+is to synthesize the design. This is due to once the design have been
+synthesized, clocking constraints can be introduced. Vivado uses these
+constraints as a target, when it is placing and routing the synthesized design.
+The only clocking constraint for the designs in this thesis is the clockrate.
+When Vivado has placed and routed the design, it creates a timing report,
+stating whether or not the timing constraints where met. The timing report
+computes a slack on each of the paths in the implementation. Slack is the
+difference on how long it takes the signal to traverse a path, compared to the
+clocrate constraint. E.g. if it takes a signal 13 nanoseconds to traverse a
+path and the clockrate is specified to 10 nanoseconds per clock cycle, then the
+slack will be -3 nanoseconds. If the slack is positive, the clockrate should be
+increased. If the slack is negative, the clockrate should be reduced.  After
+the clocking constraints have been introduced, the project needs to be
+synthesized again.
 
 Once the project have been placed and routed, the post-implementation timing
 simulation should be run. This simulation is the closest to actual hardware, as
-it models all of the components of the FPGA and all the wires. It also
-simulates timing on the wires, which is why it also takes some time to run.
+it models all of the components of the FPGA, all the wires and the timing on
+the wires. As such, this is a very heavy simulation and takes some time to run.
+
+Furthermore, in the implemented design, Vivado can produce some interesting
+reports. The first interesting report is the utilization report, which reports
+how much of the logic available on the target board have been used. Generally,
+the most interesting metrics in the report are: Logic, IO, Registers, Block
+Memory and MMCM (clock multiplier/divider). In theory, the utilization report
+can be used to see how many instances of a design the target board can hold, by
+taking 100 divided by the metric with the highest value. E.g. the Single Cycle
+processor has Logic as the highest usage at 17\% on the ZedBoard. I.e.
+$100/17=5.88\approx5$ cores could be fitted onto the ZedBoard.
+
+Then we have the Power report, which reports an estimate of the power
+consumption of the design. The report contains a lot of metrics, but the one I
+focus on is the dynamic power consumption. This is the sum of approximate power
+consumption of each of the implemented components on the FPGA. I.e. the
+approximate power consumption of the implemented design.
+
+The final report is the timing summary, which I will describe later.
 
 If the post-implementation simulation passes, it should also work as expected
-on actual hardware. The final step is to generate the bitstream and write it to
-the FPGA.
+on actual hardware. If clocking constraints were needed, the clock signal
+should be modified to match the clocking constraints. In order to do this, the
+design have to be implemented in a block design. There is a problem with the
+transpiled VHDL from SME. The top module uses custom types and Vivado does not
+allow custom types in a block design. To solve this, all the custom types must
+be changed to be standard types. E.g. \texttt{T\_SYSTEM\_UINT32} becomes
+\texttt{std\_logic\_vector(31 downto 0)}. Once this have been changed, the top
+module can be inserted into a block design. The clocking wizard should be
+added, in order to modify the clock to match the clocking constraints. Once the
+block design have been constructed, it should be made into a HDL wrapper, such
+that it can be synthesized, placed and routed. The final step is to generate
+the bitstream and write it to the FPGA.
 
 Once the running bitstream has been verified, it is time to communicate with
-it. To do this, we must construct our own Intellectual Property (IP). An IP is
+it. To do this, I must construct a custom Intellectual Property (IP). An IP is
 an already verified hardware component, which can have standardized connection
-and with these be connected to other IPs in a block design. The IP which we
-create should have an AXI interface, so it can communicate with the ARM
-processor on the Zynq chip.
+and with these be connected to other IPs in a block design. This custom IP
+should have an AXI interface, so it can communicate with the ARM processor on
+the Zynq chip.
 
 Vivado provides a template for generating IPs with an AXI interfaces. This
-template uses registers to store and send information trough the interface. So
-where we before connected our top-level busses to wires on the FPGA, they must
-now be connected to these registers. This is done in VHDL, not SME.
+template uses registers to send and receive information trough the interface. So
+before where the top-level busses were connected to wires on the FPGA, they must
+now be connected to these registers. This is done in VHDL, as the current
+version of SME does not support this. I could have written the AXI interface as
+an SME process. Doing it by VHDL seemed simpler however.
 
 Once the IP have been constructed and verified, a new project with a new block
 design should be added. Inside the block design, the processing system of the
-Zynq chip should be added and connected to our IP with the AXI interface.
+Zynq chip should be added and connected to the custom IP with the AXI interface.
 Additionally, if timing constraints on the clock was needed during the
-implementation of the pure VHDL, i.e. pre IP generation, then the clocking
+implementation of before constructing the IP, then the clocking
 wizard should be added to the block design in order to either multiplying or
-dividing the clock.
-
-Once the block design have been verified, it should be made into a
-synthesizable component, by creating a HDL wrapper. By doing this,
-we can synthesize, place, route and generate the bitstream.
+dividing the clock. Again, once the block design have been verified, it should
+be made into a synthesizable component, by creating a HDL wrapper.
 
 Once the bitstream has been generated, the hardware should be exported and
 opened in the Xilinx SDK. From here, the ARM processor on the Zynq chip can be
-programmed bare-metal. Bare-metal programming is programming without an operating
-system, i.e. injecting the compiled machine code directly into the instruction
-cache of the ARM processor. The AXI interface should have received a memory address,
-and the SDK should contain a library with functions for accessing the registers
-through the AXI interface. I.e. a driver should be written for the new logic.
+programmed bare-metal. Bare-metal programming is programming without an
+operating system, i.e. injecting the compiled machine code directly into the
+instruction cache of the ARM processor. The AXI interface have received a
+memory address, and the SDK should contains library with functions for
+accessing the registers through the AXI interface. With this, a driver should
+be written for the new logic.
 
 Once the driver has been written, I can interface with the FPGA on the Zynq
 chip, by programming the ARM processor.
 
 \subsection{Logic gates}
-We start by implementing the first SME network, which we constructed: the logic
+I start by implementing the first SME network, which I constructed: the logic
 gates. This network consisted of five SME processes: the four gates and the
 tester process. The tester process was only used for verification purposes, and
 should not be present in the generated VHDL. To solve this, the tester process
-should not be an \texttt{ClockedProcess}, but rather an
+should not be a \texttt{ClockedProcess}, but rather a
 \texttt{SimulatedProcess}. A \texttt{SimulatedProcess} has the same behavior as
 the \texttt{ClockedProcess}, except it does not generate any VHDL. The value
 which it inputs and outputs are caputered in the CSV tracefile, which is used
 by the generated testbench. Furthemore, all of the inputs and outputs to the
 gates, should be made top-level.
 
-When running the testbench trough \texttt{ghdl}, we should get the following
+When running the testbench trough \texttt{ghdl}, I get the following
 output:
 \begin{lstlisting}
 TestBench_LogicGates.vhdl:166:8:@50ns:(report note): completed after 5 clockcycles
 \end{lstlisting}
 Which states that the simulation ran as expected in 5 clockcycles.
 
-Then we should create the Vivado project. As mentioned in the general workflow,
-the first thing to do is to run the behavorial simultion, and verify that it
-runs as expected. Running the logic gates should produce the waveform in figure
-\ref{fig:logic-wave}.
+Then I create the Vivado project. As mentioned in the general workflow,
+the next step is to run the behavorial simulation and verify that it
+runs as expected. Running the Logic Gates should produce the waveform seen in
+Figure~\ref{fig:logic-wave}.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{logic_gates_wave}
-    \caption{The waveform of the logic gates simulation.}
+    \caption{The waveform of the Logic Gates simulation.}
     \label{fig:logic-wave}
 \end{figure}
 
-Then we should verify that the RTL schematic matches the SME network. The RTL
-network of the logic gates project can be seen in \ref{fig:logic-rtl}.
+Then I verify that the RTL schematic matches the SME network. The RTL
+network of the Logic Gates project can be seen in Figure~\ref{fig:logic-rtl}
+and it matches the structure in Figure~\ref{fig:logic-test}.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{logic_gates_rtl}
-    \caption{The RTL schematic of the logic gates project.}
+    \caption{The RTL schematic of the Logic Gates project.}
     \label{fig:logic-rtl}
 \end{figure}
 
-Then we should choose where the top-level input and output wires should be
-connected. On the ZedBoard, the outputs should be connected to the LEDs and the
-inputs to the switch buttons. The reset signal should be wired to a button and
-since the logic gates project does not use the clock, anything can be connected.
+Then I choose where the top-level input and output wires should be
+connected. On the ZedBoard, I connect the outputs to the LEDs and the
+inputs to the switch buttons. I wire the reset signal to a button. Since the
+Logic Gates project does not use the clock, anything can be connected.
 
-Then we can synthesize, place and route the project. Once it is done, we can
-run the post-implementation simulation. It should produce the same waveform as
-the previous waveform seen in figure \ref{fig:logic-wave}.
+The next step is to synthesize, place and route the project. Once it is done,
+the post-implementation simulation is run. The waveform that it produces, is the
+same as Figure~\ref{fig:logic-wave}. The implemented design has a maximum
+utilization of 4\%, which is the IO. It has an approximate power consumption of
+0.001 watts. The comparison to the reported values of the other implementations
+can be seen in Table~\ref{tab:impl-comp}.
 
-Then the bitstream should be generated. Once it is done, it should be written
-to the ZedBoard. Flipping the switches should make the LEDs light as shown in
-figure \ref{fig:logic-fpga}.
+Then the bitstream is generated and written to the ZedBoard. Flipping the
+switches makes the LEDs light as shown in Figure~\ref{fig:logic-fpga}.
 
 \begin{figure}
     \includegraphics[width=.24\textwidth]{FF2}
@@ -220,28 +265,26 @@ figure \ref{fig:logic-fpga}.
     ZedBoard. From left to right the inputs on each of the images are:
     false-false, false-true, true-false, true-true. The four LEDs from left to
     right on each image are: \texttt{AND}, \texttt{OR}, \texttt{NOT} and
-    \texttt{XOR}.}
+    \texttt{XOR}. Note: \texttt{NOT} only considers the first input.}
     \label{fig:logic-fpga}
 \end{figure}
 
-Then we need to set up the AXI interface. We start by creating a new RTL project
-in Vivado. Then we create a new IP by clicking "Tools > Create and package new
-IP". In the new dialog, we select "Create new AXI4 peripheral". Then we go
-through the wizard, selecting six 32 bit registers and selecting "Edit new IP"
-in the very end. This opens a new Vivado window, which has the base AXI VHDL
-process. Then we need to add the files from the logic gates project and edit
-the AXI process.
+Then the AXI interface is set up. This is done by creating a new project in
+Vivado and within that create and package a new IP. In order to use the AXI
+template that Vivado offers, I need to state how many registers it should have.
+Since the Logic Gates project has two inputs and four outputs, I choose six
+registers.
 
-The AXI template creates two files. The first file contains a wrapper component, which
-connects external connections to the inner components of the IP. If we needed a
-clock signal or reset signal, which should be seperate from the AXI clock and
-reset, we would need to add these ports here. The second file is the registers component
-of the AXI interface, which handles reading and writing to and from the slave registers.
-We are going to extend the registers to have signals
-from our logic gates and then extend the wrapper component, such that the logic gates
-are connected to the registers component.
+The AXI template creates two files. The first file contains a wrapper
+component, which connects external connections to the inner components of the
+IP. If I needed a clock signal or reset signal, which should be seperate from
+the AXI clock and reset, the ports should be added here. The second file is the
+registers component of the AXI interface, which handles reading and writing to
+and from the slave registers.  I am going to extend the registers to have
+signals from the Logic Gates and then extend the wrapper component, such that
+the Logic Gates are connected to the registers component.
 
-The registers component should have two new output signals: \texttt{bit1} and
+The registers component gets two new output signals: \texttt{bit1} and
 \texttt{bit2}, and four new input signals: \texttt{and}, \texttt{or},
 \texttt{not} and \texttt{xor}.
 \begin{lstlisting}
@@ -255,11 +298,11 @@ notgate : in std_logic;
 xorgate : in std_logic;
 -- User ports ends
 \end{lstlisting}
-Then we need to ensure that the slave registers that the logic gate needs to write to
-are exclusivele to the logic gates. We are going to use slave registers 0 and 1 as the
-input bits, and slave registers 2, 3, 4 and 5 as the output. As such we should find
-all the occurrences where the registers component writes to slave registers 2, 3, 4 and 5,
-and comment them out.
+I need to ensure that the slave registers that the Logic Gates writes to
+are exclusively to the Logic Gates. I use slave registers 0 and 1 as the
+input bits, and slave registers 2, 3, 4 and 5 as the output. As such, all the
+occurrences where the registers component writes to slave registers 2, 3, 4 and 5,
+are commented out.
 \begin{lstlisting}
 Before:
 -- slave registor 2
@@ -269,9 +312,8 @@ After:
 -- slave registor 2
 -- slv_reg2(byte_index*8+7 downto byte_index*8) <= S_AXI_WDATA(byte_index*8+7 downto byte_index*8);
 \end{lstlisting}
-Finally, for the registers component, we need to add the new logic. It should
-output the contents of slave registers 0 and 1 to the \texttt{bit1} and
-\texttt{bit2} busses. Then it should take the values from the four logic gate
+Finally, the registers component needs the new logic. It outputs the contents of slave registers 0 and 1 to the \texttt{bit1} and
+\texttt{bit2} busses. Then it should take the values from the four Logic Gate
 outputs, and store them in slave registers 2, 3, 4 and 5:
 \begin{lstlisting}
 -- Add user logic here
@@ -283,8 +325,8 @@ slv_reg4(0) <= notgate;
 slv_reg5(0) <= xorgate;
 -- User logic ends
 \end{lstlisting}
-Then we need to extend the wrapper component. We start by adding the types
-generated by SME
+Then I need to extend the wrapper component. I start by adding the types
+generated by SME:
 \begin{lstlisting}
 -- library SYSTEM_TYPES;
 use work.SYSTEM_TYPES.ALL;
@@ -292,8 +334,8 @@ use work.SYSTEM_TYPES.ALL;
 -- library CUSTOM_TYPES;
 use work.CUSTOM_TYPES.ALL;
 \end{lstlisting}
-Then, we extend the component definition of the registers component, to have
-the added ports.
+Then, I extend the component definition of the registers component to have
+the added ports:
 \begin{lstlisting}
 port (
     bit1 : out std_logic;
@@ -304,10 +346,11 @@ port (
     xorgate : in std_logic;
     S_AXI_ACLK  : in std_logic;
 \end{lstlisting}
-Then, we add the component definition of our logic gates project, along with
-the signals going from the logic gates to the registers component. For the
-ports in the component definition, we just add the ports specified in the SME
-generated top-level file.
+Then I add the component definition of the Logic Gates project, along with
+the signals going from the Logic Gates to the registers component. For the
+ports in the component definition, I add the ports specified in the SME
+generated top-level file:
+\newpage
 \begin{lstlisting}
 component LogicGates_export is
     port(
@@ -342,7 +385,7 @@ signal gates_or  : std_logic;
 signal gates_not : std_logic;
 signal gates_xor : std_logic;
 \end{lstlisting}
-Then, we need to map the signals to the instantiation of the registers component
+Then I map the signals to the instantiation of the registers component
 \begin{lstlisting}
 port map (
     bit1 => bit1,
@@ -353,11 +396,12 @@ port map (
     xorgate => gates_xor,
     S_AXI_ACLK  => s00_axi_aclk,
 \end{lstlisting}
-Finally, we need to instantiate the logic gates component. The clock and reset
-signals should just use the AXI clock and reset. Note: the AXI reset signal is
+Finally, the Logic Gates component needs to be instantiated. The clock and reset
+signals uses the AXI clock and reset. Note: the AXI reset signal is
 inverted compared to the signal expected by the SME generated code. I.e. AXI
 resets when the signal is \texttt{0} and SME resets when the signal is
 \texttt{1}.
+\newpage
 \begin{lstlisting}
 -- Add user logic here
 LogicGates_inst : LogicGates_export
@@ -373,19 +417,19 @@ port map (
 );
 -- User logic ends
 \end{lstlisting}
-Now, we have wrapped our Logic Gates project in an AXI interface. The RTL
-should look as figure \ref{fig:logic-axi-rtl}.
+Now the Logic Gates project have been wrapped in an AXI interface. The RTL
+schematic can be seen in Figure~\ref{fig:logic-axi-rtl}.
 \begin{figure}
     \includegraphics[width=\linewidth]{logic_axi_rtl}
     \caption{The RTL schematic of the Logic Gates with AXI interface.}
     \label{fig:logic-axi-rtl}
 \end{figure}
-Then we just need to package the IP. It should now be available in the IP
-catalog. In the original project, we need to create a block design. We need to
-add two components: the processing system and the logic gates with AXI. Upon
-adding the processing system, Vivado gives us the option to run block and
-connection automation. When both have run, we should have a block design as
-in figure \ref{fig:logic-axi-block}.
+Then I package the IP, which is then available in the IP
+catalog. In the original project, I create a block design. It needs
+two components: the processing system and the Logic Gates with AXI interface. Upon
+adding the processing system, Vivado gives the option to run block and
+connection automation. The complete block design can be seen in
+Figure~\ref{fig:logic-axi-block}.
 \begin{figure}
     \includegraphics[width=\linewidth]{logic_axi_block}
     \caption{The finished block design contaning the processing system and the
@@ -393,31 +437,36 @@ in figure \ref{fig:logic-axi-block}.
     \label{fig:logic-axi-block}
 \end{figure}
 The next step is to create a HDL wrapper from the block design, and then
-generate the bitstream. Remember to add the Types files to the project,
-otherwise the IP cannot be synthesized. When the bitstream has been generated,
-we need to export our hardware to the Xilinx SDK. Note: the bitstream must be
-included.
+generate the bitstream. The custom types has to be added to the project,
+otherwise the IP cannot be synthesized, as it cannot recognize the types. When
+the bitstream has been generated, the hardware is exported to the Xilinx SDK.
+Note: the bitstream must be included. The implemented Logic Gates with an AXI
+interface has a maximum  utilization of 1\%, which is the Logic. It has an
+approximate power consumption of 1.535 watts. This however, is due to the ARM
+processor, which uses 1.529 watts. I.e. the Logic Gates with the AXI interface
+has an approximate power consumption of $1.535-1.529=0.006$ Watts. The
+comparison to the reported values of the other implementations can be seen in
+Table~\ref{tab:impl-comp}.
 
-In the SDK, we start by creating a new Application project. We choose the
-"Hello World" example project, and call it "Tester". We need to write our new
-code in \texttt{Tester/src/helloworld.c}.
+In the SDK, I create a new Application project. I choose the
+"Hello World" example project, and call it "Tester". The new code is added to
+\texttt{Tester/src/helloworld.c}.
 
-Creating the sample project will also create a Board
-Support Package (BSP) called "Tester\_bsp". This BSP contains all the files related to the exported
-hardware. The file we are most interested in is
-\texttt{Tester\_bsp/ps7\_cortex9\_0/libsrc/LogicGates\_AXI\_v1\_0/src/LogicGates\_AXI.h}.
-This file contains all the functions for reading and writing to the AXI
-registers. We also need \texttt{xparameters.h}, as it contains the base address
-for the AXI interface. We also need \texttt{xil\_io.h} as it contains
-the types returned by the read and write functions. All of the header files
-should be included:
+Creating the sample project will also create a Board Support Package (BSP)
+called "Tester\_bsp". This BSP contains all the files related to the exported
+hardware. The file I am most interested in is \texttt{Tester\_bsp/ps7\_cortex9
+\_0/libsrc/LogicGates\_AXI\_v1\_0/src/LogicGates\_AXI.h}. This file contains
+all the functions for reading and writing to the AXI registers. I also need
+\texttt{xparameters.h}, as it contains the base address for the AXI interface.
+Finally, I also need \texttt{xil\_io.h} as it contains the types returned byt
+he read and write functions.
 \begin{lstlisting}
 #include "xparameters.h"
 #include "LogicGates_AXI.h"
 #include "xil_io.h"
 \end{lstlisting}
 Now, the default names given by Vivado and the SDK are a bit long and the
-registers are numbered. Therefore, we give them shorter and more appropriate
+registers are numbered. Therefore, I give them shorter and more appropriate
 names
 \begin{lstlisting}
 int base = XPAR_LOGICGATES_AXI_0_S00_AXI_BASEADDR;
@@ -428,9 +477,9 @@ int or  = LOGICGATES_AXI_S00_AXI_SLV_REG3_OFFSET;
 int not = LOGICGATES_AXI_S00_AXI_SLV_REG4_OFFSET;
 int xor = LOGICGATES_AXI_S00_AXI_SLV_REG5_OFFSET;
 \end{lstlisting}
-We want to try and write all combinations to the registers, and verify that it
-outputs the same as the truth table specified in table \ref{tab:truth-table}. We start by
-writing two functions: one for writing to the two input registers and one for
+To verify the hardware, I write all combinations of inputs to the registers, and verify that it
+outputs the same as the truth table specified in Table~\ref{tab:truth-table}. I
+write two functions: one for writing to the two input registers and one for
 printing all of the registers.
 \begin{lstlisting}
 void print_regs() {
@@ -471,34 +520,37 @@ int main()
     return 0;
 }
 \end{lstlisting}
-Then we program the FPGA, program the ARM and verify the output:
+After programming the FPGA and programming the ARM, I get the following output:
 \begin{lstlisting}
 0 0 | 0 0 1 0
 0 1 | 0 1 1 1
 1 0 | 0 1 0 1
 1 1 | 1 1 0 0
 \end{lstlisting}
-We have succesfully synthesized, placed and routed the VHDL generated by SME.
-Furthermore, we have shown how to interface with the implemented hardware, by
-adding an AXI interface to our design.
+I have succesfully synthesized, placed and routed the VHDL generated by SME.
+Furthermore, I have shown how to interface with the implemented hardware, by
+adding an AXI interface to the design.
 
 \subsection{Single cycle MIPS processor}
-Now we want to implement the single cycle MIPS processor. The first point is to
+Now I am going to implement the single cycle MIPS processor. The first step is to
 generate the VHDL from SME. The SME code needs a few adjustments to do this:
 \begin{itemize}
     \item Enumerations should be complete. E.g. if a \texttt{switch} is
         performed on a 5-bit number, the enumeration should contain 256
         elements. Another possible fix is to exchange the switch statement with
-        a series of \texttt{else if}.
+        a series of \texttt{else if}. However, the \texttt{switch} is favored,
+        as Vivado interprets it to a large multiplexor, where the series of
+        \texttt{else if}'s are interpreted as a series of multiplexors.
 
-    \item The HI and LO registers of the ALU should be merged into a 64-bit
+    \item The HI and LO registers of the ALU should be merged into a single 64-bit
         register. This is due to the later synthesization connecting
         subcomponents together, creating a bus where two subcomponents can
-        write to, which is not allowed on real hardware.
+        write to, which is not allowed on real hardware. It also tries to connect
+        some components, which are not allowed.
 \end{itemize}
 Once they have been handled, the SME code generates VHDL code. However, there is
-one thing, that SME cannot transpile, which we must do by hand. In the Splitter,
-where it casts a number to an enumeration:
+a few things, that SME cannot transpile, which must do by hand. In the
+Splitter, where it casts a number to an enumeration:
 \begin{lstlisting}
 -- C#
 Opcodes opcode = (Opcodes)((tmp >> 26) & 0x3F);
@@ -508,5 +560,302 @@ Funcs funct = (Funcs)(tmp & 0x3F);
 ControlIn_opcode <= SingleCycleMIPS_Opcodes'VAL(TO_INTEGER(UNSIGNED(instruction(31 downto 26))));
 ALUFunct_val <= SingleCycleMIPS_Funcs'VAL(TO_INTEGER(UNSIGNED(instruction(5 downto 0))));
 \end{lstlisting}
+Furthermore, SME is not able to handle nested classes. E.g. I put each of the
+pipeline stages into classes, even in the single cycle processor. To make SME
+able to transpile again, the top class should be removed.
+\begin{lstlisting}
+-- Before
+namespace SingleCycleMIPS
+{
+    public class IF
+    {
+        public class PC : SimpleProcess
+        {
+            ...
 
-Processor is clocked at 5mhz!
+-- After
+namespace SingleCycleMIPS
+{
+    public class PC : SimpleProcess
+    {
+        ...
+\end{lstlisting}
+Now both \texttt{ghdl} and Vivado behavorial simulation works. However, there is
+a problem with the Register File and the Memory. Both of these processes
+were unclocked in the SME simulation, i.e. both combinatorial. This is not
+possible on actual hardware, because in between clock ticks, values can attain
+any value in a few picoseconds. This means that it is possible, that random
+values can be written to random adresses at random times. To solve this, they
+have to be clocked.
+
+As with the initial description of the Register File, I must be careful. I want
+to make a true single cycle processor. However, making both of these clocked in
+the SME simulation, makes it pipelined along some paths. This creates problems
+as the remaining paths are not pipelined. Furthermore, it would no longer be
+truly single cycle. To handle this, I make each of them clocked, but modify the
+VHDL.
+
+I start with the register file. Before, the Register File was handled by having
+a write buffer. Now, because the Register File itself becomes clocked, the
+Write buffer no longer needs to be clocked, i.e. it should just pass its input
+along in a combinatorial fashion. However, now I have to change the Register
+File. Before it wrote before reading, but now it should handle the write in the
+same cycle. This is done by making the Register File read values when the clock
+is high, and write values when the clock is low.
+
+Then the Memory has to be handled. The problem is that invalid writes can be
+sent to Memory. As with the Register File, I make it clocked. However, I cannot
+have it activate on the rising edge of the clock, as the data from the
+Instruction Memory have not reached the Memory at this time. As such, I make it
+activate on the falling edge of the clock. This ensures, that the instruction
+have reached the Memory, when it is needed. Making a process activate on the
+falling edge cannot be described in SME, and must as such be described in the
+VHDL process. Note: making the memory activate on the falling edge puts more
+constraint on the paths, as they now have to reach the Memory in half a clock
+cycle, compared to the full cycle before. The same goes from the Memory to the
+Register File. As such, the clockrate likely has to be lowered.
+
+Now, the Single Cycle processor should be able to be synthesized, placed and
+routed. When entering the clocking constraints, I was able to clock the
+processor at 5 mhz. Once it has been implemented, Vivado can report how much of
+the logic on the FPGA the implemented design uses. The placed and routed Single
+Cycle processor uses 14\% of the available logic on the ZedBoard. The Single
+Cycle processor has an approximate power consumption of 0.001 watts. The
+comparison to the reported values of the other implementations can be seen in
+Table~\ref{tab:impl-comp}.
+
+However, there is an additional problem. The Instruction Memory and the Memory,
+are both implemented as registers, within the FPGA. By doing this, the capacity
+of the Instruction Memory and the Memory have been lowered.  An FPGA contains
+component called block ram. These are memory blocks, which contain more memory
+than the registers. I cannot use these however, due to them having a delay of a
+single clock cycle. I.e. once the command have been issued to the block ram, it
+will be performed in the next clock cycle. This does not match the semantics of
+a single cycle processor, as the instruction can no longer be performed in a
+single clock cycle. As such, for the single cycle processor, I have used
+registers. This is not going to be a problem in the pipelined processor, as the
+data is not expected to be ready until the following clock cycle.
+
+Now, as with the Logic Gates, I want to be able to communicate with the
+processor, by adding an AXI interface. I have chosen to have three AXI
+interfaces: Instruction Memory, Memory and Control. The Instruction Memory and
+Memory both contain 128 registers and should function as the original
+components. The Control contains four registers: reset, instruction count,
+running and clocks. The reset is used for resetting the processor, and is
+connected to the processors \texttt{RST} signal. The instruction count is the
+number of instructions in the Instruction Memory, and is used to indicate
+whether or not the processor is done executing its program. Running is used to
+indicate that the processor is running. The clocks is the number of clocks the
+processor have run for since the last reset.
+
+All of the control signals, except for the reset, are connected to the
+Instruction Memory. The Instruction Memory now checks if the PC is larger
+than the instruction count, in which case it is no longer running. Otherwise, it
+it forwards the PC to the registers in the instruction memory AXI. This axi
+then returns the instruction at the given address. Finally, the
+Instruction Memory should increment the clocks, if it is running.
+
+The Memory unit behaves in the same manner as the Instruction Memory. I.e.
+it forwards the request to the AXI registers, who are now in control of
+the memory. A simplistic overview of how they should be connected can be seen
+in Figure~\ref{fig:single-cycle-axi}.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \node[block, minimum height=5em] (control) at (0,4) {AXI control};
+        \node[block] (instruction) at (0,2) {AXI Instruction Memory};
+        \node[block] (memory) at (0,0) {AXI Memory};
+        \node[block] (mips) at (6,2) {Single Cycle MIPS};
+
+        \path[draw, ->] (control.35) -| node[near start, above]{Reset} (mips.70);
+        \path[draw, ->] (control.15) -| node[near start, above]{Count} (mips.80);
+        \path[draw, ->] (mips.90) |- node[near end, above]{Running}(control.345);
+        \path[draw, ->] (mips.100) |- node[near end, above]{Clocks}(control.325);
+
+        \path[draw, ->] (mips.170) |- node[near end, above]{Address} (instruction.10);
+        \path[draw, ->] (instruction.350) |- node[near end, above]{Data} (mips.190);
+
+        \path[draw, ->] (mips.260) |- node[near end, above]{Address}(memory.15);
+        \path[draw, ->] (memory.345) -| node[near start, above]{Data}(mips.280);
+    \end{tikzpicture}
+    \caption{Simplistic overview of how the single cycle MIPS processor should
+    be connected to the AXI registers.}
+    \label{fig:single-cycle-axi}
+\end{figure}
+
+Once the AXI IP have been generated, I integrate it into a block design.  The
+procedure is the same, as with the Logic Gates. I do need to add an additional
+IP: the clocking wizard. This IP takes an input clock signal and either
+multiplies it, or divides it. In this case, I need to divide it. The ZedBoard
+has a 100 mhz clock signal, which the FPGA can use. However, as stated before,
+I know that the single cycle MIPS processor could be clocked at 5 mhz. As such,
+the clocking wizard takes the 100 mhz signal and produce a 5 mhz signal.
+
+Once that is in place, I synthesize, place, route and generate bitstream. The
+Single Cycle processor with the AXI interface uses 22\% of the logic available
+on the ZedBoard. The Single Cycle processor has an approximate power consumption
+of 0.147 watts (excluding the ARM processor). The comparison to the reported
+values of the other implementations can be seen in Table~\ref{tab:impl-comp}.
+
+Writing the driver for the processor is straightforward:
+\begin{enumerate}
+    \item Set the control reset register to 1. I.e. resetting the processor.
+
+    \item Load the instructions into the instruction memory registers.
+
+    \item Set the control instruction count register to the amount of instructions.
+
+    \item Set the control reset register to 0. I.e. starting the processor.
+
+    \item Check that the control running register is set to 1.
+
+    \item Wait for the control running register to become 0.
+
+    \item Now the processor have run. The amount of clock ticks it took is in
+        the control clocks register, and the result should be in memory
+        (depending on the program of course).
+\end{enumerate}
+The performance of the VHDL implementation on actual hardware, compared to the
+SME simulation of the single cycle processor, can be seen in
+Table~\ref{tab:single-cycle-hardware}.
+
+\begin{table}
+    \centering
+    \begin{tabular}{rllllllllllllllll}
+        & FPGA &           & SME \\
+        \hline
+        & \#CT & time (ms) & \#CT & time(ms) & speedup \\
+        \hline
+        $n$ = 5 & 718 & $\sim$0.1436 & 719 & 516 & 3593.14 \\
+        $n$ = 10 & 22572 & $\sim$4.5144 & 22574 & 13012 & 2882.22 \\
+        $n$ = 20 & 23068776 & $\sim$4613.7552 & NA & NA & NA \\
+        \hline
+    \end{tabular}
+    \caption{Performance of the Towers of hanoi program with different $n$
+    values. CT is clock ticks. The SME benchmark was performed on a laptop
+    with an Intel Core i5-5300U (2.3 GHz). The FPGA benchmark was performed on
+    a Zynq-7000 All Programmable SoC XC7Z020-CLG484-1. The MIPS processor
+    implemented on the FPGA was clocked to 5 MHz. Towers of hanoi was chosen
+    due to it being easy to scale up.}
+    \label{tab:single-cycle-hardware}
+\end{table}
+
+\subsection{Pipelined MIPS processor}
+Many of the same steps as with the Single Cycle processor are required for
+implementing the Pipelined processor on an FPGA. However, there are a few
+differences:
+\begin{itemize}
+    \item The Register File should have the same read/write order as in
+        the original SME implementation. I.e. it should write first, then read.
+        Furthermore, it should now perform all of its actions, on the falling
+        edge of the clock.
+
+    \item Within the \texttt{switch} statement of the ALU, all the cases which
+        write to the HILO register, should only write on the falling edge of
+        the clock.
+
+    \item The Memory should perform all its computations on the falling edge of
+        the clock.
+\end{itemize}
+Other than these differences, the Pipelined processor can be implemented on the
+FPGA, in the same manner as with the Single Cycle processor. I was able to clock
+it at 68.9776 MHz. As such, pipelining the processor yielded a $\sim$1379\%
+speedup. The placed and routed Pipelined processor uses 24\% of the logic
+available on the ZedBoard. The Pipelined processor has an approximate power
+consumption of 0.019 watts. The comparison to the reported values of the other
+implementations can be seen in Table~\ref{tab:impl-comp}.
+
+\subsubsection*{Implementing Block RAM}
+Another advantage gained by pipelining the processor, is the option to use block
+RAM as memory instead of registers. In the Single Cycle processor,
+the instruction had to be read, computed and possibly go through memory in the
+same clock cycle. However, block RAM has a delay of one clock cycle, before the
+data is ready. As such, it could not be used in the Single Cycle processor.
+However, in the Pipelined processor, both the data from the Instruction Memory
+and Memory, are not needed until the following clock cycle. As such, I can use
+block RAM to get more memory.
+
+I start by adding two new SME processes: InstructionBRAM and MemoryBRAM. Both
+of these are \texttt{SimulationProcess}es. As such, they are both clocked
+processes and they will not be transpiled. Then I add new busses, which go from
+the old processes, to the new processes. The logic in the old processes
+just forwards the their input to these new busses. The logic in the new
+processes is the same as the previous logic in the old processes. Finally, the
+output which previously entered the following pipe, should now go straight to
+the receipients. This is due to the delay in the Block Memory, which gives the
+same delay as the pipes did.
+
+Once the SME simulation has run and transpiled, the VHDL is entered in a new
+project in Vivado. Within this project, I create a new block design. This block
+design consists of four modules: the Pipelined processor, two Block Memory
+generators and a constant. The two Block Memory modules are connected to the
+processor, and the constant is connected to the two Block Memory modules, in
+order to keeping the ports used by the processor always enabled. The processor
+and the Block Memory generators share the same clock and reset signal.
+
+For easy testing the block design, the Instruction Memory can be initialized
+with the use of a \texttt{coe} file. The format of the \texttt{coe} file is
+very simple: first there is a line specifying the radix (base) of the numbers,
+followed by an array describing the data. E.g. some of the \texttt{coe} file
+for the fibonacci program would be
+\begin{lstlisting}
+memory_initialization_radix=16;
+memory_initialization_vector=
+34080001,
+34090001,
+...
+00000000;
+\end{lstlisting}
+I chose to still have dedicated instruction and data memory, as I then did not
+have to change any of the compiled programs and due to it resembling the L1
+cache of a modern processor. Furthermore, this design makes it easier to extend
+with an AXD interface, as Vivado has a Block Memory AXI Controller IP. Each of
+the Block Memory Modules can have a maximum of two ports. As such, if I had
+gone with the single Block Memory approach, the two ports would already be in
+use by the processor.
+
+Once the block design have been constructed, it is time to synthesize, place
+and route the design. However, there is a problem when doing this. In the first
+version I made, the VHDL had the \texttt{EX\_Pipe\_JALOut} bus, which both goes
+to internal processes and outside the network as an top-level bus. Vivado did
+not like this particular setup. To solve it, I made an internal signal in VHDL,
+to which the processes write and read from. Futhermore, the signal also goes to
+the top-level output bus. This does not change the structure of the network,
+but satisfies Vivado.
+
+Once the block design could be synthesized, placed and routed, I was able to
+clock the processor at 71.429 MHz. The increased clock is due to the Block
+Memory. The Block Memory is rated to handle severel hundreds MHz~\cite{ref:bram}
+and are as such not even close to being a bottleneck in my design. When the
+Instruction Memory and Memory consisted of registers, the path through the
+registers was longer, than the path to the Block Memory. Furthermore, since
+both have been moved to Block Memory, the logic used by the project have
+decreased to use 6\% of the available logic on the ZedBoard. However, the
+processor now uses 7\% of the available Block Memory on the Zedboard, making it
+the new bottleneck for having multiple cores. The Pipelined processor using
+Block Memory has an approximate power consumption of 0.041 watts. The
+comparison to the reported values of the other implementations can be seen in
+Table~\ref{tab:impl-comp}.
+
+\begin{table}
+    \centering
+    \begin{tabular}{lllll}
+        \hline
+        Design           & Clockrate & Memory & Utilization & Power \\
+        \hline
+        Logic Gates      & N/A & N/A  & 4 & 0.001 \\
+        Logic Gates AXI  & 100 & 0.02 & 1 & 0.006 \\
+        Single Cycle     & 5   & 0.19 & 14 & 0.001 \\
+        Single Cycle AXI & 5   & 1    & 22 & 0.147 \\
+        Pipelined        & 68.98 & 0.19 & 24 & 0.019 \\
+        Pipelined BRAM   & 71.43 & 64   & 7  & 0.041 \\
+        \hline
+    \end{tabular}
+    \caption{Comparison table of the reported values of the different
+        implemented designs. All of them have been made with the ZedBoard as
+        the target board. Clockrate is in megahertz. Memory is in kilobytes.
+        Utilization is the maximum utilization metric in percent. Power is in
+        watts.}
+    \label{tab:impl-comp}
+\end{table}

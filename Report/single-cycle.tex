@@ -1,15 +1,15 @@
-In this section, we will be combining the core components into a single cycle
+In this section, I will be combining the core components into a single cycle
 MIPS processor, i.e. a processor where exactly one instruction is executed per
-clock cycle. When it is in place, we will be writing the first program, and
+clock cycle. When it is in place, I will be writing the first program, and
 compiling it into the processor, and running it.
 
-Following the single cycle MIPS processor, we will be extending
+Following the single cycle MIPS processor, I will be extending
 the processor so that it can handle more instructions. Along each added
-instruction, we will be extending our first program, in order to verify that
+instruction, I will be extending the first program, in order to verify that
 the added instruction works.
 
-Finally, we will be writing two larger programs, and look into compiling them
-into a series of hex values, that we can copy straight into the Instruction
+Finally, I will be writing two larger programs, and look into compiling them
+into a series of hex values, that I can copy straight into the Instruction
 Memory.
 
 \subsection{Wiring up the processor}
@@ -88,57 +88,73 @@ Memory.
     }
     \caption{Simple single cycle MIPS processor. The units with | indicate
     multiplexors. The Clock is not an SME process, but has been added to
-    emphasize which processes that are clocked.}
+    emphasize which processes that are clocked. The blue wires indicate control
+    wires, i.e. buses that contain a \texttt{bool} value. The black wires
+    indicate wires containing data (i.e. \texttt{byte}, \texttt{short} and
+    \texttt{uint}). The dashed and bold wires do not indicate anything
+    special, but are there to emphasize crossing wires.}
     \label{fig:simple-full}
 \end{figure}
+The source code for the single cycle processor is available
+at~\cite{ref:github} in \texttt{sme/src/Examples/SingleCycleMIPS/}.
 With all the components in place, wiring up the single cycle MIPS processor is
-straightforward. We just need to declare the busses with the corresponding
-names, and then SME handles the wiring process. Note that as previously
-mentioned, the Write Buffer and the PC register should be clocked processes.
-The wiring of the single cycle MIPS processor can be seen in Figure
-\ref{fig:simple-full}.
+straightforward. I just need to declare the busses with the corresponding
+names, and then SME handles the wiring process. Had this been implemented in
+CSP, each writer process would have to ensure that each reader process would
+get a copy. However, as mentioned in the introduction of the paper, SME has
+broadcasting channels, which does exactly that so there is no need for
+additional logic. Note that as previously mentioned, the Write Buffer and the
+PC register has to be clocked processes. The wiring of the single cycle MIPS
+processor can be seen in Figure~\ref{fig:simple-full}. Note that the
+multiplexors have not been mentioned as components, as these should be simple
+and straightforward to insert into the places specified in
+Figure~\ref{fig:simple-full}.
 
 \subsection{Writing the first program}
+The source code for the first program, with the additional
+instructions introduced in Section~\ref{sec:extending}, is available
+at~\cite{ref:github} in \texttt{MIPS/first\_program.asm}.
 As mentioned before, the first single cycle MIPS processor should be able to
 handle \texttt{add}, \texttt{sub}, \texttt{and}, \texttt{or}, \texttt{slt},
 \texttt{sw}, \texttt{lw} and \texttt{beq}. As such, the first program should
 consist of these. The program and the different parts of each of the
-instructions can be seen in Table \ref{tab:first-program}.
+instructions can be seen in Table~\ref{tab:first-program}.
 \begin{table}
     \centering
+    \begin{adjustbox}{center}
     \begin{tabular}{rllllllll}
-        \toprule
+        \hline
         Address & Instruction & opcode & rs & rt & rd/imm & shmt & funct & hex \\
-        \midrule
+        \hline
         \texttt{0x00} & \texttt{add \$3 \$1 \$2} & \texttt{0x00} &
         \texttt{0x01} & \texttt{0x02} & \texttt{0x03} & \texttt{0x00} &
         \texttt{0x20} & \texttt{0x00221820} \\ % 5 + 2 = 7
 
-        \texttt{0x04} & \texttt{sub \$4 \$3 \$2} & \texttt{0x00} &
+        \texttt{0x04} & \texttt{sub \$4 \$3 \$2} & \texttt{0x00} &
         \texttt{0x03} & \texttt{0x02} & \texttt{0x04} & \texttt{0x00} &
         \texttt{0x22} & \texttt{0x00622022} \\ %  7 - 2 = 5
 
-        \texttt{0x08} & \texttt{and \$5 \$3 \$1} & \texttt{0x00} &
+        \texttt{0x08} & \texttt{and \$5 \$3 \$1} & \texttt{0x00} &
         \texttt{0x03} & \texttt{0x03} & \texttt{0x05} & \texttt{0x00} &
         \texttt{0x24} & \texttt{0x00612824} \\ % 7 and 5 = 5
 
-        \texttt{0x0C} & \texttt{and \$6 \$3 \$1} & \texttt{0x00} &
+        \texttt{0x0C} & \texttt{or \$6 \$3 \$1} & \texttt{0x00} &
         \texttt{0x03} & \texttt{0x03} & \texttt{0x06} & \texttt{0x00} &
         \texttt{0x25} & \texttt{0x00613025} \\ % 7 or 5 = 7
 
-        \texttt{0x10} & \texttt{slt \$7 \$6 \$5} & \texttt{0x00} &
+        \texttt{0x10} & \texttt{slt \$7 \$6 \$5} & \texttt{0x00} &
         \texttt{0x06} & \texttt{0x05} & \texttt{0x07} & \texttt{0x00} &
         \texttt{0x2A} & \texttt{0x00C5382A} \\ % 7 < 5 = 1
 
-        \texttt{0x14} & \texttt{sw \$6  0x0(\$0)} & \texttt{0x2B} &
+        \texttt{0x14} & \texttt{sw \$6  0x0(\$0)} & \texttt{0x2B} &
         \texttt{0x00} & \texttt{0x06} & \texttt{0x0000} & - &
         - & \texttt{0xAC060000} \\ % M[0] = 7
 
-        \texttt{0x18} & \texttt{lw \$8  0x0(\$0)} & \texttt{0x23} &
+        \texttt{0x18} & \texttt{lw \$8  0x0(\$0)} & \texttt{0x23} &
         \texttt{0x00} & \texttt{0x07} & \texttt{0x0000} & - &
         - & \texttt{0x8C070000} \\ % $8 = M[0] (= 7)
 
-        \texttt{0x1C} & \texttt{beq \$5 \$4 0x4} & \texttt{0x04} &
+        \texttt{0x1C} & \texttt{beq \$5 \$4 0x4} & \texttt{0x04} &
         \texttt{0x05} & \texttt{0x04} & \texttt{0x0004} & - &
         - & \texttt{0x10A40004} \\ % if 5 == 5 then skip next
 
@@ -149,112 +165,117 @@ instructions can be seen in Table \ref{tab:first-program}.
         \texttt{0x24} & \texttt{add \$10 \$8 \$6} & \texttt{0x00} &
         \texttt{0x08} & \texttt{0x06} & \texttt{0x0A} & \texttt{0x00} &
         \texttt{0x20} & \texttt{0x01065020} \\ % 7 + 7 = 14
-        \bottomrule
+        \hline
     \end{tabular}
-    \caption{The first MIPS program. Note that the instruction at \texttt{0x20}
+    \end{adjustbox}
+    \caption{The first MIPS program testing the \texttt{add}, \texttt{sub},
+    \texttt{and}, \texttt{or}, \texttt{slt}, \texttt{sw}, \texttt{lw} and
+    \texttt{beq} instructions. Note that the instruction at \texttt{0x20}
     should be skipped due to the \texttt{beq} at \texttt{0x1C}.}
     \label{tab:first-program}
 \end{table}
 
-%TODO lav om til at læse fra en binary fil!
 Inserting this program into the Instruction Memory is straightforward: just
-create an \texttt{byte} array, which is initialized to the hex values from the
-instruction column in Table \ref{tab:first-program}. Since we do not have any
-way of feeding values into the Register File at this moment, we are going to
+create a \texttt{byte} array, which is initialized to the hex values from the
+instruction column in Table~\ref{tab:first-program}. Since I do not have any
+way of feeding values into the Register File at this moment, I am going to
 hardcode registers 1 and 2 with the values 5 and 2 respectively. When the
-program has finished, the contents of the register file should be as in Table
-\ref{tab:first-result}.
+program has finished, the contents of the register file should be as in
+Table~\ref{tab:first-result}.
 \begin{table}
     \centering
     \begin{tabular}{rrrrrrrrrrrrrrrrrrrr}
-        \toprule
+        \hline
         Address & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
-        \midrule
+        \hline
         Value & 0 & 5 & 2 & 7 & 5 & 5 & 7 & 1 & 7 & 0 & 14 \\
-        \bottomrule
+        \hline
     \end{tabular}
     \caption{The register file after the first program has finished.}
     \label{tab:first-result}
 \end{table}
 
-\subsection{Extending the accepted instruction set}
+\subsection{Extending the accepted instruction set}\label{sec:extending}
+Then I will extend the accepted instruction set of the processor, in order to
+execute more complex programs. To test each of the added instructions, I just
+append the instructions to the initial program.
+
 \subsubsection*{Additional simple R format instructions}
 The simplest instructions to add, are the remaining simple R format
 instructions. These are \texttt{addu}, \texttt{subu}, \texttt{xor},
 \texttt{nor} and \texttt{sltu}. The only modifications are to extend the ALU
-Operation \texttt{enum}, and then add the remaining cases in the ALU Control
-and the ALU. As described in section \ref{sec:alu}, it is important to cast the
-input \texttt{uint} to \texttt{int} before making the computation, if the
-operation is signed.
-
-To test each of these instructions, we can just append them to our initial
-program.
+Operation \texttt{enum}, the \texttt{funct} \texttt{enum} and then add the
+remaining cases in the ALU Control and the ALU. As described in
+Section~\ref{sec:alu}, it is important to cast the input \texttt{uint} to
+\texttt{int} before making the computation, if the operation is signed.
 
 \subsubsection*{Immediate instructions}
-The next instruction we want to add is the \texttt{ori} instruction, as this
-would allow us to feed values into the processor without hardcoding it. While
-we are doing this, we should also add \texttt{addi}, \texttt{addiu},
-\texttt{slti}, \texttt{sltiu}, \texttt{andi} and \texttt{xori}, as these
-requires the same amount of work.
+The next instruction I am going to add is the \texttt{ori} instruction, as this
+would allow me to feed values into the processor without hardcoding it. While
+I am doing this, I also add \texttt{addi}, \texttt{addiu}, \texttt{slti},
+\texttt{sltiu}, \texttt{andi} and \texttt{xori}, as these require the same
+amount of work.
 
 For the logical immediates, it is important, that the Sign Extend does not
-sign extend. As such, we add another signal to the Control Unit:
+sign extend. As such, I add another signal to the Control Unit:
 \texttt{LogicalImmediate}, which goes to the Sign Extend. The Sign Extend
 should then, in the case the \texttt{LogicalImmediate} flag is \texttt{1}, cast
 its input as \texttt{unsigned}, such that any potential sign bits are not
-extended. Then we just need to extend the opcode and ALUOp \texttt{enum}, and
+extended. Then I just need to extend the opcode and ALUOp \texttt{enum}, and
 add the remaining \texttt{case}s in the Control Unit and the ALU Control.
 
-Once the processor have been extended, we can prepend instructions at the
-beginning of the program. Furthermore, we can remove our previous hardcoding of
-initial values in the Register File.
+Once the processor has been extended, I can prepend instructions at the
+beginning of the program, to feed values into the processor. Furthermore, I
+can remove the previous hardcoding of initial values in the Register File.
 
 \subsubsection*{Jump instruction}
-We are going to introduce another format: the J format. This format is used for
-executing the \texttt{j} instruction. The first step is to extend the Splitter,
-as it should now send the lower 26 bits to the Jump Unit. Then the Control Unit
-should be extended, both in the opcode \texttt{enum}, and it should have another
-control signal output: \texttt{jump}, which should be connected to the Jump
-Unit.
+I am going to introduce another format: the J format~\cite{ref:ark-book}. This
+format is used for executing the \texttt{j} instruction. An J format
+instruction has two parts:
+\begin{itemize}
+    \item \makebox[1.6cm]{\texttt{opcode}\hfill}
+        \makebox[1.3cm]{(31-26)\hfill} Opcode of the instruction
+    \item \makebox[1.6cm]{\texttt{address}\hfill}
+        \makebox[1.3cm]{(25-0)\hfill} Jump address
+\end{itemize}
+
+The first step is to extend the Splitter, as it should now send the lower 26
+bits (25-0) to the Jump Unit. Then the Control Unit should be extended, both in
+the opcode \texttt{enum}, and it should have another control signal output:
+\texttt{jump}, which should be connected to the Jump Unit.
 
 Finally, the Jump Unit should be extended. It should take the 26 bits from the
-Splitter, and left shift it by 2, such that it becomes a 28 bit number. Then,
-it should take the 4 most significant bits from the PC+4, and prepend them to
-the extended number.  Finally, we are going to add a multiplexor, which takes
+Splitter, and left shift it by 2, such that it becomes a 28 bit number. This is
+done to pack more information into the address in the instruction, as there are
+only 26 bits available. The adresses into the Instruction Memory has to be word
+aligned. Since I am making a 32-bit processor, the word size is 4 bytes. As
+such, the 2 least significant bits are always 0 to keep the word alignment.
+
+In order to get the address to be a full 32 bit number, the Jump Unit should
+take the 4 most significant bits from the PC+4, and prepend them to
+the extended number. Finally, I am going to add a multiplexor, which takes
 this newly computed address, the previous output address, and the \texttt{jump}
 control signal. If the control signal is \texttt{0}, then the original output
 should be output, otherwise the newly computed jump address.
 
-Then the program can be extended with a \texttt{j} instruction, in the same
-manner as the \texttt{beq} instruction was tested before, i.e. trying to jump
-over some instructions.
+\subsubsection*{Branching instruction \texttt{bne}}
+Then I am going to add the branch instruction \texttt{bne}. I add another
+signal from the Control Unit to the Jump Unit. Then I split the Zero
+signal into two, where one of the signals goes to a newly added
+\texttt{NOT} gate.  Then I add a multiplexor, which has the \texttt{bne} signal
+from the Control Unit as the control signal, and the Zero and the \texttt{NOT}
+Zero as inputs. If the \texttt{bne} control signal is \texttt{0}, then the
+original Zero should be put on the output, otherwise the \texttt{NOT} Zero. The
+output from the multiplexor should go into the \texttt{AND} gate, where the
+Zero signal originally went.
 
-\subsubsection*{Branching instructions}
-Then we are going to add the remaining branching instructions \texttt{bne},
-\texttt{blez} and \texttt{bgtz} instructions.
+\subsubsection*{Additional jump instructions}
+Then I am going to add the jump instructions: \texttt{jr} and \texttt{jal},
+as these are useful when writing the larger programs later.
 
-To implement the \texttt{bne} instruction, we are going to add another signal
-from the Control Unit to the Jump Unit. Then we should split the Zero signal
-into two, where one of the signals goes to a newly added \texttt{NOT} gate.
-Then, we should add a multiplexor, which has the \texttt{bne} signal from the
-Control Unit as the control signal, and the Zero and the \texttt{NOT} Zero as
-inputs. If the \texttt{bne} control signal is \texttt{0}, then the original
-Zero should be put on the output, otherwise the \texttt{NOT} Zero. The output
-from the multiplexor should go into the \texttt{AND} gate, where the Zero
-signal originally went.
-
-TODO \texttt{blez}
-
-TODO \texttt{bgtz}
-
-\subsubsection*{Remaining jump instructions}
-Then we are going to add the remaining jump instructions: \texttt{jr},
-\texttt{jal} and \texttt{jalr}, as these are useful when writing the larger
-programs later.
-
-We start with \texttt{jr}. The instruction is in R format, so we do not know it
-is \texttt{jr}, until it has reached the ALU Control. As such, we are going to
-need a control signal from the ALU Control to the Jump Unit. We are also going
+I start with \texttt{jr}. The instruction is in R format, so I do not know it
+is \texttt{jr}, until it has reached the ALU Control. As such, I am going to
+need a control signal from the ALU Control to the Jump Unit. I am also going
 to forward Output A from the Register File to the Jump Unit, as this is the
 address that the processor should jump to in the \texttt{jr} instruction. The
 Jump Unit should not compute the new address in the same manner as with the
@@ -263,21 +284,19 @@ thus can contain the whole address space. The Jump Unit should also have a
 multiplexor, controlling whether the jump address should be the immediate
 value, or if it should be the value from the instruction.
 
-For the \texttt{jal} instruction, we are going to need an extra unit following
-the ALU. In the case of a \texttt{jal} instruction, we should store the PC+4
-address in register \texttt{31} (which is called the \texttt{\$ra} register).
-There should be an additional control signal from the Control Unit: the
-\texttt{jal} signal. The new JAL Unit should take three inputs: the ALU Result,
-the PC+4 and the \texttt{jal} control signal. It should produce two outputs:
-the Write Address for the Write Buffer, and the value to store. If the
-\texttt{jal} signal is \texttt{1}, the JAL Unit should output the PC+4 on the
-value bus, and \texttt{31} on the address bus. Otherwise it should output the
-regular ALU Result, and the regular Write Address.
-
-TODO \texttt{jalr}
+For the \texttt{jal} instruction, I am going to need an extra unit following
+the ALU. In the case of a \texttt{jal} instruction, the PC+4 address is stored
+in register \texttt{31} (which is called the \texttt{\$ra} register).  I add an
+additional control signal from the Control Unit: the \texttt{jal} signal. The
+new JAL Unit should take three inputs: the ALU Result, the PC+4 and the
+\texttt{jal} control signal. It should produce two outputs: the Write Address
+for the Write Buffer, and the value to store. If the \texttt{jal} signal is
+\texttt{1}, the JAL Unit should output the PC+4 on the value bus, and
+\texttt{31} on the address bus. Otherwise it should output the regular ALU
+Result, and the regular Write Address.
 
 \subsubsection*{Shift instructions}
-Then we are going to add the shift instructions: \texttt{sll}, \texttt{slr},
+Then I am going to add the shift instructions: \texttt{sll}, \texttt{slr},
 \texttt{sra}, \texttt{sllv}, \texttt{srlv} and \texttt{srav}, as shifting is
 often useful.
 
@@ -286,31 +305,29 @@ these is straightforward. The problem is that in an R format instruction, which
 the shift operations are, the shift amount (\texttt{shamt}) is stored in its
 own field within the instruction. As such, the splitter should extract these 5
 bits, and send them to a new multiplexor, which also takes Output A from the
-Register File. As with the \texttt{jr} instruction, we do not know it is a
+Register File. As with the \texttt{jr} instruction, I do not know it is a
 shifting instruction until it reaches the ALU Control. So to control the new
-multiplexor, we need a Control signal from the ALU Control, indicating whether
+multiplexor, I need a Control signal from the ALU Control, indicating whether
 the multiplexor should output either the \texttt{shamt} or Output A from the
 Register File.
 
 \subsubsection*{Multiplication and Division instructions}
-Then we are going to add the multiplication and division instructions:
+Then I am going to add the multiplication and division instructions:
 \texttt{mult}, \texttt{multu}, \texttt{div} and \texttt{divu}. All of these
 instructions put their result in two special registers: HI and LO. As such, to
-get the results from them, we are also going to need the \texttt{mfhi},
-\texttt{mthi}, \texttt{mflo} and \texttt{mtlo} instructions.
+get the results from them, I also need to add the \texttt{mfhi}, \texttt{mthi},
+\texttt{mflo} and \texttt{mtlo} instructions.
 
-We start by adding the special registers. Since they are performed in the ALU,
-we might as well put them there. Then, when we are doing the computation, we
-should just put the values there, and since the instructions do not write to
-registers, touch memory or change the PC register, it does not matter what is
-put on the ALU Result or Zero busses.
+I start by adding the special registers. Since they are performed in the ALU, I
+implement them as variables inside the ALU. Then, when the ALU is doing the
+computation, it puts the values there, and since the instructions do not write
+to registers, touch memory or change the PC register, it does not matter what
+is put on the ALU Result or Zero busses.
 
 The instructions handling the moving to and from the HI and LO registers are
 fairly simple to implement: just either input or output the corresponding
-register, to or from the ALU.
-
-The layout for the fully extended single cycle MIPS processor can be seen in
-Figure \ref{fig:single-proc-full}
+register, to or from the ALU. The layout for the fully extended single cycle
+MIPS processor can be seen in Figure~\ref{fig:single-proc-full}.
 
 \begin{figure}
     \centering
@@ -397,47 +414,46 @@ Figure \ref{fig:single-proc-full}
     }
     \caption{Full single cycle MIPS processor. The units with | indicate
     multiplexors. Black wires indicate data wires. Blue wires indicate control
-    wires. Green wires indicate clock}
+    wires. Green wires indicate clock.}
     \label{fig:single-proc-full}
 \end{figure}
-% TODO hertil!
+
 \subsection{Larger MIPS programs}
-To test the full single cycle MIPS processor, we are going to implement two
-programs in MIPS assembly: Quicksort and Towers Of Hanoi. We choose these two
+To test the full single cycle MIPS processor, I am going to implement two
+programs in MIPS assembly: Quicksort and Towers Of Hanoi. I chose these two
 examples, as both are simple to implement, and they do not require anything
 special from the environment.
 
-We are not going to give the implementation in MIPS assembly, as this would not
-be readable. Instead, we are going to construct some low level C code,
-which should be easy translatable into MIPS assembly, and easilier verifiable
-on a real machine. Once we have made the assembly, we can easily dump it into
-MARS, which can then produce a ascii hex dump, which we can then paste into our
-instruction memory.
+I am not going to give the implementation in MIPS assembly, as this would not
+be readable. Instead, I give some low level C code, which should be easy
+translatable into MIPS assembly, and easy to verify on a real machine. Once I
+have made the assembly, I can easily dump it into MARS~\cite{ref:mars}, which
+can then produce a ascii hex dump, which I can then paste into the instruction
+memory.
 
-\subsubsection*{Quicksort}
-Quicksort is a sorting algorithm, for doing comparison based sorting. The
-algorithm is heavily described in the algorithm book\cite{ref:alg}, and as such
-we wont go into details about the algorithm. We could have chosen one of the
-other sorting algorithms from the book, but quicksort should not be too hard to
-implement.
+\subsubsection*{Quicksort
+\footnote{The source code for the MIPS assembly code and the C code is
+available at~\cite{ref:github} in \texttt{MIPS/qsort.asm} and
+\texttt{MIPS/qsort.c}}
+}
+Quicksort is a sorting algorithm, for doing comparison based sorting. There
+are three parts of the Quicksort program: Loading data into memory, the
+partition function and the quicksort function. I am going to use the
+partition function from the algorithm book~\cite{ref:alg}, and the quicksort
+function, also from the algorithm book, as both are simple to implement.
 
-There are three parts of the Quicksort program: Loading data into memory, the
-partition function and the quicksort function. We are going to use the
-partition function from the algorithm book, and the quicksort function, also
-from the algorithm book, as both are simple to implement.
-
-We could have implemented the Hoare partitioning algorithm. However, it is not
+I could have implemented the Hoare partitioning algorithm. However, it is not
 as simple, and performance is not the target of the program, but rather
-correctness of the processor, i.e.  that our processor implementation produce
-the same result as MARS.
+correctness of the processor. I.e. that the processor implementation produce
+the same result as MARS, in the same amount of clock ticks.
 
 \begin{description}
-    \item[Loading data into memory] We start by loading data into memory, so
-        that our quicksort program has some data to sort. Which numbers we are
-        going to use is not important, rather the amount of numbers, as the
-        quicksort algorithm uses it as argument. We construct a function
-        called \texttt{load}, which inserts 6 numbers into the given memory
-        address.
+    \item[Loading data into memory] I start by loading data into memory, so
+        that the quicksort program has some data to sort. Which numbers are not
+        important, rather the amount of numbers, as the quicksort algorithm
+        uses it as argument. I construct a function called \texttt{load}, which
+        inserts 8 numbers into the given memory address.
+        \lstset{language=[ANSI]C}
         \begin{lstlisting}
  void load(int *a) {
     *(a)   = 5;
@@ -446,12 +462,15 @@ the same result as MARS.
     *(a+3) = 9;
     *(a+4) = 1;
     *(a+5) = 3;
+    *(a+6) = 7;
+    *(a+7) = 11;
 }\end{lstlisting}
 
-    \item[The partitioning function] Then we implement the \texttt{partition}
-        function as described in the algorithm book\cite{ref:alg}. Note that
-        statements in the book have been expanded to more closely resemble
-        assembly.
+    \item[The partitioning function] Then I implement the \texttt{partition}
+        function as described in the algorithm book~\cite{ref:alg}. Note that
+        statements from the algorithm book have been expanded to more closely
+        resemble assembly.
+\newpage
 \begin{lstlisting}
 int partition(int *a, int p, int r) {
     int x, i, j, tmp1, tmp2, *addr1, *addr2;
@@ -480,7 +499,7 @@ int partition(int *a, int p, int r) {
 }
 \end{lstlisting}
 
-    \item[The quicksort function] Finally, we implement the
+    \item[The quicksort function] Finally, I implement the
         \texttt{quicksort} function as described in the algorithms book.
 \begin{lstlisting}
 void quicksort(int *a, int p, int r) {
@@ -493,35 +512,63 @@ void quicksort(int *a, int p, int r) {
 \end{lstlisting}
 
     \item[Initial call to the algorithm] To emphasize the order of calling, and
-        the arguments, we also construct a \texttt{main} function.
+        the arguments, I also construct a \texttt{main} function.
 \begin{lstlisting}
 int main() {
-    int arr[6], i;
+    int arr[8], i;
     load(arr);
-    quicksort(arr, 0, 5);
+    quicksort(arr, 0, 7);
 }
 \end{lstlisting}
 \end{description}
 Do note that the arguments to both the \texttt{quicksort} and
-\texttt{partition} functions, are inclusive. To verify the correctness, we
-should look at the memory, where the data now should be in sorted order.
+\texttt{partition} functions, are inclusive. To verify the correctness, we
+should look at the memory, where the data now should be in sorted order. The
+performance of the quicksort program can be seen in Table~\ref{tab:perf-single}.
 
-\subsubsection*{Towers Of Hanoi}
+\begin{table}
+    \centering
+    \begin{adjustbox}{center}
+    \begin{tabular}{rllllllll}
+        & & \texttt{MARS} & & & \texttt{SME} \\
+        \hline
+        & & \# CT & time (ms) & CR (hz) & \# CT & time (ms) & CR (hz) \\
+        \hline
+        Towers of Hanoi & $n = 5$ & 719 & 585 & $\sim$1229 & 720 & 516 & $\sim$1395 \\
+        Quicksort & $n = 8$ & 483 & 582 & $\sim$829 & 484 & 375 & $\sim$1290 \\
+        \hline
+    \end{tabular}
+    \end{adjustbox}
+    \caption{Performance of the Quicksort and Towers of Hanoi programs on the
+    single cycle processor. CT is clock ticks. CR is clockrate. Compared to
+    \texttt{MARS}, the SME simulation uses an additional clock tick. This is
+    due to the simulation using an additional clock tick for shutting down the
+    simulation. The execution time of MARS is dominated by the startup time,
+    which is why there is no deviation. The benchmark was performed on a laptop
+    with an Intel Core i5-5300U (2.3 GHz).}
+    \label{tab:perf-single}
+\end{table}
+
+\subsubsection*{Towers Of Hanoi
+\footnote{The source code for the MIPS assembly code and the C code is
+available at~\cite{ref:github} in \texttt{MIPS/hanoi.asm} and
+\texttt{MIPS/hanoi.c}}
+}
 Towers Of Hanoi is a puzzle, where one has to move a tower of discs, from one
 peg, to another, with one additional auxilary peg, by only moving one disc at
-the time.
+a time.
 
-By searching, we find a pseudo approach to the problem, by using
-recursion\cite{ref:hanoi}. We are going to represent the three pegs
+By searching on the net, I find a pseudo approach to the problem, which uses
+recursion~\cite{ref:hanoi}. I am going to represent the three pegs
 as an array, which is three times the size of the tower. As such, each peg is
-just one third of the array. Furthermore, as with quicksort, we start by
-loading data into memory, have a \texttt{tower} function, which performs the
-move, and finally correct way of calling the functions.
+just one third of the array. Furthermore, as with quicksort, I start by
+loading data into memory, have a \texttt{tower} function, which performs the
+move, and finally a correct way to call the functions.
 
 \begin{description}
-    \item[Loading data into memory] We need to initialize the memory. We are
+    \item[Loading data into memory] I need to initialize the memory. I am
         going to fill the first third of the array, i.e. the first peg, with
-        descending numbers. Each number indicate which disc it is. The rest of
+        descending numbers. Each number indicates which disc it is. The rest of
         the pegs with 0, indicating no disc.
 \begin{lstlisting}
 void init(int num, int *from, int *to, int *aux) {
@@ -535,12 +582,15 @@ void init(int num, int *from, int *to, int *aux) {
 \end{lstlisting}
 
     \item[The tower function] This is the \texttt{tower} function, which
-        moves the discs from peg to peg. We use the same approach as the pseudo
-        code\cite{ref:hanoi}. As with quicksort, the statements have been
-        expanded to more closely resemble assembly. We make the three arguments
-        as stack pointers to each of the pegs. To preserve each of the
-        pointers, we have pointers to each of them, i.e. pointer pointer.
-\begin{lstlisting}
+        moves the discs from peg to peg. I use the same approach as the pseudo
+        code~\cite{ref:hanoi}. As with quicksort, the statements have been
+        expanded to more closely resemble assembly. I make the three arguments
+        as stack pointers to each of the pegs. A stack pointer is the address
+        to the next free memory position in the stack data
+        structure~\cite{ref:ark-book}. To preserve each of the pointers, I have
+        pointers to each of them, i.e. pointer pointer.
+\newpage
+        \begin{lstlisting}
 void tower(int num, int **from, int **to, int **aux) {
     int *t, *f;
     if (num == 0) {
@@ -567,8 +617,8 @@ void tower(int num, int **from, int **to, int **aux) {
 }
 \end{lstlisting}
 
-    \item[Calling the algorithm] We construct a \texttt{main} function, to
-        emphasize how to make the arguments.
+    \item[Calling the algorithm] I construct a \texttt{main} function, to
+        emphasize the order of calling and the arguments.
 \begin{lstlisting}
 int main() {
     int num = 5;
@@ -580,4 +630,5 @@ int main() {
 \end{lstlisting}
 \end{description}
 When the program has finished, the last third of the array should contain the
-numbers in descending order.
+numbers in descending order. The performance of the hanoi program can be seen
+in Table~\ref{tab:perf-single}.

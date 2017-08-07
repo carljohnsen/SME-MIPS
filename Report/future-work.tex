@@ -1,0 +1,27 @@
+The initial step would be to add an AXI interface to the Pipelined processor.
+The approach is the same as with the single cycle processor. It would be
+interesting to see whether or not the increased clock is applicable to the
+additional AXI interface.
+% The initial step would be to synthesize and implement the pipelined processor.
+% Given that I have already stated the approach for the single cycle processor,
+% this should not be too hard. It could be interesting to see, if it can be
+% clocked higher and in that case how much. Furthermore, it would also be more
+% usable, as it should have access to more memory.
+
+Inspired by the manycore architecture of the SW26010 processors in the
+TaihuLight supercomputer~\cite{ref:supercomputer}, I want to see how many
+cores I am able to fit onto a single FPGA. By doing this, I also want to
+introduce scratchpad memory, instead of focusing on the traditional memory
+hierarchy, as this is what is being used in the SW26010.
+
+It would also be interesting to extend the processor core, to a superscalar
+processor, i.e. by introducing multiple execution paths. This could both be by
+introducing additional ALUs, e.g. floating point, or by introducing
+coprocessors, which are specialized for certain tasks, such as the SME network
+of a student project, which solved partial differential equations and fast
+fourier transforms.
+
+A final suggestion would be to extend the processor with the required
+components, such that a minimal operating system could be compiled and run on
+the processor. This would be useful in specialized hardware, if a device should
+run purely in its own environment.

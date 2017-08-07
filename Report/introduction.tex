@@ -1,22 +1,21 @@
-% TODO
-Background and terminology for:
-
-CSP - hele konceptet med processer der kommunikerer
-
-SME - processer, bus og clock
-
-Machine architecture - hvertfald hvad word, bit og clock er for noget.
-
-DIKU course
-
-VHDL
-
-C\# - især hvorfor der er \texttt{uint} over det hele.
-
-beskriv hvordan figurene fungerer, i.e. box/circle = process, black wire =
-data, blue wire = control, green wire = clock
-
-Beskriv hvad MARS er, og hvordan det virker.
+%Background and terminology for:
+%
+%CSP - hele konceptet med processer der kommunikerer
+%
+%SME - processer, bus og clock
+%
+%Machine architecture - hvertfald hvad word, bit og clock er for noget.
+%
+%DIKU course
+%
+%VHDL
+%
+%C\# - især hvorfor der er \texttt{uint} over det hele.
+%
+%beskriv hvordan figurene fungerer, i.e. box/circle = process, black wire =
+%data, blue wire = control, green wire = clock
+%
+%Beskriv hvad MARS er, og hvordan det virker.
 
 %install monodevelop
 %clone from github
@@ -24,3 +23,73 @@ Beskriv hvad MARS er, og hvordan det virker.
 %SME.Render.VHDL/TopLevel.tt
 %Open example project, and press f5 to build and run
 
+In the Machine Architecture class (ARK)~\cite{ref:ark} at the Department of
+Computer Science at the University of Copenhagen (DIKU), the
+theory of computer organization and design is taught. The course teaches how to
+construct combinatorial circuits, which were later used to implement the
+components of a MIPS (Microprocessor without Interlocked Pipeline Stages)
+processor~\cite{ref:ark-book}, and how to connect the components. However, while
+this course focused on the theory, it did not focus on how to construct
+specialized hardware, as one might implement on an FPGA (Field Programmable
+Gate Array).
+
+In some applications, FPGAs are more attractive than general purpose CPUs, as
+they do not necessarily have the same overhead in both performance and power
+usage. This is due to the FPGA being more specialized towards a specific task,
+where the CPU is much more complex, and as such requires additional circuitry
+\cite{ref:sme-cs}.
+
+However, the biggest problem with FPGAs is that they are programmed using
+Hardware Description Languages, such as VHDL (Very high speed integrated
+circuit Hardware Description Language) and Verilog. These languages are largely
+unchanged from their initial design, are very tedious to work with and lack
+many of the features of modern programming languages~\cite{ref:sme-cs}.
+
+This has changed with Synchronous Message Exchange (SME)~\cite{ref:sme-cs,
+ref:sme1, ref:sme2}. SME is a programming model, which is similar to the
+Communicating Sequential Processes (CSP) model~\cite{ref:csp}. Both models
+compute their results, by having multiple processes that communicate with each
+other. The key differences are that SME is globally synchronous, has
+broadcasting channels and a hidden clock. As such, SME is more suitable for
+developing hardware models than CSP. Furthermore, SME can be transpiled into
+VHDL~\cite{ref:sme-vhdl}, as the structure of hardware described in VHDL is
+very similar to the hardware described in SME. However, SME is simpler to
+implement and verify than VHDL. As such, SME gives an approachable model for
+software developers, who are already familiar with the CSP model, for
+generating hardware models.
+
+\subsection*{Contribution}
+In this thesis, I will combine the theory from the ARK course with the C\#
+version of the SME programming model~\cite{ref:sme-cs}. As such, I will
+implement a MIPS processor in SME, which can be transpiled into VHDL, and be
+further synthesized onto an FPGA.
+
+I will start by implementing some basic combinatorial circuits in SME. Then I
+will combine these circuits into the basic components of the MIPS processor.
+Then I will combine these components into a sincle cycle MIPS processor and
+pipeline the processor, while handling data hazards and control hazards.
+Finally, I go through the procedure of transpiling SME into VHDL, and how to
+synhesize, place and route the transpiled VHDL onto an FPGA.
+
+The material in this thesis could be used for teaching software developers, who
+already know the CSP programming model and hardware organization, how to
+construct specialized hardware.
+
+The contents in sections~\ref{sec:logic-circuits},~\ref{sec:components},~\ref{sec:single-cycle} and~\ref{sec:pipelining} have been
+published~\cite{ref:cpa-paper} to the Communicating Processes Architecture
+conference~\cite{ref:cpa}.
+
+\subsection*{Other projects}
+There are several other projects, which implement a MIPS processor on an FPGA.
+However, they are all written in hardware description languages VHDL and
+Verilog. As such, they are closer to hardware than software and are more
+difficult to understand with a background in software development. One such
+project is the MIPSfpga project~\cite{ref:mipsfpga}, which is implemented in
+Verilog.
+
+There are additional projects, which gives different approaches to hardware
+description languages. One of the projects is Pyrope~\cite{ref:pyrope}. Pyrope
+is a modern hardware description language for live synthesis flow. I have not
+used Pyrope enough to compare it to SME, but like SME, Pyrope can be transpiled into
+Verilog with a testbench. As such, it should also provide a better approach for
+software developers for generating hardware.

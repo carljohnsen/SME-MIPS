@@ -1,40 +1,47 @@
-In this section, we will be looking at some basic combinatorial circuits. We
+In this section, I will be looking at some basic combinatorial circuits. I
 use this as an entry point for hardware design, both due to the ARK
-course\cite{ref:diku} at DIKU, and due to the book\cite{ref:ark} recommending
-to read appendix C, which covers the basics of logic design, prior to reading
-chapter 4, which covers implementing a simple MIPS processor. We are only going
-to cover a subset of appendix C, as it should be sufficient as an introduction
-to connecting simpler components together into a more complex network.
+course~\cite{ref:ark} at DIKU, and due to the architecture
+book~\cite{ref:ark-book} recommending to read appendix C, which covers the
+basics of logic design, prior to reading chapter 4, which covers implementing a
+simple MIPS processor. I am only going to cover a subset of appendix C. It
+should be sufficient as an introduction to connecting simpler components
+together into a more complex network. It should also be sufficient as an
+introduction on going from CSP~\cite{ref:csp} to SME~\cite{ref:sme1,
+ref:sme2, ref:sme-cs}.
 
-%TODO sig at det er fordi de andre ikke giver ny indsigt???
-
-We start by looking at some logic gates, which implement some basic boolean
-functions. Then we will combine these basic gates into more complex networks:
+I start by looking at some logic gates, which implement some basic boolean
+functions. Then I will combine these basic gates into more complex networks:
 \begin{itemize}
     \item A decoder, which expands an $n$-bit input into $2^n$ outputs.
     \item A half adder, which takes two binary inputs and computes the sum and
         the carry of the two.
     \item A full adder, which does the same operation as the half adder, but
         with an additional third binary input.
-    \item a $n$-bit adder, by combining a chain of a half adder followed by
-        $n-1$ full adders.
+    \item A $n$-bit adder, by combining a chain of a single half adder followed
+        by $n-1$ full adders.
 \end{itemize}
 
-For each of these combinatorial circuits, we go through the theory behind it,
-describe the procedure of translating the theory into an SME network and
-finally how to test and verify the SME networks.
+For each of these combinatorial circuits, I go through the theory behind it and
+describe the procedure of translating the theory into an SME. All of the
+networks follow the same procedure for testing: I construct an SME process,
+which sends data on the input busses, and verifies that the data on the output
+busses is as expected. Since these networks are very small, I can, in most
+cases, test for every possible input. The reason for using this testing
+technique is that I can specify the behavior of the processes before
+constructing them, and as such don't care how they compute their result,
+focussing on the correctness of the result.
 
-\subsection{Basic logic gates}
-A logic gate is a circuit abstraction, which has inputs and outputs, and
+\subsection{Basic logic gates}\label{sec:basic}
+A logic gate is a circuit abstraction, which has inputs and outputs and
 computes the logic function that corresponds to the gates name, i.e. its output
-values are based upon the input values. We are going to implement the following
+values are based upon the input values. I am going to implement the following
 logic gates:
 
 \begin{description}
-    \item[\texttt{AND}] - outputs \texttt{1} iff. all of its inputs are
+    \item[\texttt{AND}] - outputs \texttt{1} iff all of its inputs are
         \texttt{1}, otherwise it outputs \texttt{0}.
 
-    \item[\texttt{OR}] - outputs \texttt{1} if one or more of its inputs are
+    \item[\texttt{OR}\ \ ] - outputs \texttt{1} iff one or more of its inputs are
         \texttt{1}, otherwise it outputs \texttt{0}.
 
     \item[\texttt{NOT}] - outputs the inverse of its input, i.e. \texttt{1}
@@ -43,17 +50,16 @@ logic gates:
     \item[\texttt{XOR}] - outputs \texttt{1} iff exactly one of its inputs are
         \texttt{1}, otherwise it outputs \texttt{0}
 \end{description}
-The full truth table for all of the four logic gates with 2-bit input (except
-for \texttt{NOT}, which only uses 1 bit) can be seen in Table
-\ref{tab:truth-table}.
+The full truth table for all of the four logic gates with 2-bit input
+(\texttt{NOT} only looks at Bit1) can be seen in Table~\ref{tab:truth-table}.
 
 \begin{table}
     \centering
     \begin{tabular}{cc|cccc}
-        \toprule
+        \hline
         \texttt{Bit1} & \texttt{Bit2} & \texttt{AND} & \texttt{OR} &
         \texttt{NOT} & \texttt{XOR} \\
-        \midrule
+        \hline
         \texttt{0} & \texttt{0} & \texttt{0} & \texttt{0} & \texttt{1} &
             \texttt{0} \\
         \texttt{0} & \texttt{1} & \texttt{0} & \texttt{1} & \texttt{1} &
@@ -62,38 +68,67 @@ for \texttt{NOT}, which only uses 1 bit) can be seen in Table
             \texttt{1} \\
         \texttt{1} & \texttt{1} & \texttt{1} & \texttt{1} & \texttt{0} &
             \texttt{0} \\
-        \bottomrule
+        \hline
     \end{tabular}
     \caption{The truth table for the four basic logic gates. Note: \texttt{NOT}
     is only considering \texttt{Bit1}.}
     \label{tab:truth-table}
 \end{table}
 
-\subsubsection*{Implementation}
+\subsubsection*{Implementation
+\footnote{The source code for the Logic Gates is available at~\cite{ref:github}
+at \texttt{sme/src/Examples/LogicGates/}}
+}
 Implementing each of these four logic gates is straightforward: There is an
-input bus with two 1-bit values, a process for each of the gates, and an output
-bus with a 1-bit value for each of the logic gates. We do not need additional
-input busses, as each process which uses the bus as input, receives its own
-copy of the input in each clock. Furthermore, we only need one output bus, as
-each process writes to its own bit within it. Each process takes the two bits
-from the input bus, computes their respective logical function and sends the
-result out onto its bit on the output bus.
+input bus with two 1-bit values, a process for each of the gates and an output
+bus with a 1-bit value for each of the logic gates. I do not need additional
+input busses, as each process which uses the bus as input receives its own
+copy of the input in each clock, due to the broadcasting in SME~\cite{ref:sme1}.
+Furthermore, I only need one output bus, as each process
+writes to its own bit within it. Each process takes the two bits from the input
+bus, computes its respective logical function and sends the result out onto
+its bit on the output bus. The code for the \texttt{AND} gate can be seen in
+Listing~\ref{lis:andproc}.
 
-We could have made a more complex process, i.e. one that takes the two inputs,
-and computes each function. This would reduce the amount of bus connections,
-but we want to make each process as simple as possible, when constructing the
-processor, as this makes arguing for correctness simpler.
+\lstset{language=[Sharp]C}
+\noindent
+\begin{figure}
+\begin{lstlisting}[caption=The SME process for the \texttt{AND} gate., captionpos=b, label=lis:andproc]
+public class AND : SimpleProcess
+{
+    [InputBus]
+    Input input;
 
-\subsubsection*{Testing}
-To ensure that the processes functions as expected, we construct a tester
-process, which sets the bits on the input bus to all of the values in the truth
-table, and checks whether or not each process puts the expected value from the
-truth table onto their bit on the output bus. We use this testing technique, as
-it tests the functionality of the processes, without knowing how they work
-internally. We could also just have printed the output values, and verified the
-results our selves, however automating this reduces the time needed for
-verification. How the processes are connected can be seen in Figure
-\ref{fig:logic-test}.
+    [OutputBus]
+    Output output;
+
+    protected override void OnTick()
+    {
+        output.And = input.bit1 && input.bit2;
+    }
+}
+\end{lstlisting}
+\end{figure}
+
+I could have made a more complex process (i.e. one that takes the two inputs,
+and computes each function). This would reduce the amount of bus connections,
+but I want to make each process as simple as possible when constructing the
+processor. This is closer to the CSP model, and makes arguing for correctness
+simpler. How the logic gate processes and the tester process are connected can
+be seen in Figure~\ref{fig:logic-test}. How to run the simulation and generate
+the VHDL code can be seen in Listing~\ref{lis:main}.
+
+\begin{figure}
+\begin{lstlisting}[caption={The \texttt{Main} function for running an SME simulation, generating the CSV trace file and generating the VHDL code.}, label=lis:main, captionpos=b]
+public static void Main(string[] args)
+{
+    new Simulation()
+        .BuildCSVFile()
+        .BuildVHDL()
+        .Run(typeof(MainClass).Assembly);
+}
+\end{lstlisting}
+\end{figure}
 
 \begin{figure}
     \centering
@@ -122,7 +157,7 @@ verification. How the processes are connected can be seen in Figure
         \path[draw, -] (output.center) -| (a.west);
         \path[draw, ->] (a.west) |- (tester.east);
     \end{tikzpicture}
-    \caption{The structure of the test of the logic gates}
+    \caption{The structure of the test of the Logic Gates.}
     \label{fig:logic-test}
 \end{figure}
 
@@ -131,18 +166,17 @@ A decoder is a component, which takes an $n$-bit input, and produces an
 $2^n$-bit output, where the bit corresponding to the input numbers binary
 representation is set to \texttt{1}. E.g. if the input value is the binary
 representation of the number 5, then the 5th output bit will be \texttt{1}, and
-the rest will be \texttt{0}.  Note: the output bits are zero indexed, i.e.
+the rest will be \texttt{0}. Note: the output bits are zero-based, i.e.
 there is also an output bit for the binary representation of 0.
 
-A decoder can be made from a set of \texttt{NOT} and \texttt{AND}
-gates\cite{ref:logic}. We need to have $n$ \texttt{NOT} gates, and $2^n$
-\texttt{AND} gates. For each input, we split it into two, and send the copy to
-a \texttt{NOT} gate. Then for each output, we attach an \texttt{AND} gate, and
-give it inputs corresponding to the binary representation of the number
-%TODO mangler ord.
-E.g. if we get the number 5, the binary representation is 101, i.e. the 5th
-\texttt{AND} gate gets input from Bit0, \texttt{NOT} Bit1 and Bit2. An example
-of a 2-bit decoder can be seen in Figure \ref{fig:2-bit-decoder}.
+A decoder can be made from a set of \texttt{NOT} and \texttt{AND}
+gates~\cite{ref:logic}. I need to have $n$ \texttt{NOT} gates and $2^n$
+\texttt{AND} gates. I duplicate each input and connect one copy to
+a \texttt{NOT} gate. Then for each output I attach an \texttt{AND} gate and
+give it inputs corresponding to the binary representation of the number.
+E.g. for the number 5, binary representation 101, the 5th \texttt{AND}
+gate gets input from Bit0, \texttt{NOT} Bit1 and Bit2. The network of a 2-bit
+decoder can be seen in Figure~\ref{fig:2-bit-decoder}.
 
 \begin{figure}
     \centering
@@ -195,53 +229,55 @@ of a 2-bit decoder can be seen in Figure \ref{fig:2-bit-decoder}.
         \path[draw, ->] (andinp2.200) |- (and3.200);
 
     \end{tikzpicture}
-    \caption{An 2-bit decoder made by \texttt{AND} and \texttt{NOT} gates.}
+    \caption{A 2-bit decoder made by \texttt{AND} and \texttt{NOT} gates.}
     \label{fig:2-bit-decoder}
 \end{figure}
 
-\subsubsection*{Implementation}
-To implement a 2-bit decoder, we just need to connect logic gate processes,
-which we already have. How to connect a 2-bit decoder can be seen in Figure
-\ref{fig:2-bit-decoder}.
-
-We could have made the decoder a single process, but we are trying to emphasize
-connecting multiple processes together, in order to gain functionality.
+\subsubsection*{Implementation
+\footnote{The source code for the decoder and the scalable decoder is available
+at~\cite{ref:github} in \texttt{sme/src/Examples/Decoder/} and
+\texttt{sme/src/Examples/ScalDecoder/}}
+}
+To implement a 2-bit decoder, I just need to connect logic gate processes,
+which I have already constructed in Section~\ref{sec:basic}. How to connect a
+2-bit decoder can be seen in Figure~\ref{fig:2-bit-decoder}. I could have made
+the decoder a single process. However, I am trying to emphasize connecting
+multiple processes together, in order to gain functionality and to be closer to
+the CSP model.
 
 However, making a scalable decoder is not trivial, as SME requires everything
-to be known at compile time, and we cannot make a generic process, as these
-depend on the names of the different busses. To solve this problem, we can use
-C\# templates. For each input bit, we create an input bus. Then, for each input
-bus, we create an \texttt{NOT} gate process, which takes the input bus
-corresponding to its index. Then, we create $2^n$ output busses, and for each
-of these, we connect an \texttt{AND} gate with its corresponding output bus.
-Finally, for each of these \texttt{AND} gates, we connect the busses whose
-logical \texttt{AND} will produce a \texttt{1}. E.g. for \texttt{output0}, we
-connect all the busses from all of the \texttt{NOT} gates, for
-\texttt{output1}, we connect all the \texttt{NOT} gates, except from the bus
-from the first \texttt{NOT} gate, as this should be the first input bus.
+to be known at compile time, and I cannot make a generic process, as these
+depend on the names of the different busses. To solve this problem, I can use
+C\# templates to generate SME code. I chose C\# templates, as I was already
+using the C\# version of SME, and as such a C\# template was easy to add. Any
+code generator would have been equally good. For each input bit, I create an
+input bus. Then, for each input bus, I create an \texttt{NOT} gate process,
+which takes the input bus corresponding to its index. Then, I create $2^n$
+output busses, and for each of these, I connect an \texttt{AND} gate with its
+corresponding output bus. Finally, for each of these \texttt{AND} gates, I
+connect the busses whose logical \texttt{AND} will produce a \texttt{1}. E.g.
+for \texttt{output0}, I connect all the busses from all of the \texttt{NOT}
+gates. For \texttt{output1}, I connect all the \texttt{NOT} gates, except from
+the bus from the first \texttt{NOT} gate, as this should be the first input bus.
 
-\subsubsection*{Testing}
-To test the 2-bit decoder, we follow the same procedure as with the logic
-gates. We construct a tester process, which sends input to the logic gates, and
-verifies the output from the \texttt{AND} gates. This is also what we need to
-do with the $n$-bit decoder. However as with the $n$-bit decoder, we are going
-to need C\# templates, as the tester process also needs a variable amount of
-busses. Each of the two tester processes should send all possible inputs as
-input.
+In order to test the $n$-bit decoder, I also needed to construct the tester
+process by using C\# templates, as the tester process also needed a variable
+amount of busses.
 
 \subsection{Adder}
-An adder is an component, which adds two binary numbers together. As with the
+An adder is a component, which adds two binary numbers together. As with the
 decoder, an adder can be constructed by a combination of \texttt{AND},
-\texttt{OR} and \texttt{XOR} gates\cite{ref:logic}. An $n$-bit adder is a chain
-of two major components: an half adder and a full adder.
+\texttt{OR} and \texttt{XOR} gates~\cite{ref:logic}. An $n$-bit adder is a
+chain of two major components: a half adder and $n-1$ full
+adders~\cite{ref:ark-book}.
 
 The half adder is the initial component in the chain. It takes two binary
-inputs, and outputs the sum and the carry of the addition (See Figure
-\ref{fig:half-adder}). The rest of the $n$-bit adder consists of a chain of
-full adders, that take three inputs, A, B, and the carry from the previous link
-in the chain, and outputs the sum and the carry of the addition (See Figure
-\ref{fig:full-adder}). The combination of the components can be seen in Figure
-\ref{fig:n-bit-adder}.
+inputs, and outputs the sum and the carry of the addition (See
+Figure~\ref{fig:half-adder}). The rest of the $n$-bit adder consists of a chain
+of $n-1$ full adders that take three inputs A, B, and the carry from the
+previous link in the chain, and outputs the sum and the carry of the addition
+(See Figure~\ref{fig:full-adder}). The combination of the components can be
+seen in Figure~\ref{fig:n-bit-adder}.
 
 \begin{figure}
     \centering
@@ -269,7 +305,7 @@ in the chain, and outputs the sum and the carry of the addition (See Figure
         \path[draw, ->] (xor) -- (sum);
         \path[draw, ->] (and) -- (carry);
     \end{tikzpicture}
-    \caption{An half adder composed of \texttt{XOR} and \texttt{AND} gates}
+    \caption{An half adder composed of \texttt{XOR} and \texttt{AND} gates.}
     \label{fig:half-adder}
 \end{figure}
 
@@ -320,7 +356,7 @@ in the chain, and outputs the sum and the carry of the addition (See Figure
         \path[draw, ->] (or) -- (carry);
     \end{tikzpicture}
     \caption{A full adder composed of \texttt{AND}, \texttt{OR} and
-    \texttt{XOR} gates}
+    \texttt{XOR} gates.}
     \label{fig:full-adder}
 \end{figure}
 
@@ -364,29 +400,21 @@ in the chain, and outputs the sum and the carry of the addition (See Figure
     \label{fig:n-bit-adder}
 \end{figure}
 
-\subsubsection*{Implementation}
-The half adder and the full adder is made like the decoder, in which we have
-the basic logic gate processes, and connect them as specified in Figure
-\ref{fig:half-adder} and Figure \ref{fig:full-adder}.
+\subsubsection*{Implementation
+\footnote{The source code for the half adder, full adder and $n$-bit adder is
+available at~\cite{ref:github} in \texttt{sme/src/Examples/Adder/},
+\texttt{sme/src/Examples/FullAdder/} and \texttt{sme/src/Examples/Adder32/}}
+}
+The half adder and the full adder are made like the decoder, in which I have
+the basic logic gate processes and connect them as specified in
+Figure~\ref{fig:half-adder} and Figure~\ref{fig:full-adder}.
 
-To make the $n$-bit adder, we have to use C\# templates like we did when
-constructing the $n$-bit decoder. We program it so that each of the input bits
+To make the $n$-bit adder, I have to use C\# templates like I did when
+constructing the $n$-bit decoder. I program it so that each of the input bits
 has its own bus, each of the output sums has its own bus, and each of the
-carrys have their own bus. Then we start by making a half adder, which has the
+carries has its own bus. I start by making a half adder, which has the
 inputs: input A bit 0 and input B bit 0. The initial half adder outputs its sum
-on sum 0, and outputs the carry on carry 0. Then we construct $n-1$ full
-adders, where full adder $i$ (1-indexed) has the inputs: input A bit $i$, input
-B bit $i$ and carry $i-1$. Each full adder has output $i$ and carry $i$ as
+on sum 0, and outputs the carry on carry 0. Then I construct $n-1$ full
+adders, where full adder $i$ (1-based) has the inputs: input A bit $i$, input
+B bit $i$ and carry $i-1$. Each full adder has sum $i$ and carry $i$ as
 output.
-
-\subsubsection*{Testing}
-To test the adder, we construct a tester process as before. We start by testing
-the two subcomponents, the half and the full adder, by giving each every
-possible input, and verifying the output. For the $n$-bit adder, we make a
-function that takes an integer as input, and sends it along the corresponding
-input wires. We also make a similar function that takes the values from the
-output wires and packs it into an integer. This makes the test more human
-readable, and reduces the chance of failure, when hand encoding/decoding binary
-numbers. There are two tests: the simplest addition: 2+2, adding two numbers
-together that produce an overflow and finally a series of adding random
-numbers together.

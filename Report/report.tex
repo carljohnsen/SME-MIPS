@@ -64,7 +64,7 @@
 %% Font and input encoding
 %% Tillad æøå
 \usepackage[T1]{fontenc}
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 %% Babel (language)
 \usepackage[UKenglish]{babel} % If you write in English
 \usepackage[UKenglish]{isodate}
@@ -98,6 +98,9 @@
 \makeatother
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Til at få tabeller mindre?
+\usepackage{adjustbox}
+
 % Til klasse diagrammer
 %\usepackage{pgf-umlcd}
 %\renewcommand{\umldrawcolor}{black}
@@ -124,46 +127,141 @@
 \begin{document}
 \maketitle
 
-\input{abstract}
+% TODO !!!
+% Appendix
+% Fix github
+
+\begin{abstract}
+    The Synchronous Message Exchange (SME) model, is a programming model, which
+    closely resembles the CSP model and which is suitable for describing
+    hardware. This thesis aims to combine the theory taught in a machine
+    architecture class with the SME model, by implementing a MIPS processor
+    using SME. I show how to construct the components of a MIPS processor as
+    SME processes, and how to connect them by using SME busses. Furthermore, I
+    show how to extend the processor, by introducing additional instructions
+    and by pipelining the processor. Finally, I succesfully implement the
+    Single Cycle and Pipelined MIPS processors onto an FPGA. \\
+
+    \noindent
+    Thesis supervisors: Brian Vinter and Kenneth Skovhede.
+\end{abstract}
+
+\newpage
+\section*{Acknowledgements}
+I would like to acknowledge my thesis supervisors Brian Vinter and Kenneth
+Skovhede for guiding me through writing my thesis and through writing the
+corresponding paper~\cite{ref:cpa-paper}. I would also like to thank the
+employees in the eScience group at the Niels Bohr Institute, for taking their
+time to listen to my project and give me feedback on my progress. Finally,
+thanks to Daniel Lundberg Pedersen and Jeanette Johnsen for proof reading.
 
 \newpage
 \tableofcontents
 \newpage
 
+% \section*{Spørgsmål}
+% \begin{enumerate}
+%   \item Istedet for at have alle baggrunds teorien løbende, så tænkte jeg om der skulle
+%     være et afsnit, som gennemgår al teorien?
+
+%   \item Skal jeg have mere CSP teori med? I så fald medfører det vel også noget SME teori. - tjek intro
+
+%   \item Skal jeg, og i så fald hvordan, referere min egen artikel? Eller skal jeg skynde mig at skrive den om, så de ikke er lig hinanden? - related work
+
+%   \item Er det sidste afsnit om "Synthesizing" lidt for specifik?
+
+%   \item Er de andre afsnit for uspecifikke?
+
+%   \item Skal related work være et afsnit i introduction, eller skal det bare flettes ind i introduction? eller skal det et helt andet sted hen? Eget afsnit
+% \end{enumerate}
+
+% SME mangler!: Dobbelt tjek at de er med i rapporten, da det er nogle af de fund jeg har lavet!
+% \begin{itemize}
+%   \item AXI interface
+
+%   \item Standard typer til top-level busser (pga block design ikke kan lide
+%     custom typer)
+
+%   \item Signal splitting
+
+%   \item Caste et tal til en enum.
+% \begin{lstlisting}
+% control.opcode = (Opcode) ((instruction >> 26) & 0x3F);
+% \end{lstlisting}
+% skal lave VHDL:
+% \begin{lstlisting}
+% ControlIn_opcode <= SingleCycleMIPS_Opcodes'VAL(TO_INTEGER(UNSIGNED(instruction(31 downto 26))));
+% \end{lstlisting}
+
+%   \item Processer inde i klasser. Transpileren kan ikke lide navnene!
+% \begin{lstlisting}
+% public class ID
+% {
+%   public class Splitter : SimpleProcess
+%   {
+%   ...
+% \end{lstlisting}
+
+%   \item Lidt resikabelt at være ude i det, men muligheden for at kunne lave
+%     noget, som kun kørte når clocken er høj, lav, rising edge eller falling edge?
+%     Kunne f.eks. være noget ala OnHigh(). Lidt ligesom at det er lidt misvisende
+%     at ikke clockede processer kalder det OnTick(), selv om der ikke er noget tick.
+
+%   \item Der kan opstå fejl i Vivado, hvis man har et signal, som både skal gå
+%     iblandt flere processer, men samtidig skal gå ud som top-level. Dette kan
+%     fikses, ved at have et \texttt{signal} i den VHDL fil, som sørger for at
+%     forbinde alt det indre, og at processerne så er forbundet til det signal,
+%     istedet for andre forbindelser.
+% \end{itemize}
+
 \section{Introduction}
 \input{introduction}
 
 % Remember! newpage on new chapters
-\newpage
-\section{Getting started with SME}
-\input{getting-started}
+%\newpage
+%\section{Getting started with SME}
+%\input{getting-started}
 
-\newpage
+%\newpage
 \section{Basic logic circuits}
 \label{sec:logic-circuits}
 \input{logic-circuits}
 
-\newpage
+%\newpage
 \section{Core components}
+\label{sec:components}
 \input{components}
 
-% TODO ! husk at man kan bruge ghostscript (gs) til compression!
-\newpage
+%\newpage
 \section{Single cycle MIPS processor}
+\label{sec:single-cycle}
 \input{single-cycle}
 
-\newpage
+%\newpage
 \section{Pipelining}
 \label{sec:pipelining}
 \input{pipelining}
 
-\newpage
+%\newpage
 \section{Transpiling and synthesizing SME}
 \label{sec:synthesis}
 \input{synthesis}
 
 \newpage
+\section{Conclusion}
+\input{conclusion}
+
+%\newpage
+\section{Future work}
+\input{future-work}
+
+\newpage
 %\section{References}
-\input{references}
+%\input{references}
+\bibliographystyle{unsrt}
+{\small\bibliography{biblio}}
+
+\appendix
+\section{Guide til strukturen på github!}
 
 \end{document}
