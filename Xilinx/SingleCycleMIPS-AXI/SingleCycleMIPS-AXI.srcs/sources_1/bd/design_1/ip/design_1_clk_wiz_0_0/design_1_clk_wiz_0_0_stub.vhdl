@@ -1,10 +1,10 @@
 -- Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
--- Tool Version: Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
--- Date        : Fri Jun 23 13:57:11 2017
--- Host        : L10-0002 running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode synth_stub -rename_top design_1_clk_wiz_0_0 -prefix
---               design_1_clk_wiz_0_0_ design_1_clk_wiz_0_0_stub.vhdl
+-- Tool Version: Vivado v.2017.1 (lin64) Build 1846317 Fri Apr 14 18:54:47 MDT 2017
+-- Date        : Wed Jun 21 11:28:57 2017
+-- Host        : ArchDesktop running 64-bit unknown
+-- Command     : write_vhdl -force -mode synth_stub
+--               /home/carljohnsen/vivado/SingleCycleMIPS-AXI/SingleCycleMIPS-AXI.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0_stub.vhdl
 -- Design      : design_1_clk_wiz_0_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7z020clg484-1

@@ -1,0 +1,52 @@
+Vivado Simulator 2017.1
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: /home/carljohnsen/Xilinx/Vivado/2017.1/bin/unwrapped/lnx64.o/xelab -wto 5d0698e7108b48089be01d390ee4606f --debug typical --relax --mt 8 -L xil_defaultlib -L secureip --snapshot PipelinedMIPS_export_behav xil_defaultlib.PipelinedMIPS_export -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package xil_defaultlib.system_types
+Compiling package xil_defaultlib.custom_types
+Compiling architecture rtl of entity xil_defaultlib.EX_ForwardAMux [ex_forwardamux_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_ForwardBMux [ex_forwardbmux_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_ImmMux [ex_immmux_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_JumpJrMux [ex_jumpjrmux_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_JumpPacker [ex_jumppacker_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_JumpShift [ex_jumpshift_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_ShmtMux [ex_shmtmux_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_BranchAdder [ex_branchadder_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_BranchShift [ex_branchshift_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_ALUControl [ex_alucontrol_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_ALU [ex_alu_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_JalMux [ex_jalmux_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_JalUnit [ex_jalunit_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_Pipe [ex_pipe_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_ForwardingUnit [ex_forwardingunit_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_Splitter [id_splitter_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_RegDstMux [id_regdstmux_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_SignExtend [id_signextend_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_Control [id_control_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_HazardUnit [id_hazardunit_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_Register [id_register_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_Pipe [id_pipe_default]
+Compiling architecture rtl of entity xil_defaultlib.IF_PC [if_pc_default]
+Compiling architecture rtl of entity xil_defaultlib.IF_PCSrcMux [if_pcsrcmux_default]
+Compiling architecture rtl of entity xil_defaultlib.IF_Incrementer [if_incrementer_default]
+Compiling architecture rtl of entity xil_defaultlib.IF_InstructionMemory [if_instructionmemory_default]
+Compiling architecture rtl of entity xil_defaultlib.IF_Pipe [if_pipe_default]
+Compiling architecture rtl of entity xil_defaultlib.MEM_Memory [mem_memory_default]
+Compiling architecture rtl of entity xil_defaultlib.MEM_Pipe [mem_pipe_default]
+Compiling architecture rtl of entity xil_defaultlib.MEM_BranchOrJumpMux [mem_branchorjumpmux_default]
+Compiling architecture rtl of entity xil_defaultlib.MEM_Jump_Or [mem_jump_or_default]
+Compiling architecture rtl of entity xil_defaultlib.MEM_Jump_Condition [mem_jump_condition_default]
+Compiling architecture rtl of entity xil_defaultlib.MEM_Jump_And [mem_jump_and_default]
+Compiling architecture rtl of entity xil_defaultlib.WB_MemMux [wb_memmux_default]
+Compiling architecture rtl of entity xil_defaultlib.PipelinedMIPS [pipelinedmips_default]
+Compiling architecture rtl of entity xil_defaultlib.pipelinedmips_export
+Built simulation snapshot PipelinedMIPS_export_behav

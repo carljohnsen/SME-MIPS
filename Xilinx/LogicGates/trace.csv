@@ -1,0 +1,6 @@
+Input.bit1,Input.bit2,Output.And,Output.Not,Output.Or,Output.Xor
+0,0,0,1,0,0
+0,1,0,1,1,1
+1,0,0,0,1,1
+1,1,1,0,1,0
+1,1,1,0,1,0

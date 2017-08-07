@@ -1,0 +1,15 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates/LogicGates.srcs/sources_1/imports/vhdl/system_types.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates/LogicGates.srcs/sources_1/imports/vhdl/Types_LogicGates.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates/LogicGates.srcs/sources_1/imports/vhdl/AndGate.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity AndGate
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates/LogicGates.srcs/sources_1/imports/vhdl/OrGate.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity OrGate
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates/LogicGates.srcs/sources_1/imports/vhdl/NotGate.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity NotGate
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates/LogicGates.srcs/sources_1/imports/vhdl/XorGate.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity XorGate
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates/LogicGates.srcs/sources_1/imports/vhdl/LogicGates.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity LogicGates
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates/LogicGates.srcs/sources_1/imports/vhdl/csv_util.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates/LogicGates.srcs/sources_1/imports/vhdl/TestBench_LogicGates.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity LogicGates_tb

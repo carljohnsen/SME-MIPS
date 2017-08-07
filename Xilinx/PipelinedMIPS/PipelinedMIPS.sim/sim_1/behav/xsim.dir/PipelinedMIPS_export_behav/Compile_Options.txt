@@ -1,0 +1,1 @@
+-wto "5d0698e7108b48089be01d390ee4606f" --debug "typical" --relax --mt "8" -L "xil_defaultlib" -L "secureip" --snapshot "PipelinedMIPS_export_behav" "xil_defaultlib.PipelinedMIPS_export" -log "elaborate.log" 

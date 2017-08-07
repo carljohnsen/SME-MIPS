@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Webtalk v2017.1 (64-bit)
+# SW Build 1846317 on Fri Apr 14 18:54:47 MDT 2017
+# IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+# Start of session at: Thu Aug  3 11:09:03 2017
+# Process ID: 17506
+# Current directory: /home/carljohnsen/PipelinedMIPS/PipelinedMIPS.sim/sim_1/behav
+# Command line: wbtcv -mode batch -source /home/carljohnsen/PipelinedMIPS/PipelinedMIPS.sim/sim_1/behav/xsim.dir/PipelinedMIPS_export_behav/webtalk/xsim_webtalk.tcl -notrace
+# Log file: /home/carljohnsen/PipelinedMIPS/PipelinedMIPS.sim/sim_1/behav/webtalk.log
+# Journal file: /home/carljohnsen/PipelinedMIPS/PipelinedMIPS.sim/sim_1/behav/webtalk.jou
+#-----------------------------------------------------------
+source /home/carljohnsen/PipelinedMIPS/PipelinedMIPS.sim/sim_1/behav/xsim.dir/PipelinedMIPS_export_behav/webtalk/xsim_webtalk.tcl -notrace

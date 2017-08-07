@@ -1,0 +1,48 @@
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Wed Jul 26 13:22:12 2017
+| Host         : L10-0002 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z020clg484-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'design_1_LogicGates_AXI_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of design_1_LogicGates_AXI_0_0 (ihi.loc:user:LogicGates_AXI:1.0) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
+| Date         : Wed Jul 26 11:35:42 2017
+| Host         : L10-0002 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z020clg484-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'design_1_LogicGates_AXI_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of design_1_LogicGates_AXI_0_0 (ihi.loc:user:LogicGates_AXI:1.0) from (Rev. 1) to (Rev. 3)
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'design_1_LogicGates_AXI_0_0'.
+
+
+-Upgrade has added interface 's00_axi_aclk' (xilinx.com:signal:clock:1.0)
+
+-Upgrade has added interface 's00_axi_aresetn' (xilinx.com:signal:reset:1.0)
+
+

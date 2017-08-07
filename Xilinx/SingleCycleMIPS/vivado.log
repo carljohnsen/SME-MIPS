@@ -1,0 +1,2839 @@
+#-----------------------------------------------------------
+# Vivado v2017.1 (64-bit)
+# SW Build 1846317 on Fri Apr 14 18:54:47 MDT 2017
+# IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+# Start of session at: Fri Jun  9 14:33:08 2017
+# Process ID: 21081
+# Current directory: /home/carl/vivado/SingleCycleMIPS
+# Command line: vivado -mode tcl
+# Log file: /home/carl/vivado/SingleCycleMIPS/vivado.log
+# Journal file: /home/carl/vivado/SingleCycleMIPS/vivado.jou
+#-----------------------------------------------------------
+help
+WARNING: [Common 17-20] Did not find any categories for task 'write_dsa_rom'
+Topic Categories:
+Bitgen
+Board
+DRC
+Debug
+Device
+FileIO
+Floorplan
+GUIControl
+IPFlow
+IPIntegrator
+Memory
+Methodology
+Netlist
+Object
+Partition
+PinPlanning
+Power
+Project
+PropertyAndParameter
+Report
+SDC
+Simulation
+SysGen
+Tcl
+TclBuiltIn
+Timing
+ToolLaunch
+Tools
+XDC
+XPS
+projutils
+simulation
+synthesis
+user-written
+xilinxtclstore
+To list help topics by category, type 'help -category <category>'. For example:
+% help -category Project
+open_project SingleCycleMIPS.xpr 
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/carl/Xilinx/Vivado/2017.1/data/ip'.
+CRITICAL WARNING: [IP_Flow 19-1663] Duplicate IP found for 'ihi.loc:module_ref:SingleCycleMIPS_export:1.0'. The one found in IP location '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/mref/SingleCycleMIPS_export' will take precedence over the same IP in location /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/mref/SingleCycleMIPS_export
+WARNING: [IP_Flow 19-3664] IP 'design_1_rst_clk_wiz_0_100M_0' generated file not found '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/stats.txt'. Please regenerate to continue.
+SingleCycleMIPS
+reset_run synth_1
+launch-runs synth_1 -jobs 4
+invalid command name "launch-runs"
+launch_runs synth_1 -jobs 4
+[Fri Jun  9 14:34:42 2017] Launched synth_1...
+Run output will be captured here: /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/runme.log
+launch_runs impl_1 -jobs 4
+[Fri Jun  9 14:35:23 2017] Launched synth_1...
+Run output will be captured here: /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/runme.log
+[Fri Jun  9 14:35:23 2017] Launched impl_1...
+Run output will be captured here: /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/runme.log
+ls
+WARNING: [Common 17-259] Unknown Tcl command 'ls' sending command to the OS shell for execution. It is recommended to use 'exec' to send the command to the OS shell.
+exec cat SingleCycleMIPS.runs/synth_1/runme.log 
+
+*** Running vivado
+    with args -log design_1_wrapper.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source design_1_wrapper.tcl
+
+
+****** Vivado v2017.1 (64-bit)
+  **** SW Build 1846317 on Fri Apr 14 18:54:47 MDT 2017
+  **** IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+    ** Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+
+source design_1_wrapper.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/carl/Xilinx/Vivado/2017.1/data/ip'.
+WARNING: [IP_Flow 19-3664] IP 'design_1_rst_clk_wiz_0_100M_0' generated file not found '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/stats.txt'. Please regenerate to continue.
+Command: synth_design -top design_1_wrapper -part xc7z020clg484-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020-clg484'
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 21176 
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1153.934 ; gain = 56.992 ; free physical = 1498 ; free virtual = 15002
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'design_1_wrapper' [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.vhd:23]
+INFO: [Synth 8-3491] module 'design_1' declared at '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/hdl/design_1.vhd:14' bound to instance 'design_1_i' of component 'design_1' [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.vhd:33]
+INFO: [Synth 8-638] synthesizing module 'design_1' [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/hdl/design_1.vhd:27]
+INFO: [Synth 8-3491] module 'design_1_SingleCycleMIPS_export_0_0' declared at '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/realtime/design_1_SingleCycleMIPS_export_0_0_stub.vhdl:5' bound to instance 'SingleCycleMIPS_export_0' of component 'design_1_SingleCycleMIPS_export_0_0' [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/hdl/design_1.vhd:73]
+INFO: [Synth 8-638] synthesizing module 'design_1_SingleCycleMIPS_export_0_0' [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/realtime/design_1_SingleCycleMIPS_export_0_0_stub.vhdl:14]
+INFO: [Synth 8-3491] module 'design_1_clk_wiz_0_0' declared at '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/realtime/design_1_clk_wiz_0_0_stub.vhdl:5' bound to instance 'clk_wiz_0' of component 'design_1_clk_wiz_0_0' [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/hdl/design_1.vhd:79]
+INFO: [Synth 8-638] synthesizing module 'design_1_clk_wiz_0_0' [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/realtime/design_1_clk_wiz_0_0_stub.vhdl:15]
+INFO: [Synth 8-3491] module 'design_1_rst_clk_wiz_0_100M_0' declared at '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/realtime/design_1_rst_clk_wiz_0_100M_0_stub.vhdl:5' bound to instance 'rst_clk_wiz_0_100M' of component 'design_1_rst_clk_wiz_0_100M_0' [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/hdl/design_1.vhd:86]
+INFO: [Synth 8-638] synthesizing module 'design_1_rst_clk_wiz_0_100M_0' [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/realtime/design_1_rst_clk_wiz_0_100M_0_stub.vhdl:21]
+INFO: [Synth 8-256] done synthesizing module 'design_1' (1#1) [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/hdl/design_1.vhd:27]
+INFO: [Synth 8-256] done synthesizing module 'design_1_wrapper' (2#1) [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.vhd:23]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1194.434 ; gain = 97.492 ; free physical = 1506 ; free virtual = 15012
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1194.434 ; gain = 97.492 ; free physical = 1506 ; free virtual = 15012
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/dcp7/design_1_SingleCycleMIPS_export_0_0_in_context.xdc] for cell 'design_1_i/SingleCycleMIPS_export_0'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/dcp7/design_1_SingleCycleMIPS_export_0_0_in_context.xdc] for cell 'design_1_i/SingleCycleMIPS_export_0'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/dcp9/design_1_clk_wiz_0_0_in_context.xdc] for cell 'design_1_i/clk_wiz_0'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/dcp9/design_1_clk_wiz_0_0_in_context.xdc] for cell 'design_1_i/clk_wiz_0'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/dcp11/design_1_rst_clk_wiz_0_100M_0_in_context.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/dcp11/design_1_rst_clk_wiz_0_100M_0_in_context.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/constrs_1/new/constraints.xdc]
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/constrs_1/new/constraints.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/constrs_1/new/constraints.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/design_1_wrapper_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/design_1_wrapper_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/dont_touch.xdc]
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/dont_touch.xdc]
+Completed Processing XDC Constraints
+
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 1464.059 ; gain = 0.000 ; free physical = 1243 ; free virtual = 14750
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 1464.059 ; gain = 367.117 ; free physical = 1328 ; free virtual = 14835
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z020clg484-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 1464.059 ; gain = 367.117 ; free physical = 1328 ; free virtual = 14835
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property IO_BUFFER_TYPE = NONE for sys_clock. (constraint file  /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/dcp9/design_1_clk_wiz_0_0_in_context.xdc, line 3).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for sys_clock. (constraint file  /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/.Xil/Vivado-21165-benchpress/dcp9/design_1_clk_wiz_0_0_in_context.xdc, line 4).
+Applied set_property DONT_TOUCH = true for design_1_i. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for design_1_i/SingleCycleMIPS_export_0. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for design_1_i/clk_wiz_0. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for design_1_i/rst_clk_wiz_0_100M. (constraint file  auto generated constraint, line ).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 1464.059 ; gain = 367.117 ; free physical = 1328 ; free virtual = 14835
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 1464.059 ; gain = 367.117 ; free physical = 1327 ; free virtual = 14834
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 220 (col length:60)
+BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 1464.059 ; gain = 367.117 ; free physical = 1328 ; free virtual = 14835
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+INFO: [Synth 8-5578] Moved timing constraint from pin 'design_1_i/clk_wiz_0/clk_out1' to pin 'design_1_i/clk_wiz_0/bbstub_clk_out1/O'
+INFO: [Synth 8-5819] Moved 1 constraints on hierarchical pins to their respective driving/loading pins
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:25 ; elapsed = 00:00:25 . Memory (MB): peak = 1484.059 ; gain = 387.117 ; free physical = 1199 ; free virtual = 14706
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:25 ; elapsed = 00:00:25 . Memory (MB): peak = 1484.059 ; gain = 387.117 ; free physical = 1199 ; free virtual = 14706
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1494.074 ; gain = 397.133 ; free physical = 1197 ; free virtual = 14704
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1494.074 ; gain = 397.133 ; free physical = 1197 ; free virtual = 14704
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1494.074 ; gain = 397.133 ; free physical = 1197 ; free virtual = 14704
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1494.074 ; gain = 397.133 ; free physical = 1197 ; free virtual = 14704
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1494.074 ; gain = 397.133 ; free physical = 1197 ; free virtual = 14704
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1494.074 ; gain = 397.133 ; free physical = 1197 ; free virtual = 14704
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1494.074 ; gain = 397.133 ; free physical = 1197 ; free virtual = 14704
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++------+------------------------------------+----------+
+|      |BlackBox name                       |Instances |
++------+------------------------------------+----------+
+|1     |design_1_SingleCycleMIPS_export_0_0 |         1|
+|2     |design_1_clk_wiz_0_0                |         1|
+|3     |design_1_rst_clk_wiz_0_100M_0       |         1|
++------+------------------------------------+----------+
+
+Report Cell Usage: 
++------+-----------------------------------------+------+
+|      |Cell                                     |Count |
++------+-----------------------------------------+------+
+|1     |design_1_SingleCycleMIPS_export_0_0_bbox |     1|
+|2     |design_1_clk_wiz_0_0_bbox                |     1|
+|3     |design_1_rst_clk_wiz_0_100M_0_bbox       |     1|
+|4     |IBUF                                     |     2|
+|5     |OBUF                                     |     1|
++------+-----------------------------------------+------+
+
+Report Instance Areas: 
++------+-------------+---------+------+
+|      |Instance     |Module   |Cells |
++------+-------------+---------+------+
+|1     |top          |         |    11|
+|2     |  design_1_i |design_1 |     8|
++------+-------------+---------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1494.074 ; gain = 397.133 ; free physical = 1197 ; free virtual = 14704
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 1494.074 ; gain = 127.508 ; free physical = 1256 ; free virtual = 14764
+Synthesis Optimization Complete : Time (s): cpu = 00:00:25 ; elapsed = 00:00:26 . Memory (MB): peak = 1494.082 ; gain = 397.133 ; free physical = 1256 ; free virtual = 14764
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Netlist 29-17] Analyzing 2 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+27 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:28 ; elapsed = 00:00:29 . Memory (MB): peak = 1498.074 ; gain = 413.715 ; free physical = 1215 ; free virtual = 14723
+INFO: [Common 17-1381] The checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/design_1_wrapper.dcp' has been generated.
+report_utilization: Time (s): cpu = 00:00:00.07 ; elapsed = 00:00:00.10 . Memory (MB): peak = 1498.074 ; gain = 0.000 ; free physical = 1215 ; free virtual = 14722
+INFO: [Common 17-206] Exiting Vivado at Fri Jun  9 14:35:24 2017...
+exec cat SingleCycleMIPS.runs/impl_1/runme.log 
+
+*** Running vivado
+    with args -log design_1_wrapper.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source design_1_wrapper.tcl -notrace
+
+
+****** Vivado v2017.1 (64-bit)
+  **** SW Build 1846317 on Fri Apr 14 18:54:47 MDT 2017
+  **** IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+    ** Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+
+source design_1_wrapper.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/carl/Xilinx/Vivado/2017.1/data/ip'.
+WARNING: [IP_Flow 19-3664] IP 'design_1_rst_clk_wiz_0_100M_0' generated file not found '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/stats.txt'. Please regenerate to continue.
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_SingleCycleMIPS_export_0_0/design_1_SingleCycleMIPS_export_0_0.dcp' for cell 'design_1_i/SingleCycleMIPS_export_0'
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.dcp' for cell 'design_1_i/clk_wiz_0'
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.dcp' for cell 'design_1_i/rst_clk_wiz_0_100M'
+INFO: [Netlist 29-17] Analyzing 1264 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2017.1
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0_board.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0_board.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+INFO: [Timing 38-35] Done setting XDC timing constraints. [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc:57]
+INFO: [Timing 38-2] Deriving generated clocks [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc:57]
+get_clocks: Time (s): cpu = 00:00:12 ; elapsed = 00:00:11 . Memory (MB): peak = 1874.941 ; gain = 475.508 ; free physical = 860 ; free virtual = 14382
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0_board.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0_board.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/constrs_1/new/constraints.xdc]
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/constrs_1/new/constraints.xdc]
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+link_design: Time (s): cpu = 00:00:22 ; elapsed = 00:00:21 . Memory (MB): peak = 1874.941 ; gain = 790.586 ; free physical = 905 ; free virtual = 14412
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+Command: report_drc (run_mandatory_drcs) for: opt_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.69 . Memory (MB): peak = 1906.957 ; gain = 32.016 ; free physical = 895 ; free virtual = 14402
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+INFO: [Opt 31-138] Pushed 4 inverter(s) to 4 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: 21dcbdbf1
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 896 ; free virtual = 14403
+INFO: [Opt 31-389] Phase Retarget created 0 cells and removed 55 cells
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 2 Constant propagation | Checksum: 1d6fdce6e
+
+Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 892 ; free virtual = 14399
+INFO: [Opt 31-389] Phase Constant propagation created 2 cells and removed 11 cells
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: 261b53896
+
+Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 19 cells
+
+Phase 4 BUFG optimization
+INFO: [Opt 31-194] Inserted BUFG design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/InstructionMemory/E[0]_BUFG_inst to drive 34 load(s) on clock net DEBUG_SHUTDOWN_running_OBUF
+INFO: [Opt 31-193] Inserted 1 BUFG(s) on clock nets
+Phase 4 BUFG optimization | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+INFO: [Opt 31-389] Phase BUFG optimization created 1 cells and removed 0 cells
+
+Phase 5 Shift Register Optimization
+Phase 5 Shift Register Optimization | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.05 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+Ending Logic Optimization Task | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+Ending Power Optimization Task | Checksum: 228e2c702
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14398
+31 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:08 ; elapsed = 00:00:05 . Memory (MB): peak = 1926.957 ; gain = 52.016 ; free physical = 891 ; free virtual = 14398
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.10 ; elapsed = 00:00:00.03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 887 ; free virtual = 14395
+INFO: [Common 17-1381] The checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_opt.dcp' has been generated.
+Command: report_drc -file design_1_wrapper_drc_opted.rpt
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Coretcl 2-168] The results of DRC are in file /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_drc_opted.rpt.
+report_drc completed successfully
+INFO: [Chipscope 16-241] No debug cores found in the current design.
+Before running the implement_debug_core command, either use the Set Up Debug wizard (GUI mode)
+or use the create_debug_core and connect_debug_core Tcl commands to insert debug cores into the design.
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Command: report_drc (run_mandatory_drcs) for: incr_eco_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+Command: report_drc (run_mandatory_drcs) for: placer_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+Starting Placer Task
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 4 CPUs
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 878 ; free virtual = 14387
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 1b34d86e2
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 878 ; free virtual = 14387
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 881 ; free virtual = 14389
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 10019d285
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 861 ; free virtual = 14370
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.969 ; gain = 21.012 ; free physical = 834 ; free virtual = 14342
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.969 ; gain = 21.012 ; free physical = 834 ; free virtual = 14342
+Phase 1 Placer Initialization | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.969 ; gain = 21.012 ; free physical = 834 ; free virtual = 14342
+
+Phase 2 Global Placement
+Phase 2 Global Placement | Checksum: b77a7d48
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:16 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 818 ; free virtual = 14327
+
+Phase 3 Detail Placement
+
+Phase 3.1 Commit Multi Column Macros
+Phase 3.1 Commit Multi Column Macros | Checksum: b77a7d48
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:16 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 818 ; free virtual = 14327
+
+Phase 3.2 Commit Most Macros & LUTRAMs
+Phase 3.2 Commit Most Macros & LUTRAMs | Checksum: 11e095bbb
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.3 Area Swap Optimization
+Phase 3.3 Area Swap Optimization | Checksum: 13efd883e
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.4 Pipeline Register Optimization
+Phase 3.4 Pipeline Register Optimization | Checksum: 13efd883e
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.5 Timing Path Optimizer
+Phase 3.5 Timing Path Optimizer | Checksum: 10a0554b1
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:20 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.6 Small Shape Detail Placement
+Phase 3.6 Small Shape Detail Placement | Checksum: 113995e22
+
+Time (s): cpu = 00:00:35 ; elapsed = 00:00:24 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+
+Phase 3.7 Re-assign LUT pins
+Phase 3.7 Re-assign LUT pins | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:24 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+
+Phase 3.8 Pipeline Register Optimization
+Phase 3.8 Pipeline Register Optimization | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:24 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+Phase 3 Detail Placement | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:25 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+
+Phase 4 Post Placement Optimization and Clean-Up
+
+Phase 4.1 Post Commit Optimization
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Phase 4.1.1 Post Placement Optimization
+exec cat SingleCycleMIPS.runs/impl_1/runme.log
+
+*** Running vivado
+    with args -log design_1_wrapper.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source design_1_wrapper.tcl -notrace
+
+
+****** Vivado v2017.1 (64-bit)
+  **** SW Build 1846317 on Fri Apr 14 18:54:47 MDT 2017
+  **** IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+    ** Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+
+source design_1_wrapper.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/carl/Xilinx/Vivado/2017.1/data/ip'.
+WARNING: [IP_Flow 19-3664] IP 'design_1_rst_clk_wiz_0_100M_0' generated file not found '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/stats.txt'. Please regenerate to continue.
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_SingleCycleMIPS_export_0_0/design_1_SingleCycleMIPS_export_0_0.dcp' for cell 'design_1_i/SingleCycleMIPS_export_0'
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.dcp' for cell 'design_1_i/clk_wiz_0'
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.dcp' for cell 'design_1_i/rst_clk_wiz_0_100M'
+INFO: [Netlist 29-17] Analyzing 1264 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2017.1
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0_board.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0_board.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+INFO: [Timing 38-35] Done setting XDC timing constraints. [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc:57]
+INFO: [Timing 38-2] Deriving generated clocks [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc:57]
+get_clocks: Time (s): cpu = 00:00:12 ; elapsed = 00:00:11 . Memory (MB): peak = 1874.941 ; gain = 475.508 ; free physical = 860 ; free virtual = 14382
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0_board.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0_board.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/constrs_1/new/constraints.xdc]
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/constrs_1/new/constraints.xdc]
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+link_design: Time (s): cpu = 00:00:22 ; elapsed = 00:00:21 . Memory (MB): peak = 1874.941 ; gain = 790.586 ; free physical = 905 ; free virtual = 14412
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+Command: report_drc (run_mandatory_drcs) for: opt_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.69 . Memory (MB): peak = 1906.957 ; gain = 32.016 ; free physical = 895 ; free virtual = 14402
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+INFO: [Opt 31-138] Pushed 4 inverter(s) to 4 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: 21dcbdbf1
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 896 ; free virtual = 14403
+INFO: [Opt 31-389] Phase Retarget created 0 cells and removed 55 cells
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 2 Constant propagation | Checksum: 1d6fdce6e
+
+Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 892 ; free virtual = 14399
+INFO: [Opt 31-389] Phase Constant propagation created 2 cells and removed 11 cells
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: 261b53896
+
+Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 19 cells
+
+Phase 4 BUFG optimization
+INFO: [Opt 31-194] Inserted BUFG design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/InstructionMemory/E[0]_BUFG_inst to drive 34 load(s) on clock net DEBUG_SHUTDOWN_running_OBUF
+INFO: [Opt 31-193] Inserted 1 BUFG(s) on clock nets
+Phase 4 BUFG optimization | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+INFO: [Opt 31-389] Phase BUFG optimization created 1 cells and removed 0 cells
+
+Phase 5 Shift Register Optimization
+Phase 5 Shift Register Optimization | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.05 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+Ending Logic Optimization Task | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+Ending Power Optimization Task | Checksum: 228e2c702
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14398
+31 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:08 ; elapsed = 00:00:05 . Memory (MB): peak = 1926.957 ; gain = 52.016 ; free physical = 891 ; free virtual = 14398
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.10 ; elapsed = 00:00:00.03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 887 ; free virtual = 14395
+INFO: [Common 17-1381] The checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_opt.dcp' has been generated.
+Command: report_drc -file design_1_wrapper_drc_opted.rpt
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Coretcl 2-168] The results of DRC are in file /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_drc_opted.rpt.
+report_drc completed successfully
+INFO: [Chipscope 16-241] No debug cores found in the current design.
+Before running the implement_debug_core command, either use the Set Up Debug wizard (GUI mode)
+or use the create_debug_core and connect_debug_core Tcl commands to insert debug cores into the design.
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Command: report_drc (run_mandatory_drcs) for: incr_eco_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+Command: report_drc (run_mandatory_drcs) for: placer_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+Starting Placer Task
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 4 CPUs
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 878 ; free virtual = 14387
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 1b34d86e2
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 878 ; free virtual = 14387
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 881 ; free virtual = 14389
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 10019d285
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 861 ; free virtual = 14370
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.969 ; gain = 21.012 ; free physical = 834 ; free virtual = 14342
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.969 ; gain = 21.012 ; free physical = 834 ; free virtual = 14342
+Phase 1 Placer Initialization | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.969 ; gain = 21.012 ; free physical = 834 ; free virtual = 14342
+
+Phase 2 Global Placement
+Phase 2 Global Placement | Checksum: b77a7d48
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:16 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 818 ; free virtual = 14327
+
+Phase 3 Detail Placement
+
+Phase 3.1 Commit Multi Column Macros
+Phase 3.1 Commit Multi Column Macros | Checksum: b77a7d48
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:16 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 818 ; free virtual = 14327
+
+Phase 3.2 Commit Most Macros & LUTRAMs
+Phase 3.2 Commit Most Macros & LUTRAMs | Checksum: 11e095bbb
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.3 Area Swap Optimization
+Phase 3.3 Area Swap Optimization | Checksum: 13efd883e
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.4 Pipeline Register Optimization
+Phase 3.4 Pipeline Register Optimization | Checksum: 13efd883e
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.5 Timing Path Optimizer
+Phase 3.5 Timing Path Optimizer | Checksum: 10a0554b1
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:20 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.6 Small Shape Detail Placement
+Phase 3.6 Small Shape Detail Placement | Checksum: 113995e22
+
+Time (s): cpu = 00:00:35 ; elapsed = 00:00:24 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+
+Phase 3.7 Re-assign LUT pins
+Phase 3.7 Re-assign LUT pins | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:24 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+
+Phase 3.8 Pipeline Register Optimization
+Phase 3.8 Pipeline Register Optimization | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:24 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+Phase 3 Detail Placement | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:25 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+
+Phase 4 Post Placement Optimization and Clean-Up
+
+Phase 4.1 Post Commit Optimization
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Phase 4.1.1 Post Placement Optimization
+Post Placement Optimization Initialization | Checksum: 16ab56522
+
+Phase 4.1.1.1 BUFG Insertion
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 4 CPUs
+INFO: [Place 46-38] Processed net design_1_i/rst_clk_wiz_0_100M/U0/mb_reset, BUFG insertion was skipped due to placement/routing conflicts.
+INFO: [Place 46-41] BUFG insertion identified 1 candidate nets, 0 success, 1 skipped for placement/routing, 0 skipped for timing, 0 skipped for netlist change reason.
+Phase 4.1.1.1 BUFG Insertion | Checksum: 16ab56522
+
+Time (s): cpu = 00:00:43 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 811 ; free virtual = 14320
+INFO: [Place 30-746] Post Placement Timing Summary WNS=24.324. For the most accurate timing information please run report_timing.
+Phase 4.1.1 Post Placement Optimization | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:43 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 811 ; free virtual = 14320
+Phase 4.1 Post Commit Optimization | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:43 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 811 ; free virtual = 14320
+
+Phase 4.2 Post Placement Cleanup
+Phase 4.2 Post Placement Cleanup | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 812 ; free virtual = 14321
+
+Phase 4.3 Placer Reporting
+Phase 4.3 Placer Reporting | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 812 ; free virtual = 14321
+
+Phase 4.4 Final Placement Cleanup
+Phase 4.4 Final Placement Cleanup | Checksum: 1b1b9c079
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 812 ; free virtual = 14321
+Phase 4 Post Placement Optimization and Clean-Up | Checksum: 1b1b9c079
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 812 ; free virtual = 14321
+Ending Placer Task | Checksum: ff9a4371
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 826 ; free virtual = 14335
+51 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+place_design completed successfully
+place_design: Time (s): cpu = 00:00:47 ; elapsed = 00:00:29 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 826 ; free virtual = 14335
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:03 ; elapsed = 00:00:01 . Memory (MB): peak = 1986.973 ; gain = 0.000 ; free physical = 807 ; free virtual = 14333
+INFO: [Common 17-1381] The checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_placed.dcp' has been generated.
+report_io: Time (s): cpu = 00:00:00.15 ; elapsed = 00:00:00.21 . Memory (MB): peak = 1986.973 ; gain = 0.000 ; free physical = 814 ; free virtual = 14326
+report_utilization: Time (s): cpu = 00:00:00.19 ; elapsed = 00:00:00.22 . Memory (MB): peak = 1986.973 ; gain = 0.000 ; free physical = 822 ; free virtual = 14334
+report_control_sets: Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:00.11 . Memory (MB): peak = 1986.973 ; gain = 0.000 ; free physical = 823 ; free virtual = 14335
+Command: route_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Running DRC as a precondition to command route_design
+Command: report_drc (run_mandatory_drcs) for: router_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+
+Starting Routing Task
+INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 4 CPUs
+Checksum: PlaceDB: 570b5ab5 ConstDB: 0 ShapeSum: a88ee8bc RouteDB: 0
+
+Phase 1 Build RT Design
+exec cat SingleCycleMIPS.runs/impl_1/runme.log
+
+*** Running vivado
+    with args -log design_1_wrapper.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source design_1_wrapper.tcl -notrace
+
+
+****** Vivado v2017.1 (64-bit)
+  **** SW Build 1846317 on Fri Apr 14 18:54:47 MDT 2017
+  **** IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+    ** Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+
+source design_1_wrapper.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/carl/Xilinx/Vivado/2017.1/data/ip'.
+WARNING: [IP_Flow 19-3664] IP 'design_1_rst_clk_wiz_0_100M_0' generated file not found '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/stats.txt'. Please regenerate to continue.
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_SingleCycleMIPS_export_0_0/design_1_SingleCycleMIPS_export_0_0.dcp' for cell 'design_1_i/SingleCycleMIPS_export_0'
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.dcp' for cell 'design_1_i/clk_wiz_0'
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.dcp' for cell 'design_1_i/rst_clk_wiz_0_100M'
+INFO: [Netlist 29-17] Analyzing 1264 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2017.1
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0_board.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0_board.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+INFO: [Timing 38-35] Done setting XDC timing constraints. [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc:57]
+INFO: [Timing 38-2] Deriving generated clocks [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc:57]
+get_clocks: Time (s): cpu = 00:00:12 ; elapsed = 00:00:11 . Memory (MB): peak = 1874.941 ; gain = 475.508 ; free physical = 860 ; free virtual = 14382
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0_board.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0_board.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/constrs_1/new/constraints.xdc]
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/constrs_1/new/constraints.xdc]
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+link_design: Time (s): cpu = 00:00:22 ; elapsed = 00:00:21 . Memory (MB): peak = 1874.941 ; gain = 790.586 ; free physical = 905 ; free virtual = 14412
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+Command: report_drc (run_mandatory_drcs) for: opt_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.69 . Memory (MB): peak = 1906.957 ; gain = 32.016 ; free physical = 895 ; free virtual = 14402
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+INFO: [Opt 31-138] Pushed 4 inverter(s) to 4 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: 21dcbdbf1
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 896 ; free virtual = 14403
+INFO: [Opt 31-389] Phase Retarget created 0 cells and removed 55 cells
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 2 Constant propagation | Checksum: 1d6fdce6e
+
+Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 892 ; free virtual = 14399
+INFO: [Opt 31-389] Phase Constant propagation created 2 cells and removed 11 cells
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: 261b53896
+
+Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 19 cells
+
+Phase 4 BUFG optimization
+INFO: [Opt 31-194] Inserted BUFG design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/InstructionMemory/E[0]_BUFG_inst to drive 34 load(s) on clock net DEBUG_SHUTDOWN_running_OBUF
+INFO: [Opt 31-193] Inserted 1 BUFG(s) on clock nets
+Phase 4 BUFG optimization | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+INFO: [Opt 31-389] Phase BUFG optimization created 1 cells and removed 0 cells
+
+Phase 5 Shift Register Optimization
+Phase 5 Shift Register Optimization | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.05 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+Ending Logic Optimization Task | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+Ending Power Optimization Task | Checksum: 228e2c702
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14398
+31 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:08 ; elapsed = 00:00:05 . Memory (MB): peak = 1926.957 ; gain = 52.016 ; free physical = 891 ; free virtual = 14398
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.10 ; elapsed = 00:00:00.03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 887 ; free virtual = 14395
+INFO: [Common 17-1381] The checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_opt.dcp' has been generated.
+Command: report_drc -file design_1_wrapper_drc_opted.rpt
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Coretcl 2-168] The results of DRC are in file /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_drc_opted.rpt.
+report_drc completed successfully
+INFO: [Chipscope 16-241] No debug cores found in the current design.
+Before running the implement_debug_core command, either use the Set Up Debug wizard (GUI mode)
+or use the create_debug_core and connect_debug_core Tcl commands to insert debug cores into the design.
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Command: report_drc (run_mandatory_drcs) for: incr_eco_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+Command: report_drc (run_mandatory_drcs) for: placer_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+Starting Placer Task
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 4 CPUs
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 878 ; free virtual = 14387
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 1b34d86e2
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 878 ; free virtual = 14387
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 881 ; free virtual = 14389
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 10019d285
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 861 ; free virtual = 14370
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.969 ; gain = 21.012 ; free physical = 834 ; free virtual = 14342
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.969 ; gain = 21.012 ; free physical = 834 ; free virtual = 14342
+Phase 1 Placer Initialization | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.969 ; gain = 21.012 ; free physical = 834 ; free virtual = 14342
+
+Phase 2 Global Placement
+Phase 2 Global Placement | Checksum: b77a7d48
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:16 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 818 ; free virtual = 14327
+
+Phase 3 Detail Placement
+
+Phase 3.1 Commit Multi Column Macros
+Phase 3.1 Commit Multi Column Macros | Checksum: b77a7d48
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:16 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 818 ; free virtual = 14327
+
+Phase 3.2 Commit Most Macros & LUTRAMs
+Phase 3.2 Commit Most Macros & LUTRAMs | Checksum: 11e095bbb
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.3 Area Swap Optimization
+Phase 3.3 Area Swap Optimization | Checksum: 13efd883e
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.4 Pipeline Register Optimization
+Phase 3.4 Pipeline Register Optimization | Checksum: 13efd883e
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.5 Timing Path Optimizer
+Phase 3.5 Timing Path Optimizer | Checksum: 10a0554b1
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:20 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.6 Small Shape Detail Placement
+Phase 3.6 Small Shape Detail Placement | Checksum: 113995e22
+
+Time (s): cpu = 00:00:35 ; elapsed = 00:00:24 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+
+Phase 3.7 Re-assign LUT pins
+Phase 3.7 Re-assign LUT pins | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:24 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+
+Phase 3.8 Pipeline Register Optimization
+Phase 3.8 Pipeline Register Optimization | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:24 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+Phase 3 Detail Placement | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:25 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+
+Phase 4 Post Placement Optimization and Clean-Up
+
+Phase 4.1 Post Commit Optimization
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Phase 4.1.1 Post Placement Optimization
+Post Placement Optimization Initialization | Checksum: 16ab56522
+
+Phase 4.1.1.1 BUFG Insertion
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 4 CPUs
+INFO: [Place 46-38] Processed net design_1_i/rst_clk_wiz_0_100M/U0/mb_reset, BUFG insertion was skipped due to placement/routing conflicts.
+INFO: [Place 46-41] BUFG insertion identified 1 candidate nets, 0 success, 1 skipped for placement/routing, 0 skipped for timing, 0 skipped for netlist change reason.
+Phase 4.1.1.1 BUFG Insertion | Checksum: 16ab56522
+
+Time (s): cpu = 00:00:43 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 811 ; free virtual = 14320
+INFO: [Place 30-746] Post Placement Timing Summary WNS=24.324. For the most accurate timing information please run report_timing.
+Phase 4.1.1 Post Placement Optimization | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:43 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 811 ; free virtual = 14320
+Phase 4.1 Post Commit Optimization | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:43 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 811 ; free virtual = 14320
+
+Phase 4.2 Post Placement Cleanup
+Phase 4.2 Post Placement Cleanup | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 812 ; free virtual = 14321
+
+Phase 4.3 Placer Reporting
+Phase 4.3 Placer Reporting | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 812 ; free virtual = 14321
+
+Phase 4.4 Final Placement Cleanup
+Phase 4.4 Final Placement Cleanup | Checksum: 1b1b9c079
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 812 ; free virtual = 14321
+Phase 4 Post Placement Optimization and Clean-Up | Checksum: 1b1b9c079
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 812 ; free virtual = 14321
+Ending Placer Task | Checksum: ff9a4371
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 826 ; free virtual = 14335
+51 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+place_design completed successfully
+place_design: Time (s): cpu = 00:00:47 ; elapsed = 00:00:29 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 826 ; free virtual = 14335
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:03 ; elapsed = 00:00:01 . Memory (MB): peak = 1986.973 ; gain = 0.000 ; free physical = 807 ; free virtual = 14333
+INFO: [Common 17-1381] The checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_placed.dcp' has been generated.
+report_io: Time (s): cpu = 00:00:00.15 ; elapsed = 00:00:00.21 . Memory (MB): peak = 1986.973 ; gain = 0.000 ; free physical = 814 ; free virtual = 14326
+report_utilization: Time (s): cpu = 00:00:00.19 ; elapsed = 00:00:00.22 . Memory (MB): peak = 1986.973 ; gain = 0.000 ; free physical = 822 ; free virtual = 14334
+report_control_sets: Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:00.11 . Memory (MB): peak = 1986.973 ; gain = 0.000 ; free physical = 823 ; free virtual = 14335
+Command: route_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Running DRC as a precondition to command route_design
+Command: report_drc (run_mandatory_drcs) for: router_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+
+Starting Routing Task
+INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 4 CPUs
+Checksum: PlaceDB: 570b5ab5 ConstDB: 0 ShapeSum: a88ee8bc RouteDB: 0
+
+Phase 1 Build RT Design
+Phase 1 Build RT Design | Checksum: 9351a53a
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:23 . Memory (MB): peak = 2099.113 ; gain = 112.141 ; free physical = 678 ; free virtual = 14190
+
+Phase 2 Router Initialization
+
+Phase 2.1 Create Timer
+Phase 2.1 Create Timer | Checksum: 9351a53a
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:23 . Memory (MB): peak = 2099.113 ; gain = 112.141 ; free physical = 677 ; free virtual = 14189
+
+Phase 2.2 Fix Topology Constraints
+Phase 2.2 Fix Topology Constraints | Checksum: 9351a53a
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:24 . Memory (MB): peak = 2101.113 ; gain = 114.141 ; free physical = 663 ; free virtual = 14175
+
+Phase 2.3 Pre Route Cleanup
+Phase 2.3 Pre Route Cleanup | Checksum: 9351a53a
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:24 . Memory (MB): peak = 2101.113 ; gain = 114.141 ; free physical = 663 ; free virtual = 14175
+ Number of Nodes with overlaps = 0
+
+Phase 2.4 Update Timing
+Phase 2.4 Update Timing | Checksum: 1c1cd9f16
+
+Time (s): cpu = 00:00:39 ; elapsed = 00:00:28 . Memory (MB): peak = 2121.168 ; gain = 134.195 ; free physical = 647 ; free virtual = 14160
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=24.950 | TNS=0.000  | WHS=-0.133 | THS=-1.492 |
+
+Phase 2 Router Initialization | Checksum: 1b242159d
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:30 . Memory (MB): peak = 2121.168 ; gain = 134.195 ; free physical = 645 ; free virtual = 14157
+
+Phase 3 Initial Routing
+Phase 3 Initial Routing | Checksum: 11b440cb2
+
+Time (s): cpu = 00:00:49 ; elapsed = 00:00:32 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 644 ; free virtual = 14156
+
+Phase 4 Rip-up And Reroute
+
+Phase 4.1 Global Iteration 0
+ Number of Nodes with overlaps = 2039
+ Number of Nodes with overlaps = 423
+ Number of Nodes with overlaps = 355
+ Number of Nodes with overlaps = 219
+ Number of Nodes with overlaps = 232
+ Number of Nodes with overlaps = 186
+ Number of Nodes with overlaps = 164
+ Number of Nodes with overlaps = 181
+ Number of Nodes with overlaps = 164
+ Number of Nodes with overlaps = 161
+ Number of Nodes with overlaps = 134
+ Number of Nodes with overlaps = 133
+ Number of Nodes with overlaps = 141
+ Number of Nodes with overlaps = 113
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=17.537 | TNS=0.000  | WHS=N/A    | THS=N/A    |
+
+WARNING: [Route 35-447] Congestion is preventing the router from routing all nets. The router will prioritize the successful completion of routing all nets over timing optimizations.
+Phase 4.1 Global Iteration 0 | Checksum: f1a1e0ac
+
+Time (s): cpu = 00:01:39 ; elapsed = 00:00:50 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 642 ; free virtual = 14155
+
+Phase 4.2 Global Iteration 1
+ Number of Nodes with overlaps = 164
+ Number of Nodes with overlaps = 65
+ Number of Nodes with overlaps = 53
+ Number of Nodes with overlaps = 38
+ Number of Nodes with overlaps = 23
+ Number of Nodes with overlaps = 24
+ Number of Nodes with overlaps = 16
+ Number of Nodes with overlaps = 10
+ Number of Nodes with overlaps = 8
+ Number of Nodes with overlaps = 4
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=16.832 | TNS=0.000  | WHS=N/A    | THS=N/A    |
+
+Phase 4.2 Global Iteration 1 | Checksum: 1ba030c6c
+
+Time (s): cpu = 00:01:54 ; elapsed = 00:00:59 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14150
+Phase 4 Rip-up And Reroute | Checksum: 1ba030c6c
+
+Time (s): cpu = 00:01:54 ; elapsed = 00:00:59 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14150
+
+Phase 5 Delay and Skew Optimization
+
+Phase 5.1 Delay CleanUp
+
+Phase 5.1.1 Update Timing
+Phase 5.1.1 Update Timing | Checksum: 221b118bd
+
+Time (s): cpu = 00:01:55 ; elapsed = 00:00:59 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=16.947 | TNS=0.000  | WHS=N/A    | THS=N/A    |
+
+Phase 5.1 Delay CleanUp | Checksum: 221b118bd
+
+Time (s): cpu = 00:01:55 ; elapsed = 00:01:00 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+
+Phase 5.2 Clock Skew Optimization
+Phase 5.2 Clock Skew Optimization | Checksum: 221b118bd
+
+Time (s): cpu = 00:01:55 ; elapsed = 00:01:00 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+Phase 5 Delay and Skew Optimization | Checksum: 221b118bd
+
+Time (s): cpu = 00:01:55 ; elapsed = 00:01:00 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+
+Phase 6 Post Hold Fix
+
+Phase 6.1 Hold Fix Iter
+
+Phase 6.1.1 Update Timing
+Phase 6.1.1 Update Timing | Checksum: 22d77ca8a
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:00 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=16.947 | TNS=0.000  | WHS=0.105  | THS=0.000  |
+
+Phase 6.1 Hold Fix Iter | Checksum: 206a11719
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:00 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+Phase 6 Post Hold Fix | Checksum: 206a11719
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:00 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+
+Phase 7 Route finalize
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 3.29921 %
+  Global Horizontal Routing Utilization  = 4.399 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 0
+  Number of Unrouted Nets             = 0
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+Phase 7 Route finalize | Checksum: 141c8b594
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:01 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+
+Phase 8 Verifying routed nets
+
+ Verification completed successfully
+Phase 8 Verifying routed nets | Checksum: 141c8b594
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:01 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14150
+
+Phase 9 Depositing Routes
+Phase 9 Depositing Routes | Checksum: 104f714b4
+
+Time (s): cpu = 00:01:58 ; elapsed = 00:01:02 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 637 ; free virtual = 14149
+
+Phase 10 Post Router Timing
+INFO: [Route 35-57] Estimated Timing Summary | WNS=16.947 | TNS=0.000  | WHS=0.105  | THS=0.000  |
+
+INFO: [Route 35-327] The final timing numbers are based on the router estimated timing analysis. For a complete and accurate timing signoff, please run report_timing_summary.
+Phase 10 Post Router Timing | Checksum: 104f714b4
+
+Time (s): cpu = 00:01:58 ; elapsed = 00:01:02 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 637 ; free virtual = 14149
+INFO: [Route 35-16] Router Completed Successfully
+
+Time (s): cpu = 00:01:58 ; elapsed = 00:01:02 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 660 ; free virtual = 14172
+
+Routing Is Done.
+65 Infos, 2 Warnings, 0 Critical Warnings and 0 Errors encountered.
+route_design completed successfully
+route_design: Time (s): cpu = 00:02:03 ; elapsed = 00:01:03 . Memory (MB): peak = 2168.125 ; gain = 181.152 ; free physical = 660 ; free virtual = 14172
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:04 ; elapsed = 00:00:01 . Memory (MB): peak = 2176.078 ; gain = 0.000 ; free physical = 636 ; free virtual = 14170
+INFO: [Common 17-1381] The checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_routed.dcp' has been generated.
+Command: report_drc -file design_1_wrapper_drc_routed.rpt -pb design_1_wrapper_drc_routed.pb -rpx design_1_wrapper_drc_routed.rpx
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Coretcl 2-168] The results of DRC are in file /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_drc_routed.rpt.
+report_drc completed successfully
+Command: report_methodology -file design_1_wrapper_methodology_drc_routed.rpt -rpx design_1_wrapper_methodology_drc_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [DRC 23-133] Running Methodology with 4 threads
+INFO: [Coretcl 2-1520] The results of Report Methodology are in file /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_methodology_drc_routed.rpt.
+report_methodology completed successfully
+Command: report_power -file design_1_wrapper_power_routed.rpt -pb design_1_wrapper_power_summary_routed.pb -rpx design_1_wrapper_power_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+72 Infos, 2 Warnings, 0 Critical Warnings and 0 Errors encountered.
+report_power completed successfully
+report_power: Time (s): cpu = 00:00:09 ; elapsed = 00:00:06 . Memory (MB): peak = 2254.145 ; gain = 14.035 ; free physical = 587 ; free virtual = 14111
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+INFO: [Common 17-206] Exiting Vivado at Fri Jun  9 14:37:59 2017...
+exec cat SingleCycleMIPS.runs/impl_1/runme.log | less
+
+*** Running vivado
+    with args -log design_1_wrapper.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source design_1_wrapper.tcl -notrace
+
+
+****** Vivado v2017.1 (64-bit)
+  **** SW Build 1846317 on Fri Apr 14 18:54:47 MDT 2017
+  **** IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+    ** Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+
+source design_1_wrapper.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/carl/Xilinx/Vivado/2017.1/data/ip'.
+WARNING: [IP_Flow 19-3664] IP 'design_1_rst_clk_wiz_0_100M_0' generated file not found '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/stats.txt'. Please regenerate to continue.
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_SingleCycleMIPS_export_0_0/design_1_SingleCycleMIPS_export_0_0.dcp' for cell 'design_1_i/SingleCycleMIPS_export_0'
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.dcp' for cell 'design_1_i/clk_wiz_0'
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.dcp' for cell 'design_1_i/rst_clk_wiz_0_100M'
+INFO: [Netlist 29-17] Analyzing 1264 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2017.1
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0_board.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0_board.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+INFO: [Timing 38-35] Done setting XDC timing constraints. [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc:57]
+INFO: [Timing 38-2] Deriving generated clocks [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc:57]
+get_clocks: Time (s): cpu = 00:00:12 ; elapsed = 00:00:11 . Memory (MB): peak = 1874.941 ; gain = 475.508 ; free physical = 860 ; free virtual = 14382
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0_board.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0_board.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/constrs_1/new/constraints.xdc]
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/constrs_1/new/constraints.xdc]
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+link_design: Time (s): cpu = 00:00:22 ; elapsed = 00:00:21 . Memory (MB): peak = 1874.941 ; gain = 790.586 ; free physical = 905 ; free virtual = 14412
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+Command: report_drc (run_mandatory_drcs) for: opt_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.69 . Memory (MB): peak = 1906.957 ; gain = 32.016 ; free physical = 895 ; free virtual = 14402
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+INFO: [Opt 31-138] Pushed 4 inverter(s) to 4 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: 21dcbdbf1
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 896 ; free virtual = 14403
+INFO: [Opt 31-389] Phase Retarget created 0 cells and removed 55 cells
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 2 Constant propagation | Checksum: 1d6fdce6e
+
+Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 892 ; free virtual = 14399
+INFO: [Opt 31-389] Phase Constant propagation created 2 cells and removed 11 cells
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: 261b53896
+
+Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 19 cells
+
+Phase 4 BUFG optimization
+INFO: [Opt 31-194] Inserted BUFG design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/InstructionMemory/E[0]_BUFG_inst to drive 34 load(s) on clock net DEBUG_SHUTDOWN_running_OBUF
+INFO: [Opt 31-193] Inserted 1 BUFG(s) on clock nets
+Phase 4 BUFG optimization | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+INFO: [Opt 31-389] Phase BUFG optimization created 1 cells and removed 0 cells
+
+Phase 5 Shift Register Optimization
+Phase 5 Shift Register Optimization | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.05 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+Ending Logic Optimization Task | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14399
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+Ending Power Optimization Task | Checksum: 228e2c702
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 891 ; free virtual = 14398
+31 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:08 ; elapsed = 00:00:05 . Memory (MB): peak = 1926.957 ; gain = 52.016 ; free physical = 891 ; free virtual = 14398
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.10 ; elapsed = 00:00:00.03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 887 ; free virtual = 14395
+INFO: [Common 17-1381] The checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_opt.dcp' has been generated.
+Command: report_drc -file design_1_wrapper_drc_opted.rpt
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Coretcl 2-168] The results of DRC are in file /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_drc_opted.rpt.
+report_drc completed successfully
+INFO: [Chipscope 16-241] No debug cores found in the current design.
+Before running the implement_debug_core command, either use the Set Up Debug wizard (GUI mode)
+or use the create_debug_core and connect_debug_core Tcl commands to insert debug cores into the design.
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Command: report_drc (run_mandatory_drcs) for: incr_eco_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+Command: report_drc (run_mandatory_drcs) for: placer_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+Starting Placer Task
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 4 CPUs
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 878 ; free virtual = 14387
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 1b34d86e2
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 878 ; free virtual = 14387
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 881 ; free virtual = 14389
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 10019d285
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1926.957 ; gain = 0.000 ; free physical = 861 ; free virtual = 14370
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.969 ; gain = 21.012 ; free physical = 834 ; free virtual = 14342
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.969 ; gain = 21.012 ; free physical = 834 ; free virtual = 14342
+Phase 1 Placer Initialization | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.969 ; gain = 21.012 ; free physical = 834 ; free virtual = 14342
+
+Phase 2 Global Placement
+Phase 2 Global Placement | Checksum: b77a7d48
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:16 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 818 ; free virtual = 14327
+
+Phase 3 Detail Placement
+
+Phase 3.1 Commit Multi Column Macros
+Phase 3.1 Commit Multi Column Macros | Checksum: b77a7d48
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:16 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 818 ; free virtual = 14327
+
+Phase 3.2 Commit Most Macros & LUTRAMs
+Phase 3.2 Commit Most Macros & LUTRAMs | Checksum: 11e095bbb
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.3 Area Swap Optimization
+Phase 3.3 Area Swap Optimization | Checksum: 13efd883e
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.4 Pipeline Register Optimization
+Phase 3.4 Pipeline Register Optimization | Checksum: 13efd883e
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.5 Timing Path Optimizer
+Phase 3.5 Timing Path Optimizer | Checksum: 10a0554b1
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:20 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 814 ; free virtual = 14323
+
+Phase 3.6 Small Shape Detail Placement
+Phase 3.6 Small Shape Detail Placement | Checksum: 113995e22
+
+Time (s): cpu = 00:00:35 ; elapsed = 00:00:24 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+
+Phase 3.7 Re-assign LUT pins
+Phase 3.7 Re-assign LUT pins | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:24 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+
+Phase 3.8 Pipeline Register Optimization
+Phase 3.8 Pipeline Register Optimization | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:24 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+Phase 3 Detail Placement | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:25 . Memory (MB): peak = 1971.980 ; gain = 45.023 ; free physical = 806 ; free virtual = 14315
+
+Phase 4 Post Placement Optimization and Clean-Up
+
+Phase 4.1 Post Commit Optimization
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Phase 4.1.1 Post Placement Optimization
+Post Placement Optimization Initialization | Checksum: 16ab56522
+
+Phase 4.1.1.1 BUFG Insertion
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 4 CPUs
+INFO: [Place 46-38] Processed net design_1_i/rst_clk_wiz_0_100M/U0/mb_reset, BUFG insertion was skipped due to placement/routing conflicts.
+INFO: [Place 46-41] BUFG insertion identified 1 candidate nets, 0 success, 1 skipped for placement/routing, 0 skipped for timing, 0 skipped for netlist change reason.
+Phase 4.1.1.1 BUFG Insertion | Checksum: 16ab56522
+
+Time (s): cpu = 00:00:43 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 811 ; free virtual = 14320
+INFO: [Place 30-746] Post Placement Timing Summary WNS=24.324. For the most accurate timing information please run report_timing.
+Phase 4.1.1 Post Placement Optimization | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:43 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 811 ; free virtual = 14320
+Phase 4.1 Post Commit Optimization | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:43 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 811 ; free virtual = 14320
+
+Phase 4.2 Post Placement Cleanup
+Phase 4.2 Post Placement Cleanup | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 812 ; free virtual = 14321
+
+Phase 4.3 Placer Reporting
+Phase 4.3 Placer Reporting | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 812 ; free virtual = 14321
+
+Phase 4.4 Final Placement Cleanup
+Phase 4.4 Final Placement Cleanup | Checksum: 1b1b9c079
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 812 ; free virtual = 14321
+Phase 4 Post Placement Optimization and Clean-Up | Checksum: 1b1b9c079
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 812 ; free virtual = 14321
+Ending Placer Task | Checksum: ff9a4371
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 826 ; free virtual = 14335
+51 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+place_design completed successfully
+place_design: Time (s): cpu = 00:00:47 ; elapsed = 00:00:29 . Memory (MB): peak = 1986.973 ; gain = 60.016 ; free physical = 826 ; free virtual = 14335
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:03 ; elapsed = 00:00:01 . Memory (MB): peak = 1986.973 ; gain = 0.000 ; free physical = 807 ; free virtual = 14333
+INFO: [Common 17-1381] The checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_placed.dcp' has been generated.
+report_io: Time (s): cpu = 00:00:00.15 ; elapsed = 00:00:00.21 . Memory (MB): peak = 1986.973 ; gain = 0.000 ; free physical = 814 ; free virtual = 14326
+report_utilization: Time (s): cpu = 00:00:00.19 ; elapsed = 00:00:00.22 . Memory (MB): peak = 1986.973 ; gain = 0.000 ; free physical = 822 ; free virtual = 14334
+report_control_sets: Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:00.11 . Memory (MB): peak = 1986.973 ; gain = 0.000 ; free physical = 823 ; free virtual = 14335
+Command: route_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Running DRC as a precondition to command route_design
+Command: report_drc (run_mandatory_drcs) for: router_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+
+Starting Routing Task
+INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 4 CPUs
+Checksum: PlaceDB: 570b5ab5 ConstDB: 0 ShapeSum: a88ee8bc RouteDB: 0
+
+Phase 1 Build RT Design
+Phase 1 Build RT Design | Checksum: 9351a53a
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:23 . Memory (MB): peak = 2099.113 ; gain = 112.141 ; free physical = 678 ; free virtual = 14190
+
+Phase 2 Router Initialization
+
+Phase 2.1 Create Timer
+Phase 2.1 Create Timer | Checksum: 9351a53a
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:23 . Memory (MB): peak = 2099.113 ; gain = 112.141 ; free physical = 677 ; free virtual = 14189
+
+Phase 2.2 Fix Topology Constraints
+Phase 2.2 Fix Topology Constraints | Checksum: 9351a53a
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:24 . Memory (MB): peak = 2101.113 ; gain = 114.141 ; free physical = 663 ; free virtual = 14175
+
+Phase 2.3 Pre Route Cleanup
+Phase 2.3 Pre Route Cleanup | Checksum: 9351a53a
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:24 . Memory (MB): peak = 2101.113 ; gain = 114.141 ; free physical = 663 ; free virtual = 14175
+ Number of Nodes with overlaps = 0
+
+Phase 2.4 Update Timing
+Phase 2.4 Update Timing | Checksum: 1c1cd9f16
+
+Time (s): cpu = 00:00:39 ; elapsed = 00:00:28 . Memory (MB): peak = 2121.168 ; gain = 134.195 ; free physical = 647 ; free virtual = 14160
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=24.950 | TNS=0.000  | WHS=-0.133 | THS=-1.492 |
+
+Phase 2 Router Initialization | Checksum: 1b242159d
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:30 . Memory (MB): peak = 2121.168 ; gain = 134.195 ; free physical = 645 ; free virtual = 14157
+
+Phase 3 Initial Routing
+Phase 3 Initial Routing | Checksum: 11b440cb2
+
+Time (s): cpu = 00:00:49 ; elapsed = 00:00:32 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 644 ; free virtual = 14156
+
+Phase 4 Rip-up And Reroute
+
+Phase 4.1 Global Iteration 0
+ Number of Nodes with overlaps = 2039
+ Number of Nodes with overlaps = 423
+ Number of Nodes with overlaps = 355
+ Number of Nodes with overlaps = 219
+ Number of Nodes with overlaps = 232
+ Number of Nodes with overlaps = 186
+ Number of Nodes with overlaps = 164
+ Number of Nodes with overlaps = 181
+ Number of Nodes with overlaps = 164
+ Number of Nodes with overlaps = 161
+ Number of Nodes with overlaps = 134
+ Number of Nodes with overlaps = 133
+ Number of Nodes with overlaps = 141
+ Number of Nodes with overlaps = 113
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=17.537 | TNS=0.000  | WHS=N/A    | THS=N/A    |
+
+WARNING: [Route 35-447] Congestion is preventing the router from routing all nets. The router will prioritize the successful completion of routing all nets over timing optimizations.
+Phase 4.1 Global Iteration 0 | Checksum: f1a1e0ac
+
+Time (s): cpu = 00:01:39 ; elapsed = 00:00:50 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 642 ; free virtual = 14155
+
+Phase 4.2 Global Iteration 1
+ Number of Nodes with overlaps = 164
+ Number of Nodes with overlaps = 65
+ Number of Nodes with overlaps = 53
+ Number of Nodes with overlaps = 38
+ Number of Nodes with overlaps = 23
+ Number of Nodes with overlaps = 24
+ Number of Nodes with overlaps = 16
+ Number of Nodes with overlaps = 10
+ Number of Nodes with overlaps = 8
+ Number of Nodes with overlaps = 4
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=16.832 | TNS=0.000  | WHS=N/A    | THS=N/A    |
+
+Phase 4.2 Global Iteration 1 | Checksum: 1ba030c6c
+
+Time (s): cpu = 00:01:54 ; elapsed = 00:00:59 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14150
+Phase 4 Rip-up And Reroute | Checksum: 1ba030c6c
+
+Time (s): cpu = 00:01:54 ; elapsed = 00:00:59 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14150
+
+Phase 5 Delay and Skew Optimization
+
+Phase 5.1 Delay CleanUp
+
+Phase 5.1.1 Update Timing
+Phase 5.1.1 Update Timing | Checksum: 221b118bd
+
+Time (s): cpu = 00:01:55 ; elapsed = 00:00:59 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=16.947 | TNS=0.000  | WHS=N/A    | THS=N/A    |
+
+Phase 5.1 Delay CleanUp | Checksum: 221b118bd
+
+Time (s): cpu = 00:01:55 ; elapsed = 00:01:00 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+
+Phase 5.2 Clock Skew Optimization
+Phase 5.2 Clock Skew Optimization | Checksum: 221b118bd
+
+Time (s): cpu = 00:01:55 ; elapsed = 00:01:00 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+Phase 5 Delay and Skew Optimization | Checksum: 221b118bd
+
+Time (s): cpu = 00:01:55 ; elapsed = 00:01:00 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+
+Phase 6 Post Hold Fix
+
+Phase 6.1 Hold Fix Iter
+
+Phase 6.1.1 Update Timing
+Phase 6.1.1 Update Timing | Checksum: 22d77ca8a
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:00 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=16.947 | TNS=0.000  | WHS=0.105  | THS=0.000  |
+
+Phase 6.1 Hold Fix Iter | Checksum: 206a11719
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:00 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+Phase 6 Post Hold Fix | Checksum: 206a11719
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:00 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+
+Phase 7 Route finalize
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 3.29921 %
+  Global Horizontal Routing Utilization  = 4.399 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 0
+  Number of Unrouted Nets             = 0
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+Phase 7 Route finalize | Checksum: 141c8b594
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:01 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14151
+
+Phase 8 Verifying routed nets
+
+ Verification completed successfully
+Phase 8 Verifying routed nets | Checksum: 141c8b594
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:01 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 638 ; free virtual = 14150
+
+Phase 9 Depositing Routes
+Phase 9 Depositing Routes | Checksum: 104f714b4
+
+Time (s): cpu = 00:01:58 ; elapsed = 00:01:02 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 637 ; free virtual = 14149
+
+Phase 10 Post Router Timing
+INFO: [Route 35-57] Estimated Timing Summary | WNS=16.947 | TNS=0.000  | WHS=0.105  | THS=0.000  |
+
+INFO: [Route 35-327] The final timing numbers are based on the router estimated timing analysis. For a complete and accurate timing signoff, please run report_timing_summary.
+Phase 10 Post Router Timing | Checksum: 104f714b4
+
+Time (s): cpu = 00:01:58 ; elapsed = 00:01:02 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 637 ; free virtual = 14149
+INFO: [Route 35-16] Router Completed Successfully
+
+Time (s): cpu = 00:01:58 ; elapsed = 00:01:02 . Memory (MB): peak = 2134.270 ; gain = 147.297 ; free physical = 660 ; free virtual = 14172
+
+Routing Is Done.
+65 Infos, 2 Warnings, 0 Critical Warnings and 0 Errors encountered.
+route_design completed successfully
+route_design: Time (s): cpu = 00:02:03 ; elapsed = 00:01:03 . Memory (MB): peak = 2168.125 ; gain = 181.152 ; free physical = 660 ; free virtual = 14172
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:04 ; elapsed = 00:00:01 . Memory (MB): peak = 2176.078 ; gain = 0.000 ; free physical = 636 ; free virtual = 14170
+INFO: [Common 17-1381] The checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_routed.dcp' has been generated.
+Command: report_drc -file design_1_wrapper_drc_routed.rpt -pb design_1_wrapper_drc_routed.pb -rpx design_1_wrapper_drc_routed.rpx
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Coretcl 2-168] The results of DRC are in file /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_drc_routed.rpt.
+report_drc completed successfully
+Command: report_methodology -file design_1_wrapper_methodology_drc_routed.rpt -rpx design_1_wrapper_methodology_drc_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [DRC 23-133] Running Methodology with 4 threads
+INFO: [Coretcl 2-1520] The results of Report Methodology are in file /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_methodology_drc_routed.rpt.
+report_methodology completed successfully
+Command: report_power -file design_1_wrapper_power_routed.rpt -pb design_1_wrapper_power_summary_routed.pb -rpx design_1_wrapper_power_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+72 Infos, 2 Warnings, 0 Critical Warnings and 0 Errors encountered.
+report_power completed successfully
+report_power: Time (s): cpu = 00:00:09 ; elapsed = 00:00:06 . Memory (MB): peak = 2254.145 ; gain = 14.035 ; free physical = 587 ; free virtual = 14111
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+INFO: [Common 17-206] Exiting Vivado at Fri Jun  9 14:37:59 2017...
+launch_runs -verbose synth_1
+ERROR: [Common 17-69] Command failed:  Run 'synth_1' needs to be reset before launching. The run can be reset using the Tcl command 'reset_run synth_1'.
+reset_run synth_1
+launch_runs -verbose synth_1
+[Fri Jun  9 14:39:49 2017] Launched synth_1...
+Run output will be captured here: /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/runme.log
+reset_run synth_1
+wait_on_run synth_1 -jobs 4
+ERROR: [Common 17-170] Unknown option '-jobs', please type 'wait_on_run -help' for usage info.
+wait_on_run -help
+wait_on_run
+
+Description: 
+Block execution of further Tcl commands until the specified run completes.
+
+Syntax: 
+wait_on_run  [-timeout <arg>] [-quiet] [-verbose] <run>
+
+Usage: 
+  Name        Description
+  -----------------------
+  [-timeout]  Maximum time to wait for the run to complete (in minutes)
+              Default: -1
+  [-quiet]    Ignore command errors
+  [-verbose]  Suspend message limits during command execution
+  <run>       Run to wait on
+
+Categories: 
+Project
+
+Description:
+
+  Blocks the execution of Tcl commands until the specified run has completed
+  either successfully or in error, or until the specified amount of time has
+  elapsed.
+
+  This command will tell you when the run has terminated, but not the results
+  of the run. To determine if the run has completed successfully, you could
+  query the value of the PROGRESS property of the run:
+
+    launch_runs synth_1  
+    wait_on_run synth_1  
+    if {[get_property PROGRESS [get_runs synth_1]] != "100%"} {  
+       error "ERROR: synth_1 failed"  
+    }
+
+  The wait_on_run command can be used for runs that have been launched. If
+  the specified run has not been launched when the wait_on_run command is
+  used, you will get an error. Runs that have already completed do not return
+  an error.
+
+  Note: This command is used for running the tool in batch mode or from Tcl
+  scripts. It is ignored when running interactively from the GUI.
+
+Arguments:
+
+  -timeout <arg> - (Optional) The time in minutes that the wait_on_run
+  command should wait until the run finishes. This allows you to define a
+  period of time beyond which the tool should resume executing Tcl commands
+  even if the specified run has not finished execution. The default value of
+  -1 is used if timeout is not specified, meaning that there is no limit to
+  the amount of time the tool will wait for the run to complete.
+
+  -quiet - (Optional) Execute the command quietly, returning no messages from
+  the command. The command also returns TCL_OK regardless of any errors
+  encountered during execution.
+
+  Note: Any errors encountered on the command-line, while launching the
+  command, will be returned. Only errors occurring inside the command will be
+  trapped.
+
+  -verbose - (Optional) Temporarily override any message limits and return
+  all messages from this command.
+
+  Note: Message limits can be defined with the set_msg_config command.
+
+  <run> - (Required) The name of the run to wait on.
+
+Examples:
+
+  The following example launches the impl_1 run, and then waits for the
+  specified run to complete, or to wait for one hour, whichever occurs first:
+
+    launch_runs impl_1 
+    wait_on_run -timeout 60 impl_1
+
+See Also:
+
+   *  launch_runs
+launch_runs impl_1 -jobs 4
+[Fri Jun  9 14:43:00 2017] Launched synth_1...
+Run output will be captured here: /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/synth_1/runme.log
+[Fri Jun  9 14:43:00 2017] Launched impl_1...
+Run output will be captured here: /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/runme.log
+wait_on_run impl_1
+[Fri Jun  9 14:43:05 2017] Waiting for impl_1 to finish...
+
+*** Running vivado
+    with args -log design_1_wrapper.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source design_1_wrapper.tcl -notrace
+
+
+****** Vivado v2017.1 (64-bit)
+  **** SW Build 1846317 on Fri Apr 14 18:54:47 MDT 2017
+  **** IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+    ** Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+
+source design_1_wrapper.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/carl/Xilinx/Vivado/2017.1/data/ip'.
+WARNING: [IP_Flow 19-3664] IP 'design_1_rst_clk_wiz_0_100M_0' generated file not found '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/stats.txt'. Please regenerate to continue.
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_SingleCycleMIPS_export_0_0/design_1_SingleCycleMIPS_export_0_0.dcp' for cell 'design_1_i/SingleCycleMIPS_export_0'
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.dcp' for cell 'design_1_i/clk_wiz_0'
+INFO: [Project 1-454] Reading design checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.dcp' for cell 'design_1_i/rst_clk_wiz_0_100M'
+INFO: [Netlist 29-17] Analyzing 1264 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2017.1
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0_board.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0_board.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+INFO: [Timing 38-35] Done setting XDC timing constraints. [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc:57]
+INFO: [Timing 38-2] Deriving generated clocks [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc:57]
+get_clocks: Time (s): cpu = 00:00:12 ; elapsed = 00:00:11 . Memory (MB): peak = 1874.945 ; gain = 475.508 ; free physical = 854 ; free virtual = 14378
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc] for cell 'design_1_i/clk_wiz_0/inst'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0_board.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0_board.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_rst_clk_wiz_0_100M_0/design_1_rst_clk_wiz_0_100M_0.xdc] for cell 'design_1_i/rst_clk_wiz_0_100M/U0'
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/constrs_1/new/constraints.xdc]
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/constrs_1/new/constraints.xdc]
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+link_design: Time (s): cpu = 00:00:22 ; elapsed = 00:00:21 . Memory (MB): peak = 1874.945 ; gain = 790.586 ; free physical = 899 ; free virtual = 14408
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+Command: report_drc (run_mandatory_drcs) for: opt_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.64 . Memory (MB): peak = 1906.961 ; gain = 32.016 ; free physical = 889 ; free virtual = 14398
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+INFO: [Opt 31-138] Pushed 4 inverter(s) to 4 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: 21dcbdbf1
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 1923.961 ; gain = 0.000 ; free physical = 889 ; free virtual = 14398
+INFO: [Opt 31-389] Phase Retarget created 0 cells and removed 55 cells
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 2 Constant propagation | Checksum: 1d6fdce6e
+
+Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 1923.961 ; gain = 0.000 ; free physical = 886 ; free virtual = 14394
+INFO: [Opt 31-389] Phase Constant propagation created 2 cells and removed 11 cells
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: 261b53896
+
+Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 1923.961 ; gain = 0.000 ; free physical = 885 ; free virtual = 14393
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 19 cells
+
+Phase 4 BUFG optimization
+INFO: [Opt 31-194] Inserted BUFG design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/InstructionMemory/E[0]_BUFG_inst to drive 34 load(s) on clock net DEBUG_SHUTDOWN_running_OBUF
+INFO: [Opt 31-193] Inserted 1 BUFG(s) on clock nets
+Phase 4 BUFG optimization | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1923.961 ; gain = 0.000 ; free physical = 885 ; free virtual = 14393
+INFO: [Opt 31-389] Phase BUFG optimization created 1 cells and removed 0 cells
+
+Phase 5 Shift Register Optimization
+Phase 5 Shift Register Optimization | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1923.961 ; gain = 0.000 ; free physical = 885 ; free virtual = 14393
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00.05 ; elapsed = 00:00:00.06 . Memory (MB): peak = 1923.961 ; gain = 0.000 ; free physical = 885 ; free virtual = 14393
+Ending Logic Optimization Task | Checksum: 1ee8f5917
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1923.961 ; gain = 0.000 ; free physical = 885 ; free virtual = 14393
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+Ending Power Optimization Task | Checksum: 228e2c702
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.04 . Memory (MB): peak = 1923.961 ; gain = 0.000 ; free physical = 884 ; free virtual = 14393
+31 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:08 ; elapsed = 00:00:05 . Memory (MB): peak = 1923.961 ; gain = 49.016 ; free physical = 884 ; free virtual = 14393
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.10 ; elapsed = 00:00:00.03 . Memory (MB): peak = 1923.961 ; gain = 0.000 ; free physical = 881 ; free virtual = 14391
+INFO: [Common 17-1381] The checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_opt.dcp' has been generated.
+Command: report_drc -file design_1_wrapper_drc_opted.rpt
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Coretcl 2-168] The results of DRC are in file /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_drc_opted.rpt.
+report_drc completed successfully
+INFO: [Chipscope 16-241] No debug cores found in the current design.
+Before running the implement_debug_core command, either use the Set Up Debug wizard (GUI mode)
+or use the create_debug_core and connect_debug_core Tcl commands to insert debug cores into the design.
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Command: report_drc (run_mandatory_drcs) for: incr_eco_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+Command: report_drc (run_mandatory_drcs) for: placer_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+Starting Placer Task
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 4 CPUs
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.02 . Memory (MB): peak = 1923.961 ; gain = 0.000 ; free physical = 871 ; free virtual = 14381
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 1b34d86e2
+
+Time (s): cpu = 00:00:00.04 ; elapsed = 00:00:00.03 . Memory (MB): peak = 1923.961 ; gain = 0.000 ; free physical = 871 ; free virtual = 14381
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1923.961 ; gain = 0.000 ; free physical = 874 ; free virtual = 14384
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 10019d285
+
+Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1923.961 ; gain = 0.000 ; free physical = 858 ; free virtual = 14368
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.973 ; gain = 24.012 ; free physical = 830 ; free virtual = 14340
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.973 ; gain = 24.012 ; free physical = 830 ; free virtual = 14340
+Phase 1 Placer Initialization | Checksum: f1e7a722
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 1947.973 ; gain = 24.012 ; free physical = 830 ; free virtual = 14340
+
+Phase 2 Global Placement
+Phase 2 Global Placement | Checksum: b77a7d48
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:16 . Memory (MB): peak = 1971.984 ; gain = 48.023 ; free physical = 813 ; free virtual = 14323
+
+Phase 3 Detail Placement
+
+Phase 3.1 Commit Multi Column Macros
+Phase 3.1 Commit Multi Column Macros | Checksum: b77a7d48
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:16 . Memory (MB): peak = 1971.984 ; gain = 48.023 ; free physical = 813 ; free virtual = 14323
+
+Phase 3.2 Commit Most Macros & LUTRAMs
+Phase 3.2 Commit Most Macros & LUTRAMs | Checksum: 11e095bbb
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.984 ; gain = 48.023 ; free physical = 809 ; free virtual = 14319
+
+Phase 3.3 Area Swap Optimization
+Phase 3.3 Area Swap Optimization | Checksum: 13efd883e
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.984 ; gain = 48.023 ; free physical = 809 ; free virtual = 14319
+
+Phase 3.4 Pipeline Register Optimization
+Phase 3.4 Pipeline Register Optimization | Checksum: 13efd883e
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:19 . Memory (MB): peak = 1971.984 ; gain = 48.023 ; free physical = 809 ; free virtual = 14319
+
+Phase 3.5 Timing Path Optimizer
+Phase 3.5 Timing Path Optimizer | Checksum: 10a0554b1
+
+Time (s): cpu = 00:00:31 ; elapsed = 00:00:20 . Memory (MB): peak = 1971.984 ; gain = 48.023 ; free physical = 808 ; free virtual = 14318
+
+Phase 3.6 Small Shape Detail Placement
+Phase 3.6 Small Shape Detail Placement | Checksum: 113995e22
+
+Time (s): cpu = 00:00:35 ; elapsed = 00:00:24 . Memory (MB): peak = 1971.984 ; gain = 48.023 ; free physical = 800 ; free virtual = 14310
+
+Phase 3.7 Re-assign LUT pins
+Phase 3.7 Re-assign LUT pins | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:25 . Memory (MB): peak = 1971.984 ; gain = 48.023 ; free physical = 800 ; free virtual = 14310
+
+Phase 3.8 Pipeline Register Optimization
+Phase 3.8 Pipeline Register Optimization | Checksum: f46ad676
+
+Time (s): cpu = 00:00:36 ; elapsed = 00:00:25 . Memory (MB): peak = 1971.984 ; gain = 48.023 ; free physical = 800 ; free virtual = 14310
+Phase 3 Detail Placement | Checksum: f46ad676
+
+Time (s): cpu = 00:00:37 ; elapsed = 00:00:25 . Memory (MB): peak = 1971.984 ; gain = 48.023 ; free physical = 800 ; free virtual = 14310
+
+Phase 4 Post Placement Optimization and Clean-Up
+
+Phase 4.1 Post Commit Optimization
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Phase 4.1.1 Post Placement Optimization
+Post Placement Optimization Initialization | Checksum: 16ab56522
+
+Phase 4.1.1.1 BUFG Insertion
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 4 CPUs
+INFO: [Place 46-38] Processed net design_1_i/rst_clk_wiz_0_100M/U0/mb_reset, BUFG insertion was skipped due to placement/routing conflicts.
+INFO: [Place 46-41] BUFG insertion identified 1 candidate nets, 0 success, 1 skipped for placement/routing, 0 skipped for timing, 0 skipped for netlist change reason.
+Phase 4.1.1.1 BUFG Insertion | Checksum: 16ab56522
+
+Time (s): cpu = 00:00:43 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.977 ; gain = 63.016 ; free physical = 806 ; free virtual = 14316
+INFO: [Place 30-746] Post Placement Timing Summary WNS=24.324. For the most accurate timing information please run report_timing.
+Phase 4.1.1 Post Placement Optimization | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.977 ; gain = 63.016 ; free physical = 806 ; free virtual = 14316
+Phase 4.1 Post Commit Optimization | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.977 ; gain = 63.016 ; free physical = 806 ; free virtual = 14316
+
+Phase 4.2 Post Placement Cleanup
+Phase 4.2 Post Placement Cleanup | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.977 ; gain = 63.016 ; free physical = 807 ; free virtual = 14317
+
+Phase 4.3 Placer Reporting
+Phase 4.3 Placer Reporting | Checksum: 1bfee2526
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.977 ; gain = 63.016 ; free physical = 807 ; free virtual = 14317
+
+Phase 4.4 Final Placement Cleanup
+Phase 4.4 Final Placement Cleanup | Checksum: 1b1b9c079
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:28 . Memory (MB): peak = 1986.977 ; gain = 63.016 ; free physical = 807 ; free virtual = 14317
+Phase 4 Post Placement Optimization and Clean-Up | Checksum: 1b1b9c079
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:29 . Memory (MB): peak = 1986.977 ; gain = 63.016 ; free physical = 807 ; free virtual = 14317
+Ending Placer Task | Checksum: ff9a4371
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:29 . Memory (MB): peak = 1986.977 ; gain = 63.016 ; free physical = 821 ; free virtual = 14331
+51 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+place_design completed successfully
+place_design: Time (s): cpu = 00:00:47 ; elapsed = 00:00:30 . Memory (MB): peak = 1986.977 ; gain = 63.016 ; free physical = 821 ; free virtual = 14331
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:03 ; elapsed = 00:00:01 . Memory (MB): peak = 1986.977 ; gain = 0.000 ; free physical = 804 ; free virtual = 14331
+INFO: [Common 17-1381] The checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_placed.dcp' has been generated.
+report_io: Time (s): cpu = 00:00:00.15 ; elapsed = 00:00:00.19 . Memory (MB): peak = 1986.977 ; gain = 0.000 ; free physical = 808 ; free virtual = 14321
+report_utilization: Time (s): cpu = 00:00:00.15 ; elapsed = 00:00:00.21 . Memory (MB): peak = 1986.977 ; gain = 0.000 ; free physical = 816 ; free virtual = 14329
+report_control_sets: Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:00.12 . Memory (MB): peak = 1986.977 ; gain = 0.000 ; free physical = 817 ; free virtual = 14330
+Command: route_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7z020-clg484'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7z020-clg484'
+Running DRC as a precondition to command route_design
+Command: report_drc (run_mandatory_drcs) for: router_checks
+INFO: [DRC 23-27] Running DRC with 4 threads
+report_drc (run_mandatory_drcs) completed successfully
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+
+Starting Routing Task
+INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 4 CPUs
+Checksum: PlaceDB: 570b5ab5 ConstDB: 0 ShapeSum: a88ee8bc RouteDB: 0
+
+Phase 1 Build RT Design
+Phase 1 Build RT Design | Checksum: 9351a53a
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:23 . Memory (MB): peak = 2099.117 ; gain = 112.141 ; free physical = 673 ; free virtual = 14186
+
+Phase 2 Router Initialization
+
+Phase 2.1 Create Timer
+Phase 2.1 Create Timer | Checksum: 9351a53a
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:23 . Memory (MB): peak = 2099.117 ; gain = 112.141 ; free physical = 673 ; free virtual = 14186
+
+Phase 2.2 Fix Topology Constraints
+Phase 2.2 Fix Topology Constraints | Checksum: 9351a53a
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:23 . Memory (MB): peak = 2103.117 ; gain = 116.141 ; free physical = 657 ; free virtual = 14170
+
+Phase 2.3 Pre Route Cleanup
+Phase 2.3 Pre Route Cleanup | Checksum: 9351a53a
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:24 . Memory (MB): peak = 2103.117 ; gain = 116.141 ; free physical = 657 ; free virtual = 14170
+ Number of Nodes with overlaps = 0
+
+Phase 2.4 Update Timing
+Phase 2.4 Update Timing | Checksum: 1c1cd9f16
+
+Time (s): cpu = 00:00:39 ; elapsed = 00:00:28 . Memory (MB): peak = 2123.172 ; gain = 136.195 ; free physical = 640 ; free virtual = 14153
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=24.950 | TNS=0.000  | WHS=-0.133 | THS=-1.492 |
+
+Phase 2 Router Initialization | Checksum: 1b242159d
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:30 . Memory (MB): peak = 2123.172 ; gain = 136.195 ; free physical = 637 ; free virtual = 14150
+
+Phase 3 Initial Routing
+Phase 3 Initial Routing | Checksum: 11b440cb2
+
+Time (s): cpu = 00:00:49 ; elapsed = 00:00:32 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 635 ; free virtual = 14149
+
+Phase 4 Rip-up And Reroute
+
+Phase 4.1 Global Iteration 0
+ Number of Nodes with overlaps = 2039
+ Number of Nodes with overlaps = 423
+ Number of Nodes with overlaps = 355
+ Number of Nodes with overlaps = 219
+ Number of Nodes with overlaps = 232
+ Number of Nodes with overlaps = 186
+ Number of Nodes with overlaps = 164
+ Number of Nodes with overlaps = 181
+ Number of Nodes with overlaps = 164
+ Number of Nodes with overlaps = 161
+ Number of Nodes with overlaps = 134
+ Number of Nodes with overlaps = 133
+ Number of Nodes with overlaps = 141
+ Number of Nodes with overlaps = 113
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=17.537 | TNS=0.000  | WHS=N/A    | THS=N/A    |
+
+WARNING: [Route 35-447] Congestion is preventing the router from routing all nets. The router will prioritize the successful completion of routing all nets over timing optimizations.
+Phase 4.1 Global Iteration 0 | Checksum: f1a1e0ac
+
+Time (s): cpu = 00:01:39 ; elapsed = 00:00:50 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 634 ; free virtual = 14147
+
+Phase 4.2 Global Iteration 1
+ Number of Nodes with overlaps = 164
+ Number of Nodes with overlaps = 65
+ Number of Nodes with overlaps = 53
+ Number of Nodes with overlaps = 38
+ Number of Nodes with overlaps = 23
+ Number of Nodes with overlaps = 24
+ Number of Nodes with overlaps = 16
+ Number of Nodes with overlaps = 10
+ Number of Nodes with overlaps = 8
+ Number of Nodes with overlaps = 4
+ Number of Nodes with overlaps = 0
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=16.832 | TNS=0.000  | WHS=N/A    | THS=N/A    |
+
+Phase 4.2 Global Iteration 1 | Checksum: 1ba030c6c
+
+Time (s): cpu = 00:01:54 ; elapsed = 00:00:59 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 633 ; free virtual = 14146
+Phase 4 Rip-up And Reroute | Checksum: 1ba030c6c
+
+Time (s): cpu = 00:01:54 ; elapsed = 00:00:59 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 633 ; free virtual = 14147
+
+Phase 5 Delay and Skew Optimization
+
+Phase 5.1 Delay CleanUp
+
+Phase 5.1.1 Update Timing
+Phase 5.1.1 Update Timing | Checksum: 221b118bd
+
+Time (s): cpu = 00:01:55 ; elapsed = 00:00:59 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 633 ; free virtual = 14147
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=16.947 | TNS=0.000  | WHS=N/A    | THS=N/A    |
+
+Phase 5.1 Delay CleanUp | Checksum: 221b118bd
+
+Time (s): cpu = 00:01:55 ; elapsed = 00:00:59 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 633 ; free virtual = 14147
+
+Phase 5.2 Clock Skew Optimization
+Phase 5.2 Clock Skew Optimization | Checksum: 221b118bd
+
+Time (s): cpu = 00:01:55 ; elapsed = 00:01:00 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 633 ; free virtual = 14147
+Phase 5 Delay and Skew Optimization | Checksum: 221b118bd
+
+Time (s): cpu = 00:01:55 ; elapsed = 00:01:00 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 633 ; free virtual = 14147
+
+Phase 6 Post Hold Fix
+
+Phase 6.1 Hold Fix Iter
+
+Phase 6.1.1 Update Timing
+Phase 6.1.1 Update Timing | Checksum: 22d77ca8a
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:00 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 633 ; free virtual = 14147
+INFO: [Route 35-416] Intermediate Timing Summary | WNS=16.947 | TNS=0.000  | WHS=0.105  | THS=0.000  |
+
+Phase 6.1 Hold Fix Iter | Checksum: 206a11719
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:00 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 633 ; free virtual = 14147
+Phase 6 Post Hold Fix | Checksum: 206a11719
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:00 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 633 ; free virtual = 14147
+
+Phase 7 Route finalize
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 3.29921 %
+  Global Horizontal Routing Utilization  = 4.399 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 0
+  Number of Unrouted Nets             = 0
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+Phase 7 Route finalize | Checksum: 141c8b594
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:01 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 633 ; free virtual = 14147
+
+Phase 8 Verifying routed nets
+
+ Verification completed successfully
+Phase 8 Verifying routed nets | Checksum: 141c8b594
+
+Time (s): cpu = 00:01:57 ; elapsed = 00:01:01 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 633 ; free virtual = 14146
+
+Phase 9 Depositing Routes
+Phase 9 Depositing Routes | Checksum: 104f714b4
+
+Time (s): cpu = 00:01:59 ; elapsed = 00:01:02 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 631 ; free virtual = 14145
+
+Phase 10 Post Router Timing
+INFO: [Route 35-57] Estimated Timing Summary | WNS=16.947 | TNS=0.000  | WHS=0.105  | THS=0.000  |
+
+INFO: [Route 35-327] The final timing numbers are based on the router estimated timing analysis. For a complete and accurate timing signoff, please run report_timing_summary.
+Phase 10 Post Router Timing | Checksum: 104f714b4
+
+Time (s): cpu = 00:01:59 ; elapsed = 00:01:02 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 631 ; free virtual = 14145
+INFO: [Route 35-16] Router Completed Successfully
+
+Time (s): cpu = 00:01:59 ; elapsed = 00:01:02 . Memory (MB): peak = 2135.227 ; gain = 148.250 ; free physical = 655 ; free virtual = 14168
+
+Routing Is Done.
+65 Infos, 2 Warnings, 0 Critical Warnings and 0 Errors encountered.
+route_design completed successfully
+route_design: Time (s): cpu = 00:02:03 ; elapsed = 00:01:03 . Memory (MB): peak = 2169.082 ; gain = 182.105 ; free physical = 655 ; free virtual = 14168
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:04 ; elapsed = 00:00:01 . Memory (MB): peak = 2177.035 ; gain = 0.000 ; free physical = 632 ; free virtual = 14168
+INFO: [Common 17-1381] The checkpoint '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_routed.dcp' has been generated.
+Command: report_drc -file design_1_wrapper_drc_routed.rpt -pb design_1_wrapper_drc_routed.pb -rpx design_1_wrapper_drc_routed.rpx
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Coretcl 2-168] The results of DRC are in file /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_drc_routed.rpt.
+report_drc completed successfully
+Command: report_methodology -file design_1_wrapper_methodology_drc_routed.rpt -rpx design_1_wrapper_methodology_drc_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [DRC 23-133] Running Methodology with 4 threads
+INFO: [Coretcl 2-1520] The results of Report Methodology are in file /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.runs/impl_1/design_1_wrapper_methodology_drc_routed.rpt.
+report_methodology completed successfully
+Command: report_power -file design_1_wrapper_power_routed.rpt -pb design_1_wrapper_power_summary_routed.pb -rpx design_1_wrapper_power_routed.rpx
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+72 Infos, 2 Warnings, 0 Critical Warnings and 0 Errors encountered.
+report_power completed successfully
+report_power: Time (s): cpu = 00:00:09 ; elapsed = 00:00:06 . Memory (MB): peak = 2252.109 ; gain = 11.043 ; free physical = 583 ; free virtual = 14108
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+INFO: [Common 17-206] Exiting Vivado at Fri Jun  9 14:46:17 2017...
+[Fri Jun  9 14:46:19 2017] impl_1 finished
+wait_on_run: Time (s): cpu = 00:00:41 ; elapsed = 00:03:14 . Memory (MB): peak = 1130.781 ; gain = 0.000 ; free physical = 1703 ; free virtual = 15230
+launch_simulation -help
+launch_simulation
+
+Description: 
+Launch simulation
+
+Syntax: 
+launch_simulation  [-step <arg>] [-simset <arg>] [-mode <arg>] [-type <arg>]
+                   [-scripts_only] [-of_objects <args>] [-absolute_path]
+                   [-install_path <arg>] [-noclean_dir] [-quiet] [-verbose]
+
+Usage: 
+  Name              Description
+  -----------------------------
+  [-step]           Launch a simulation step. Values: all, compile, 
+                    elaborate, simulate. Default:all (launch all steps).
+                    Default: all
+  [-simset]         Name of the simulation fileset
+  [-mode]           Simulation mode. Values: behavioral, post-synthesis, 
+                    post-implementation
+                    Default: behavioral
+  [-type]           Netlist type. Values: functional, timing. This is only 
+                    applicable when mode is set to post-synthesis or 
+                    post-implementation
+  [-scripts_only]   Only generate scripts
+  [-of_objects]     Generate compile order file for this object (applicable 
+                    with -scripts_only option only)
+  [-absolute_path]  Make design source file paths in 'absolute' format
+  [-install_path]   Custom installation directory path
+  [-noclean_dir]    Do not remove simulation run directory files
+  [-quiet]          Ignore command errors
+  [-verbose]        Suspend message limits during command execution
+
+Categories: 
+ToolLaunch, Simulation
+
+Description:
+
+  Launch a simulator to perform analysis and verification of a design.
+
+  The launch_simulation command creates a script file for the target
+  simulator and then executes this file in the simulation run directory. The
+  simulation results are saved in the log files created in the run directory.
+
+  To run simulation for a specific simulator, you must first define the
+  target simulator by setting the TARGET_SIMULATOR property on the design
+  project:
+
+    set_property TARGET_SIMULATOR <name> [current_project]
+
+  The TARGET_SIMULATOR property can have a value of XSim, ModelSim, IES, or
+  VCS. The default value is XSIM, the Vivado simulator.
+
+  The target simulator can also be defined from the Vivado IDE. Create or
+  open a project, select Tools > Project Settings > Simulation menu item, and
+  select the Target simulator from the drop-down menu. The available choices
+  are: Vivado simulator, ModelSim Simulator, Questa Advanced Simulator,
+  Incisive Enterprise Simulator (IES), and Verilog Compiler Simulator (VCS).
+
+  The launch_simulation command uses a three-step process comprised of
+  compile, elaborate, and simulate steps. A script file for the target
+  simulator is created for each step in the process, (compile.bat,
+  elaborate.bat, simulate.bat), and written to the simulation run directory.
+
+  Note: On Linux the script files are named with the .sh suffix instead of
+  .bat.
+
+  By default, launch_simulation will run these script files in sequence to
+  run the simulation. You can create the scripts without running them by
+  using the -scripts_only option.
+
+  This command returns a transcript of its process, or returns an error if it
+  fails.
+
+Arguments:
+
+  -simset <arg> - (Optional) The name of the simulation fileset containing
+  the simulation test benches and sources to be used during simulation. If
+  not specified, the current simulation fileset is used.
+
+  -mode [ behavioral | post-synthesis | post-implementation ] - (Optional)
+  Specifies either a behavioral simulation of the HDL design sources to
+  verify syntax and confirm that the design performs as intended, a
+  functional or timing simulation of the post-synthesis netlist, or a
+  functional or timing simulation of the post implementation design to verify
+  circuit operation after place and route. The default mode is behavioral.
+
+  -type [ functional | timing ] - (Optional) Specifies functional simulation
+  of just the netlist, or timing simulation of the netlist and SDF file. This
+  option must be specified with -mode for post-synthesis or
+  post-implementation, but cannot be used with -mode behavioral.
+  Post-synthesis timing simulation uses SDF component delays from the
+  synth_design command. Post-implementation timing simulation uses SDF delays
+  from the place_design and route_design commands.
+
+  Note: Do not use -type with -mode behavioral, or the tool will return an
+  error.
+
+  -scripts_only - (Optional) Only generate the simulation scripts for the
+  target simulator, rather than actually launching these scripts to start the
+  "compile", "elaborate" and "simulate" steps. You can use the scripts to
+  launch the simulation flow at a later time.
+
+  -of_objects <arg> - (Optional) Run simulation for a single specified
+  sub-design, or composite file. The sub-design must be specified as a design
+  object as returned by the get_files command, rather than simply specified
+  by name.
+
+  -absolute_path - (Optional) Specify this option to define the source and
+  include paths used in the simulation scripts as absolute paths. By default,
+  all paths are written as relative to the simulation run directory. Relative
+  paths include an "origin_dir" variable that is set in the simulation script
+  to the current run directory, but you can edit the $origin_dir variable to
+  point to a path of your choice when relocating the design and simulation
+  scripts.
+
+  -install_path <arg> - (Optional) Specifies the directory containing
+  simulator executables ( e.g. vlog.exe, ncvlog, vlogan). If this option is
+  not specified, the target simulator will be looked for in the current
+  <$PATH>.
+
+  -noclean_dir - (Optional) Do not remove files from the simulation run
+  directory prior to launching the simulator. The default behavior is to
+  remove files from the simulation run directory to create a clean start.
+  With the -noclean_dir option, existing files in the run directory are left
+  in place. However, some of the files generated for use by the simulator
+  will be overwritten or updated by re-launching the simulator.
+
+  -step - (Optional) Specifies the simulation step to be launched. The valid
+  steps are: Compile, Elaborate, Simulate.
+
+  Note: By default, all the steps will be executed.
+
+  -quiet - (Optional) Execute the command quietly, returning no messages from
+  the command. The command also returns TCL_OK regardless of any errors
+  encountered during execution.
+
+  Note: Any errors encountered on the command-line, while launching the
+  command, will be returned. Only errors occurring inside the command will be
+  trapped.
+
+  -verbose - (Optional) Temporarily override any message limits and return
+  all messages from this command.
+
+  Note: Message limits can be defined with the set_msg_config command.
+
+Examples:
+
+  The following commands run behavioral simulation of the design using the
+  Vivado simulator:
+
+    set_property target_simulator "XSim" [current_project] 
+    launch_simulation
+
+  The following commands run post-synthesis functional simulation of the
+  design using the ModelSim Simulator:
+
+    set_property target_simulator "ModelSim" [current_project] 
+    launch_simulation -mode "post-synthesis" -type "functional"
+
+  The following commands run post-implementation functional simulation of the
+  design using the Cadence IES Simulator:
+
+    set_property target_simulator "IES" [current_project] 
+    launch_simulation -mode "post-implementation" -type "functional"
+
+  The following commands run post-implementation timing simulation of the
+  design using the Synopsys VCS Simulator:
+
+    set_property target_simulator "VCS" [current_project] 
+    launch_simulation -mode "post-implementation" -type "timing"
+
+  The following command generates behavioral simulation scripts for the
+  target simulator in the simulation run directory:
+
+    launch_simulation -scripts_only
+
+  The following commands run behavioral simulation flow of the design for the
+  "my_simset" simulation fileset for the target simulator in the simulation
+  run directory:
+
+    launch_simulation -simset [get_filesets my_simset]
+
+  The following command runs behavioral simulation flow for the
+  "char_fifo.xci" IP for the target simulator in the simulation run
+  directory, and does not clean up prior simulation files:
+
+    launch_simulation -noclean_dir -of_objects [get_files char_fifo.xci]
+
+  The following command generates absolute paths for the source files in the
+  generated script files:
+
+    launch_simulation -absolute_path
+
+  The following command will pick the simulator tools from the specified
+  installation path instead of from the PATH variable:
+
+    launch_simulation -install_path /tools/ius/13.20.005/tools/bin
+
+See Also:
+
+   *  close_sim
+   *  current_sim
+   *  relaunch_sim
+   *  xsim
+launch_simulation -mode post-implementation -type timing 
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-20] The target language is set to VHDL, it is not supported for simulation type 'timing', using Verilog instead.
+INFO: [Netlist 29-17] Analyzing 1264 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2017.1
+INFO: [Device 21-403] Loading part xc7z020clg484-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/.Xil/Vivado-21081-benchpress/dcp19/design_1_wrapper_board.xdc]
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/.Xil/Vivado-21081-benchpress/dcp19/design_1_wrapper_board.xdc]
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/.Xil/Vivado-21081-benchpress/dcp19/design_1_wrapper_early.xdc]
+INFO: [Timing 38-35] Done setting XDC timing constraints. [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc:57]
+INFO: [Timing 38-2] Deriving generated clocks [/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.srcs/sources_1/bd/design_1/ip/design_1_clk_wiz_0_0/design_1_clk_wiz_0_0.xdc:57]
+get_clocks: Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 1882.207 ; gain = 475.508 ; free physical = 1024 ; free virtual = 14537
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/.Xil/Vivado-21081-benchpress/dcp19/design_1_wrapper_early.xdc]
+Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/.Xil/Vivado-21081-benchpress/dcp19/design_1_wrapper.xdc]
+Finished Parsing XDC File [/home/carl/vivado/SingleCycleMIPS/.Xil/Vivado-21081-benchpress/dcp19/design_1_wrapper.xdc]
+Reading XDEF placement.
+Reading placer database...
+Reading XDEF routing.
+Read XDEF File: Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 1901.207 ; gain = 19.000 ; free physical = 1005 ; free virtual = 14518
+Restored from archive | CPU: 1.200000 secs | Memory: 15.827347 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 1901.207 ; gain = 19.000 ; free physical = 1005 ; free virtual = 14518
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+open_run: Time (s): cpu = 00:00:20 ; elapsed = 00:00:20 . Memory (MB): peak = 1901.207 ; gain = 770.086 ; free physical = 1028 ; free virtual = 14518
+INFO: [SIM-utils-31] Writing simulation netlist file for design 'impl_1'...
+INFO: [SIM-utils-32] write_verilog -mode timesim -nolib -sdf_anno true -force -file "/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing/design_1_wrapper_time_impl.v"
+INFO: [SIM-utils-34] Writing SDF file...
+INFO: [SIM-utils-35] write_sdf -mode timesim -process_corner slow -force -file "/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing/design_1_wrapper_time_impl.sdf"
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[0\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[15\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[17\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[18\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[22\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[23\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[24\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[25\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[27\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[28\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[36\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[40\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[41\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[42\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[44\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[45\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[47\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[48\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[49\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[50\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[52\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[53\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[56\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[57\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[58\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[59\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[60\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[62\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[63\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[8\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/ALU/HILO_reg\[9\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/InstructionMemory/Instruction_instruction_reg\[19\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/InstructionMemory/Instruction_instruction_reg\[21\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/InstructionMemory/Instruction_instruction_reg\[23\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/vhdl_Register/data_reg\[0\]\[28\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/vhdl_Register/data_reg\[10\]\[23\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/vhdl_Register/data_reg\[11\]\[23\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/vhdl_Register/data_reg\[12\]\[23\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/vhdl_Register/data_reg\[12\]\[27\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/vhdl_Register/data_reg\[13\]\[23\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/vhdl_Register/data_reg\[14\]\[27\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/vhdl_Register/data_reg\[1\]\[28\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/vhdl_Register/data_reg\[6\]\[28\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/vhdl_Register/data_reg\[7\]\[27\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/vhdl_Register/data_reg\[7\]\[30\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/vhdl_Register/data_reg\[8\]\[23\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+WARNING: [Timing 38-5] [SDFWriter-1] Zero Delays will be used for arc D -> Q on instance 'design_1_i/SingleCycleMIPS_export_0/U0/SingleCycleMIPS/vhdl_Register/data_reg\[8\]\[27\]' as a valid location was not found for one of the pins. Please check the part and placement setup to ensure placement completes successfully
+write_sdf: Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1956.277 ; gain = 42.000 ; free physical = 960 ; free virtual = 14480
+INFO: [SIM-utils-36] Netlist generated:/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing/design_1_wrapper_time_impl.v
+INFO: [SIM-utils-37] SDF generated:/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing/design_1_wrapper_time_impl.sdf
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File '/home/carl/Xilinx/Vivado/2017.1/data/xsim/ip/xsim_ip.ini' copied to run dir:'/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing'
+INFO: [SIM-utils-54] Inspecting design source files for 'design_1_wrapper' in fileset 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing'
+xvlog -m64 --relax -prj design_1_wrapper_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing/design_1_wrapper_time_impl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module design_1
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_ALU
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_Adder
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_InstructionMemory
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_Memory
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_PC
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_SingleCycleMIPS
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_SingleCycleMIPS_export
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_WriteBuffer
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_vhdl_Register
+INFO: [VRFC 10-311] analyzing module design_1_clk_wiz_0_0
+INFO: [VRFC 10-311] analyzing module design_1_clk_wiz_0_0_design_1_clk_wiz_0_0_clk_wiz
+INFO: [VRFC 10-311] analyzing module design_1_rst_clk_wiz_0_100M_0
+INFO: [VRFC 10-311] analyzing module design_1_rst_clk_wiz_0_100M_0__cdc_sync
+INFO: [VRFC 10-311] analyzing module design_1_rst_clk_wiz_0_100M_0__lpf
+INFO: [VRFC 10-311] analyzing module design_1_rst_clk_wiz_0_100M_0__proc_sys_reset
+INFO: [VRFC 10-311] analyzing module design_1_rst_clk_wiz_0_100M_0__sequence_psr
+INFO: [VRFC 10-311] analyzing module design_1_rst_clk_wiz_0_100M_0__upcnt_n
+INFO: [VRFC 10-311] analyzing module design_1_wrapper
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [USF-XSim-69] 'compile' step finished in '1' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing'
+Vivado Simulator 2017.1
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: /home/carl/Xilinx/Vivado/2017.1/bin/unwrapped/lnx64.o/xelab -wto 7055d5a0cff746a49eea71fe89c36a98 --debug typical --relax --mt 8 --maxdelay -L xil_defaultlib -L simprims_ver -L secureip --snapshot design_1_wrapper_time_impl -transport_int_delays -pulse_r 0 -pulse_int_r 0 -pulse_e 0 -pulse_int_e 0 xil_defaultlib.design_1_wrapper xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+INFO: [XSIM 43-3451] SDF backannotation process started with SDF file "design_1_wrapper_time_impl.sdf", for root module "design_1_wrapper".
+INFO: [XSIM 43-3452] SDF backannotation was successful for SDF file "design_1_wrapper_time_impl.sdf", for root module "design_1_wrapper".
+Time Resolution for simulation is 1ps
+Compiling module simprims_ver.OBUF
+Compiling module simprims_ver.x_lut1_mux2
+Compiling module simprims_ver.LUT1
+Compiling module simprims_ver.x_lut2_mux4
+Compiling module simprims_ver.LUT2
+Compiling module simprims_ver.CARRY4
+Compiling module simprims_ver.latchsre_ldce
+Compiling module simprims_ver.LDCE
+Compiling module simprims_ver.DSP48E1(ACASCREG=0,ALUMODEREG=0,...
+Compiling module xil_defaultlib.design_1_SingleCycleMIPS_export_...
+Compiling module xil_defaultlib.design_1_SingleCycleMIPS_export_...
+Compiling module simprims_ver.x_lut3_mux8
+Compiling module simprims_ver.LUT3
+Compiling module simprims_ver.LUT4
+Compiling module simprims_ver.LUT5
+Compiling module simprims_ver.LUT6
+Compiling module simprims_ver.BUFG
+Compiling module xil_defaultlib.design_1_SingleCycleMIPS_export_...
+Compiling module simprims_ver.FDCE(IS_C_INVERTED=1'b1)
+Compiling module xil_defaultlib.design_1_SingleCycleMIPS_export_...
+Compiling module simprims_ver.FDCE_default
+Compiling module xil_defaultlib.design_1_SingleCycleMIPS_export_...
+Compiling module xil_defaultlib.design_1_SingleCycleMIPS_export_...
+Compiling module xil_defaultlib.design_1_SingleCycleMIPS_export_...
+Compiling module xil_defaultlib.design_1_SingleCycleMIPS_export_...
+Compiling module xil_defaultlib.design_1_SingleCycleMIPS_export_...
+Compiling module xil_defaultlib.design_1_SingleCycleMIPS_export_...
+Compiling module simprims_ver.IBUF
+Compiling module simprims_ver.MMCME2_ADV(CLKFBOUT_MULT_F=15.62...
+Compiling module xil_defaultlib.design_1_clk_wiz_0_0_design_1_cl...
+Compiling module xil_defaultlib.design_1_clk_wiz_0_0
+Compiling module simprims_ver.FDRE(XON="FALSE")
+Compiling module xil_defaultlib.design_1_rst_clk_wiz_0_100M_0__c...
+Compiling module simprims_ver.FDRE_default
+Compiling module simprims_ver.SRL16E_default
+Compiling module xil_defaultlib.design_1_rst_clk_wiz_0_100M_0__l...
+Compiling module simprims_ver.FDSE(INIT=1'b0)
+Compiling module simprims_ver.FDRE(INIT=1'b1)
+Compiling module xil_defaultlib.design_1_rst_clk_wiz_0_100M_0__u...
+Compiling module xil_defaultlib.design_1_rst_clk_wiz_0_100M_0__s...
+Compiling module xil_defaultlib.design_1_rst_clk_wiz_0_100M_0__p...
+Compiling module xil_defaultlib.design_1_rst_clk_wiz_0_100M_0
+Compiling module xil_defaultlib.design_1
+Compiling module xil_defaultlib.design_1_wrapper
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot design_1_wrapper_time_impl
+
+****** Webtalk v2017.1 (64-bit)
+  **** SW Build 1846317 on Fri Apr 14 18:54:47 MDT 2017
+  **** IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+    ** Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+
+source /home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing/xsim.dir/design_1_wrapper_time_impl/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-186] '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing/xsim.dir/design_1_wrapper_time_impl/webtalk/usage_statistics_ext_xsim.xml' has been successfully sent to Xilinx on Fri Jun  9 15:03:01 2017. For additional details about this file, please refer to the WebTalk help file at /home/carl/Xilinx/Vivado/2017.1/doc/webtalk_introduction.html.
+INFO: [Common 17-206] Exiting Webtalk at Fri Jun  9 15:03:01 2017...
+run_program: Time (s): cpu = 00:12:32 ; elapsed = 00:10:09 . Memory (MB): peak = 1986.836 ; gain = 0.000 ; free physical = 3742 ; free virtual = 14492
+INFO: [USF-XSim-69] 'elaborate' step finished in '608' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/carl/vivado/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "design_1_wrapper_time_impl -key {Post-Implementation:sim_1:Timing:design_1_wrapper} -tclbatch {design_1_wrapper.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2017.1
+Time resolution is 1 ps
+source design_1_wrapper.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'design_1_wrapper_time_impl' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:13:06 ; elapsed = 00:10:45 . Memory (MB): peak = 2051.348 ; gain = 920.566 ; free physical = 3414 ; free virtual = 14180
+close_sim 
+INFO: [Simtcl 6-16] Simulation closed
+close_project 
+close
+wrong # args: should be "close channelId"
+exit 
+INFO: [Common 17-206] Exiting Vivado at Fri Jun  9 15:04:00 2017...

@@ -1,0 +1,1 @@
+-wto "2a05cb05e84a466d967a92143305540f" --debug "typical" --relax --mt "2" -L "xil_defaultlib" -L "secureip" --snapshot "LogicGates_tb_behav" "xil_defaultlib.LogicGates_tb" -log "elaborate.log" 

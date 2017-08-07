@@ -160,17 +160,17 @@ proc create_root_design { parentCell } {
   # Create ports
 
   # Create instance: SingleCycleMIPS_axi_v1_0_0, and set properties
-  set SingleCycleMIPS_axi_v1_0_0 [ create_bd_cell -type ip -vlnv carljohnsen:user:SingleCycleMIPS_axi:1.0 SingleCycleMIPS_axi_v1_0_0 ]
+  set SingleCycleMIPS_axi_v1_0_0 [ create_bd_cell -type ip -vlnv carljohnsen:user:SingleCycleMIPS_axi_v1_0:1.0 SingleCycleMIPS_axi_v1_0_0 ]
 
   # Create instance: clk_wiz_0, and set properties
   set clk_wiz_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:5.4 clk_wiz_0 ]
   set_property -dict [ list \
-CONFIG.CLKOUT1_JITTER {631.442} \
-CONFIG.CLKOUT1_PHASE_ERROR {346.848} \
-CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {5} \
-CONFIG.MMCM_CLKFBOUT_MULT_F {32.000} \
-CONFIG.MMCM_CLKOUT0_DIVIDE_F {128.000} \
-CONFIG.MMCM_DIVCLK_DIVIDE {5} \
+CONFIG.CLKOUT1_JITTER {290.478} \
+CONFIG.CLKOUT1_PHASE_ERROR {133.882} \
+CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {10.000} \
+CONFIG.MMCM_CLKFBOUT_MULT_F {15.625} \
+CONFIG.MMCM_CLKOUT0_DIVIDE_F {78.125} \
+CONFIG.MMCM_DIVCLK_DIVIDE {2} \
  ] $clk_wiz_0
 
   # Create instance: processing_system7_0, and set properties
@@ -188,14 +188,6 @@ CONFIG.NUM_MI {3} \
   # Create instance: rst_ps7_0_100M, and set properties
   set rst_ps7_0_100M [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 rst_ps7_0_100M ]
 
-  # Create instance: util_vector_logic_0, and set properties
-  set util_vector_logic_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_vector_logic:2.0 util_vector_logic_0 ]
-  set_property -dict [ list \
-CONFIG.C_OPERATION {not} \
-CONFIG.C_SIZE {1} \
-CONFIG.LOGO_FILE {data/sym_notgate.png} \
- ] $util_vector_logic_0
-
   # Create interface connections
   connect_bd_intf_net -intf_net processing_system7_0_DDR [get_bd_intf_ports DDR] [get_bd_intf_pins processing_system7_0/DDR]
   connect_bd_intf_net -intf_net processing_system7_0_FIXED_IO [get_bd_intf_ports FIXED_IO] [get_bd_intf_pins processing_system7_0/FIXED_IO]
@@ -205,14 +197,13 @@ CONFIG.LOGO_FILE {data/sym_notgate.png} \
   connect_bd_intf_net -intf_net ps7_0_axi_periph_M02_AXI [get_bd_intf_pins SingleCycleMIPS_axi_v1_0_0/memory] [get_bd_intf_pins ps7_0_axi_periph/M02_AXI]
 
   # Create port connections
-  connect_bd_net -net clk_wiz_0_clk_out1 [get_bd_pins SingleCycleMIPS_axi_v1_0_0/control_aclk] [get_bd_pins SingleCycleMIPS_axi_v1_0_0/cpu_clk] [get_bd_pins SingleCycleMIPS_axi_v1_0_0/instruction_aclk] [get_bd_pins SingleCycleMIPS_axi_v1_0_0/memory_aclk] [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins ps7_0_axi_periph/ACLK] [get_bd_pins ps7_0_axi_periph/M00_ACLK] [get_bd_pins ps7_0_axi_periph/M01_ACLK] [get_bd_pins ps7_0_axi_periph/M02_ACLK] [get_bd_pins ps7_0_axi_periph/S00_ACLK] [get_bd_pins rst_ps7_0_100M/slowest_sync_clk]
+  connect_bd_net -net clk_wiz_0_clk_out1 [get_bd_pins SingleCycleMIPS_axi_v1_0_0/cpu_clk] [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins rst_ps7_0_100M/slowest_sync_clk]
   connect_bd_net -net clk_wiz_0_locked [get_bd_pins clk_wiz_0/locked] [get_bd_pins rst_ps7_0_100M/dcm_locked]
-  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_pins clk_wiz_0/clk_in1] [get_bd_pins processing_system7_0/FCLK_CLK0]
-  connect_bd_net -net processing_system7_0_FCLK_RESET0_N [get_bd_pins processing_system7_0/FCLK_RESET0_N] [get_bd_pins rst_ps7_0_100M/ext_reset_in] [get_bd_pins util_vector_logic_0/Op1]
+  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_pins SingleCycleMIPS_axi_v1_0_0/control_aclk] [get_bd_pins SingleCycleMIPS_axi_v1_0_0/instruction_aclk] [get_bd_pins SingleCycleMIPS_axi_v1_0_0/memory_aclk] [get_bd_pins clk_wiz_0/clk_in1] [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins ps7_0_axi_periph/ACLK] [get_bd_pins ps7_0_axi_periph/M00_ACLK] [get_bd_pins ps7_0_axi_periph/M01_ACLK] [get_bd_pins ps7_0_axi_periph/M02_ACLK] [get_bd_pins ps7_0_axi_periph/S00_ACLK]
+  connect_bd_net -net processing_system7_0_FCLK_RESET0_N [get_bd_pins processing_system7_0/FCLK_RESET0_N] [get_bd_pins rst_ps7_0_100M/ext_reset_in]
   connect_bd_net -net rst_ps7_0_100M_interconnect_aresetn [get_bd_pins ps7_0_axi_periph/ARESETN] [get_bd_pins rst_ps7_0_100M/interconnect_aresetn]
-  connect_bd_net -net rst_ps7_0_100M_mb_reset [get_bd_pins rst_ps7_0_100M/mb_reset]
+  connect_bd_net -net rst_ps7_0_100M_mb_reset [get_bd_pins SingleCycleMIPS_axi_v1_0_0/cpu_rst] [get_bd_pins clk_wiz_0/reset] [get_bd_pins rst_ps7_0_100M/mb_reset]
   connect_bd_net -net rst_ps7_0_100M_peripheral_aresetn [get_bd_pins SingleCycleMIPS_axi_v1_0_0/control_aresetn] [get_bd_pins SingleCycleMIPS_axi_v1_0_0/instruction_aresetn] [get_bd_pins SingleCycleMIPS_axi_v1_0_0/memory_aresetn] [get_bd_pins ps7_0_axi_periph/M00_ARESETN] [get_bd_pins ps7_0_axi_periph/M01_ARESETN] [get_bd_pins ps7_0_axi_periph/M02_ARESETN] [get_bd_pins ps7_0_axi_periph/S00_ARESETN] [get_bd_pins rst_ps7_0_100M/peripheral_aresetn]
-  connect_bd_net -net util_vector_logic_0_Res [get_bd_pins clk_wiz_0/reset] [get_bd_pins util_vector_logic_0/Res]
 
   # Create address segments
   create_bd_addr_seg -range 0x00010000 -offset 0x43C00000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs SingleCycleMIPS_axi_v1_0_0/control/reg0] SEG_SingleCycleMIPS_axi_v1_0_0_reg0

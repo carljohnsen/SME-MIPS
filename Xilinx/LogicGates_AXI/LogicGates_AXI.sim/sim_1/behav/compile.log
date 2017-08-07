@@ -1,0 +1,56 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ipshared/cf76/src/system_types.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ipshared/cf76/src/Types_LogicGates.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ipshared/cf76/src/AndGate.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity AndGate
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ipshared/cf76/src/OrGate.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity OrGate
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ipshared/cf76/src/NotGate.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity NotGate
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ipshared/cf76/src/XorGate.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity XorGate
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ipshared/cf76/src/LogicGates.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity LogicGates
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ipshared/cf76/src/Export_LogicGates.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity LogicGates_export
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ipshared/cf76/hdl/LogicGates_AXI_v1_0_S00_AXI.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity LogicGates_AXI_v1_0_S00_AXI
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ipshared/cf76/hdl/LogicGates_AXI_v1_0.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity LogicGates_AXI_v1_0
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ip/design_1_LogicGates_AXI_0_0/sim/design_1_LogicGates_AXI_0_0.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity design_1_LogicGates_AXI_0_0
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ip/design_1_processing_system7_0_0/design_1_processing_system7_0_0_sim_netlist.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity design_1_processing_system7_0_0_processing_system7_v5_5_processing_system7
+INFO: [VRFC 10-307] analyzing entity design_1_processing_system7_0_0
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ip/design_1_rst_ps7_0_100M_0/sim/design_1_rst_ps7_0_100M_0.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity design_1_rst_ps7_0_100M_0
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/hdl/design_1.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity s00_couplers_imp_UYSKKA
+INFO: [VRFC 10-307] analyzing entity design_1_ps7_0_axi_periph_0
+INFO: [VRFC 10-307] analyzing entity design_1
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.ip_user_files/bd/design_1/ip/design_1_auto_pc_0/design_1_auto_pc_0_sim_netlist.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_incr_cmd
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_incr_cmd_2
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_rd_cmd_fsm
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_simple_fifo
+INFO: [VRFC 10-307] analyzing entity \design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_simple_fifo__parameterized0\
+INFO: [VRFC 10-307] analyzing entity \design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_simple_fifo__parameterized1\
+INFO: [VRFC 10-307] analyzing entity \design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_simple_fifo__parameterized2\
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_wr_cmd_fsm
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_wrap_cmd
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_wrap_cmd_3
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_register_slice_v2_1_12_axic_register_slice
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_register_slice_v2_1_12_axic_register_slice_0
+INFO: [VRFC 10-307] analyzing entity \design_1_auto_pc_0_axi_register_slice_v2_1_12_axic_register_slice__parameterized1\
+INFO: [VRFC 10-307] analyzing entity \design_1_auto_pc_0_axi_register_slice_v2_1_12_axic_register_slice__parameterized2\
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_b_channel
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_cmd_translator
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_cmd_translator_1
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_r_channel
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_register_slice_v2_1_12_axi_register_slice
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_ar_channel
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s_aw_channel
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_b2s
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0_axi_protocol_converter_v2_1_12_axi_protocol_converter
+INFO: [VRFC 10-307] analyzing entity design_1_auto_pc_0
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/ihicajo/Documents/Xilinx/LogicGates_AXI/LogicGates_AXI.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity design_1_wrapper

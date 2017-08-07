@@ -1,0 +1,13 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  "../../../PipelinedMIPS-BRAM.ip_user_files/bd/design_1/ip/design_1_util_vector_logic_0_0/sim/design_1_util_vector_logic_0_0.v"
+verilog xil_defaultlib  "../../../PipelinedMIPS-BRAM.ip_user_files/bd/design_1/hdl/design_1.v"
+verilog xil_defaultlib  "../../../PipelinedMIPS-BRAM.ip_user_files/bd/design_1/ip/design_1_blk_mem_gen_0_2/sim/design_1_blk_mem_gen_0_2.v"
+verilog xil_defaultlib  "../../../PipelinedMIPS-BRAM.ip_user_files/bd/design_1/ip/design_1_xlconstant_0_0/sim/design_1_xlconstant_0_0.v"
+verilog xil_defaultlib  "../../../PipelinedMIPS-BRAM.ip_user_files/bd/design_1/ip/design_1_blk_mem_gen_1_0/sim/design_1_blk_mem_gen_1_0.v"
+verilog xil_defaultlib  "../../../PipelinedMIPS-BRAM.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.v"
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

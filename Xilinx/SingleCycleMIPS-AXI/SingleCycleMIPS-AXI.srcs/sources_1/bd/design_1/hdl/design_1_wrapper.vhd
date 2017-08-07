@@ -1,8 +1,8 @@
 --Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
---Tool Version: Vivado v.2017.1 (win64) Build 1846317 Fri Apr 14 18:55:03 MDT 2017
---Date        : Mon Jul 10 10:38:15 2017
---Host        : L10-0002 running 64-bit major release  (build 9200)
+--Tool Version: Vivado v.2017.1 (lin64) Build 1846317 Fri Apr 14 18:54:47 MDT 2017
+--Date        : Wed Jun 21 11:28:15 2017
+--Host        : ArchDesktop running 64-bit unknown
 --Command     : generate_target design_1_wrapper.bd
 --Design      : design_1_wrapper
 --Purpose     : IP block netlist

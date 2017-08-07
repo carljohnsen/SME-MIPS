@@ -46,8 +46,8 @@
 -- 
 -- DO NOT MODIFY THIS FILE.
 
--- IP VLNV: carljohnsen:user:SingleCycleMIPS_axi:1.0
--- IP Revision: 10
+-- IP VLNV: carljohnsen:user:SingleCycleMIPS_axi_v1_0:1.0
+-- IP Revision: 3
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
@@ -56,6 +56,7 @@ USE ieee.numeric_std.ALL;
 ENTITY design_1_SingleCycleMIPS_axi_v1_0_0_0 IS
   PORT (
     cpu_clk : IN STD_LOGIC;
+    cpu_rst : IN STD_LOGIC;
     control_aclk : IN STD_LOGIC;
     control_aresetn : IN STD_LOGIC;
     control_awaddr : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
@@ -136,6 +137,7 @@ ARCHITECTURE design_1_SingleCycleMIPS_axi_v1_0_0_0_arch OF design_1_SingleCycleM
     );
     PORT (
       cpu_clk : IN STD_LOGIC;
+      cpu_rst : IN STD_LOGIC;
       control_aclk : IN STD_LOGIC;
       control_aresetn : IN STD_LOGIC;
       control_awaddr : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
@@ -203,6 +205,7 @@ ARCHITECTURE design_1_SingleCycleMIPS_axi_v1_0_0_0_arch OF design_1_SingleCycleM
   END COMPONENT SingleCycleMIPS_v1_0;
   ATTRIBUTE X_INTERFACE_INFO : STRING;
   ATTRIBUTE X_INTERFACE_INFO OF cpu_clk: SIGNAL IS "xilinx.com:signal:clock:1.0 cpu_clk CLK";
+  ATTRIBUTE X_INTERFACE_INFO OF cpu_rst: SIGNAL IS "xilinx.com:signal:reset:1.0 cpu_rst RST";
   ATTRIBUTE X_INTERFACE_INFO OF control_aclk: SIGNAL IS "xilinx.com:signal:clock:1.0 control_aclk CLK";
   ATTRIBUTE X_INTERFACE_INFO OF control_aresetn: SIGNAL IS "xilinx.com:signal:reset:1.0 control_aresetn RST";
   ATTRIBUTE X_INTERFACE_INFO OF control_awaddr: SIGNAL IS "xilinx.com:interface:aximm:1.0 control AWADDR";
@@ -278,6 +281,7 @@ BEGIN
     )
     PORT MAP (
       cpu_clk => cpu_clk,
+      cpu_rst => cpu_rst,
       control_aclk => control_aclk,
       control_aresetn => control_aresetn,
       control_awaddr => control_awaddr,

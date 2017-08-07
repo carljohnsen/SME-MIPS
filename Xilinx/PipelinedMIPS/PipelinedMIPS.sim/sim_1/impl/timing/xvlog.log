@@ -1,0 +1,15 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/carljohnsen/PipelinedMIPS/PipelinedMIPS.sim/sim_1/impl/timing/PipelinedMIPS_export_time_impl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module EX_ALU
+INFO: [VRFC 10-311] analyzing module EX_BranchAdder
+INFO: [VRFC 10-311] analyzing module EX_ForwardAMux
+INFO: [VRFC 10-311] analyzing module EX_ForwardBMux
+INFO: [VRFC 10-311] analyzing module EX_Pipe
+INFO: [VRFC 10-311] analyzing module ID_Pipe
+INFO: [VRFC 10-311] analyzing module ID_Register
+INFO: [VRFC 10-311] analyzing module IF_PC
+INFO: [VRFC 10-311] analyzing module IF_Pipe
+INFO: [VRFC 10-311] analyzing module MEM_Memory
+INFO: [VRFC 10-311] analyzing module MEM_Pipe
+INFO: [VRFC 10-311] analyzing module PipelinedMIPS
+INFO: [VRFC 10-311] analyzing module PipelinedMIPS_export
+INFO: [VRFC 10-311] analyzing module glbl

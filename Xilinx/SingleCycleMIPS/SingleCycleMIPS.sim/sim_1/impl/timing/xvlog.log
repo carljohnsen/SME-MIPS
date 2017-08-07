@@ -1,0 +1,19 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/carljohnsen/vivado/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing/design_1_wrapper_time_impl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module design_1
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_ALU
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_Adder
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_Memory
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_PC
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_SingleCycleMIPS
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_SingleCycleMIPS_export
+INFO: [VRFC 10-311] analyzing module design_1_SingleCycleMIPS_export_0_0_vhdl_Register
+INFO: [VRFC 10-311] analyzing module design_1_clk_wiz_0_0
+INFO: [VRFC 10-311] analyzing module design_1_clk_wiz_0_0_design_1_clk_wiz_0_0_clk_wiz
+INFO: [VRFC 10-311] analyzing module design_1_proc_sys_reset_0_0
+INFO: [VRFC 10-311] analyzing module design_1_proc_sys_reset_0_0__lpf
+INFO: [VRFC 10-311] analyzing module design_1_proc_sys_reset_0_0__proc_sys_reset
+INFO: [VRFC 10-311] analyzing module design_1_proc_sys_reset_0_0__sequence_psr
+INFO: [VRFC 10-311] analyzing module design_1_proc_sys_reset_0_0__upcnt_n
+INFO: [VRFC 10-311] analyzing module design_1_wrapper
+INFO: [VRFC 10-311] analyzing module glbl

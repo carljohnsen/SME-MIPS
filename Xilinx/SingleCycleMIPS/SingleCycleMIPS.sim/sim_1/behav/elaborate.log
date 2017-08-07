@@ -1,0 +1,71 @@
+Vivado Simulator 2017.1
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: /home/carljohnsen/Xilinx/Vivado/2017.1/bin/unwrapped/lnx64.o/xelab -wto 825f0cc4bdc143e4aefce7de4874d11a --debug typical --relax --mt 8 -L xil_defaultlib -L lib_cdc_v1_0_2 -L proc_sys_reset_v5_0_11 -L xlconstant_v1_1_3 -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot design_1_wrapper_behav xil_defaultlib.design_1_wrapper xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package xil_defaultlib.system_types
+Compiling package xil_defaultlib.custom_types
+Compiling package unisim.vcomponents
+Compiling package ieee.std_logic_arith
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling package synopsys.attributes
+Compiling package ieee.std_logic_misc
+Compiling architecture rtl of entity xil_defaultlib.Splitter [splitter_default]
+Compiling architecture rtl of entity xil_defaultlib.Mux [mux_default]
+Compiling architecture rtl of entity xil_defaultlib.SignExtend [signextend_default]
+Compiling architecture rtl of entity xil_defaultlib.Control [control_default]
+Compiling architecture rtl of entity xil_defaultlib.vhdl_Register [vhdl_register_default]
+Compiling architecture rtl of entity xil_defaultlib.PC [pc_default]
+Compiling architecture rtl of entity xil_defaultlib.Incrementer [incrementer_default]
+Compiling architecture rtl of entity xil_defaultlib.InstructionMemory [instructionmemory_default]
+Compiling architecture rtl of entity xil_defaultlib.Memory [memory_default]
+Compiling architecture rtl of entity xil_defaultlib.MemMux [memmux_default]
+Compiling architecture rtl of entity xil_defaultlib.ImmMux [immmux_default]
+Compiling architecture rtl of entity xil_defaultlib.ShmtMux [shmtmux_default]
+Compiling architecture rtl of entity xil_defaultlib.ALUControl [alucontrol_default]
+Compiling architecture rtl of entity xil_defaultlib.ALU [alu_default]
+Compiling architecture rtl of entity xil_defaultlib.JalMux [jalmux_default]
+Compiling architecture rtl of entity xil_defaultlib.JalUnit [jalunit_default]
+Compiling architecture rtl of entity xil_defaultlib.Adder [adder_default]
+Compiling architecture rtl of entity xil_defaultlib.Mux0 [mux0_default]
+Compiling architecture rtl of entity xil_defaultlib.Mux1 [mux1_default]
+Compiling architecture rtl of entity xil_defaultlib.Mux2 [mux2_default]
+Compiling architecture rtl of entity xil_defaultlib.ShiftB [shiftb_default]
+Compiling architecture rtl of entity xil_defaultlib.shiftJ [shiftj_default]
+Compiling architecture rtl of entity xil_defaultlib.Packer [packer_default]
+Compiling architecture rtl of entity xil_defaultlib.AndGate [andgate_default]
+Compiling architecture rtl of entity xil_defaultlib.WriteBuffer [writebuffer_default]
+Compiling architecture rtl of entity xil_defaultlib.SingleCycleMIPS [singlecyclemips_default]
+Compiling architecture rtl of entity xil_defaultlib.SingleCycleMIPS_export [singlecyclemips_export_default]
+Compiling architecture design_1_singlecyclemips_export_0_0_arch of entity xil_defaultlib.design_1_SingleCycleMIPS_export_0_0 [design_1_singlecyclemips_export_...]
+Compiling module unisims_ver.IBUF
+Compiling module unisims_ver.MMCME2_ADV(CLKFBOUT_MULT_F=15.62...
+Compiling module unisims_ver.BUFG
+Compiling module xil_defaultlib.design_1_clk_wiz_0_0_clk_wiz
+Compiling module xil_defaultlib.design_1_clk_wiz_0_0
+Compiling architecture fdre_v of entity unisim.FDRE [fdre_default]
+Compiling architecture fdr_v of entity unisim.FDR [fdr_default]
+Compiling architecture implementation of entity lib_cdc_v1_0_2.cdc_sync [\cdc_sync(c_vector_width=2,c_mtb...]
+Compiling architecture srl16e_v of entity unisim.SRL16E [\SRL16E(init="1111111111111111")...]
+Compiling architecture srl16_v of entity unisim.SRL16 [\SRL16(init="1111111111111111")(...]
+Compiling architecture imp of entity proc_sys_reset_v5_0_11.lpf [\lpf(c_ext_rst_width=4,c_aux_rst...]
+Compiling architecture imp of entity proc_sys_reset_v5_0_11.upcnt_n [\upcnt_n(c_size=6)\]
+Compiling architecture imp of entity proc_sys_reset_v5_0_11.sequence_psr [sequence_psr_default]
+Compiling architecture imp of entity proc_sys_reset_v5_0_11.proc_sys_reset [\proc_sys_reset(c_family="zynq",...]
+Compiling architecture design_1_proc_sys_reset_0_0_arch of entity xil_defaultlib.design_1_proc_sys_reset_0_0 [design_1_proc_sys_reset_0_0_defa...]
+Compiling module xlconstant_v1_1_3.xlconstant_v1_1_3_xlconstant(CON...
+Compiling module xil_defaultlib.design_1_xlconstant_0_0
+Compiling module xil_defaultlib.design_1
+Compiling module xil_defaultlib.design_1_wrapper
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot design_1_wrapper_behav

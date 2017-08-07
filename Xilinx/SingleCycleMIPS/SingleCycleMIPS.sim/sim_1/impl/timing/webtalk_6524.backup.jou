@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Webtalk v2017.1 (64-bit)
+# SW Build 1846317 on Fri Apr 14 18:55:03 MDT 2017
+# IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+# Start of session at: Mon Jun 12 10:29:58 2017
+# Process ID: 6524
+# Current directory: C:/Users/ihicajo/Documents/Xilinx/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing
+# Command line: wbtcv.exe -mode batch -source C:/Users/ihicajo/Documents/Xilinx/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing/xsim.dir/design_1_wrapper_time_impl/webtalk/xsim_webtalk.tcl -notrace
+# Log file: C:/Users/ihicajo/Documents/Xilinx/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing/webtalk.log
+# Journal file: C:/Users/ihicajo/Documents/Xilinx/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing\webtalk.jou
+#-----------------------------------------------------------
+source C:/Users/ihicajo/Documents/Xilinx/SingleCycleMIPS/SingleCycleMIPS.sim/sim_1/impl/timing/xsim.dir/design_1_wrapper_time_impl/webtalk/xsim_webtalk.tcl -notrace

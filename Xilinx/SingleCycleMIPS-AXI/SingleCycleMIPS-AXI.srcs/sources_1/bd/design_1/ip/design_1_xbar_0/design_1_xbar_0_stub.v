@@ -3,8 +3,8 @@
 // Tool Version: Vivado v.2017.1 (lin64) Build 1846317 Fri Apr 14 18:54:47 MDT 2017
 // Date        : Wed Jun 21 11:29:02 2017
 // Host        : ArchDesktop running 64-bit unknown
-// Command     : write_verilog -force -mode synth_stub -rename_top design_1_xbar_0 -prefix
-//               design_1_xbar_0_ design_1_xbar_0_stub.v
+// Command     : write_verilog -force -mode synth_stub
+//               /home/carljohnsen/vivado/SingleCycleMIPS-AXI/SingleCycleMIPS-AXI.srcs/sources_1/bd/design_1/ip/design_1_xbar_0/design_1_xbar_0_stub.v
 // Design      : design_1_xbar_0
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7z020clg484-1

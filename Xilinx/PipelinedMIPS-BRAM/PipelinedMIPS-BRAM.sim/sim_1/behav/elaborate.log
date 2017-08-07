@@ -1,0 +1,74 @@
+Vivado Simulator 2017.1
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: /home/carljohnsen/Xilinx/Vivado/2017.1/bin/unwrapped/lnx64.o/xelab -wto c0118652838b41bbbfc90f62313e35bd --debug typical --relax --mt 8 -L xil_defaultlib -L util_vector_logic_v2_0_1 -L blk_mem_gen_v8_3_6 -L xlconstant_v1_1_3 -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot design_1_wrapper_behav xil_defaultlib.design_1_wrapper xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-1783] select index 62 into current_contents is out of bounds [/wrk/2017.1/nightly/2017_04_14_1846317/packages/customer/vivado/data/ip/xilinx/blk_mem_gen_v8_3/simulation/blk_mem_gen_v8_3.v:2420]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package xil_defaultlib.system_types
+Compiling package xil_defaultlib.custom_types
+Compiling architecture rtl of entity xil_defaultlib.EX_ForwardAMux [ex_forwardamux_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_ForwardBMux [ex_forwardbmux_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_ImmMux [ex_immmux_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_JumpJrMux [ex_jumpjrmux_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_JumpPacker [ex_jumppacker_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_JumpShift [ex_jumpshift_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_ShmtMux [ex_shmtmux_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_BranchAdder [ex_branchadder_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_BranchShift [ex_branchshift_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_ALUControl [ex_alucontrol_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_ALU [ex_alu_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_JalMux [ex_jalmux_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_JalUnit [ex_jalunit_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_Pipe [ex_pipe_default]
+Compiling architecture rtl of entity xil_defaultlib.EX_ForwardingUnit [ex_forwardingunit_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_Instruction_Mux [id_instruction_mux_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_Splitter [id_splitter_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_RegDstMux [id_regdstmux_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_SignExtend [id_signextend_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_Control [id_control_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_HazardUnit [id_hazardunit_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_Register [id_register_default]
+Compiling architecture rtl of entity xil_defaultlib.ID_Pipe [id_pipe_default]
+Compiling architecture rtl of entity xil_defaultlib.IF_PC [if_pc_default]
+Compiling architecture rtl of entity xil_defaultlib.IF_PCSrcMux [if_pcsrcmux_default]
+Compiling architecture rtl of entity xil_defaultlib.IF_Incrementer [if_incrementer_default]
+Compiling architecture rtl of entity xil_defaultlib.IF_InstructionMemory [if_instructionmemory_default]
+Compiling architecture rtl of entity xil_defaultlib.IF_Pipe [if_pipe_default]
+Compiling architecture rtl of entity xil_defaultlib.MEM_Memory [mem_memory_default]
+Compiling architecture rtl of entity xil_defaultlib.MEM_Pipe [mem_pipe_default]
+Compiling architecture rtl of entity xil_defaultlib.MEM_BranchOrJumpMux [mem_branchorjumpmux_default]
+Compiling architecture rtl of entity xil_defaultlib.MEM_Jump_Or [mem_jump_or_default]
+Compiling architecture rtl of entity xil_defaultlib.MEM_Jump_Condition [mem_jump_condition_default]
+Compiling architecture rtl of entity xil_defaultlib.MEM_Jump_And [mem_jump_and_default]
+Compiling architecture rtl of entity xil_defaultlib.WB_MemMux [wb_memmux_default]
+Compiling architecture rtl of entity xil_defaultlib.PipelinedMIPS [pipelinedmips_default]
+Compiling architecture rtl of entity xil_defaultlib.PipelinedMIPS_export [pipelinedmips_export_default]
+Compiling architecture design_1_pipelinedmips_export_0_0_arch of entity xil_defaultlib.design_1_PipelinedMIPS_export_0_0 [design_1_pipelinedmips_export_0_...]
+Compiling module blk_mem_gen_v8_3_6.blk_mem_gen_v8_3_6_output_stage(...
+Compiling module blk_mem_gen_v8_3_6.blk_mem_gen_v8_3_6_output_stage(...
+Compiling module blk_mem_gen_v8_3_6.blk_mem_gen_v8_3_6_softecc_outpu...
+Compiling module blk_mem_gen_v8_3_6.blk_mem_gen_v8_3_6_mem_module(C_...
+Compiling module blk_mem_gen_v8_3_6.blk_mem_gen_v8_3_6(C_FAMILY="zyn...
+Compiling module xil_defaultlib.design_1_blk_mem_gen_0_2
+Compiling module blk_mem_gen_v8_3_6.blk_mem_gen_v8_3_6_output_stage(...
+Compiling module blk_mem_gen_v8_3_6.blk_mem_gen_v8_3_6_output_stage(...
+Compiling module blk_mem_gen_v8_3_6.blk_mem_gen_v8_3_6_softecc_outpu...
+Compiling module blk_mem_gen_v8_3_6.blk_mem_gen_v8_3_6_mem_module(C_...
+Compiling module blk_mem_gen_v8_3_6.blk_mem_gen_v8_3_6(C_FAMILY="zyn...
+Compiling module xil_defaultlib.design_1_blk_mem_gen_1_0
+Compiling module util_vector_logic_v2_0_1.util_vector_logic_v2_0_1_util_ve...
+Compiling module xil_defaultlib.design_1_util_vector_logic_0_0
+Compiling module xlconstant_v1_1_3.xlconstant_v1_1_3_xlconstant(CON...
+Compiling module xil_defaultlib.design_1_xlconstant_0_0
+Compiling module xil_defaultlib.design_1
+Compiling module xil_defaultlib.design_1_wrapper
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot design_1_wrapper_behav

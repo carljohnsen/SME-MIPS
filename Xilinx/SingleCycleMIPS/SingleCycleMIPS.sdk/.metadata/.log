@@ -1,0 +1,77 @@
+!SESSION 2017-06-19 10:55:31.647 -----------------------------------------------
+eclipse.buildId=2017.1
+java.version=1.8.0_112
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_DK
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -data /home/carljohnsen/vivado/SingleCycleMIPS/SingleCycleMIPS.sdk
+
+!ENTRY org.eclipse.ui 2 0 2017-06-19 10:55:36.394
+!MESSAGE Warnings while parsing the commands from the 'org.eclipse.ui.commands' and 'org.eclipse.ui.actionDefinitions' extension points.
+!SUBENTRY 1 org.eclipse.ui 2 0 2017-06-19 10:55:36.395
+!MESSAGE Commands should really have a category: plug-in='com.xilinx.sdk.appwiz', id='com.xilinx.sdk.app.commands.ChangeAtfBuiltReferences', categoryId='com.xilinx.sdk.app.commands.category'
+
+!ENTRY org.eclipse.ui 2 0 2017-06-19 10:55:37.211
+!MESSAGE Warnings while parsing the commands from the 'org.eclipse.ui.commands' and 'org.eclipse.ui.actionDefinitions' extension points.
+!SUBENTRY 1 org.eclipse.ui 2 0 2017-06-19 10:55:37.211
+!MESSAGE Commands should really have a category: plug-in='com.xilinx.sdk.appwiz', id='com.xilinx.sdk.app.commands.ChangeAtfBuiltReferences', categoryId='com.xilinx.sdk.app.commands.category'
+
+!ENTRY com.xilinx.sdk.utils 0 0 2017-06-19 10:55:47.671
+!MESSAGE XSCT Command: [::hsi::utils::init_repo], Thread: Worker-4
+
+!ENTRY com.xilinx.sdk.utils 0 0 2017-06-19 10:55:47.671
+!MESSAGE XSCT Command: [set sdk::sdk_chan tcfchan#0], Thread: Thread-14
+
+!ENTRY com.xilinx.sdk.utils 0 0 2017-06-19 10:55:47.902
+!MESSAGE XSCT command with result: [::hsi::utils::init_repo], Result: [null, ]. Thread: Worker-4
+
+!ENTRY com.xilinx.sdk.utils 0 0 2017-06-19 10:55:47.902
+!MESSAGE XSCT command with result: [set sdk::sdk_chan tcfchan#0], Result: [null, tcfchan#0]. Thread: Thread-14
+
+!ENTRY com.xilinx.sdk.utils 0 0 2017-06-19 10:55:47.903
+!MESSAGE XSCT Command: [setws /home/carljohnsen/vivado/SingleCycleMIPS/SingleCycleMIPS.sdk], Thread: Thread-14
+
+!ENTRY com.xilinx.sdk.utils 0 0 2017-06-19 10:55:47.903
+!MESSAGE XSCT command with result: [setws /home/carljohnsen/vivado/SingleCycleMIPS/SingleCycleMIPS.sdk], Result: [null, ]. Thread: Thread-14
+
+!ENTRY com.xilinx.sdk.utils 0 0 2017-06-19 10:55:49.153
+!MESSAGE XSCT Command: [::hsi::utils::openhw /home/carljohnsen/vivado/SingleCycleMIPS/SingleCycleMIPS.sdk/design_1_wrapper_hw_platform_0/system.hdf], Thread: Worker-5
+
+!ENTRY com.xilinx.sdk.utils 0 0 2017-06-19 10:55:49.187
+!MESSAGE XSCT command with result: [::hsi::utils::openhw /home/carljohnsen/vivado/SingleCycleMIPS/SingleCycleMIPS.sdk/design_1_wrapper_hw_platform_0/system.hdf], Result: [null, ]. Thread: Worker-5
+
+!ENTRY com.xilinx.sdk.utils 0 0 2017-06-19 10:55:51.035
+!MESSAGE XSCT Command: [::hsi::utils::get_design_properties -json /home/carljohnsen/vivado/SingleCycleMIPS/SingleCycleMIPS.sdk/design_1_wrapper_hw_platform_0/system.hdf], Thread: main
+
+!ENTRY com.xilinx.sdk.utils 0 0 2017-06-19 10:55:51.036
+!MESSAGE XSCT command with result: [::hsi::utils::get_design_properties -json /home/carljohnsen/vivado/SingleCycleMIPS/SingleCycleMIPS.sdk/design_1_wrapper_hw_platform_0/system.hdf], Result: [null, {"device": "7z020",
+"family": "zynq",
+"timestamp": "Mon Jun 19 06:54:06 2017",
+"vivado_version": "2017.1",
+"part": "xc7z020clg484-1",
+}]. Thread: main
+
+!ENTRY com.xilinx.sdk.utils 0 0 2017-06-19 10:55:51.041
+!MESSAGE XSCT Command: [::hsi::utils::get_all_periphs -json /home/carljohnsen/vivado/SingleCycleMIPS/SingleCycleMIPS.sdk/design_1_wrapper_hw_platform_0/system.hdf], Thread: main
+
+!ENTRY com.xilinx.sdk.utils 0 0 2017-06-19 10:55:51.044
+!MESSAGE XSCT command with result: [::hsi::utils::get_all_periphs -json /home/carljohnsen/vivado/SingleCycleMIPS/SingleCycleMIPS.sdk/design_1_wrapper_hw_platform_0/system.hdf], Result: [null, {"SingleCycleMIPS_export_0": {"hier_name": "SingleCycleMIPS_export_0",
+"type": "SingleCycleMIPS_export",
+"version": "1.0",
+"ip_type": "PERIPHERAL",
+},
+"clk_wiz_0": {"hier_name": "clk_wiz_0",
+"type": "clk_wiz",
+"version": "5.4",
+"ip_type": "PERIPHERAL",
+},
+"proc_sys_reset_0": {"hier_name": "proc_sys_reset_0",
+"type": "proc_sys_reset",
+"version": "5.0",
+"ip_type": "PERIPHERAL",
+},
+"xlconstant_0": {"hier_name": "xlconstant_0",
+"type": "xlconstant",
+"version": "1.1",
+"ip_type": "PERIPHERAL",
+},
+}]. Thread: main

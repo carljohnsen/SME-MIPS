@@ -1,0 +1,5 @@
+0.6
+2017.1
+Apr 14 2017
+18:58:24
+/home/carljohnsen/PipelinedMIPS/PipelinedMIPS.sim/sim_1/impl/timing/PipelinedMIPS_export_time_impl.v,1501617049,verilog,,,,EX_ALU;EX_BranchAdder;EX_ForwardAMux;EX_ForwardBMux;EX_Pipe;ID_Pipe;ID_Register;IF_PC;IF_Pipe;MEM_Memory;MEM_Pipe;PipelinedMIPS;PipelinedMIPS_export;glbl,,,,,,,,

@@ -1,0 +1,92 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.ip_user_files/bd/design_1/ip/design_1_util_vector_logic_0_0/sim/design_1_util_vector_logic_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module design_1_util_vector_logic_0_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.ip_user_files/bd/design_1/hdl/design_1.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module design_1
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.ip_user_files/bd/design_1/ip/design_1_blk_mem_gen_0_2/sim/design_1_blk_mem_gen_0_2.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module design_1_blk_mem_gen_0_2
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.ip_user_files/bd/design_1/ip/design_1_xlconstant_0_0/sim/design_1_xlconstant_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module design_1_xlconstant_0_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.ip_user_files/bd/design_1/ip/design_1_blk_mem_gen_1_0/sim/design_1_blk_mem_gen_1_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module design_1_blk_mem_gen_1_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module design_1_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/system_types.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/Types_PipelinedMIPS.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_ALU.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_ALU
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_ALUControl.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_ALUControl
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_BranchAdder.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_BranchAdder
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_BranchShift.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_BranchShift
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_ForwardAMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_ForwardAMux
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_ForwardBMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_ForwardBMux
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_ForwardingUnit.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_ForwardingUnit
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_ImmMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_ImmMux
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_JalMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_JalMux
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_JalUnit.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_JalUnit
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_JumpJrMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_JumpJrMux
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_JumpPacker.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_JumpPacker
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_JumpShift.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_JumpShift
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_Pipe.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_Pipe
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/EX_ShmtMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity EX_ShmtMux
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/ID_Instruction_Mux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity ID_Instruction_Mux
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/ID_Splitter.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity ID_Splitter
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/ID_RegDstMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity ID_RegDstMux
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/ID_SignExtend.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity ID_SignExtend
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/ID_Control.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity ID_Control
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/ID_HazardUnit.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity ID_HazardUnit
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/ID_Register.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity ID_Register
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/ID_Pipe.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity ID_Pipe
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/IF_PC.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity IF_PC
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/IF_PCSrcMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity IF_PCSrcMux
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/IF_Incrementer.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity IF_Incrementer
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/IF_InstructionMemory.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity IF_InstructionMemory
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/IF_Pipe.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity IF_Pipe
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/MEM_Memory.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity MEM_Memory
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/MEM_Pipe.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity MEM_Pipe
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/MEM_BranchOrJumpMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity MEM_BranchOrJumpMux
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/MEM_Jump_Or.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity MEM_Jump_Or
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/MEM_Jump_Condition.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity MEM_Jump_Condition
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/MEM_Jump_And.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity MEM_Jump_And
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/WB_MemMux.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity WB_MemMux
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/PipelinedMIPS.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity PipelinedMIPS
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.srcs/sources_1/imports/vhdl/Export_PipelinedMIPS.vhdl" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity PipelinedMIPS_export
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/carljohnsen/vivado/PipelinedMIPS-BRAM/PipelinedMIPS-BRAM.ip_user_files/bd/design_1/ip/design_1_PipelinedMIPS_export_0_0/sim/design_1_PipelinedMIPS_export_0_0.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity design_1_PipelinedMIPS_export_0_0
